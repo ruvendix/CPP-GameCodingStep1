@@ -1,6 +1,6 @@
 # 리포지토리 소개
 ![Language](https://img.shields.io/badge/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%20%EC%96%B8%EC%96%B4-C%2B%2B-yellow) ![Level](https://img.shields.io/badge/%EC%88%98%EC%A4%80-%EC%B4%88%EB%B3%B4-orange) [![Copyright](https://img.shields.io/badge/%EC%A0%80%EC%9E%91%EA%B6%8C-Ruvendix-yellowgreen)](https://blog.naver.com/ruvendix) 
-> 게임 코딩의 첫 단계로서, C++을 이용해서 간단한 기법들을 소개합니다.
+> 게임 코딩의 첫 단계로서, 게임 코딩에 유용하고 간단한 기법들을 소개합니다.
 
 *위에 있는 "저작권"을 클릭하거나 아래에 있는 배너를 클릭하면 Ruvendix의 블로그로 이동됩니다.*
 
