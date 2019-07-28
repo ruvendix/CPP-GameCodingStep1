@@ -1,6 +1,10 @@
 # Prerequisites
 *.d
 
+# Fallback
+*.VC.db
+*.ipch
+
 # Compiled Object files
 *.slo
 *.lo
@@ -27,6 +31,10 @@
 *.lib
 
 # Executables
-*.exe
 *.out
 *.app
+/Example/001-HelloGameCodingWorld/Binaries/Intermediate
+
+# Debug
+*.ilk
+*.pdb
