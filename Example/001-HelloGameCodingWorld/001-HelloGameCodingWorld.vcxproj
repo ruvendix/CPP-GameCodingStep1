@@ -70,23 +70,23 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>Binaries\</OutDir>
-    <IntDir>Binaries\Intermediate\Debug\</IntDir>
+    <OutDir>$(SolutionDir)Binaries\</OutDir>
+    <IntDir>$(SolutionDir)Binaries\Intermediate\Debug\</IntDir>
     <TargetName>$(ProjectName)_Debug</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>Binaries\</OutDir>
-    <IntDir>Binaries\Intermediate\Release\</IntDir>
+    <OutDir>$(SolutionDir)Binaries\</OutDir>
+    <IntDir>$(SolutionDir)Binaries\Intermediate\Release\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>Binaries\</OutDir>
-    <IntDir>Binaries\Intermediate\Debug\</IntDir>
+    <OutDir>$(SolutionDir)Binaries\</OutDir>
+    <IntDir>$(SolutionDir)Binaries\Intermediate\Debug\</IntDir>
     <TargetName>$(ProjectName)_Debug_x64</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>Binaries\</OutDir>
-    <IntDir>Binaries\Intermediate\Release\</IntDir>
+    <OutDir>$(SolutionDir)Binaries\</OutDir>
+    <IntDir>$(SolutionDir)Binaries\Intermediate\Release\</IntDir>
     <TargetName>$(ProjectName)_x64</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
