@@ -38,3 +38,5 @@
 *.ilk
 *.pdb
 /Example/Binaries/Intermediate
+/Example/001-HelloGameCodingWorld
+/Example/Binaries/001-HelloGameCodingWorld_Debug.exe
