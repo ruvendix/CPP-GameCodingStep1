@@ -40,3 +40,5 @@
 /Example/Binaries/Intermediate
 /Example/001-HelloGameCodingWorld
 /Example/Binaries/001-HelloGameCodingWorld_Debug.exe 
+/Example/.vs/Example/v16/*.db-shm
+/Example/.vs/Example/v16/*.db-wal
