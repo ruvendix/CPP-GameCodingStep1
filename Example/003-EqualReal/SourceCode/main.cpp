@@ -84,7 +84,7 @@ int main()
 	intervalOfValue = (jumpingPower + 0.4f) - 3.8f;
 	largerValue     = std::fmax(jumpingPower + 0.4f, 3.8f);
 
-	if (std::abs(intervalOfValue) <= FLT_EPSILON * largerValue)
+	if (std::abs(intervalOfValue) <= FLT_EPSILON * std::abs(largerValue))
 	{
 		printf("(%f + %f)와 %f는 같아요.\n", jumpingPower, 0.4f, 3.8f);
 	}
