@@ -120,8 +120,8 @@ int main()
 	printf("사망한 수   : %7d\t%7d\n", medievalKnightDeadCount, vikingDeadCount);
 
 	// 각 부대가 준 피해량
-	int32 totalMedievalKnightAttackDamage = (vikingDeadCount * medievalKnightAttackDamage) + (vikingMaxHP -  vikingHP);
-	int32 totalVikingAttackDamage = (medievalKnightDeadCount * vikingAttackDamage) + (medievalKnightMaxHP - medievalKnightHP);
+	int32 totalMedievalKnightAttackDamage = (vikingMaxHP * vikingDeadCount) + (vikingMaxHP -  vikingHP);
+	int32 totalVikingAttackDamage = (medievalKnightMaxHP * medievalKnightDeadCount) + (medievalKnightMaxHP - medievalKnightHP);
 
 	printf("준 피해량   : %7d\t%7d\n", totalMedievalKnightAttackDamage, totalVikingAttackDamage);	
 	printf("-------------------------------------------\n");
