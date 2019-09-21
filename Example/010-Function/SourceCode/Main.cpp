@@ -54,16 +54,16 @@ int32 ClampNum(int32 num, int32 minNum, int32 maxNum)
 	return resultNum;
 }
 
-// 전에 만들어봤던 배틀 시뮬레이터르 함수로 변경해볼게요~
+// 전에 만들어봤던 배틀 시뮬레이터를 함수로 변경해볼게요~
 // 예제답게 최대한 함수를 많이 만들어볼게요~
 void ShowIntro();
 void ShowUnitStat(int32 medievalKnightMaxHP, int32 medievalKnightAttackDamage, real32 medievalKnightAttackSuccessRate,
 	              int32 vikingMaxHP, int32 vikingAttackDamage, real32 vikingKnightAttackSuccessRate);
 void InitRandomSeed();
 bool InputUnitCount(_Out_ int32& medievalKnightCount, _Out_ int32& totalMedievalKnightCount,
-	                _Out_ int32& vikingCount, _Out_ int32& totalVikingCount);
+					_Out_ int32& vikingCount, _Out_ int32& totalVikingCount);
 bool AttackUnit(real32 attackSuccessRate, int32 attackdDamage, int32 targetMaxHP,
-	            _Out_ int32& targetHP, _Out_ int32& targetCount);
+				_Out_ int32& targetHP, _Out_ int32& targetCount);
 void ShowBattleReport(int32 totalMedievalKnightCount, int32 medievalKnightCount,
 	                  int32 medievalKnightMaxHP, int32 medievalKnightHP, int32 medievalKnightDeadCount,
 	                  int32 totalVikingCount, int32 vikingCount, int32 vikingMaxHP, int32 vikingHP, int32 vikingDeadCount);
