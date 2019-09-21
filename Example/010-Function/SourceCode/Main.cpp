@@ -34,36 +34,6 @@ void ShowStringLineFeed(const std::string_view& srcStr)
 	printf("%s\n", srcStr.data());
 }
 
-// printf처럼 서식 문자열로 전달해서 std::string으로 만들 수 있어요.
-std::string MakeFormatStr(const char* szFormat, ...)
-{
-	// va_list는 가변인자라고 표기해주는 것이고 (char*)
-	// va_start는 가변인자의 시작 부분을 알려줘요.
-	va_list va = nullptr;
-	va_start(va, szFormat);
-
-	// 서식 문자열의 길이를 구해야 해요.
-	// _vscprintf는 가변인자 문자열을 출력해주는데, 길이 구할 때 사용해요.
-	int32 strLength = _vscprintf(szFormat, va);
-
-	// 가변인자로 문자열을 조합하려면 메모리 공간이 필요해요.
-	// std::string은 메모리 공간이 가변적이라 이용할 수 없죠.
-	// 단순하게 바이트 단위로 동적할당해야 하니까 std::malloc()을 사용할게요.
-	char* strBuffer = nullptr;
-	int32 bufferSize = strLength + 1; // 널문자가 들어갈 공간도 포함해주세요!
-	strBuffer = (char*)(std::malloc(bufferSize));
-	::memset(strBuffer, 0, bufferSize);
-
-	// vsprintf_s는 가변인자 문자열을 메모리 공간에 출력해주고
-	// va_end는 가변인자의 마지막 부분을 알려줘요.
-	vsprintf_s(strBuffer, bufferSize, szFormat, va);
-	va_end(va);
-
-	std::string strResult = strBuffer; // 여기서 내부 복사가 발생해요.
-	free(strBuffer); // 동적할당은 메모리 해제가 필수!
-	return strResult;
-}
-
 int main()
 {
 #if 0
@@ -84,15 +54,6 @@ int main()
 	ShowStringLineFeed("C++17에서 새로 생긴 스트링 뷰에요~");	
 	std::string strGuide = "기존의 std::string으로 전달해도 내부 복사를 하지 않아요.";
 	ShowStringLineFeed(strGuide);
-#endif
-
-#if 0
-	// 1회용으로만 사용할 때는 임시객체를 이용해보세요.
-	printf("%s\n\n", MakeFormatStr("정수를 출력해볼게요   : %d", 100).c_str());
-	printf("%s\n\n", MakeFormatStr("실수를 출력해볼게요   : %f", 54.24f).c_str());
-	printf("%s\n\n", MakeFormatStr("문자를 출력해볼게요   : %c", 'D').c_str());
-	printf("%s\n\n", MakeFormatStr("문자열을 출력해볼게요 : %s", "string").c_str());
-	printf("%s\n\n", MakeFormatStr("동시에 출력해볼게요   : %d %f %c %s", 100, 54.24f, 'D', "string").c_str());
 #endif
 
 	return EXIT_SUCCESS;
