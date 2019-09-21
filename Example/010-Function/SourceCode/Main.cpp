@@ -58,15 +58,15 @@ int32 ClampNum(int32 num, int32 minNum, int32 maxNum)
 // 예제답게 최대한 함수를 많이 만들어볼게요~
 void ShowIntro();
 void ShowUnitStat(int32 medievalKnightMaxHP, int32 medievalKnightAttackDamage, real32 medievalKnightAttackSuccessRate,
-	              int32 vikingMaxHP, int32 vikingAttackDamage, real32 vikingKnightAttackSuccessRate);
+                  int32 vikingMaxHP, int32 vikingAttackDamage, real32 vikingKnightAttackSuccessRate);
 void InitRandomSeed();
 bool InputUnitCount(_Out_ int32& medievalKnightCount, _Out_ int32& totalMedievalKnightCount,
-					_Out_ int32& vikingCount, _Out_ int32& totalVikingCount);
+                    _Out_ int32& vikingCount, _Out_ int32& totalVikingCount);
 bool AttackUnit(real32 attackSuccessRate, int32 attackdDamage, int32 targetMaxHP,
-				_Out_ int32& targetHP, _Out_ int32& targetCount);
+                _Out_ int32& targetHP, _Out_ int32& targetCount);
 void ShowBattleReport(int32 totalMedievalKnightCount, int32 medievalKnightCount,
-	                  int32 medievalKnightMaxHP, int32 medievalKnightHP, int32 medievalKnightDeadCount,
-	                  int32 totalVikingCount, int32 vikingCount, int32 vikingMaxHP, int32 vikingHP, int32 vikingDeadCount);
+                      int32 medievalKnightMaxHP, int32 medievalKnightHP, int32 medievalKnightDeadCount,
+                      int32 totalVikingCount, int32 vikingCount, int32 vikingMaxHP, int32 vikingHP, int32 vikingDeadCount);
 int32 CalcBattleScore(int32 survivedUnitCount, int32 enemyDeadCount);
 void ShowBattleWinner(int32 medievalKnightTroopScore, int32 vikingTroopScore);
 
@@ -185,7 +185,7 @@ void ShowIntro()
 }
 
 void ShowUnitStat(int32 medievalKnightMaxHP, int32 medievalKnightAttackDamage, real32 medievalKnightAttackSuccessRate,
-	              int32 vikingMaxHP, int32 vikingAttackDamage, real32 vikingKnightAttackSuccessRate)
+                  int32 vikingMaxHP, int32 vikingAttackDamage, real32 vikingKnightAttackSuccessRate)
 {
 	printf("-------------------------------------------\n");
 	printf("              중세기사   바이킹\n");
@@ -203,7 +203,7 @@ void InitRandomSeed()
 }
 
 bool InputUnitCount(_Out_ int32& medievalKnightCount, _Out_ int32& totalMedievalKnightCount,
-	                _Out_ int32& vikingCount, _Out_ int32& totalVikingCount)
+                    _Out_ int32& vikingCount, _Out_ int32& totalVikingCount)
 {
 	printf("중세기사의 수를 입력해주세요 : ");
 	int32 inputResult = scanf_s("%d", &medievalKnightCount);
@@ -233,7 +233,7 @@ bool InputUnitCount(_Out_ int32& medievalKnightCount, _Out_ int32& totalMedieval
 }
 
 bool AttackUnit(real32 attackSuccessRate, int32 attackdDamage, int32 targetMaxHP,
-	            _Out_ int32& targetHP, _Out_ int32& targetCount)
+                _Out_ int32& targetHP, _Out_ int32& targetCount)
 {
 	real32 randomRate = (std::rand() % (100 + 1)) * 0.01f;
 	if (randomRate < attackSuccessRate)
@@ -253,8 +253,8 @@ bool AttackUnit(real32 attackSuccessRate, int32 attackdDamage, int32 targetMaxHP
 }
 
 void ShowBattleReport(int32 totalMedievalKnightCount, int32 medievalKnightCount,
-	                  int32 medievalKnightMaxHP, int32 medievalKnightHP, int32 medievalKnightDeadCount,
-	                  int32 totalVikingCount, int32 vikingCount, int32 vikingMaxHP, int32 vikingHP, int32 vikingDeadCount)
+                      int32 medievalKnightMaxHP, int32 medievalKnightHP, int32 medievalKnightDeadCount,
+                      int32 totalVikingCount, int32 vikingCount, int32 vikingMaxHP, int32 vikingHP, int32 vikingDeadCount)
 {
 	printf("-------------------------------------------\n");
 	printf("              중세기사   바이킹\n");
