@@ -38,7 +38,7 @@ int main()
 	int32  vikingMaxHP = 198;
 	int32  vikingHP = vikingMaxHP;
 	int32  vikingAttackDamage = 18;
-	real32 vikingKnightAttackSuccessRate = 0.52f;
+	real32 vikingAttackSuccessRate = 0.52f;
 
 	printf("-------------------------------------------\n");
 	printf("              중세기사   바이킹\n");
@@ -46,7 +46,7 @@ int main()
 	printf("HP           : %7d\t%7d\n", medievalKnightMaxHP, vikingMaxHP);
 	printf("공격력       : %7d\t%7d\n", medievalKnightAttackDamage, vikingAttackDamage);
 	printf("공격 성공율  : %7d%%\t%7d%%\n", (int32)(medievalKnightAttackSuccessRate * 100.0f),
-		(int32)(vikingKnightAttackSuccessRate * 100.0f));
+		(int32)(vikingAttackSuccessRate * 100.0f));
 	printf("-------------------------------------------\n\n");
 
 	// 의사 난수 발생기의 시드값을 설정할게요.
@@ -92,7 +92,7 @@ int main()
 
 		// 바이킹 -> 중세기사
 		attackSuccessRate = (std::rand() % (100 + 1)) * 0.01f;
-		if (attackSuccessRate < vikingKnightAttackSuccessRate)
+		if (attackSuccessRate < vikingAttackSuccessRate)
 		{
 			medievalKnightHP -= vikingAttackDamage;
 
@@ -132,7 +132,7 @@ int main()
 	int32 medievalKnightTroopScore = (medievalKnightCount * 5) + (vikingDeadCount * 3);
 	int32 vikingTroopScore = (vikingCount * 5) + (medievalKnightDeadCount * 3);
 
-	printf("총점        : %7d\t%7d\n", medievalKnightTroopScore * 4, vikingTroopScore * 4);
+	printf("총점        : %7d\t%7d\n", medievalKnightTroopScore, vikingTroopScore);
 	printf("-------------------------------------------\n\n");
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
