@@ -14,16 +14,12 @@ using real32 = float;
 // 이번 프로젝트에 필요한 전역상수를 정의할게요.
 // =======================================================================
 const int32 NO_VALUE = 0;
-const int32 GO_BACK = 1;
+const int32 GO_BACK  = 1;
 const int32 INVALID_VALUE = -1;
 
 const int32 MAX_ITEM_TYPE_COUNT = 13;
-const int32 MAX_PLAYER_MONEY = 9999;
+const int32 MAX_PLAYER_MONEY    = 9999;
 const int32 MAX_PLAYER_INVENTORY_CAPACITY = 4;
-
-const int32 INVENTORY_ITEM_INFO_COUNT = 2;
-const int32 INVENTORY_ITEM_ID_IDX = 0;
-const int32 INVENTORY_ITEM_COUNT_IDX = 1;
 
 const int32 ACTION_BUY  = 1;
 const int32 ACTION_SELL = 2;
@@ -32,11 +28,15 @@ const int32 ACTION_EXIT = 3;
 const int32 CATEGORY_POTION  = 1;
 const int32 CATEGORY_GROCERY = 2;
 const int32 CATEGORY_CAMPING = 3;
-const int32 SHOP_MENU_END = CATEGORY_CAMPING + 1;
+const int32 SHOP_ITEM_CATEGORY_END = CATEGORY_CAMPING + 1;
 
 const int32 POTION_TYPE_COUNT  = 4;
 const int32 GROCERY_TYPE_COUNT = 5;
 const int32 CAMPING_TYPE_COUNT = 4;
+
+const int32 INVENTORY_INFO_COUNT     = 2;
+const int32 INVENTORY_ITEM_ID_IDX    = 0;
+const int32 INVENTORY_ITEM_COUNT_IDX = 1;
 
 // 플레이어의 인벤토리와 잡화 상점이 참고할 아이템 데이터베이스(Database, 줄여서 DB)에요.
 // 좀 더 효율적으로 관리하려면 클래스와 자료구조를 적용해야 하는데 지금은 생략할게요.
@@ -62,54 +62,58 @@ const int32 g_itemDBForPrice[MAX_ITEM_TYPE_COUNT] =
 };
 
 //////////////////////////////////////////////////////////////////////////
-// 이번 프로젝트에 필요한 전역변수를 선언할게요.
+// 이번 프로젝트에 필요한 전역변수를 정의할게요.
 // 전역변수는 되도록이면 사용하지 않으려고 하지만...
-// 지금은 소스 코드를 좀 더 간단하게 만들어야 해서요.
+// 지금은 소스 코드를 좀 더 간단하게 만드는 게 중요하니까요.
 // =======================================================================
-int32 g_playerMoney = 5000;
-int32 g_playerCurrentInventoryIdx;
-int32 g_playerInventory[MAX_PLAYER_INVENTORY_CAPACITY][INVENTORY_ITEM_INFO_COUNT];
+int32 g_playerMoney = 2000;
+int32 g_playerInventory[MAX_PLAYER_INVENTORY_CAPACITY][INVENTORY_INFO_COUNT];
+int32 g_playerCurrentInventoryIdx; // 실제로 인벤토리를 채울 때 사용되니까 잘 기억해두세요!
 
 //////////////////////////////////////////////////////////////////////////
 // 이번 프로젝트에 필요한 함수를 선언할게요.
 // =======================================================================
 // 유틸리티 함수 목록이에요.
-// 유티리티 함수는 어느 프로젝트에서나 사용할 수 있어야 해요!
+// 유틸리티 함수는 어느 프로젝트에서나 사용할 수 있어야 하죠!
 void  PauseApp();
 void  ClearConsoleScreen();
-void  ClearStdInput();
+void  ClearStdInputBuffer();
 bool  InputNumAutoRange(_Out_ int32& num, int32 minNum, int32 maxNum);
 int32 ClampNum(int32 num, int32 minNum, int32 maxNum);
 
-// 검색 함수 목록이에요.
-const std::string FindItemNameInDB(int32 itemID);
-int32 FindItemIdxInDB(int32 itemID);
-int32 FindItemPriceInDB(int32 itemID);
-int32 FindAlreadyPossessItemIdx(int32 itemID);
-int32 FindItemPossessionCountInInventory(int32 itemID);
+// 아이템 DB 검색 함수 목록이에요.
+std::string FindItemNameInDB(int32 itemID);
+int32       FindItemIdxInDB(int32 itemID); // 요 녀석이 핵심 함수에요!
+int32       FindItemPriceInDB(int32 itemID);
+int32       FindAlreadyPossessionItemIdx(int32 itemID); // 요 녀석은 인벤토리의 핵심 함수에요!
+int32       FindItemPossessionCountInInventory(int32 itemID);
 
-// 상점 관련 함수 목록이에요.
+// 잡화 상점 관련 함수 목록이에요.
 bool  EnterMiscellaneousShop();
 int32 ShowBuyItemMenu();
 int32 ShowSellItemMenu();
 void  ShowItemTable(const int32 itemTable[], int32 count, bool bSell);
 int32 BuyItem(const int32 itemTable[], int32 count);
-int32 SellItem(const int32 itemTable[], int32 count);
+int32 SellItem(const int32 itemTable[], int32 count); // 구매 함수와 비슷하죠.
 
-int main()
+// 프로그램이 시작되는 곳이에요.
+int32 main()
 {
 	//////////////////////////////////////////////////////////////////////////
-	// 프로젝트 - 잡화 상점을 만들어봐요~
+	// 프로젝트 - 잡화 상점을 만들어볼게요~
 	//////////////////////////////////////////////////////////////////////////
 
-	// 상점에 들어갈게요.
+	// 잡화 상점에 들어가는 부분이에요.
 	while (EnterMiscellaneousShop() == true)
 	{
-		// 반환값이 false면 상점을 나가요.
+		// 반환값이 false면 잡화 상점에서 나가요.
 	}
 
 	return EXIT_SUCCESS;
 }
+
+//////////////////////////////////////////////////////////////////////////
+// 아까 선언했던 유틸리티 함수들을 만들어볼게요~
 
 // 응용 프로그램을 잠시 멈추는 함수에요.
 void PauseApp()
@@ -120,35 +124,37 @@ void PauseApp()
 // 콘솔창을 깨끗하게 지워주는 함수에요.
 void ClearConsoleScreen()
 {
-	std::system("cls"); // 비주얼 스튜디오에서만 사용 가능해요.
+	std::system("cls");
 }
 
 // 표준 입력 버퍼를 비워주는 함수에요.
-void ClearStdInput()
+void ClearStdInputBuffer()
 {
-	char ch = '0'; // EOF와 '\n'만 아니면 됨!
+	char ch = '0'; // EOF나 '\n'만 아니면 괜찮아요.
 
 	// 표준 입력 버퍼를 비우는 방법이에요.
-	// std::fflush(stdin)은 표준에 적합하지 않아서 사용하지 않을게요.
+	// std::fflush(stdin)도 있지만, 표준에는 적합하지 않아서 생략할게요.
 	while ((ch != EOF) && (ch != '\n'))
 	{
 		ch = getchar();
-	};
+	}
 }
 
 // 숫자를 입력 받음과 동시에 입력 범위를 벗어나면 자동 조절해주는 함수에요.
 bool InputNumAutoRange(_Out_ int32& num, int32 minNum, int32 maxNum)
 {
+	// 최솟값이 최댓값보다 크다면 둘을 바꿔줘야 해요! (swap)
 	if (minNum > maxNum)
 	{
-		minNum = maxNum;
+		std::swap(minNum, maxNum);
 	}
 
 	printf("입력 범위를 벗어나면 자동 조절됩니다. (%d ~ %d)\n", minNum, maxNum);
 	printf("> ");
+
 	int32 inputResult = scanf_s("%d", &num);
 	printf("\n");
-	ClearStdInput();
+	ClearStdInputBuffer();
 
 	if (inputResult == 0)
 	{
@@ -165,11 +171,11 @@ int32 ClampNum(int32 num, int32 minNum, int32 maxNum)
 {
 	int32 resultNum = num;
 
-	if (num < minNum)
+	if (resultNum < minNum)
 	{
 		resultNum = minNum;
 	}
-	else if (num > maxNum)
+	else if (resultNum > maxNum)
 	{
 		resultNum = maxNum;
 	}
@@ -177,32 +183,35 @@ int32 ClampNum(int32 num, int32 minNum, int32 maxNum)
 	return resultNum;
 }
 
+//////////////////////////////////////////////////////////////////////////
+// 아까 선언했던 아이템 DB 검색 함수들을 만들어볼게요~
+
+// DB에서의 아이템 인덱스를 찾아주는 함수에요.
+int32 FindItemIdxInDB(int32 itemID)
+{
+	// 이런 걸 순차탐색이라고 하는데 실제로 사용되고 있는 DB는 순차탐색을 사용하면 망해요...
+// 탐색 알고리즘에는 여러가지가 있는데 일단은 순차탐색만 사용할게요.
+	for (int32 i = 0; i < MAX_ITEM_TYPE_COUNT; ++i)
+	{
+		// 아이템 ID끼리 비교하는 게 제일 정확해요!
+		if (g_itemDBForID[i] == itemID)
+		{
+			return i;
+		}
+	}
+
+	return INVALID_VALUE;
+}
+
 // DB에서 아이템 이름을 찾아주는 함수에요.
-const std::string FindItemNameInDB(int32 itemID)
+std::string FindItemNameInDB(int32 itemID)
 {
 	int32 foundIdx = FindItemIdxInDB(itemID);
 	if (foundIdx == INVALID_VALUE)
 	{
 		return "NoItem";
 	}
-
 	return g_itemDBForName[foundIdx];
-}
-
-// DB에서의 아이템 인덱스를 찾아주는 함수에요.
-int32 FindItemIdxInDB(int32 itemID)
-{
-	int32 foundIdx = INVALID_VALUE;
-	for (int32 i = 0; i < MAX_ITEM_TYPE_COUNT; ++i)
-	{
-		// 아이템 ID끼리 비교하는 게 제일 정확해요.
-		if (g_itemDBForID[i] == itemID)
-		{
-			foundIdx = i;
-		}
-	}
-
-	return foundIdx;
 }
 
 // DB에서 아이템 가격을 찾아주는 함수에요.
@@ -213,47 +222,48 @@ int32 FindItemPriceInDB(int32 itemID)
 	{
 		return INVALID_VALUE;
 	}
-
 	return g_itemDBForPrice[foundIdx];
 }
 
 // 인벤토리에 아이템이 이미 있는지 확인해주는 함수에요.
-int32 FindAlreadyPossessItemIdx(int32 itemID)
+int32 FindAlreadyPossessionItemIdx(int32 itemID)
 {
-	for (int32 i = 0; i < MAX_PLAYER_INVENTORY_CAPACITY; ++i)
+	// 현재 갖고 있는 아이템에서만 찾아야 해요.
+	for (int32 i = 0; i < g_playerCurrentInventoryIdx; ++i)
 	{
 		if (g_playerInventory[i][INVENTORY_ITEM_ID_IDX] == itemID)
 		{
 			return i;
 		}
 	}
-
 	return INVALID_VALUE;
 }
 
 // 인벤토리에 있는 아이템 개수를 가져오는 함수에요.
 int32 FindItemPossessionCountInInventory(int32 itemID)
 {
-	// 인벤토리에 아이템이 있어야 아이템 개수를 가져올 수 있어요.
-	int32 foundItemIdx = FindAlreadyPossessItemIdx(itemID);
+	// 인벤토리에 아이템이 있어야 아이템 개수를 알아낼 수 있겠죠?
+	int32 foundItemIdx = FindAlreadyPossessionItemIdx(itemID);
 	if (foundItemIdx != INVALID_VALUE)
 	{
 		return g_playerInventory[foundItemIdx][INVENTORY_ITEM_COUNT_IDX];
 	}
-
-	return 0;
+	return NO_VALUE;
 }
 
-// 잡화 상점에 들어가는 함수에요.
+//////////////////////////////////////////////////////////////////////////
+// 여기서부터는 본격적으로 잡화 상점을 구현하게 되요.
+// 먼저 잡화 상점에 들어가는 함수부터 만들고 간단하게 테스트를 해보죠!
+
 bool EnterMiscellaneousShop()
 {
 	printf("잡화 상점에 오신 걸 환영해요~!\n");
 	printf("무슨 일로 오셨나요? (1.구입  2.판매  3.나가기)\n\n");
-	
+
 	int32 selectedActionNum = NO_VALUE;
 	while (InputNumAutoRange(selectedActionNum, ACTION_BUY, ACTION_EXIT) == false)
 	{
-		printf("다시 입력해주세요!\n");
+		printf("다시 입력해주세요	!\n");
 	}
 
 	switch (selectedActionNum)
@@ -290,18 +300,21 @@ bool EnterMiscellaneousShop()
 	return true;
 }
 
+// 기본 메뉴는 잘 구현된 것 같네요~
+// 이제 핵심 기능인 구매와 판매 기능을 만들어볼게요~
+
 // 구매 메뉴를 보여주는 함수에요.
 int32 ShowBuyItemMenu()
 {
 	printf("어떤 아이템에 관심 있으세요? (1.물약  2.식료품  3.야외용품  4.뒤로)\n");
 
 	int32 selectedCategoryNum = NO_VALUE;
-	while (InputNumAutoRange(selectedCategoryNum, CATEGORY_POTION, SHOP_MENU_END) == false)
+	while (InputNumAutoRange(selectedCategoryNum, CATEGORY_POTION, SHOP_ITEM_CATEGORY_END) == false)
 	{
-		printf("다시 입력해주세요!\n");
+		printf("다시 입력해주세요	!\n");
 	}
 
-	if (selectedCategoryNum == SHOP_MENU_END)
+	if (selectedCategoryNum == SHOP_ITEM_CATEGORY_END)
 	{
 		return GO_BACK;
 	}
@@ -310,26 +323,27 @@ int32 ShowBuyItemMenu()
 	while (returnValue != GO_BACK)
 	{
 		// 선택한 카테고리에 따라 구매 가능한 아이템이 달라져요.
-		// 지금은 자료구조를 사용하지 않아서 각 카테고리에 해당되는 아이템 ID 목록을 때려박았어요. (하드 코딩)
+		// 지금은 자료구조를 사용하고 있지 않으니...
+		// 각 카테고리에 해당되는 아이템 ID 목록을 때려박을게요... (하드 코딩)
 		switch (selectedCategoryNum)
 		{
 		case CATEGORY_POTION:
 		{
-			int32 potionItems[POTION_TYPE_COUNT] = { 0x00001000 , 0x00001001, 0x00001002, 0x00001003 };
+			int32 potionItems[POTION_TYPE_COUNT] = { 0x00001000, 0x00001001, 0x00001002, 0x00001003 };
 			ShowItemTable(potionItems, POTION_TYPE_COUNT, false);
 			returnValue = BuyItem(potionItems, POTION_TYPE_COUNT);
 			break;
 		}
 		case CATEGORY_GROCERY:
 		{
-			int32 groceryItems[GROCERY_TYPE_COUNT] = { 0x00002000 , 0x00002001, 0x00002002, 0x00002003, 0x00002004 };
+			int32 groceryItems[GROCERY_TYPE_COUNT] = { 0x00002000, 0x00002001, 0x00002002, 0x00002003, 0x00002004 };
 			ShowItemTable(groceryItems, GROCERY_TYPE_COUNT, false);
 			returnValue = BuyItem(groceryItems, GROCERY_TYPE_COUNT);
 			break;
 		}
 		case CATEGORY_CAMPING:
 		{
-			int32 campingItems[CAMPING_TYPE_COUNT] = { 0x00003000 , 0x00003001, 0x00003002, 0x00003003 };
+			int32 campingItems[CAMPING_TYPE_COUNT] = { 0x00003000, 0x00003001, 0x00003002, 0x00003003 };
 			ShowItemTable(campingItems, CAMPING_TYPE_COUNT, false);
 			returnValue = BuyItem(campingItems, CAMPING_TYPE_COUNT);
 			break;
@@ -353,8 +367,8 @@ int32 ShowSellItemMenu()
 	int32 returnValue = NO_VALUE;
 	while (returnValue != GO_BACK)
 	{
-		// 인벤토리는 2차원 배열이므로 아이템 ID만 따로 뽑아서 1차원 배열로 만들게요.
-		// 2차원 배열을 함수 인자로 전달하려면 포인터를 알아야 해서요...
+		// 인벤토리는 2차원 배열이므로 아이템 ID만 따로 뽑아서 1차원 배열로 만들어야 해요.
+		// 2차원 배열을 함수 인자로 전달하려면 포인터를 알아야 하므로...
 		int32 itemIDTable[MAX_PLAYER_INVENTORY_CAPACITY];
 		for (int32 i = 0; i < MAX_PLAYER_INVENTORY_CAPACITY; ++i)
 		{
@@ -365,7 +379,7 @@ int32 ShowSellItemMenu()
 		}
 
 		// 현재 인벤토리 인덱스는 현재 갖고 있는 아이템 종류의 수를 의미해요.
-		// 이름이 헷갈릴 수 있으니 이름을 다시 정했어요.
+		// 이름이 헷갈릴 수 있으니 이름을 다시 정할게요.
 		int32 currentInventoryItemCount = g_playerCurrentInventoryIdx;
 		if (currentInventoryItemCount > NO_VALUE)
 		{
@@ -377,7 +391,7 @@ int32 ShowSellItemMenu()
 			printf("판매할 아이템이 없어요...\n");
 			returnValue = GO_BACK;
 			PauseApp();
-		}
+		} 
 
 		if (returnValue != GO_BACK)
 		{
@@ -391,7 +405,7 @@ int32 ShowSellItemMenu()
 }
 
 // 아이템 정보를 보여주는 함수에요.
-// 인벤토리와 상점 둘 다 사용 가능해요.
+// 인벤토리와 상점 둘 다 사용 가능하다는 매력이 있죠!
 void ShowItemTable(const int32 itemTable[], int32 count, bool bSell)
 {
 	printf("┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━┳━━━━━┓\n");
@@ -401,7 +415,7 @@ void ShowItemTable(const int32 itemTable[], int32 count, bool bSell)
 	for (int32 i = 0; i < count; ++i)
 	{
 		std::string strItemName = FindItemNameInDB(itemTable[i]);
-		
+
 		int32 itemPrice = FindItemPriceInDB(itemTable[i]);
 		if (bSell == true)
 		{
@@ -410,13 +424,13 @@ void ShowItemTable(const int32 itemTable[], int32 count, bool bSell)
 
 		int32 itemPossessionCount = FindItemPossessionCountInInventory(itemTable[i]);
 
-		// 출력할 문자열의 수를 고정시키는 방법이에요.
+		// 출력할 문자열의 수를 고정시켜야 UI가 흐트러지지 않아요!
 		printf("┃ %d.%-18s┃ %4d┃ %4d┃\n", i + 1, strItemName.c_str(), itemPrice, itemPossessionCount);
 	}
 
 	printf("┣━━━━━━━━━━━━━━━━━━━━━┻━━━━━┻━━━━━┫\n");
 	printf("┃ 소지금 : %-4d                   ┃\n", g_playerMoney);
-	printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n\n");
+	printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
 }
 
 // 아이템을 구매하는 함수에요.
@@ -428,7 +442,7 @@ int32 BuyItem(const int32 itemTable[], int32 count)
 	int32 selectedItemNum = NO_VALUE;
 	while (InputNumAutoRange(selectedItemNum, 1, endSelectionNum) == false)
 	{
-		printf("다시 입력해주세요!\n");
+		printf("다시 입력해주세요	!\n");
 	}
 
 	if (selectedItemNum == endSelectionNum)
@@ -445,46 +459,52 @@ int32 BuyItem(const int32 itemTable[], int32 count)
 		return 0;
 	}
 
-	// 인벤토리에 이미 있는 아이템인지 확인 필요!
-	int32 foundIdx = FindAlreadyPossessItemIdx(selectedItemID);
+	// 인벤토리에 이미 있는 아이템인지 확인해야 해요!
+	int32 foundIdx = FindAlreadyPossessionItemIdx(selectedItemID);
 	if (foundIdx != INVALID_VALUE)
 	{
-		// 이미 소지 중인 아이템이면 개수만 늘려요.
+		// 이미 소지 중인 아이템이면 개수만 올려요.
 		++g_playerInventory[foundIdx][INVENTORY_ITEM_COUNT_IDX];
 	}
 	else
 	{
+		// 인벤토리가 꽉 찼는지 확인해야 해요!
 		if (g_playerCurrentInventoryIdx >= MAX_PLAYER_INVENTORY_CAPACITY)
 		{
 			printf("더 이상 아이템을 가질 수 없어요...\n");
 			return 0;
 		}
 
+		// 이전에 있던 아이템 정보는 날려야 해요
+		memset(&g_playerInventory[g_playerCurrentInventoryIdx][INVENTORY_ITEM_ID_IDX], 0, sizeof(int32) * 2);
+
 		// 인벤토리에 아이템 정보를 저장해요.
 		g_playerInventory[g_playerCurrentInventoryIdx][INVENTORY_ITEM_ID_IDX] = selectedItemID;
 		++g_playerInventory[g_playerCurrentInventoryIdx][INVENTORY_ITEM_COUNT_IDX];
 
-		// 다음 인벤토리 인덱스로 이동해요.
+		// 다음 인벤토리 인덱스로 이동해야 해요!
 		++g_playerCurrentInventoryIdx;
 	}
 
+	// 여기까지 왔다면 아이템을 구매한 거니까 플레이어의 돈을 처리해야겠죠?
 	g_playerMoney -= selectedItemPrice;
 	g_playerMoney = ClampNum(g_playerMoney, 0, MAX_PLAYER_MONEY);
 
-	printf("입력한 번호인 %d번 아이템을 구매하셨어요~\n", selectedItemNum);
+	std::string strSelectedItemName = FindItemNameInDB(selectedItemID);
+	printf("입력한 번호인 %d번 아이템(%s)을 구매하셨어요~\n", selectedItemNum, strSelectedItemName.c_str());
 	return 0;
 }
 
-// 아이템을 판매하는 함수에요.
+// 이제 마지막으로 아이템을 판매하는 함수를 만들어볼게요.
 int32 SellItem(const int32 itemTable[], int32 count)
 {
-	printf("판매하고 싶은 아이템의 번호를 입력해주세요. (원가의 80%%로 판매, 마지막 번호는 처음으로 돌아가기)\n");
+	printf("판매하고 싶은 아이템의 번호를 입력해주세요. (원가의 80%% 판매, 마지막 번호는 처음으로 돌아가기)\n");
 
 	int32 endSelectionNum = count + 1;
 	int32 selectedItemNum = NO_VALUE;
 	while (InputNumAutoRange(selectedItemNum, 1, endSelectionNum) == false)
 	{
-		printf("다시 입력해주세요!\n");
+		printf("다시 입력해주세요	!\n");
 	}
 
 	if (selectedItemNum == endSelectionNum)
@@ -495,26 +515,32 @@ int32 SellItem(const int32 itemTable[], int32 count)
 	int32 selectedItemID = itemTable[selectedItemNum - 1];
 	int32 selectedItemPrice = FindItemPriceInDB(selectedItemID);
 
-	// 인벤토리에 이미 있는 아이템인지 확인 필요!
-	int32 foundIdx = FindAlreadyPossessItemIdx(selectedItemID);
+	// 인벤토리에 아이템이 있어야 팔 수 있겠죠?
+	int32 foundIdx = FindAlreadyPossessionItemIdx(selectedItemID);
 	if (foundIdx != INVALID_VALUE)
 	{
-		--g_playerInventory[foundIdx][1];
-		if (g_playerInventory[foundIdx][1] <= 0)
+		--g_playerInventory[foundIdx][INVENTORY_ITEM_COUNT_IDX];
+		if (g_playerInventory[foundIdx][INVENTORY_ITEM_COUNT_IDX] <= 0)
 		{
-			// 찾은 인덱스 다음부터 배열의 끝까지를 땡겨서 복사해요.
+			// 이 경우는 아이템을 전부 팔았을 때니까 인벤토리를 조정해야 해요!
+			// 찾은 인덱스 다음부터 배열의 끝까지를 땡겨서 전부 복사할게요.
+			// 이렇게 되면 배열에 쓰레기값이 들어가게 되는데 실제로 접근할 때 사용되는
+			// 인덱스는 쓰레기값까지 찾지 않으므로 문제는 없어요.
+			// 이 부분이 핵심인데 조금 어려우므로 이해가 되지 않으면 천천히 보세요.
 			memcpy(&g_playerInventory[foundIdx][INVENTORY_ITEM_ID_IDX],
 				&g_playerInventory[foundIdx + 1][INVENTORY_ITEM_ID_IDX],
-				2 * sizeof(int32) * (MAX_PLAYER_INVENTORY_CAPACITY - foundIdx - 1));
+				sizeof(int32) * 2 * (MAX_PLAYER_INVENTORY_CAPACITY - foundIdx - 1));
 
-			// 아이템을 판매해서 더 이상 소지 중이 아니라면 이전 인벤토리 인덱스로 이동해요.
+			// 아이템을 판매해서 더 이상 소지 중이 아니라면 이전 인벤토리 인덱스로 이동해야 해요.
 			--g_playerCurrentInventoryIdx;
 		}
 	}
 
+	// 여기까지 왔다면 아이템을 판매한 거니까 플레이어의 돈을 정산해야겠죠?
 	g_playerMoney += (int32)(selectedItemPrice * 0.80f);
-	g_playerMoney = ClampNum(g_playerMoney, 0, 9999);
+	g_playerMoney = ClampNum(g_playerMoney, 0, MAX_PLAYER_MONEY);
 
-	printf("입력한 번호인 %d번 아이템을 판매하셨어요~\n", selectedItemNum);
+	std::string strSelectedItemName = FindItemNameInDB(selectedItemID);
+	printf("입력한 번호인 %d번 아이템(%s)을 판매하셨어요~\n", selectedItemNum, strSelectedItemName.c_str());
 	return 0;
 }
