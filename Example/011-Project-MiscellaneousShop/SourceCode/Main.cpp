@@ -14,7 +14,7 @@ using real32 = float;
 // 이번 프로젝트에 필요한 전역상수를 정의할게요.
 // =======================================================================
 const int32 NO_VALUE = 0;
-const int32 RETURN_BACK = 1;
+const int32 GO_BACK = 1;
 const int32 INVALID_VALUE = -1;
 
 const int32 MAX_ITEM_TYPE_COUNT = 13;
@@ -148,6 +148,7 @@ bool InputNumAutoRange(_Out_ int32& num, int32 minNum, int32 maxNum)
 	printf("> ");
 	int32 inputResult = scanf_s("%d", &num);
 	printf("\n");
+	ClearStdInput();
 
 	if (inputResult == 0)
 	{
@@ -247,20 +248,19 @@ int32 FindItemPossessionCountInInventory(int32 itemID)
 bool EnterMiscellaneousShop()
 {
 	printf("잡화 상점에 오신 걸 환영해요~!\n");
-	printf("무슨 일로 오셨나요? (1.구입  2.판매  3.나가기)\n");
+	printf("무슨 일로 오셨나요? (1.구입  2.판매  3.나가기)\n\n");
 	
 	int32 selectedActionNum = NO_VALUE;
 	while (InputNumAutoRange(selectedActionNum, ACTION_BUY, ACTION_EXIT) == false)
 	{
 		printf("다시 입력해주세요!\n");
-		ClearStdInput();
 	}
 
 	switch (selectedActionNum)
 	{
 	case ACTION_BUY:
 	{
-		if (ShowBuyItemMenu() == RETURN_BACK)
+		if (ShowBuyItemMenu() == GO_BACK)
 		{
 			ClearConsoleScreen();
 			return true;
@@ -270,7 +270,7 @@ bool EnterMiscellaneousShop()
 	}
 	case ACTION_SELL:
 	{
-		if (ShowSellItemMenu() == RETURN_BACK)
+		if (ShowSellItemMenu() == GO_BACK)
 		{
 			ClearConsoleScreen();
 			return true;
@@ -299,16 +299,15 @@ int32 ShowBuyItemMenu()
 	while (InputNumAutoRange(selectedCategoryNum, CATEGORY_POTION, SHOP_MENU_END) == false)
 	{
 		printf("다시 입력해주세요!\n");
-		ClearStdInput();
 	}
 
 	if (selectedCategoryNum == SHOP_MENU_END)
 	{
-		return RETURN_BACK;
+		return GO_BACK;
 	}
 
 	int32 returnValue = NO_VALUE;
-	while (returnValue != RETURN_BACK)
+	while (returnValue != GO_BACK)
 	{
 		// 선택한 카테고리에 따라 구매 가능한 아이템이 달라져요.
 		// 지금은 자료구조를 사용하지 않아서 각 카테고리에 해당되는 아이템 ID 목록을 때려박았어요. (하드 코딩)
@@ -337,7 +336,7 @@ int32 ShowBuyItemMenu()
 		}
 		}
 
-		if (returnValue != RETURN_BACK)
+		if (returnValue != GO_BACK)
 		{
 			PauseApp();
 		}
@@ -352,7 +351,7 @@ int32 ShowBuyItemMenu()
 int32 ShowSellItemMenu()
 {
 	int32 returnValue = NO_VALUE;
-	while (returnValue != RETURN_BACK)
+	while (returnValue != GO_BACK)
 	{
 		// 인벤토리는 2차원 배열이므로 아이템 ID만 따로 뽑아서 1차원 배열로 만들게요.
 		// 2차원 배열을 함수 인자로 전달하려면 포인터를 알아야 해서요...
@@ -368,10 +367,19 @@ int32 ShowSellItemMenu()
 		// 현재 인벤토리 인덱스는 현재 갖고 있는 아이템 종류의 수를 의미해요.
 		// 이름이 헷갈릴 수 있으니 이름을 다시 정했어요.
 		int32 currentInventoryItemCount = g_playerCurrentInventoryIdx;
-		ShowItemTable(itemIDTable, currentInventoryItemCount, true);
-		returnValue = SellItem(itemIDTable, currentInventoryItemCount);
+		if (currentInventoryItemCount > NO_VALUE)
+		{
+			ShowItemTable(itemIDTable, currentInventoryItemCount, true);
+			returnValue = SellItem(itemIDTable, currentInventoryItemCount);
+		}
+		else
+		{
+			printf("판매할 아이템이 없어요...\n");
+			returnValue = GO_BACK;
+			PauseApp();
+		}
 
-		if (returnValue != RETURN_BACK)
+		if (returnValue != GO_BACK)
 		{
 			PauseApp();
 		}
@@ -421,12 +429,11 @@ int32 BuyItem(const int32 itemTable[], int32 count)
 	while (InputNumAutoRange(selectedItemNum, 1, endSelectionNum) == false)
 	{
 		printf("다시 입력해주세요!\n");
-		ClearStdInput();
 	}
 
 	if (selectedItemNum == endSelectionNum)
 	{
-		return RETURN_BACK;
+		return GO_BACK;
 	}
 
 	int32 selectedItemID = itemTable[selectedItemNum - 1];
@@ -462,7 +469,7 @@ int32 BuyItem(const int32 itemTable[], int32 count)
 	}
 
 	g_playerMoney -= selectedItemPrice;
-	g_playerMoney = ClampNum(g_playerMoney, 0, 9999);
+	g_playerMoney = ClampNum(g_playerMoney, 0, MAX_PLAYER_MONEY);
 
 	printf("입력한 번호인 %d번 아이템을 구매하셨어요~\n", selectedItemNum);
 	return 0;
@@ -478,12 +485,11 @@ int32 SellItem(const int32 itemTable[], int32 count)
 	while (InputNumAutoRange(selectedItemNum, 1, endSelectionNum) == false)
 	{
 		printf("다시 입력해주세요!\n");
-		ClearStdInput();
 	}
 
 	if (selectedItemNum == endSelectionNum)
 	{
-		return RETURN_BACK;
+		return GO_BACK;
 	}
 
 	int32 selectedItemID = itemTable[selectedItemNum - 1];
