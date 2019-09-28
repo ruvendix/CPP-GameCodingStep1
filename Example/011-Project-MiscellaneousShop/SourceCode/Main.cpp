@@ -190,7 +190,7 @@ int32 ClampNum(int32 num, int32 minNum, int32 maxNum)
 int32 FindItemIdxInDB(int32 itemID)
 {
 	// 이런 걸 순차탐색이라고 하는데 실제로 사용되고 있는 DB는 순차탐색을 사용하면 망해요...
-// 탐색 알고리즘에는 여러가지가 있는데 일단은 순차탐색만 사용할게요.
+	// 탐색 알고리즘에는 여러가지가 있는데 일단은 순차탐색만 사용할게요.
 	for (int32 i = 0; i < MAX_ITEM_TYPE_COUNT; ++i)
 	{
 		// 아이템 ID끼리 비교하는 게 제일 정확해요!
