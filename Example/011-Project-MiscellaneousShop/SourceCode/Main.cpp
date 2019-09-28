@@ -263,7 +263,7 @@ bool EnterMiscellaneousShop()
 	int32 selectedActionNum = NO_VALUE;
 	while (InputNumAutoRange(selectedActionNum, ACTION_BUY, ACTION_EXIT) == false)
 	{
-		printf("다시 입력해주세요	!\n");
+		printf("다시 입력해주세요!\n");
 	}
 
 	switch (selectedActionNum)
@@ -311,7 +311,7 @@ int32 ShowBuyItemMenu()
 	int32 selectedCategoryNum = NO_VALUE;
 	while (InputNumAutoRange(selectedCategoryNum, CATEGORY_POTION, SHOP_ITEM_CATEGORY_END) == false)
 	{
-		printf("다시 입력해주세요	!\n");
+		printf("다시 입력해주세요!\n");
 	}
 
 	if (selectedCategoryNum == SHOP_ITEM_CATEGORY_END)
@@ -442,7 +442,7 @@ int32 BuyItem(const int32 itemTable[], int32 count)
 	int32 selectedItemNum = NO_VALUE;
 	while (InputNumAutoRange(selectedItemNum, 1, endSelectionNum) == false)
 	{
-		printf("다시 입력해주세요	!\n");
+		printf("다시 입력해주세요!\n");
 	}
 
 	if (selectedItemNum == endSelectionNum)
@@ -504,7 +504,7 @@ int32 SellItem(const int32 itemTable[], int32 count)
 	int32 selectedItemNum = NO_VALUE;
 	while (InputNumAutoRange(selectedItemNum, 1, endSelectionNum) == false)
 	{
-		printf("다시 입력해주세요	!\n");
+		printf("다시 입력해주세요!\n");
 	}
 
 	if (selectedItemNum == endSelectionNum)
