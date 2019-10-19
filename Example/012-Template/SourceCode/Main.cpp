@@ -10,6 +10,7 @@
 #include <type_traits>
 #include <array>
 #include <random>
+#include <chrono>
 
 using int32  = signed __int32;
 using uint32 = unsigned __int32;
@@ -217,6 +218,42 @@ int main()
 	printf("문자열 배열을 출력해볼게요.\n");
 	ShowArrayElem(arrSoldierClasses);
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
+#endif
+
+#if 0
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	// C++11 이후부터 가능한 시간 측정 방법이에요!
+	std::chrono::steady_clock steadyClock; // 몇 개가 더 있지만 게임에서는 이것만 사용해도 됨!
+
+	printf("시작 시간을 측정할게요!\n");
+	std::chrono::steady_clock::time_point beginTime = steadyClock.now();
+
+	for (int32 i = 0; i < 10000; ++i)
+	{
+		for (int32 j = 0; j < 100000; ++j)
+		{
+
+		}
+	}
+
+	printf("완료 시간을 측정할게요!\n\n");
+	std::chrono::steady_clock::time_point endTime = steadyClock.now();
+
+	// 이제 시간 간격을 구해볼게요.
+	std::chrono::duration<real32> duration = endTime - beginTime; // 기본 단위는 초!
+	printf("%f 초\n", duration.count());
+
+	std::chrono::duration<real32, std::milli> milliUnit =
+		std::chrono::duration_cast<std::chrono::duration<real32, std::milli>>(endTime - beginTime);
+	printf("%f 밀리초\n", milliUnit.count());
+
+	std::chrono::duration<real32, std::micro> microUnit =
+		std::chrono::duration_cast<std::chrono::duration<real32, std::micro>>(endTime - beginTime);
+	printf("%f 마이크로초\n", microUnit.count());
+
+	std::chrono::duration<real32, std::nano> nanoUnit =
+		std::chrono::duration_cast<std::chrono::duration<real32, std::nano>>(endTime - beginTime);
+	printf("%f 나노초\n", nanoUnit.count());
 #endif
 
 #if 0
