@@ -68,7 +68,7 @@ const int32 g_itemDBForPrice[MAX_ITEM_TYPE_COUNT] =
 // =======================================================================
 int32 g_playerMoney = 2000;
 int32 g_playerInventory[MAX_PLAYER_INVENTORY_CAPACITY][INVENTORY_INFO_COUNT];
-int32 g_playerInventoryEmptyIdx; // 실제로 인벤토리를 채울 때 사용되니까 잘 기억해두세요!
+int32 g_playerCurrentInventoryIdx; // 실제로 인벤토리를 채울 때 사용되니까 잘 기억해두세요!
 
 //////////////////////////////////////////////////////////////////////////
 // 이번 프로젝트에 필요한 함수를 선언할게요.
@@ -229,7 +229,7 @@ int32 FindItemPriceInDB(int32 itemID)
 int32 FindAlreadyPossessionItemIdx(int32 itemID)
 {
 	// 현재 갖고 있는 아이템에서만 찾아야 해요.
-	for (int32 i = 0; i < g_playerInventoryEmptyIdx; ++i)
+	for (int32 i = 0; i < g_playerCurrentInventoryIdx; ++i)
 	{
 		if (g_playerInventory[i][INVENTORY_ITEM_ID_IDX] == itemID)
 		{
@@ -380,7 +380,7 @@ int32 ShowSellItemMenu()
 
 		// 현재 인벤토리 인덱스는 현재 갖고 있는 아이템 종류의 수를 의미해요.
 		// 이름이 헷갈릴 수 있으니 이름을 다시 정할게요.
-		int32 currentInventoryItemCount = g_playerInventoryEmptyIdx;
+		int32 currentInventoryItemCount = g_playerCurrentInventoryIdx;
 		if (currentInventoryItemCount > NO_VALUE)
 		{
 			ShowItemTable(itemIDTable, currentInventoryItemCount, true);
@@ -469,21 +469,21 @@ int32 BuyItem(const int32 itemTable[], int32 count)
 	else
 	{
 		// 인벤토리가 꽉 찼는지 확인해야 해요!
-		if (g_playerInventoryEmptyIdx >= MAX_PLAYER_INVENTORY_CAPACITY)
+		if (g_playerCurrentInventoryIdx >= MAX_PLAYER_INVENTORY_CAPACITY)
 		{
 			printf("더 이상 아이템을 가질 수 없어요...\n");
 			return 0;
 		}
 
 		// 이전에 있던 아이템 정보는 날려야 해요
-		memset(&g_playerInventory[g_playerInventoryEmptyIdx][INVENTORY_ITEM_ID_IDX], 0, sizeof(int32) * 2);
+		memset(&g_playerInventory[g_playerCurrentInventoryIdx][INVENTORY_ITEM_ID_IDX], 0, sizeof(int32) * 2);
 
 		// 인벤토리에 아이템 정보를 저장해요.
-		g_playerInventory[g_playerInventoryEmptyIdx][INVENTORY_ITEM_ID_IDX] = selectedItemID;
-		++g_playerInventory[g_playerInventoryEmptyIdx][INVENTORY_ITEM_COUNT_IDX];
+		g_playerInventory[g_playerCurrentInventoryIdx][INVENTORY_ITEM_ID_IDX] = selectedItemID;
+		++g_playerInventory[g_playerCurrentInventoryIdx][INVENTORY_ITEM_COUNT_IDX];
 
 		// 다음 인벤토리 인덱스로 이동해야 해요!
-		++g_playerInventoryEmptyIdx;
+		++g_playerCurrentInventoryIdx;
 	}
 
 	// 여기까지 왔다면 아이템을 구매한 거니까 플레이어의 돈을 처리해야겠죠?
@@ -532,7 +532,7 @@ int32 SellItem(const int32 itemTable[], int32 count)
 				sizeof(int32) * 2 * (MAX_PLAYER_INVENTORY_CAPACITY - foundIdx - 1));
 
 			// 아이템을 판매해서 더 이상 소지 중이 아니라면 이전 인벤토리 인덱스로 이동해야 해요.
-			--g_playerInventoryEmptyIdx;
+			--g_playerCurrentInventoryIdx;
 		}
 	}
 
