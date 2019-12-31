@@ -5,10 +5,6 @@
 // http://creativecommons.org/licenses/by/4.0/
 // =====================================================================================
 
-#include <cmath>  // 수학 관련 내용이 포함되어있어요.
-#include <cfloat> // FLT_EPSILON이 포함되어있어요.
-#include <cstdio>
-
 using int32  = __int32; // "typedef __int32 int32"와 같아요.
 using real32 = float;   // "typedef float real32"와 같아요.
 

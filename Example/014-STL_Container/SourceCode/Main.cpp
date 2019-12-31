@@ -7,10 +7,6 @@
 
 #include <cstdio>
 #include <string>
-#include <vector>
-#include <forward_list>
-#include <unordered_map>
-#include <tuple>
 
 using int32  = signed __int32;
 using real32 = float;

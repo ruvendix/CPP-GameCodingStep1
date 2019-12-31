@@ -5,10 +5,6 @@
 // http://creativecommons.org/licenses/by/4.0/
 // =====================================================================================
 
-#include <climits> // 정수형 최솟값, 최댓값
-#include <cfloat>  // 실수형 최솟값, 최댓값 (예제에서는 사용되지 않음, 소개만 함)
-#include <cstdio>
-
 // __int32의 별칭 선언 방법이에요.
 using int32  = __int32;          // "typedef __int32 int32"와 같아요.
 using uint32 = unsigned __int32; // "typedef unsigned __int32 uint32"와 같아요.

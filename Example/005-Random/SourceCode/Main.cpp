@@ -7,7 +7,6 @@
 
 #include <cstdio>  // printf가 포함되어있어요.
 #include <cstdlib> // rand가 포함되어있어요.
-#include <ctime>   // time이 포함되어있어요.
 
 using int32  = signed   __int32; // "typedef signed   __int32 int32"와 같아요.
 using uint32 = unsigned __int32; // "typedef unsigned __int32 uint32"와 같아요.
