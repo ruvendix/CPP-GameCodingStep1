@@ -8,6 +8,7 @@
 #include <windows.h>
 #include <string>
 #include <array>
+#include <list>
 
 using int32  = signed __int32;
 using real32 = float;
@@ -256,19 +257,83 @@ int32 SellItem(const std::array<int32, itemCount>& itemTable)
 	return BACK;
 }
 
+class Parent
+{
+public:
+	Parent() = delete;
+
+public:
+	virtual void Good()
+	{
+		printf("Parent good\n");
+	}
+};
+
+class Child : public Parent
+{
+public:
+	virtual void Good()
+	{
+		printf("Child good\n");
+	}
+};
+
+class TestSingleton
+{
+public:
+	TestSingleton() = default;
+	~TestSingleton() = default;
+
+public:
+	static TestSingleton* ObtainInst()
+	{
+		if (m_pInst == nullptr)
+		{
+			m_pInst = new TestSingleton;
+		}
+
+		return m_pInst;
+	}
+
+public:
+	void TestFunc()
+	{
+		printf("오호호\n");
+	}
+
+private:
+	static TestSingleton* m_pInst;
+};
+
+TestSingleton* TestSingleton::m_pInst = nullptr;
+
+template <typename TSingleton>
+inline TSingleton* ObtainInst()
+{
+	return TSingleton::ObtainInst();
+}
+
+#define OBTAIN_INST(TSingleton) TSingleton::ObtainInst()
+
 //////////////////////////////////////////////////////////////////////////
 // 프로그램이 시작되는 곳이에요.
 int32 main()
 {
+	// 인라인 템플릿
+	ObtainInst<TestSingleton>()->TestFunc();
+
+	// 매크로 함수
+	OBTAIN_INST(TestSingleton)->TestFunc();
+
 	//////////////////////////////////////////////////////////////////////////
 	// 프로젝트 - 잡화 상점을 만들어볼게요~
 	//////////////////////////////////////////////////////////////////////////
 
 	// 잡화 상점에 들어가는 부분이에요.
-	while (EnterMiscellaneousShop() == true)
-	{
-		// 반환값이 false면 잡화 상점에서 나가요.
-	}
+	//while (EnterMiscellaneousShop() == true)
+	//{
+	//	// 반환값이 false면 잡화 상점에서 나가요.
+	//}
 
 	return EXIT_SUCCESS;
 }
