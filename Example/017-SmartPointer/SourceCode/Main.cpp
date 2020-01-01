@@ -7,7 +7,6 @@
 
 #include <crtdbg.h>
 #include <cstdio>
-#include <memory>
 #include <type_traits>
 
 using Int32 = signed __int32;
