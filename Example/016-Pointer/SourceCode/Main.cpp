@@ -21,7 +21,7 @@ using Real32 = float;
 template <typename T>
 void CheckNullptr(const T* ptr)
 {
-	static_assert(std::is_pointer_v<T> == false, "It's not single pointer"); // 영어만 사용 가능...
+	static_assert(std::is_pointer_v<T> != true, "It's not single pointer"); // 영어만 사용 가능...
 	if (ptr == nullptr)
 	{
 		// 매크로 함수와는 다르게 이 때는 이름으로 알려줄 수 없어요.
@@ -50,7 +50,7 @@ Int32 main()
 	CHECK_NULLPTR(pNull);
 
 	// 템플릿 함수를 이용해도 돼요
-	CheckNullptr(pNull);	
+	CheckNullptr(pNull);
 #endif
 
 #if 0
