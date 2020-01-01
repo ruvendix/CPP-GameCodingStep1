@@ -21,7 +21,7 @@ using Real32 = float;
 template <typename T>
 void CheckNullptr(const T* ptr)
 {
-	static_assert(std::is_pointer_v<decltype(ptr)>, "It's not single pointer"); // 영어만 사용 가능...
+	static_assert(std::is_pointer_v<decltype(ptr)>, "It's not raw pointer"); // 영어만 사용 가능...
 	
 	if (ptr == nullptr)
 	{
@@ -50,7 +50,7 @@ Int32 main()
 	// 널포인터 체크는 이렇게 매크로 함수를 이용해도 되고...
 	CHECK_NULLPTR(pNull);
 
-	// 템플릿 함수를 이용해도 돼요
+	// 템플릿 함수를 이용해도 돼요.
 	CheckNullptr(pNull);
 #endif
 

@@ -27,7 +27,7 @@ using Real32 = float;
 template <typename T>
 void SafeDelete(T*& ptr) // 별로 좋은 방법은 아님...
 {
-	static_assert(std::is_pointer_v<std::remove_reference_t<decltype(ptr)>>, "It's not single pointer");
+	static_assert(std::is_pointer_v<std::remove_reference_t<decltype(ptr)>>, "It's not raw pointer");
 	
 	if (ptr != nullptr)
 	{
