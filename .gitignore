@@ -38,7 +38,7 @@
 *.ilk
 *.pdb
 /Example/Binaries/Intermediate
-/Example/001-HelloGameCodingWorld
-/Example/Binaries/001-HelloGameCodingWorld_Debug.exe 
 /Example/.vs/Example/v16/*.db-shm
 /Example/.vs/Example/v16/*.db-wal
+/Example/001-HelloGameCodingWorld/SourceCode/main2.cpp
+/Example/001-HelloGameCodingWorld/SourceCode/ring_buffer.hpp
