@@ -43,6 +43,7 @@ public:
     static COORD GetCurrentConsolePos();
     static bool InputNumClamp(_Out_ Int32& num, Int32 minNum, Int32 maxNum); // 직관적이도록 _Out_을 맨 앞으로!
     static Int32 Clamp(Int32 val, Int32 minVal, Int32 maxVal);
+    static Int32 ClampCircular(Int32 val, Int32 minVal, Int32 maxVal);
     static EConsoleTextColorType QueryCurrentConsoleTextColor();
 #pragma endregion
 

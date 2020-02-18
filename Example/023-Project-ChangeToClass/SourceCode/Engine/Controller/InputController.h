@@ -21,7 +21,7 @@ struct InputMappingInfo
 {
 	std::vector<TInput> vecInput; // 입력 조합 (가상키는 0 ~ 255)
 	std::list<TInput> listInputChecker; // 입력 조합이 완성되었는지 확인하기 위한 것 (이전 프레임도 확인해야 하므로...)
-	EInputMappingState state; // 입력 조합의 상태 (5가지)
+	EInputMappingState state = EInputMappingState::NONE; // 입력 조합의 상태 (5가지)
 };
 
 class InputController final
@@ -59,7 +59,6 @@ public:
 			m_pInputMappingInfo->vecInput.push_back((Uint32)inputVal);
 		}
 
-		DEBUG_LOG_CATEGORY(InputController, "액션 추가 완료!");
 		return;
 	}
 	
@@ -101,8 +100,11 @@ public:
 		}
 
 		InsertInputMappingInfo(args ...);
+
 		m_pInputMappingInfo = nullptr;
 		m_bCheckInputAction = false;
+
+		DEBUG_LOG_CATEGORY(InputController, "입력 조합 추가 완료! (%s)", inputVal);
 	}
 
 private:

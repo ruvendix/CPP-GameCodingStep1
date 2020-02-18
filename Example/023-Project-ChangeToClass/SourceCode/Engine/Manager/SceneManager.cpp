@@ -15,9 +15,10 @@ DEFINE_SINGLETON(SceneMgr);
 
 void SceneMgr::FlipCurrentScene()
 {
+	const std::string& strPrevSceneName = m_pCurrentScene->getNameTag();
 	SAFE_SWAP_DELETE(m_pCurrentScene, m_pNextScene);
-	DEBUG_LOG_CATEGORY(SceneMgr, "%s ¾À¿¡¼­ %s ¾ÀÀ¸·Î ÀüÈ¯!",
-		m_pCurrentScene->getNameTag().c_str(), m_pNextScene->getNameTag().c_str());
+	DEBUG_LOG_CATEGORY(SceneMgr, "(%s) ¾À¿¡¼­ (%s) ¾ÀÀ¸·Î ÀüÈ¯!",
+		strPrevSceneName.c_str(), m_pCurrentScene->getNameTag().c_str());
 }
 
 void SceneMgr::DeleteScene()

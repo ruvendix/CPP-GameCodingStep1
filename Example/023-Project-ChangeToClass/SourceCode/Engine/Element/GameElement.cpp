@@ -12,24 +12,24 @@
 
 EErrorType GameElement::OnInitialize()
 {
-	DEBUG_LOG("이 텍스트가 보이면 OnInitialize()를 재정의해주세요!\n");
+	DEBUG_LOG("GameElement에서 이게 보이면 OnInitialize()를 재정의해주세요!");
 	return EErrorType::NONE;
 }
 
 EErrorType GameElement::OnUpdate()
 {
-	DEBUG_LOG("이 텍스트가 보이면 OnUpdate()를 재정의해주세요!\n");
+	DEBUG_LOG("GameElement에서 이게 보이면 OnUpdate()를 재정의해주세요!");
 	return EErrorType::NONE;
 }
 
 EErrorType GameElement::OnRender()
 {
-	DEBUG_LOG("이 텍스트가 보이면 OnRender()를 재정의해주세요!\n");
+	DEBUG_LOG("GameElement에서 이게 보이면 OnRender()를 재정의해주세요!");
 	return EErrorType::NONE;
 }
 
 EErrorType GameElement::OnFinalize()
 {
-	DEBUG_LOG("이 텍스트가 보이면 OnFinalize()를 재정의해주세요!\n");
+	DEBUG_LOG("GameElement에서 이게 보이면 OnFinalize()를 재정의해주세요!");
 	return EErrorType::NONE;
 }

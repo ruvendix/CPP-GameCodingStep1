@@ -230,6 +230,26 @@ Int32 CommonFunc::Clamp(Int32 val, Int32 minVal, Int32 maxVal)
 }
 
 /*
+	Clamp()와 비슷하지만 최솟값보다 작아지면 최댓값으로,
+	최댓값보다 커지면 최솟값으로 순환되는 버전입니다.
+*/
+Int32 CommonFunc::ClampCircular(Int32 val, Int32 minVal, Int32 maxVal)
+{
+	Int32 resultVal = val;
+
+	if (resultVal < minVal)
+	{
+		resultVal = maxVal;
+	}
+	else if (resultVal > maxVal)
+	{
+		resultVal = minVal;
+	}
+
+	return resultVal;
+}
+
+/*
     현재 콘솔 텍스트 색상을 알려줍니다.
 */
 EConsoleTextColorType CommonFunc::QueryCurrentConsoleTextColor()

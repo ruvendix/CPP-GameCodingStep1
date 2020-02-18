@@ -17,6 +17,9 @@ class Scene : public GameElement
 public:
 	using GameElement::GameElement;
 
+	Scene() = default;
+	virtual ~Scene() = default;
+
 	virtual EErrorType OnInitialize() override;
 	virtual EErrorType OnUpdate() override;
 	virtual EErrorType OnRender() override;

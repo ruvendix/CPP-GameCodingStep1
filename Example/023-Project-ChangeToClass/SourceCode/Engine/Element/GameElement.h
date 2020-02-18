@@ -15,6 +15,8 @@
 
 class GameElement : public IGameMechanism
 {
+	HAS_NAME_TAG();
+
 public:
 #pragma region 생성자 및 소멸자
 	GameElement() = default;
@@ -31,21 +33,6 @@ public:
 	virtual EErrorType OnUpdate();
 	virtual EErrorType OnRender();
 	virtual EErrorType OnFinalize();
-
-#pragma region 접근자
-	const std::string& getNameTag() const
-	{
-		return m_nameTag.getNameTag();
-	}
-
-	void setNameTag(const std::string_view& szName)
-	{
-		m_nameTag.setNameTag(szName);
-	}
-#pragma endregion
-
-private:
-	NameTag m_nameTag;
 };
 
 #endif

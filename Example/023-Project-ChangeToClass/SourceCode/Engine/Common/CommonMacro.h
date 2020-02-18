@@ -80,6 +80,7 @@ private:\
 	void TClass::Destroy()\
 	{\
 		SAFE_DELETE(m_pInst);\
+		DEBUG_LOG("(%s) 싱글톤 삭제!", TO_STRING(TClass));\
 	}
 
 #define FRIEND_WITH_HELPER(THelperClass) friend class THelperClass
@@ -104,14 +105,14 @@ private:\
 
 // NameTag를 상속 받는 새로운 로그 클래스를 선언합니다.
 #define DECLARE_LOG_CATEGORY(Tag)\
-	class LogCategory##Tag : public NameTag\
-	{\
-	public:\
-		LogCategory##Tag() : NameTag(TO_STRING(Log##Tag)) { }\
-		virtual ~LogCategory##Tag() = default;\
-	};\
+class LogCategory##Tag : public NameTag\
+{\
+public:\
+	LogCategory##Tag() : NameTag(TO_STRING(Log##Tag)) { }\
+	virtual ~LogCategory##Tag() = default;\
+};\
 \
-	extern LogCategory##Tag g_logCategory##Tag;
+extern LogCategory##Tag g_logCategory##Tag;
 
 // DECLARE_LOG_CATEGORY()에서 선언한 클래스를 객체로 만듭니다.
 #define DEFINE_LOG_CATEGORY(Tag) LogCategory##Tag g_logCategory##Tag
@@ -133,5 +134,21 @@ private:\
 #define IS_BITSET_ENUM(bitset, bitIdx)   bitset.test(CommonFunc::ToUnderlyingType(bitIdx))
 #define FLIP_BITSET_ENUM(bitset, bitIdx) bitset.flip(CommonFunc::ToUnderlyingType(bitIdx))
 #define ALL_BITSET_ENUM(bitest)          bitset.all()
+
+// NameTag는 자주 사용되어서... 매크로로 분리합니다.
+#define HAS_NAME_TAG()\
+public:\
+	const std::string& getNameTag() const\
+	{\
+		return m_nameTag.getNameTag();\
+	}\
+\
+	void setNameTag(const std::string_view & szName)\
+	{\
+		m_nameTag.setNameTag(szName);\
+	}\
+\
+private:\
+	NameTag m_nameTag;
 
 #endif

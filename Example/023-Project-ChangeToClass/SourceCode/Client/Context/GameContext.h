@@ -18,6 +18,17 @@ class GameCtx final
 	DECLARE_SINGLETON(GameCtx);
 
 public:
+	bool IsTerminateGame() const
+	{
+		if ( (m_currentGameState == EGameState::TERMINATION_SUCCESS) ||
+			 (m_currentGameState == EGameState::TERMINATION_ABNORMALITY) )
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	EGameState getCurrentGameState() const
 	{
 		return m_currentGameState;

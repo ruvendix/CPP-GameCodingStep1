@@ -44,14 +44,13 @@ void GameMainHelper::Initialize()
 
 	SceneMgr::I()->CreateScene<GameIntroMenuScene>(ESceneType::CURRENT);
 
-	printf("게임 초기화 처리 완료!\n");
+	DEBUG_LOG("게임 초기화 처리 완료!");
 }
 
 void GameMainHelper::GameLoop()
 {
 	// 정상 또는 비정상 종료일 때만 게임루프를 탈출!
-	while ( (GameCtx::I()->getCurrentGameState() != EGameState::TERMINATION_ABNORMALITY) &&
-		    (GameCtx::I()->getCurrentGameState() != EGameState::TERMINATION_SUCCESS) )
+	while (GameCtx::I()->IsTerminateGame() == false)
 	{
 		// 씬이 변경되는지 확인해야 해요!
 		// 전환될 씬은 초기화가 완료된 상태이므로 현재 씬과 바꿔주기만 하면 돼죠!
@@ -67,7 +66,10 @@ void GameMainHelper::GameLoop()
 
 void GameMainHelper::Finalize()
 {
-	GameCtx::I()->setCurrentGameState(EGameState::FINAL);
+	if (GameCtx::I()->getCurrentGameState() != EGameState::TERMINATION_ABNORMALITY)
+	{
+		GameCtx::I()->setCurrentGameState(EGameState::FINAL);
+	}
 
 	if (SceneMgr::I()->getCurrentScene()->OnFinalize() == EErrorType::FINAL_FAILED)
 	{
@@ -80,13 +82,7 @@ void GameMainHelper::Finalize()
 	// 입력 관련 마무리
 	InputController::I()->DeleteAllInputMappingInfo();
 
-	// 싱글톤 처리
-	GameCtx::Destroy();
-	SceneMgr::Destroy();
-	InputController::Destroy();
-	ConfigCtx::Destroy();
-
-	printf("게임 마무리 처리 완료!\n");
+	DEBUG_LOG("게임 마무리 처리 완료!");
 }
 
 void GameMainHelper::Update()
@@ -114,7 +110,10 @@ void GameMainHelper::Update()
 
 void GameMainHelper::Render()
 {
-	GameCtx::I()->setCurrentGameState(EGameState::RENDER);
+	if (GameCtx::I()->IsTerminateGame() == false)
+	{
+		GameCtx::I()->setCurrentGameState(EGameState::RENDER);
+	}
 
 	// 콘솔 스크린 버퍼를 깨끗하게 지울게요! (Clear)
 	CommonFunc::ClearConsoleScreen();
@@ -149,6 +148,12 @@ Int32 GameMain::Run()
 	{
 		ret = EXIT_FAILURE;
 	}
+
+	// 싱글톤은 가장 마지막에 제거되어야 해요!
+	GameCtx::Destroy();
+	SceneMgr::Destroy();
+	InputController::Destroy();
+	ConfigCtx::Destroy();
 
 	return ret;
 }
