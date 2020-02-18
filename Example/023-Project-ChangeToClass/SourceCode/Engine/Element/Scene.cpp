@@ -3,38 +3,29 @@
 // 
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
+//
+// 모든 씬의 기반입니다.
 // =====================================================================================
 
-#ifndef GLOBAL_ENUM__H__
-#define GLOBAL_ENUM__H__
+#include "PCH.h"
+#include "Scene.h"
 
-#include "GlobalType.h"
-
-enum class EGameState : Int32
+EErrorType Scene::OnInitialize()
 {
-	NONE = 0,
-	RUNNING,
-	EXIT,
-};
+	return GameElement::OnInitialize();
+}
 
-enum class EConsoleTextColorType : Int32
+EErrorType Scene::OnUpdate()
 {
-	BLACK = 0,
-	BLUE,
-	GREEN,
-	AQUA,
-	RED,
-	PURPLE,
-	YELLOW,
-	WHITE,
-	GRAY,
-	LIGHT_BLUE,
-	LIGHT_GREEN,
-	LIGHT_AQUA,
-	LIGHT_RED,
-	LIGHT_PURPLE,
-	LIGHT_YELLOW,
-	BRIGHT_WHITE,
-};
+	return GameElement::OnUpdate();
+}
 
-#endif
+EErrorType Scene::OnRender()
+{
+	return GameElement::OnRender();
+}
+
+EErrorType Scene::OnFinalize()
+{
+	return GameElement::OnFinalize();
+}

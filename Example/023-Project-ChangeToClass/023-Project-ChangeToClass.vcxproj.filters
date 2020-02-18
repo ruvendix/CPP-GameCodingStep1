@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="소스 파일\1. Engine">
+      <UniqueIdentifier>{8d14ffeb-ebbd-45f3-8615-39e0577c85b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\1. Engine\Manager">
+      <UniqueIdentifier>{8329ddea-01a2-4183-b77b-7e17f84c94c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\1. Engine\Handler">
+      <UniqueIdentifier>{d5b47bd3-d5d9-4c3e-93db-8f4e610f2023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\1. Engine\Controller">
+      <UniqueIdentifier>{c154bc00-db91-4cb7-9417-2f1b7cdb83ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\1. Engine\1. Common">
+      <UniqueIdentifier>{dc3b7383-67f7-48e5-8306-d6e1f792b770}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client">
+      <UniqueIdentifier>{2a5509bb-07f7-499a-8f18-866a444c13eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\1. Engine\Interface">
+      <UniqueIdentifier>{ebd67868-3f3f-4d09-a6a3-eca228c4f2e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\1. Engine\Element">
+      <UniqueIdentifier>{19c219b3-445e-4387-b902-34cb2ae9a3ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\1. Engine\Context">
+      <UniqueIdentifier>{8f3aeed6-dafb-4a88-a9ba-0a748385b794}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\MiniGame">
+      <UniqueIdentifier>{c66ae29a-0030-4c38-90ed-e3b3a287a104}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\MiniGame\BattleSimulator">
+      <UniqueIdentifier>{1cda9048-cdb4-4d43-8892-853dd3e8b2fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\MiniGame\DialogueTree">
+      <UniqueIdentifier>{c915d02e-523f-4eee-86e8-bfa4211d407f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\MiniGame\MiscellaneousShop2">
+      <UniqueIdentifier>{5e214463-8ad6-40ab-a8d3-e5359d0d4d9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\1. Engine\Handler\ErrorHandler">
+      <UniqueIdentifier>{6f2e04d8-8d7a-4c0b-ac6a-a5c21f3dd3c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\Context">
+      <UniqueIdentifier>{c3623ceb-63c2-4c31-bc14-7d49b4263f2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\Element">
+      <UniqueIdentifier>{94db105b-5d77-4a51-8ed2-e58ffb453bef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\Element\Scene">
+      <UniqueIdentifier>{e35eb99c-f5a5-476a-aa35-85ad423a37ef}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SourceCode\Main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\GameMain.cpp">
+      <Filter>소스 파일\2. Client</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Common\CommonFunc.cpp">
+      <Filter>소스 파일\1. Engine\1. Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\PCH.cpp">
+      <Filter>소스 파일\2. Client</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Manager\SceneManager.cpp">
+      <Filter>소스 파일\1. Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Element\GameElement.cpp">
+      <Filter>소스 파일\1. Engine\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Element\Scene.cpp">
+      <Filter>소스 파일\1. Engine\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Element\NameTag.cpp">
+      <Filter>소스 파일\1. Engine\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Handler\ErrorHandler\ErrorHandler.cpp">
+      <Filter>소스 파일\1. Engine\Handler\ErrorHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Context\ConfigContext.cpp">
+      <Filter>소스 파일\1. Engine\Context</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Element\Scene\GameIntroMenu.cpp">
+      <Filter>소스 파일\2. Client\Element\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Context\GameContext.cpp">
+      <Filter>소스 파일\2. Client\Context</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Common\CommonLog.cpp">
+      <Filter>소스 파일\1. Engine\1. Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Controller\InputController.cpp">
+      <Filter>소스 파일\1. Engine\Controller</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SourceCode\Client\GameMain.h">
+      <Filter>소스 파일\2. Client</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Common\CommonType.h">
+      <Filter>소스 파일\1. Engine\1. Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Common\CommonMacro.h">
+      <Filter>소스 파일\1. Engine\1. Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Common\CommonEnum.h">
+      <Filter>소스 파일\1. Engine\1. Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Common\CommonFunc.h">
+      <Filter>소스 파일\1. Engine\1. Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Common\CommonNecessary.h">
+      <Filter>소스 파일\1. Engine\1. Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\PCH.h">
+      <Filter>소스 파일\2. Client</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Common\CommonStruct.h">
+      <Filter>소스 파일\1. Engine\1. Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Manager\SceneManager.h">
+      <Filter>소스 파일\1. Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Interface\IGameMechanism.h">
+      <Filter>소스 파일\1. Engine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Element\GameElement.h">
+      <Filter>소스 파일\1. Engine\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Element\Scene.h">
+      <Filter>소스 파일\1. Engine\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Element\NameTag.h">
+      <Filter>소스 파일\1. Engine\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Handler\ErrorHandler\ErrorHandler.h">
+      <Filter>소스 파일\1. Engine\Handler\ErrorHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Handler\ErrorHandler\ErrorType.h">
+      <Filter>소스 파일\1. Engine\Handler\ErrorHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Context\ConfigContext.h">
+      <Filter>소스 파일\1. Engine\Context</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Element\Scene\GameIntroMenu.h">
+      <Filter>소스 파일\2. Client\Element\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Context\GameContext.h">
+      <Filter>소스 파일\2. Client\Context</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Common\CommonLog.h">
+      <Filter>소스 파일\1. Engine\1. Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Controller\InputController.h">
+      <Filter>소스 파일\1. Engine\Controller</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
