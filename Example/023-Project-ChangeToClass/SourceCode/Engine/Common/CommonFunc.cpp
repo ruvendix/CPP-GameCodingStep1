@@ -11,7 +11,7 @@
 #include "CommonFunc.h"
 
 /*
-	콘솔 영역을 조정합니다.
+콘솔 영역을 조정합니다.
 */
 void CommonFunc::AdjustConsoleArea(Int32 width, Int32 height)
 {
@@ -20,7 +20,7 @@ void CommonFunc::AdjustConsoleArea(Int32 width, Int32 height)
 }
 
 /*
-	SizeInfo 오버로딩입니다.
+SizeInfo 오버로딩입니다.
 */
 void CommonFunc::AdjustConsoleArea(const SizeInfo& sizeInfo)
 {
@@ -28,8 +28,8 @@ void CommonFunc::AdjustConsoleArea(const SizeInfo& sizeInfo)
 }
 
 /*
-	게임용 콘솔 스타일로 설정합니다.
-	최대화, 최소화, 닫기 버튼이 없고 영역이 고정됩니다.
+게임용 콘솔 스타일로 설정합니다.
+최대화, 최소화, 닫기 버튼이 없고 영역이 고정됩니다.
 */
 void CommonFunc::GameConsoleStyle()
 {
@@ -44,7 +44,7 @@ void CommonFunc::GameConsoleStyle()
 }
 
 /*
-    응용 프로그램을 잠시 멈춥니다.
+응용 프로그램을 잠시 멈춥니다.
 */
 void CommonFunc::PauseGameApp()
 {
@@ -52,15 +52,51 @@ void CommonFunc::PauseGameApp()
 }
 
 /*
-    콘솔창을 깨끗하게 지웁니다.
+콘솔창을 깨끗하게 지웁니다.
+참고 : https://docs.microsoft.com/en-us/windows/console/clearing-the-screen
 */
 void CommonFunc::ClearConsoleScreen()
 {
-	system("cls");
+#if 0
+	system("cls"); // 느려
+#else
+	HANDLE hConsole = ::GetStdHandle(STD_OUTPUT_HANDLE);
+	CHECK_NULLPTR(hConsole);
+
+	// 현재 콘솔창의 정보를 가져옵니다.
+	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
+	::ZeroMemory(&consoleScreenBufferInfo, sizeof(consoleScreenBufferInfo));
+	if (::GetConsoleScreenBufferInfo(hConsole, &consoleScreenBufferInfo) == FALSE)
+	{
+		return;
+	}
+
+	// 가로 X 세로 = 사각형 넓이
+	Uint32 consoleSize = consoleScreenBufferInfo.dwSize.X * consoleScreenBufferInfo.dwSize.Y;
+
+	// 콘솔창의 버퍼를 공백으로 채웁니다.
+	Uint32 writtenCnt = 0;
+	COORD beginConsolePos = { 0, 0 };
+	if (::FillConsoleOutputCharacter(hConsole, ' ', consoleSize,
+		beginConsolePos, reinterpret_cast<LPDWORD>(&writtenCnt)) == FALSE)
+	{
+		return;
+	}
+
+	// 콘솔창의 버퍼 속성을 설정합니다.
+	if (::FillConsoleOutputAttribute(hConsole, consoleScreenBufferInfo.wAttributes,
+		consoleSize, beginConsolePos, reinterpret_cast<LPDWORD>(&writtenCnt)) == FALSE)
+	{
+		return;
+	}
+
+	// 커서 위치를 처음으로 이동시킵니다.
+	MoveConsolePos(beginConsolePos);
+#endif
 }
 
 /*
-	표준 입력 버퍼를 비웁니다.
+표준 입력 버퍼를 비웁니다.
 */
 void CommonFunc::ClearStdInputBuffer()
 {
@@ -76,7 +112,7 @@ void CommonFunc::ClearStdInputBuffer()
 }
 
 /*
-    콘솔 좌표를 이동시킵니다.
+콘솔 좌표를 이동시킵니다.
 */
 void CommonFunc::MoveConsolePos(Int32 x, Int32 y)
 {
@@ -85,7 +121,7 @@ void CommonFunc::MoveConsolePos(Int32 x, Int32 y)
 }
 
 /*
-	COORD 오버로딩입니다.
+COORD 오버로딩입니다.
 */
 void CommonFunc::MoveConsolePos(const COORD& pos)
 {
@@ -93,7 +129,7 @@ void CommonFunc::MoveConsolePos(const COORD& pos)
 }
 
 /*
-	sizeInfo를 이용해서 중앙 정렬합니다.
+sizeInfo를 이용해서 중앙 정렬합니다.
 */
 void CommonFunc::AlignCenterToConsole(const SizeInfo& sizeInfo, Uint32 length)
 {
@@ -106,13 +142,16 @@ void CommonFunc::AlignCenterToConsole(const SizeInfo& sizeInfo, Uint32 length)
 	MoveConsolePos(resultPosX, sizeInfo.height / 2);
 }
 
+/*
+게임 타이틀을 변경합니다.
+*/
 void CommonFunc::ChangeTitle(const std::string_view& szTitle)
 {
 	::SetWindowText(::GetConsoleWindow(), szTitle.data());
 }
 
 /*
-	로그를 출력합니다.
+로그를 출력합니다.
 */
 void CommonFunc::ShowLog(const std::string_view& szLogCategory, const std::string_view& szLog)
 {
@@ -132,9 +171,9 @@ void CommonFunc::ShowLog(const std::string_view& szLogCategory, const std::strin
 }
 
 /*
-    Create은 생성 데이터를 이용해서 처음부터 만들 때 사용하고
-    Make는 전달된 데이터들을 조합해서 만들 때 사용합니다. (사실 별로 차이는 없음...)
-    printf()처럼 서식 문자열을 사용하면 std::string 자료형으로 문자열을 만듭니다.
+Create은 생성 데이터를 이용해서 처음부터 만들 때 사용하고
+Make는 전달된 데이터들을 조합해서 만들 때 사용합니다. (사실 별로 차이는 없음...)
+printf()처럼 서식 문자열을 사용하면 std::string 자료형으로 문자열을 만듭니다.
 */
 std::string CommonFunc::MakeFormatString(const char* szFormat, ...)
 {
@@ -148,26 +187,26 @@ std::string CommonFunc::MakeFormatString(const char* szFormat, ...)
 	// 가변 인자로 문자열을 조합하려면 메모리 버퍼가 필요합니다.
 	// std::string은 메모리 버퍼가 가변적이라 사용할 수 없습니다.
 	// 참고로 단순하게 바이트 단위로 동적할당할 때는 std::malloc()을 사용합니다.
-	char* pMemBuffer = nullptr;
-	pMemBuffer = reinterpret_cast<char*>(std::malloc(length * sizeof(char)));
-	if (pMemBuffer == nullptr)
+	char* pMemoryBuffer = nullptr;
+	pMemoryBuffer = reinterpret_cast<char*>(std::malloc(length * sizeof(char)));
+	if (pMemoryBuffer == nullptr)
 	{
 		return std::string();
 	}
 
-	::ZeroMemory(pMemBuffer, (length * sizeof(char)));
+	::ZeroMemory(pMemoryBuffer, (length * sizeof(char)));
 
-	vsprintf_s(pMemBuffer, length, szFormat, va);
+	vsprintf_s(pMemoryBuffer, length, szFormat, va);
 	va_end(va);
 
-	std::string strFormat = pMemBuffer;
-	free(pMemBuffer);
+	std::string strFormat = pMemoryBuffer;
+	free(pMemoryBuffer);
 
 	return strFormat;
 }
 
 /*
-    현재 콘솔 좌표를 알려줍니다.
+현재 콘솔 좌표를 알려줍니다.
 */
 COORD CommonFunc::GetCurrentConsolePos()
 {
@@ -183,7 +222,7 @@ COORD CommonFunc::GetCurrentConsolePos()
 }
 
 /*
-    숫자를 입력 받음과 동시에 입력 범위를 벗어나면 범위 안으로 자동 조절합니다.
+숫자를 입력 받음과 동시에 입력 범위를 벗어나면 범위 안으로 자동 조절합니다.
 */
 bool CommonFunc::InputNumClamp(_Out_ Int32& num, Int32 minNum, Int32 maxNum)
 {
@@ -211,7 +250,7 @@ bool CommonFunc::InputNumClamp(_Out_ Int32& num, Int32 minNum, Int32 maxNum)
 }
 
 /*
-    숫자를 제한된 범위로 고정시킵니다.
+숫자를 제한된 범위로 고정시킵니다.
 */
 Int32 CommonFunc::Clamp(Int32 val, Int32 minVal, Int32 maxVal)
 {
@@ -230,8 +269,8 @@ Int32 CommonFunc::Clamp(Int32 val, Int32 minVal, Int32 maxVal)
 }
 
 /*
-	Clamp()와 비슷하지만 최솟값보다 작아지면 최댓값으로,
-	최댓값보다 커지면 최솟값으로 순환되는 버전입니다.
+Clamp()와 비슷하지만 최솟값보다 작아지면 최댓값으로,
+최댓값보다 커지면 최솟값으로 순환되는 버전입니다.
 */
 Int32 CommonFunc::ClampCircular(Int32 val, Int32 minVal, Int32 maxVal)
 {
@@ -250,7 +289,7 @@ Int32 CommonFunc::ClampCircular(Int32 val, Int32 minVal, Int32 maxVal)
 }
 
 /*
-    현재 콘솔 텍스트 색상을 알려줍니다.
+현재 콘솔 텍스트 색상을 알려줍니다.
 */
 EConsoleTextColorType CommonFunc::QueryCurrentConsoleTextColor()
 {

@@ -20,6 +20,7 @@
 #endif
 
 #include <windows.h>
+#include <timeapi.h>
 
 #include <type_traits>
 #include <cstdio>
@@ -31,5 +32,7 @@
 #include <vector>
 #include <bitset>
 #include <forward_list>
+
+#pragma comment(lib, "winmm.lib") // 윈도우 멀티미디어 링크
 
 #endif

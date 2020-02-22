@@ -15,9 +15,4 @@
 
 DECLARE_LOG_CATEGORY(Common);
 
-class CommonLog final : public NameTag
-{
-	NON_COPYABLE_ONLY_PRIVATE_CLASS(CommonLog);
-};
-
 #endif

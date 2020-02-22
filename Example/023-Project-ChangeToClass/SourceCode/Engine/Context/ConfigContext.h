@@ -17,15 +17,17 @@ class ConfigCtx final
 	DECLARE_SINGLETON(ConfigCtx);
 
 public:
+	const SizeInfo& getResoultion() const
+	{
+		return m_resoultion;
+	}
+
 	void setResoultion(const SizeInfo& resolution)
 	{
 		m_resoultion = resolution;
 	}
 
-	const SizeInfo& getResoultion() const
-	{
-		return m_resoultion;
-	}
+
 
 private:
 	SizeInfo m_resoultion;

@@ -10,26 +10,26 @@
 #include "PCH.h"
 #include "GameElement.h"
 
-EErrorType GameElement::OnInitialize()
+EErrorType GameElem::OnInitialize()
 {
-	DEBUG_LOG("GameElement에서 이게 보이면 OnInitialize()를 재정의해주세요!");
+	DEBUG_LOG("GameElem에서 이게 보이면 OnInitialize()를 재정의해주세요!");
 	return EErrorType::NONE;
 }
 
-EErrorType GameElement::OnUpdate()
+EErrorType GameElem::OnUpdate()
 {
-	DEBUG_LOG("GameElement에서 이게 보이면 OnUpdate()를 재정의해주세요!");
+	DEBUG_LOG("GameElem에서 이게 보이면 OnUpdate()를 재정의해주세요!");
 	return EErrorType::NONE;
 }
 
-EErrorType GameElement::OnRender()
+EErrorType GameElem::OnRender()
 {
-	DEBUG_LOG("GameElement에서 이게 보이면 OnRender()를 재정의해주세요!");
+	DEBUG_LOG("GameElem에서 이게 보이면 OnRender()를 재정의해주세요!");
 	return EErrorType::NONE;
 }
 
-EErrorType GameElement::OnFinalize()
+EErrorType GameElem::OnFinalize()
 {
-	DEBUG_LOG("GameElement에서 이게 보이면 OnFinalize()를 재정의해주세요!");
+	DEBUG_LOG("GameElem에서 이게 보이면 OnFinalize()를 재정의해주세요!");
 	return EErrorType::NONE;
 }

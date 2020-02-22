@@ -60,6 +60,9 @@
     <Filter Include="소스 파일\2. Client\Element\Scene">
       <UniqueIdentifier>{e35eb99c-f5a5-476a-aa35-85ad423a37ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\1. Engine\Timer">
+      <UniqueIdentifier>{2a3d2b9b-a6fa-4f90-b0d2-ac37eb39e29b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\Main.cpp">
@@ -77,9 +80,6 @@
     <ClCompile Include="SourceCode\Engine\Manager\SceneManager.cpp">
       <Filter>소스 파일\1. Engine\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Engine\Element\GameElement.cpp">
-      <Filter>소스 파일\1. Engine\Element</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Engine\Element\Scene.cpp">
       <Filter>소스 파일\1. Engine\Element</Filter>
     </ClCompile>
@@ -92,9 +92,6 @@
     <ClCompile Include="SourceCode\Engine\Context\ConfigContext.cpp">
       <Filter>소스 파일\1. Engine\Context</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Client\Element\Scene\GameIntroMenu.cpp">
-      <Filter>소스 파일\2. Client\Element\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Client\Context\GameContext.cpp">
       <Filter>소스 파일\2. Client\Context</Filter>
     </ClCompile>
@@ -103,6 +100,24 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Engine\Controller\InputController.cpp">
       <Filter>소스 파일\1. Engine\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Element\Scene\GameIntroMenuScene.cpp">
+      <Filter>소스 파일\2. Client\Element\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Timer\StopwtachTimerr.cpp">
+      <Filter>소스 파일\1. Engine\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Controller\FrameController.cpp">
+      <Filter>소스 파일\1. Engine\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Timer\TriggerTimer.cpp">
+      <Filter>소스 파일\1. Engine\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Manager\TriggerTimerManager.cpp">
+      <Filter>소스 파일\1. Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Element\GameElement.cpp">
+      <Filter>소스 파일\1. Engine\Element</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -136,9 +151,6 @@
     <ClInclude Include="SourceCode\Engine\Interface\IGameMechanism.h">
       <Filter>소스 파일\1. Engine\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Engine\Element\GameElement.h">
-      <Filter>소스 파일\1. Engine\Element</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Engine\Element\Scene.h">
       <Filter>소스 파일\1. Engine\Element</Filter>
     </ClInclude>
@@ -154,9 +166,6 @@
     <ClInclude Include="SourceCode\Engine\Context\ConfigContext.h">
       <Filter>소스 파일\1. Engine\Context</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Client\Element\Scene\GameIntroMenu.h">
-      <Filter>소스 파일\2. Client\Element\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Client\Context\GameContext.h">
       <Filter>소스 파일\2. Client\Context</Filter>
     </ClInclude>
@@ -165,6 +174,24 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Engine\Controller\InputController.h">
       <Filter>소스 파일\1. Engine\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Element\Scene\GameIntroMenuScene.h">
+      <Filter>소스 파일\2. Client\Element\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Timer\StopwtachTimerr.h">
+      <Filter>소스 파일\1. Engine\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Controller\FrameController.h">
+      <Filter>소스 파일\1. Engine\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Timer\TriggerTimer.h">
+      <Filter>소스 파일\1. Engine\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Manager\TriggerTimerManager.h">
+      <Filter>소스 파일\1. Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Element\GameElement.h">
+      <Filter>소스 파일\1. Engine\Element</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

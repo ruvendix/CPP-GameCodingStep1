@@ -12,20 +12,20 @@
 
 EErrorType Scene::OnInitialize()
 {
-	return GameElement::OnInitialize();
+	return GameElem::OnInitialize();
 }
 
 EErrorType Scene::OnUpdate()
 {
-	return GameElement::OnUpdate();
+	return GameElem::OnUpdate();
 }
 
 EErrorType Scene::OnRender()
 {
-	return GameElement::OnRender();
+	return GameElem::OnRender();
 }
 
 EErrorType Scene::OnFinalize()
 {
-	return GameElement::OnFinalize();
+	return GameElem::OnFinalize();
 }

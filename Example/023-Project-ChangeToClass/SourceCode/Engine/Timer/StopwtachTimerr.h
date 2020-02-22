@@ -4,28 +4,32 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 모든 씬의 기반입니다.
+// 시간 측정이 가능한 타이머입니다. (스톱워치)
+// 시작 시간과 종료 시간 둘 다 저장합니다.
 // =====================================================================================
 
-#ifndef SCENE__H__
-#define SCENE__H__
+#ifndef STOPWATCH_TIMER__H__
+#define STOPWATCH_TIMER__H__
 
-#include "GameElement.h"
+#include "Common\CommonType.h"
+#include "Common\CommonMacro.h"
+#include "Common\CommonNecessary.h"
 
-class Scene : public GameElem
+class StopwatchTimer final
 {
 public:
-	using GameElem::GameElem;
-
 #pragma region 생성자 및 소멸자
-	Scene() = default;
-	virtual ~Scene() = default;
+	StopwatchTimer() = default;
+	~StopwatchTimer() = default;
 #pragma endregion
 
-	virtual EErrorType OnInitialize() override;
-	virtual EErrorType OnUpdate() override;
-	virtual EErrorType OnRender() override;
-	virtual EErrorType OnFinalize() override;
+	void StartTime();
+	void EndTime();
+	void ShowResult();
+
+private:
+	Uint32 m_startTime = 0;
+	Uint32 m_endTime = 0;
 };
 
 #endif

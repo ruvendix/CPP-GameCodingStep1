@@ -13,6 +13,9 @@
 DEFINE_LOG_CATEGORY(SceneMgr);
 DEFINE_SINGLETON(SceneMgr);
 
+/*
+현재 씬과 다음 씬을 전환합니다.
+*/
 void SceneMgr::FlipCurrentScene()
 {
 	const std::string& strPrevSceneName = m_pCurrentScene->getNameTag();
@@ -21,6 +24,9 @@ void SceneMgr::FlipCurrentScene()
 		strPrevSceneName.c_str(), m_pCurrentScene->getNameTag().c_str());
 }
 
+/*
+모든 씬을 제거합니다.
+*/
 void SceneMgr::DeleteScene()
 {
 	SAFE_DELETE(m_pCurrentScene);

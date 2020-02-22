@@ -15,6 +15,7 @@
 class NameTag
 {
 public:
+#pragma region 생성자 및 소멸자
 	NameTag() = default;
 	virtual ~NameTag() = default;
 
@@ -23,6 +24,7 @@ public:
 	{
 
 	}
+#pragma endregion
 
 	const std::string& getNameTag() const
 	{

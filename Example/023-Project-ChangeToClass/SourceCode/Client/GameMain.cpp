@@ -14,8 +14,10 @@
 #include "Context\ConfigContext.h"
 #include "Context\GameContext.h"
 #include "Manager\SceneManager.h"
+#include "Manager\TriggerTimerManager.h"
 #include "Controller\InputController.h"
-#include "Element\Scene\GameIntroMenu.h"
+#include "Controller\FrameController.h"
+#include "Element\Scene\GameIntroMenuScene.h"
 
 class GameMainHelper final
 {
@@ -30,8 +32,13 @@ public:
 
 	static void Update();
 	static void Render();
+
+	static void DestorySingleton();
 };
 
+/*
+콘솔창 스타일, 해상도, 게임 상태 등을 초기화합니다.
+*/
 void GameMainHelper::Initialize()
 {
 	CommonFunc::ChangeTitle("Change To Class");
@@ -43,22 +50,34 @@ void GameMainHelper::Initialize()
 	CommonFunc::GameConsoleStyle();
 
 	SceneMgr::I()->CreateScene<GameIntroMenuScene>(ESceneType::CURRENT);
+	
+	FrameController::I()->Initialize();
+	FrameController::I()->setFrameRateType(EFrameRateType::CONSTANT);
+	//FrameController::I()->ModifyLimitedFrame(300);
 
 	DEBUG_LOG("게임 초기화 처리 완료!");
 }
 
+/*
+갱신과 렌더링을 반복합니다.
+이런 반복 구조를 게임 루프라고 해요.
+고정 프레임과 가변 프레임 둘 다 지원하고 상황에 맞게 델타타임이 갱신됩니다.
+
+<고정 프레임 레이트>
+사양이 낮은 컴퓨터에서는 프레임을 건너뛰므로 멀티플레이서 싱크 문제가 발생할 수 있습니다.
+사양이 높은 컴퓨터에서는 프레임 갱신 속도가 빨라도 제한된 프레임 갱신 속도보다 빠를 수 없습니다.
+즉, 안정된 프레임으로 게임을 하고 싶다면 고사양이 유리합니다.
+
+<가변 프레임 레이트>
+사양이 낮은 컴퓨터에서는 늦춰진 델타타임만큼 갱신하므로 프레임이 튈 수 있습니다.
+사양이 높은 컴퓨터에서는 델타타임이 빨라도 무조건 갱신하므로 프레임이 왔다 갔다 할 수 있습니다.
+즉, 저사양과 고사양 둘 다 게임 상태는 비슷하지만 웬만한 고사양이 아니라면 저사양이 유리합니다.
+*/
 void GameMainHelper::GameLoop()
 {
 	// 정상 또는 비정상 종료일 때만 게임루프를 탈출!
 	while (GameCtx::I()->IsTerminateGame() == false)
 	{
-		// 씬이 변경되는지 확인해야 해요!
-		// 전환될 씬은 초기화가 완료된 상태이므로 현재 씬과 바꿔주기만 하면 돼죠!
-		if (SceneMgr::I()->IsGotoNextScene())
-		{
-			SceneMgr::I()->FlipCurrentScene();
-		}
-
 		Update();
 		Render();
 	}
@@ -75,11 +94,9 @@ void GameMainHelper::Finalize()
 	{
 		ErrorHandler::ShowError(EErrorType::FINAL_FAILED);
 	}
-
-	// 씬 관련 마무리
+	
 	SceneMgr::I()->DeleteScene();
-
-	// 입력 관련 마무리
+	TriggerTimerMgr::I()->DeleteAllTriggerTimer();
 	InputController::I()->DeleteAllInputMappingInfo();
 
 	DEBUG_LOG("게임 마무리 처리 완료!");
@@ -89,17 +106,28 @@ void GameMainHelper::Update()
 {
 	GameCtx::I()->setCurrentGameState(EGameState::UPDATE);
 
-	// 입력 처리가 최우선!
-	InputController::I()->PollInput();
+	// FPS와 델타타임부터 갱신해야 해요!
+	FrameController::I()->UpdateFPSAndDeltatime();
 
-	// 활성화되었을 때만 입력 체크!
+	// 씬이 변경되는지 확인해야 해요!
+	// 전환될 씬은 초기화가 완료된 상태이므로 현재 씬과 바꿔주기만 하면 돼죠!
+	if (SceneMgr::I()->IsGotoNextScene())
+	{
+		SceneMgr::I()->FlipCurrentScene();
+	}
+
+	// 트리거 타이머를 업데이트해야 해요!
+	TriggerTimerMgr::I()->UpdateTriggerTimer();
+
+	// 입력 갱신은 콘솔창이 활성화되었을 때만! (포커스를 받고 있다는 의미)
 	if (::GetConsoleWindow() == ::GetForegroundWindow())
 	{
-		//DEBUG_LOG_CATEGORY(Common, "활성화되었다!");
+		InputController::I()->PollInput();
+		//DEBUG_LOG_CATEGORY(Common, "콘솔창이 활성화된 상태!");
 	}
 	else
 	{
-		//DEBUG_LOG_CATEGORY(Common, "활성화에서 망했다!");
+		//DEBUG_LOG_CATEGORY(Common, "콘솔창이 활성화되지 않은 상태!");
 	}
 
 	if (SceneMgr::I()->getCurrentScene()->OnUpdate() == EErrorType::UPDATE_FAILED)
@@ -130,15 +158,31 @@ void GameMainHelper::Render()
 	CommonFunc::MoveConsolePos(backupPos);
 }
 
+void GameMainHelper::DestorySingleton()
+{
+	DEBUG_LOG("==============================================================================================");
+	GameCtx::Destroy();
+	SceneMgr::Destroy();
+	TriggerTimerMgr::Destroy();
+	InputController::Destroy();
+	FrameController::Destroy();
+	ConfigCtx::Destroy();
+	DEBUG_LOG("==============================================================================================");
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEFINE_SINGLETON(GameMain);
 
+/*
+게임의 핵심 흐름입니다.
+초기화 ~ 게임 루프 ~ 마무리 순으로 진행됩니다.
+*/
 Int32 GameMain::Run()
 {
 	// 메모리 누수를 확인하는 방법이에요.
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-
+	
 	GameMainHelper::Initialize();
 	GameMainHelper::GameLoop();
 	GameMainHelper::Finalize();
@@ -150,10 +194,7 @@ Int32 GameMain::Run()
 	}
 
 	// 싱글톤은 가장 마지막에 제거되어야 해요!
-	GameCtx::Destroy();
-	SceneMgr::Destroy();
-	InputController::Destroy();
-	ConfigCtx::Destroy();
+	GameMainHelper::DestorySingleton();
 
 	return ret;
 }

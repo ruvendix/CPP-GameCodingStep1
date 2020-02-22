@@ -18,16 +18,37 @@ class CommonFunc final
     NON_COPYABLE_ONLY_PRIVATE_CLASS(CommonFunc);
 
 public:
-#pragma region 템플릿 함수 모음입니다.
+#pragma region 템플릿 함수
+
+    /*
+    열거형 클래스의 바탕 타입을 알려줍니다.
+    */
     template <typename EType>
     static constexpr auto ToUnderlyingType(EType val) noexcept
     {
         static_assert(std::is_enum_v<EType>, "Only use enum type!");
         return static_cast<std::underlying_type_t<EType>>(val);
     }
+
+    /*
+    컨테이너의 요소에 중복된 값이 있는지 알려줍니다.
+    */
+    template <typename TContainer>
+    static bool IsOverlapVal(const TContainer& container, const typename TContainer::value_type& val)
+    {
+        for (const auto& iter : container)
+        {
+            if (iter == val)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 #pragma endregion
 
-#pragma region 일반 함수 모음입니다.
+#pragma region 일반 함수
     static void AdjustConsoleArea(Int32 width, Int32 height);
     static void AdjustConsoleArea(const SizeInfo& sizeInfo);
     static void GameConsoleStyle();
@@ -47,7 +68,7 @@ public:
     static EConsoleTextColorType QueryCurrentConsoleTextColor();
 #pragma endregion
 
-#pragma region 매크로에서만 사용되는 함수 모음입니다.
+#pragma region 매크로에서만 사용되는 함수
     static void ShowLog(const std::string_view& szLogCategory, const std::string_view& szLog);
 #pragma endregion
 

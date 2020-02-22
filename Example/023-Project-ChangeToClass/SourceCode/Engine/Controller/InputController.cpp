@@ -14,23 +14,9 @@
 DEFINE_LOG_CATEGORY(InputController);
 DEFINE_SINGLETON(InputController);
 
-namespace
-{
-	template <typename TContainer>
-	bool IsOverlapVal(const TContainer& container, const typename TContainer::value_type& val)
-	{
-		for (const auto& iter : container)
-		{
-			if (iter == val)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-}
-
+/*
+입력 매핑 정보를 기반으로 입력 상태를 계속 확인하며 갱신합니다.
+*/
 void InputController::PollInput()
 {
 	for (auto& iter : m_mapInputMappingInfo)
@@ -40,26 +26,25 @@ void InputController::PollInput()
 			continue;
 		}
 
-		//Uint32 inputCnt = 0; // 매핑된 정보에서 원하는 입력 조합을 눌렀는지 확인해야 해요!
 		InputMappingInfo* pInputMappingInfo = iter.second;
 		CHECK_NULLPTR(pInputMappingInfo);
 
-		// 입력 조합표가 없으면 무시!
-		if (pInputMappingInfo->vecInput.empty() == true)
+		// 입력 매핑표가 없으면 무시!
+		if (pInputMappingInfo->vecInputTable.empty() == true)
 		{
 			continue;
 		}
 
-		TSize size = pInputMappingInfo->vecInput.size();
-		const std::vector<TInput>& vecInput = pInputMappingInfo->vecInput;
+		TSize size = pInputMappingInfo->vecInputTable.size();
+		const std::vector<TInput>& vecInputTable = pInputMappingInfo->vecInputTable;
 		std::list<TInput>& listInputChecker = pInputMappingInfo->listInputChecker;
 
 		for (TSize i = 0; i < size; ++i)
 		{
-			TInput inputVal = vecInput[i];
+			TInput inputVal = vecInputTable[i];
 
 			// 리스트에 없는 값만 넣어야 함!
-			if (IsOverlapVal(listInputChecker, inputVal) == false)
+			if (CommonFunc::IsOverlapVal(listInputChecker, inputVal) == false)
 			{
 				// 리스트에 없는 값에서만 입력값 추가!
 				if (::GetAsyncKeyState(inputVal) & INPUT_DOWN_FLAG)
@@ -85,51 +70,53 @@ void InputController::PollInput()
 
 		EInputMappingState inputMappingState = pInputMappingInfo->state;
 
-		// 매핑된 정보에서 원하는 입력 조합을 누른 상태! (DOWN 아니면 PRESSING)
-		//if (inputCnt == pInputMappingInfo->vecInput.size())
-		if (std::equal(vecInput.cbegin(), vecInput.cend(), listInputChecker.cbegin(), listInputChecker.cend()) == true)
+		// 매핑된 정보를 만족하는 상태! (DOWN 아니면 PRESSING)
+		if (std::equal(vecInputTable.cbegin(), vecInputTable.cend(), listInputChecker.cbegin(), listInputChecker.cend()) == true)
 		{
-			DEBUG_LOG_CATEGORY(InputController, "입력 조합을 만족했다!");
+			//DEBUG_LOG_CATEGORY(InputController, "입력 매핑을 만족했다!");
 
 			// 해당 입력값이 눌리거나 누르는 상태가 아닐 때
 			if ( (inputMappingState != EInputMappingState::DOWN) &&
 				 (inputMappingState != EInputMappingState::PRESSING) )
 			{
 				inputMappingState = EInputMappingState::DOWN;
-				DEBUG_LOG_CATEGORY(InputController, "입력 조합을 최초로 눌렀다!");
+				DEBUG_LOG_CATEGORY(InputController, "입력 매핑을 최초로 만족했다!");
 			}
 			// 해당 입력값이 눌러진 상태에서 또 눌렀을 때 (누르는 중이라는 의미)
 			else if (inputMappingState == EInputMappingState::DOWN)
 			{
 				inputMappingState = EInputMappingState::PRESSING;
-				DEBUG_LOG_CATEGORY(InputController, "입력 조합을 계속 누르는중!");
+				DEBUG_LOG_CATEGORY(InputController, "입력 매핑을 유지중!");
 			}
 		}
-		// 매핑된 정보에서 원하는 입력 조합을 누르지 못한 상태! (NONE 아니면 UP)
+		// 매핑된 정보를 만족하지 못한 상태! (NONE 아니면 UP)
 		else
 		{
-			//DEBUG_LOG_CATEGORY(InputController, "입력 조합을 만족하지 않음!");
+			//DEBUG_LOG_CATEGORY(InputController, "입력 매핑을 만족하지 않음!");
 
 			// 해당 입력값이 눌렸거나 눌리는 중이었을 때
 			if ( (inputMappingState == EInputMappingState::DOWN) || 
 				 (inputMappingState == EInputMappingState::PRESSING) )
 			{
 				inputMappingState = EInputMappingState::UP;
-				DEBUG_LOG_CATEGORY(InputController, "이제는 입력 조합을 만족하지 않음!");				
+				DEBUG_LOG_CATEGORY(InputController, "이제는 입력 매핑을 만족하지 않음!");				
 			}
 			// 해당 입력값이 눌리지 않은 상태에서 또 누르지 않았을 때 (누르지 않고 있다는 의미)
 			else if (inputMappingState == EInputMappingState::UP)
 			{
 				inputMappingState = EInputMappingState::NONE;
-				DEBUG_LOG_CATEGORY(InputController, "입력 조합을 계속 누르지 않고 있음!");
+				DEBUG_LOG_CATEGORY(InputController, "입력 매핑을 계쏙 만족하지 않음!");
 			}
 		}
 
-		// 입력 조합 상태 갱신
+		// 입력 매핑 상태 갱신
 		pInputMappingInfo->state = inputMappingState;
 	}
 }
 
+/*
+모든 입력 매핑 정보를 제거합니다.
+*/
 void InputController::DeleteAllInputMappingInfo()
 {
 	for (auto& iter : m_mapInputMappingInfo)
@@ -138,20 +125,26 @@ void InputController::DeleteAllInputMappingInfo()
 	}
 }
 
-bool InputController::CheckInputState(const std::string_view& szInputAction, EInputMappingState inputState) const
+/*
+원하는 입력 매핑 이름에 해당되는 상태를 알려줍니다.
+*/
+bool InputController::CheckInputState(const std::string_view& szInputMappingName, EInputMappingState inputState) const
 {
-	InputMappingInfo* pInputMappingInfo = FindInputMappingInfo(szInputAction);
+	InputMappingInfo* pInputMappingInfo = FindInputMappingInfo(szInputMappingName);
 	CHECK_NULLPTR(pInputMappingInfo);
 	return (pInputMappingInfo->state == inputState);
 }
 
-InputMappingInfo* InputController::FindInputMappingInfo(const std::string_view& szInputAction) const
+/*
+원하는 입력 매핑 이름에 해당되는 정보를 알려줍니다.
+*/
+InputMappingInfo* InputController::FindInputMappingInfo(const std::string_view& szInputMappingName) const
 {
-	const auto& iter = m_mapInputMappingInfo.find(szInputAction.data());
+	const auto& iter = m_mapInputMappingInfo.find(szInputMappingName.data());
 	if ( (iter == m_mapInputMappingInfo.cend()) ||
 		 (iter->second == nullptr) )
 	{
-		DEBUG_LOG_CATEGORY(InputController, "%s 액션이 없어요!", szInputAction.data());
+		DEBUG_LOG_CATEGORY(InputController, "입력 매핑 정보(%s)가 없어요!", szInputMappingName.data());
 		return nullptr;
 	}
 

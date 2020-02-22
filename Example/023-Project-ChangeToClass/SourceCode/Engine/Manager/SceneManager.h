@@ -7,8 +7,8 @@
 // 씬 생성 및 전환 등을 처리해주는 매니저입니다.
 // =====================================================================================
 
-#ifndef SCENE_MGR__H__
-#define SCENE_MGR__H__
+#ifndef SCENE_MANAGER__H__
+#define SCENE_MANAGER__H__
 
 #include "Common\CommonType.h"
 #include "Element\Scene.h"
@@ -34,6 +34,9 @@ public:
 		return m_pCurrentScene;
 	}
 
+	/*
+	원하는 씬 타입으로 씬을 생성하고 등록합니다.
+	*/
 	template <typename TScene>
 	void CreateScene(const std::string_view& szSceneName, ESceneType sceneType)
 	{
@@ -67,6 +70,9 @@ public:
 		}
 	}
 
+	/*
+	씬의 이름을 씬 타입으로 설정해서 생성하고 등록합니다.
+	*/
 	template <typename TScene>
 	void CreateScene(ESceneType sceneType)
 	{

@@ -30,6 +30,13 @@ enum class ESceneType : Int32
 	NEXT,
 };
 
+enum class EFrameRateType : Int32
+{
+	CONSTANT = 0,
+	VARIABLE_LIMITED,
+	VARIABLE_UNLIMITED,
+};
+
 enum class EConsoleTextColorType : Int32
 {
 	BLACK = 0,

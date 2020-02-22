@@ -13,16 +13,16 @@
 #include "Interface\IGameMechanism.h"
 #include "NameTag.h"
 
-class GameElement : public IGameMechanism
+class GameElem : public IGameMechanism
 {
 	HAS_NAME_TAG();
 
 public:
 #pragma region 생성자 및 소멸자
-	GameElement() = default;
-	virtual ~GameElement() = default;
+	GameElem() = default;
+	virtual ~GameElem() = default;
 
-	GameElement(const std::string_view& szNameTag) :
+	GameElem(const std::string_view& szNameTag) :
 		m_nameTag(szNameTag)
 	{
 

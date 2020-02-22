@@ -80,7 +80,7 @@ private:\
 	void TClass::Destroy()\
 	{\
 		SAFE_DELETE(m_pInst);\
-		DEBUG_LOG("(%s) 싱글톤 삭제!", TO_STRING(TClass));\
+		DEBUG_LOG("싱글톤 삭제! (%s)", TO_STRING(TClass));\
 	}
 
 #define FRIEND_WITH_HELPER(THelperClass) friend class THelperClass
@@ -105,10 +105,15 @@ private:\
 
 // NameTag를 상속 받는 새로운 로그 클래스를 선언합니다.
 #define DECLARE_LOG_CATEGORY(Tag)\
-class LogCategory##Tag : public NameTag\
+class LogCategory##Tag\
 {\
+	HAS_NAME_TAG()\
+\
 public:\
-	LogCategory##Tag() : NameTag(TO_STRING(Log##Tag)) { }\
+	LogCategory##Tag()\
+	{\
+		setNameTag(TO_STRING(Log##Tag));\
+	}\
 	virtual ~LogCategory##Tag() = default;\
 };\
 \

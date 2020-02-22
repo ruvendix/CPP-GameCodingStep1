@@ -113,6 +113,10 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>SourceCode\Engine;SourceCode\Client;SourceCode\Client\PCH;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,25 +141,31 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\Client\Context\GameContext.cpp" />
-    <ClCompile Include="SourceCode\Client\Element\Scene\GameIntroMenu.cpp" />
+    <ClCompile Include="SourceCode\Client\Element\Scene\GameIntroMenuScene.cpp" />
     <ClCompile Include="SourceCode\Client\GameMain.cpp" />
     <ClCompile Include="SourceCode\Client\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">PCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="SourceCode\Engine\Common\CommonFunc.cpp" />
     <ClCompile Include="SourceCode\Engine\Common\CommonLog.cpp" />
     <ClCompile Include="SourceCode\Engine\Context\ConfigContext.cpp" />
+    <ClCompile Include="SourceCode\Engine\Controller\FrameController.cpp" />
     <ClCompile Include="SourceCode\Engine\Controller\InputController.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\GameElement.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\NameTag.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\Scene.cpp" />
     <ClCompile Include="SourceCode\Engine\Handler\ErrorHandler\ErrorHandler.cpp" />
     <ClCompile Include="SourceCode\Engine\Manager\SceneManager.cpp" />
+    <ClCompile Include="SourceCode\Engine\Manager\TriggerTimerManager.cpp" />
+    <ClCompile Include="SourceCode\Engine\Timer\StopwtachTimerr.cpp" />
+    <ClCompile Include="SourceCode\Engine\Timer\TriggerTimer.cpp" />
     <ClCompile Include="SourceCode\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Client\Context\GameContext.h" />
-    <ClInclude Include="SourceCode\Client\Element\Scene\GameIntroMenu.h" />
+    <ClInclude Include="SourceCode\Client\Element\Scene\GameIntroMenuScene.h" />
     <ClInclude Include="SourceCode\Client\GameMain.h" />
     <ClInclude Include="SourceCode\Client\PCH.h" />
     <ClInclude Include="SourceCode\Engine\Common\CommonStruct.h" />
@@ -166,6 +176,7 @@
     <ClInclude Include="SourceCode\Engine\Common\CommonNecessary.h" />
     <ClInclude Include="SourceCode\Engine\Common\CommonLog.h" />
     <ClInclude Include="SourceCode\Engine\Context\ConfigContext.h" />
+    <ClInclude Include="SourceCode\Engine\Controller\FrameController.h" />
     <ClInclude Include="SourceCode\Engine\Controller\InputController.h" />
     <ClInclude Include="SourceCode\Engine\Element\GameElement.h" />
     <ClInclude Include="SourceCode\Engine\Element\NameTag.h" />
@@ -174,6 +185,9 @@
     <ClInclude Include="SourceCode\Engine\Handler\ErrorHandler\ErrorType.h" />
     <ClInclude Include="SourceCode\Engine\Interface\IGameMechanism.h" />
     <ClInclude Include="SourceCode\Engine\Manager\SceneManager.h" />
+    <ClInclude Include="SourceCode\Engine\Manager\TriggerTimerManager.h" />
+    <ClInclude Include="SourceCode\Engine\Timer\StopwtachTimerr.h" />
+    <ClInclude Include="SourceCode\Engine\Timer\TriggerTimer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
