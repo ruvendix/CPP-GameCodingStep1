@@ -11,7 +11,7 @@
 #include "PCH.h"
 #include "TriggerTimerManager.h"
 
-DEFINE_LOG_CATEGORY(TriggerTimer);
+DEFINE_LOG_CATEGORY(TriggerTimerMgr);
 DEFINE_SINGLETON(TriggerTimerMgr);
 
 void TriggerTimerMgr::UpdateTriggerTimer()
@@ -36,10 +36,10 @@ void TriggerTimerMgr::UpdateTriggerTimer()
 
 			if (pTriggerTimer->IsRepeat() == false)
 			{
-				const std::string_view& szTriggerTimer = iter->first;
+				const std::string strTriggerTimer = iter->first;
 				SAFE_DELETE(iter->second);
 				iter = m_mapTriggerTimer.erase(iter);
-				DEBUG_LOG_CATEGORY(TriggerTimer, "트리거 타이머가 제거되었어요! (%s)", szTriggerTimer.data());
+				DEBUG_LOG_CATEGORY(TriggerTimerMgr, "트리거 타이머가 제거되었어요! (%s)", strTriggerTimer.data());
 			}
 			else
 			{
@@ -63,7 +63,7 @@ void TriggerTimerMgr::DeleteTriggerTimer(const std::string_view& szTriggerTimer)
 	}
 }
 
-void TriggerTimerMgr::DeleteAllTriggerTimer()
+void TriggerTimerMgr::Finalize()
 {
 	for (auto& iter : m_mapTriggerTimer)
 	{

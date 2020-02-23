@@ -89,6 +89,7 @@
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>SourceCode\Engine;SourceCode\Client;SourceCode\Client\PCH;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>ACTIVATION_CONSOLE_DBL_BUFFERING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,15 +152,17 @@
     <ClCompile Include="SourceCode\Engine\Common\CommonFunc.cpp" />
     <ClCompile Include="SourceCode\Engine\Common\CommonLog.cpp" />
     <ClCompile Include="SourceCode\Engine\Context\ConfigContext.cpp" />
+    <ClCompile Include="SourceCode\Engine\Controller\ConsoleController.cpp" />
     <ClCompile Include="SourceCode\Engine\Controller\FrameController.cpp" />
     <ClCompile Include="SourceCode\Engine\Controller\InputController.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\GameElement.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\NameTag.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\Scene.cpp" />
     <ClCompile Include="SourceCode\Engine\Handler\ErrorHandler\ErrorHandler.cpp" />
+    <ClCompile Include="SourceCode\Engine\Manager\PerformanceProfileMgr.cpp" />
     <ClCompile Include="SourceCode\Engine\Manager\SceneManager.cpp" />
     <ClCompile Include="SourceCode\Engine\Manager\TriggerTimerManager.cpp" />
-    <ClCompile Include="SourceCode\Engine\Timer\StopwtachTimerr.cpp" />
+    <ClCompile Include="SourceCode\Engine\Timer\StopwatchTimer.cpp" />
     <ClCompile Include="SourceCode\Engine\Timer\TriggerTimer.cpp" />
     <ClCompile Include="SourceCode\Main.cpp" />
   </ItemGroup>
@@ -171,11 +174,11 @@
     <ClInclude Include="SourceCode\Engine\Common\CommonStruct.h" />
     <ClInclude Include="SourceCode\Engine\Common\CommonType.h" />
     <ClInclude Include="SourceCode\Engine\Common\CommonMacro.h" />
-    <ClInclude Include="SourceCode\Engine\Common\CommonEnum.h" />
     <ClInclude Include="SourceCode\Engine\Common\CommonFunc.h" />
     <ClInclude Include="SourceCode\Engine\Common\CommonNecessary.h" />
     <ClInclude Include="SourceCode\Engine\Common\CommonLog.h" />
     <ClInclude Include="SourceCode\Engine\Context\ConfigContext.h" />
+    <ClInclude Include="SourceCode\Engine\Controller\ConsoleController.h" />
     <ClInclude Include="SourceCode\Engine\Controller\FrameController.h" />
     <ClInclude Include="SourceCode\Engine\Controller\InputController.h" />
     <ClInclude Include="SourceCode\Engine\Element\GameElement.h" />
@@ -184,9 +187,10 @@
     <ClInclude Include="SourceCode\Engine\Handler\ErrorHandler\ErrorHandler.h" />
     <ClInclude Include="SourceCode\Engine\Handler\ErrorHandler\ErrorType.h" />
     <ClInclude Include="SourceCode\Engine\Interface\IGameMechanism.h" />
+    <ClInclude Include="SourceCode\Engine\Manager\PerformanceProfileMgr.h" />
     <ClInclude Include="SourceCode\Engine\Manager\SceneManager.h" />
     <ClInclude Include="SourceCode\Engine\Manager\TriggerTimerManager.h" />
-    <ClInclude Include="SourceCode\Engine\Timer\StopwtachTimerr.h" />
+    <ClInclude Include="SourceCode\Engine\Timer\StopwatchTimer.h" />
     <ClInclude Include="SourceCode\Engine\Timer\TriggerTimer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

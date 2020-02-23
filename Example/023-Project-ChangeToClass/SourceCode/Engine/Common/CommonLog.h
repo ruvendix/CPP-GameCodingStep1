@@ -10,7 +10,7 @@
 #ifndef COMMON_LOG__H__
 #define COMMON_LOG__H__
 
-#include "Common\CommonMacro.h"
+#include "CommonMacro.h"
 #include "Element\NameTag.h"
 
 DECLARE_LOG_CATEGORY(Common);

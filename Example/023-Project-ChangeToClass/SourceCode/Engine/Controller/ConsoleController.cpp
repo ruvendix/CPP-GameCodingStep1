@@ -1,0 +1,369 @@
+// =====================================================================================
+// Copyright(c) 2020, Ruvendix. All Rights Reserved.
+// 
+// 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
+// http://creativecommons.org/licenses/by/4.0/
+//
+// 콘솔창의 여러 속성을 제어하는 컨트롤러입니다.
+// 더블 버퍼링은 ACTIVATION_CONSOLE_DBL_BUFFERING을 전처리기에 추가해야 작동됩니다.
+// =====================================================================================
+
+#include "PCH.h"
+#include "ConsoleController.h"
+
+#include "Context\ConfigContext.h"
+
+DEFINE_LOG_CATEGORY(ConsoleController);
+DEFINE_SINGLETON(ConsoleController);
+
+/*
+콘솔창을 초기화합니다.
+ACTIVATION_CONSOLE_DBL_BUFFERING이 활성화된 상태라면 더블 버퍼링 관련 작업을 처리합니다.
+*/
+void ConsoleController::Initialize(const std::string_view& szTitle, const SizeInfo& sizeInfo)
+{
+	ConsoleController::I()->ChangeTitle(szTitle);
+	ConsoleController::I()->AdjustConsoleArea(sizeInfo);
+	ConsoleController::I()->DefaultConsoleGameStyle();
+
+#ifdef ACTIVATION_CONSOLE_DBL_BUFFERING
+	// 표준 출력 콘솔창의 버퍼 정보를 가져오는 부분이에요!
+	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
+	::ZeroMemory(&consoleScreenBufferInfo, sizeof(consoleScreenBufferInfo));
+	::GetConsoleScreenBufferInfo(::GetStdHandle(STD_OUTPUT_HANDLE), &consoleScreenBufferInfo);
+
+	// 표준 출력 콘솔창의 커서 정보를 가져오는 부분이에요!
+	CONSOLE_CURSOR_INFO consoleCursorInfo;
+	::ZeroMemory(&consoleCursorInfo, sizeof(consoleCursorInfo));
+	::GetConsoleCursorInfo(::GetStdHandle(STD_OUTPUT_HANDLE), &consoleCursorInfo);
+
+	for (Int32 i = 0; i < CommonFunc::ToUnderlyingType(EConsoleScreenBufferType::MAX); ++i)
+	{
+		// 읽기와 쓰기가 가능한 콘솔창의 버퍼를 생성하는 부분이에요!
+		// 더블 버퍼링에서는 콘솔창의 버퍼가 2개 필요합니다!
+		HANDLE hConsoleScreenBuffer =
+			::CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, nullptr, CONSOLE_TEXTMODE_BUFFER, nullptr);
+
+		// 표준 출력 콘솔창의 정보로 복사하는 부분이에요!
+		::SetConsoleScreenBufferSize(hConsoleScreenBuffer, consoleScreenBufferInfo.dwSize);
+		::SetConsoleWindowInfo(hConsoleScreenBuffer, TRUE, &consoleScreenBufferInfo.srWindow);
+		::SetConsoleTextAttribute(hConsoleScreenBuffer, consoleScreenBufferInfo.wAttributes);
+		::SetConsoleCursorInfo(hConsoleScreenBuffer, &consoleCursorInfo);
+
+		// 정보 설정이 완료되었으니 저장할게요!
+		m_hConsoleScreenBuffers[i] = hConsoleScreenBuffer;
+	}
+#else
+	m_hConsoleScreenBuffers[CommonFunc::ToUnderlyingType(EConsoleScreenBufferType::FRONT)] = ::GetStdHandle(STD_OUTPUT_HANDLE);
+#endif
+
+	// 표준 입력 콘솔창에 "Ctrl + C" 무효와 "마우스 입력 가능"을 추가할게요!
+	DWORD dwMode = 0;
+	::GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE), &dwMode);
+	::SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE), dwMode | ENABLE_PROCESSED_INPUT | ENABLE_MOUSE_INPUT);
+
+	// 커서는 표시하지 않을게요!
+	ShowConsoleCursor(false);
+}
+
+/*
+프론트버퍼가 활성화되어있으면 백버퍼로,
+백버퍼가 활성화되어있으면 프론트버퍼로 변경합니다.
+*/
+void ConsoleController::Flipping()
+{
+	if (m_currentConsoleScreenBufferType == EConsoleScreenBufferType::FRONT)
+	{
+		m_currentConsoleScreenBufferType = EConsoleScreenBufferType::BACK;
+	}
+	else if (m_currentConsoleScreenBufferType == EConsoleScreenBufferType::BACK)
+	{
+		m_currentConsoleScreenBufferType = EConsoleScreenBufferType::FRONT;
+	}
+	else
+	{
+		DEBUG_LOG_CATEGORY(ConsoleController, "알 수 없는 버퍼에요!");
+		return;
+	}
+
+	::SetConsoleActiveScreenBuffer(getCurrentConsoleScreenBufferHandle());
+}
+
+/*
+콘솔창의 핸들을 닫습니다.
+*/
+void ConsoleController::Finalize()
+{
+#ifdef ACTIVATION_CONSOLE_DBL_BUFFERING
+	for (Int32 i = 0; i < CommonFunc::ToUnderlyingType(EConsoleScreenBufferType::MAX); ++i)
+	{
+		::CloseHandle(m_hConsoleScreenBuffers[i]);
+	}
+#else
+	::CloseHandle(m_hConsoleScreenBuffers[CommonFunc::ToUnderlyingType(EConsoleScreenBufferType::FRONT)]);
+#endif
+}
+
+/*
+콘솔창에 문자열을 출력합니다.
+더블 버퍼링인 경우, 활성화되지 않은 버퍼에 문자열을 출력합니다.
+*/
+void ConsoleController::OutputStr(Int32 posX, Int32 posY, const std::string_view& szOutput)
+{
+	DWORD dwWrittenCnt = 0;
+	WriteConsoleOutputCharacter(getCurrentConsoleScreenBufferHandle(),
+		szOutput.data(), szOutput.size(), COORD{ static_cast<SHORT>(posX), static_cast<SHORT>(posY) }, &dwWrittenCnt);
+}
+
+/*
+콘솔창의 영역을 조정합니다.
+*/
+void ConsoleController::AdjustConsoleArea(Uint32 width, Uint32 height)
+{
+	std::string strConsoleProperty = CommonFunc::MakeFormatString("mode con cols=%d lines=%d", width, height);
+	system(strConsoleProperty.c_str());
+
+	ConfigCtx::I()->setResoultion(SizeInfo{ width, height });
+}
+
+/*
+AdjustConsoleArea()의 SizeInfo 오버로딩입니다.
+*/
+void ConsoleController::AdjustConsoleArea(const SizeInfo& sizeInfo)
+{
+	AdjustConsoleArea(sizeInfo.width, sizeInfo.height);
+}
+
+/*
+콘솔창의 스타일을 게임용으로 설정합니다.
+최대화, 최소화, 닫기 버튼이 없고 영역이 고정됩니다.
+*/
+void ConsoleController::DefaultConsoleGameStyle()
+{
+	HWND hConsoleWnd = ::GetConsoleWindow();
+	DWORD style = ::GetWindowLong(hConsoleWnd, GWL_STYLE);
+	style &= ~(WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_THICKFRAME); // WS_MAXIMIZEBOX와 WS_THICKFRAME 제외시키기
+	::SetWindowLong(hConsoleWnd, GWL_STYLE, style);
+
+	// 닫기 버튼을 비활성하는 방법
+	HMENU hSysMenu = ::GetSystemMenu(hConsoleWnd, FALSE);
+	::DeleteMenu(hSysMenu, SC_CLOSE, MF_BYCOMMAND);
+}
+
+/*
+응용 프로그램을 잠시 멈춥니다.
+*/
+void ConsoleController::PauseGame()
+{
+	system("pause");
+}
+
+/*
+콘솔창의 전체 영역을 깨끗하게 지웁니다.
+참고 : https://docs.microsoft.com/en-us/windows/console/clearing-the-screen
+*/
+void ConsoleController::ClearConsoleScreen()
+{
+#if 0
+	system("cls"); // 느려
+#else
+	HANDLE hConsoleScreenBuffer = getCurrentConsoleScreenBufferHandle();
+
+	// 현재 콘솔창의 정보를 가져옵니다.
+	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
+	::ZeroMemory(&consoleScreenBufferInfo, sizeof(consoleScreenBufferInfo));
+	if (::GetConsoleScreenBufferInfo(hConsoleScreenBuffer, &consoleScreenBufferInfo) == FALSE)
+	{
+		return;
+	}
+
+	// 가로 X 세로 = 사각형 넓이
+	Uint32 consoleSize = consoleScreenBufferInfo.dwSize.X * consoleScreenBufferInfo.dwSize.Y;
+
+	// 콘솔창의 버퍼를 공백으로 채웁니다.
+	DWORD dwWrittenCnt = 0;
+	COORD beginConsolePos = { 0, 0 };
+	if (::FillConsoleOutputCharacter(hConsoleScreenBuffer, ' ', consoleSize, beginConsolePos, &dwWrittenCnt) == FALSE)
+	{
+		return;
+	}
+
+	// 콘솔창의 버퍼 속성을 설정합니다.
+	if (::FillConsoleOutputAttribute(hConsoleScreenBuffer, consoleScreenBufferInfo.wAttributes,
+			consoleSize, beginConsolePos, &dwWrittenCnt) == FALSE)
+	{
+		return;
+	}
+
+	// 커서 위치를 처음으로 이동시킵니다.
+	MoveConsolePos(beginConsolePos);
+#endif
+}
+
+/*
+표준 입력 버퍼를 비웁니다.
+*/
+void ConsoleController::ClearStdInputBuffer()
+{
+	char val = '0'; // EOF나 '\n'만 아니면 괜찮아요.
+
+	// 표준 입력 버퍼를 비우는 방법이에요.
+	// std::fflush(stdin)도 있지만, 표준에는 적합하지 않아서 생략할게요.
+	while ( (val != EOF) &&
+		    (val != '\n') )
+	{
+		val = static_cast<char>(getchar());
+	}
+}
+
+/*
+콘솔창의 좌표를 이동시킵니다.
+*/
+void ConsoleController::MoveConsolePos(Int32 posX, Int32 posY)
+{
+	COORD pos{ static_cast<SHORT>(posX), static_cast<SHORT>(posY) };
+	::SetConsoleCursorPosition(getCurrentConsoleScreenBufferHandle(), pos);
+}
+
+/*
+MoveConsolePos()의 COORD 오버로딩입니다.
+*/
+void ConsoleController::MoveConsolePos(const COORD& pos)
+{
+	MoveConsolePos(pos.X, pos.Y);
+}
+
+/*
+sizeInfo를 이용해서 중앙 정렬합니다.
+*/
+void ConsoleController::AlignCenter(const SizeInfo& sizeInfo, Uint32 length)
+{
+	if (sizeInfo.width < length)
+	{
+		DEBUG_LOG("기능은 작동하지만 정상적이지는 않음...");
+	}
+
+	Int32 resultPosX = (sizeInfo.width / 2) - static_cast<Int32>((length / 2));
+	MoveConsolePos(resultPosX, sizeInfo.height / 2);
+}
+
+/*
+콘솔창의 타이틀을 변경합니다.
+*/
+void ConsoleController::ChangeTitle(const std::string_view& szTitle)
+{
+	::SetWindowText(::GetConsoleWindow(), szTitle.data());
+}
+
+/*
+콘솔창의 출력 색상을 변경합니다.
+글자 색상과 배경 색상 둘 다 변경 가능합니다.
+*/
+void ConsoleController::ChangeConsoleOutputColor(EConsoleOutputType consoleOutputType, EConsoleOutputColorType consoleOutputColorType)
+{
+	if ( (consoleOutputColorType < EConsoleOutputColorType::BLACK) ||
+		 (consoleOutputColorType > EConsoleOutputColorType::BRIGHT_WHITE) )
+	{
+		DEBUG_LOG_CATEGORY(ConsoleController, "제공되는 색상 범위를 초과했어요!\n");
+		return;
+	}
+
+	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
+	::ZeroMemory(&consoleScreenBufferInfo, sizeof(consoleScreenBufferInfo));
+
+	HANDLE hConsoleScreenBuffer = getCurrentConsoleScreenBufferHandle();
+	::GetConsoleScreenBufferInfo(hConsoleScreenBuffer, &consoleScreenBufferInfo);
+
+	// CONSOLE_SCREEN_BUFFER_INFO의 wAttributes에 색상 정보가 있어요!
+	// 하위 1바이트에서 상위 4비트는 배경 색상, 하위 4비트는 글자 색상을 의미하죠.
+	// 이 정보와 비트 연산을 이용하면 배경 색상과 글자 색상을 따로 알아낼 수 있습니다!
+	WORD consoleScreenBufferAttr = 0;
+	if (consoleOutputType == EConsoleOutputType::TEXT)
+	{
+		consoleScreenBufferAttr = consoleScreenBufferInfo.wAttributes & 0xFFF0;
+		consoleScreenBufferAttr |= static_cast<BYTE>(consoleOutputColorType);
+	}
+	else if (consoleOutputType == EConsoleOutputType::BACKGROUND)
+	{
+		consoleScreenBufferAttr = consoleScreenBufferInfo.wAttributes & 0xFF0F;
+		consoleScreenBufferAttr |= (static_cast<BYTE>(consoleOutputColorType) << 4);
+	}
+	else
+	{
+		DEBUG_LOG_CATEGORY(ConsoleController, "알 수 없는 출력 타입이에요!");
+	}
+
+	::SetConsoleTextAttribute(hConsoleScreenBuffer, consoleScreenBufferAttr);
+
+	return;
+}
+
+/*
+콘솔창의 커서 출력 여부를 설정합니다.
+마우스 커서가 아니라 키보드 커서를 의미합니다.
+*/
+void ConsoleController::ShowConsoleCursor(bool bShow)
+{
+	CONSOLE_CURSOR_INFO consoleCursorInfo;
+	::ZeroMemory(&consoleCursorInfo, sizeof(consoleCursorInfo));
+
+	HANDLE hConsoleScreenBuffer = getCurrentConsoleScreenBufferHandle();
+	::GetConsoleCursorInfo(hConsoleScreenBuffer, &consoleCursorInfo);
+
+	consoleCursorInfo.bVisible = bShow;
+	::SetConsoleCursorInfo(hConsoleScreenBuffer, &consoleCursorInfo);
+}
+
+/*
+콘솔창의 좌표를 알려줍니다.
+*/
+COORD ConsoleController::GetCurrentConsolePos()
+{
+	COORD pos{ 0, 0 };
+	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
+	::ZeroMemory(&consoleScreenBufferInfo, sizeof(consoleScreenBufferInfo));
+
+	::GetConsoleScreenBufferInfo(getCurrentConsoleScreenBufferHandle(), &consoleScreenBufferInfo);
+	pos.X = consoleScreenBufferInfo.dwCursorPosition.X;
+	pos.Y = consoleScreenBufferInfo.dwCursorPosition.Y;
+
+	return pos;
+}
+
+/*
+현재 콘솔 텍스트 색상을 알려줍니다.
+*/
+EConsoleOutputColorType ConsoleController::QueryCurrentConsoleOutputColor(EConsoleOutputType consoleOutputType)
+{
+	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
+	::ZeroMemory(&consoleScreenBufferInfo, sizeof(consoleScreenBufferInfo));
+
+	::GetConsoleScreenBufferInfo(getCurrentConsoleScreenBufferHandle(), &consoleScreenBufferInfo);
+
+	// CONSOLE_SCREEN_BUFFER_INFO의 wAttributes에 색상 정보가 있어요!
+	// 하위 1바이트에서 상위 4비트는 배경 색상, 하위 4비트는 글자 색상을 의미하죠.
+	// 이 정보와 비트 연산을 이용하면 배경 색상과 글자 색상을 따로 알아낼 수 있습니다!
+	BYTE consoleColorVal = 0;
+	if (consoleOutputType == EConsoleOutputType::TEXT)
+	{
+		consoleColorVal = static_cast<BYTE>(consoleScreenBufferInfo.wAttributes & 0x000F);
+	}
+	else if (consoleOutputType == EConsoleOutputType::BACKGROUND)
+	{
+		consoleColorVal = static_cast<BYTE>((consoleScreenBufferInfo.wAttributes & 0x00F0) >> 4);
+	}
+	else
+	{
+		DEBUG_LOG_CATEGORY(ConsoleController, "알 수 없는 출력 타입이에요!");
+	}
+
+
+	if ( (consoleColorVal < static_cast<INT32>(EConsoleOutputColorType::BLACK)) ||
+		 (consoleColorVal > static_cast<INT32>(EConsoleOutputColorType::BRIGHT_WHITE)) )
+	{
+		DEBUG_LOG_CATEGORY(ConsoleController, "제공되는 색상 범위를 초과했어요!\n");
+		return EConsoleOutputColorType::UNKNOWN;
+	}
+
+	return static_cast<EConsoleOutputColorType>(consoleColorVal);
+}

@@ -13,6 +13,17 @@
 #include "Common\CommonStruct.h"
 #include "Common\CommonMacro.h"
 
+enum class EGameState : Int32
+{
+	NONE = 0,
+	INIT,
+	UPDATE,
+	RENDER,
+	FINAL,
+	TERMINATION_SUCCESS,
+	TERMINATION_ABNORMALITY,
+};
+
 class GameCtx final
 {
 	DECLARE_SINGLETON(GameCtx);

@@ -12,10 +12,19 @@
 #define INPUT_CONTROLLER__H__
 
 #include "Common\CommonNecessary.h"
-#include "Common\CommonEnum.h"
 #include "Common\CommonMacro.h"
 
 DECLARE_LOG_CATEGORY(InputController);
+
+// 입력값 하나에 대한 상태가 아니라 입력 조합에 대한 상태에요!
+enum class EInputMappingState : Int32
+{
+	NONE = 0, // 입력 조합을 누르지 않은 상태
+	UP,       // 입력 조합을 뗀 상태
+	PRESSING, // 입력 조합을 누르고 있는 상태
+	DOWN,     // 입력 조합을 누른 상태
+	MAX,
+};
 
 struct InputMappingInfo
 {
@@ -35,7 +44,7 @@ public:
 	static const Uint8 MAX_INPUT_RANGE = UINT8_MAX;
 
 	void PollInput();
-	void DeleteAllInputMappingInfo();
+	void Finalize();
 	bool CheckInputState(const std::string_view& szInputMappingName, EInputMappingState inputState) const;
 	InputMappingInfo* FindInputMappingInfo(const std::string_view& szInputMappingName) const;
 

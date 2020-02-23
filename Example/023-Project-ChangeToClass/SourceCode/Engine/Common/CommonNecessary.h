@@ -32,6 +32,7 @@
 #include <vector>
 #include <bitset>
 #include <forward_list>
+#include <array>
 
 #pragma comment(lib, "winmm.lib") // 윈도우 멀티미디어 링크
 

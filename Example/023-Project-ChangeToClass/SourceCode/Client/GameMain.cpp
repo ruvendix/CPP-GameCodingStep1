@@ -15,8 +15,10 @@
 #include "Context\GameContext.h"
 #include "Manager\SceneManager.h"
 #include "Manager\TriggerTimerManager.h"
+#include "Manager\PerformanceProfileMgr.h"
 #include "Controller\InputController.h"
 #include "Controller\FrameController.h"
+#include "Controller\ConsoleController.h"
 #include "Element\Scene\GameIntroMenuScene.h"
 
 class GameMainHelper final
@@ -41,19 +43,15 @@ public:
 */
 void GameMainHelper::Initialize()
 {
-	CommonFunc::ChangeTitle("Change To Class");
+	ConsoleController::I()->Initialize("Change To Class", SizeInfo{ 125, 30 });
+	//ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::BACKGROUND, EConsoleOutputColorType::GREEN);
 
-	ConfigCtx::I()->setResoultion(SizeInfo{ 125, 30 });
 	GameCtx::I()->setCurrentGameState(EGameState::INIT);
-
-	CommonFunc::AdjustConsoleArea(ConfigCtx::I()->getResoultion());
-	CommonFunc::GameConsoleStyle();
-
 	SceneMgr::I()->CreateScene<GameIntroMenuScene>(ESceneType::CURRENT);
 	
 	FrameController::I()->Initialize();
-	FrameController::I()->setFrameRateType(EFrameRateType::CONSTANT);
-	//FrameController::I()->ModifyLimitedFrame(300);
+	//FrameController::I()->setFrameRateType(EFrameRateType::CONSTANT);
+	FrameController::I()->ModifyLimitedFrame(30);
 
 	DEBUG_LOG("게임 초기화 처리 완료!");
 }
@@ -95,15 +93,20 @@ void GameMainHelper::Finalize()
 		ErrorHandler::ShowError(EErrorType::FINAL_FAILED);
 	}
 	
-	SceneMgr::I()->DeleteScene();
-	TriggerTimerMgr::I()->DeleteAllTriggerTimer();
-	InputController::I()->DeleteAllInputMappingInfo();
+	SceneMgr::I()->Finalize();
+	TriggerTimerMgr::I()->Finalize();
+	InputController::I()->Finalize();
+	ConsoleController::I()->Finalize();
+
+	PerformanceProfileMgr::I()->Report();
 
 	DEBUG_LOG("게임 마무리 처리 완료!");
 }
 
 void GameMainHelper::Update()
 {
+	PERFORMANCE_PROFILE_START(0);
+
 	GameCtx::I()->setCurrentGameState(EGameState::UPDATE);
 
 	// FPS와 델타타임부터 갱신해야 해요!
@@ -134,6 +137,8 @@ void GameMainHelper::Update()
 	{
 		ErrorHandler::ShowError(EErrorType::UPDATE_FAILED);
 	}
+
+	PERFORMANCE_PROFILE_END();
 }
 
 void GameMainHelper::Render()
@@ -144,18 +149,25 @@ void GameMainHelper::Render()
 	}
 
 	// 콘솔 스크린 버퍼를 깨끗하게 지울게요! (Clear)
-	CommonFunc::ClearConsoleScreen();
+	ConsoleController::I()->ClearConsoleScreen();
 
+#ifndef ACTIVATION_CONSOLE_DBL_BUFFERING
 	// 렌더링이 끝난 후에 콘솔 좌표를 처음으로 복구해야 해요! (Flip)
-	COORD backupPos = CommonFunc::GetCurrentConsolePos();
+	COORD backupPos = ConsoleController::I()->GetCurrentConsolePos();
+#endif
 
 	if (SceneMgr::I()->getCurrentScene()->OnRender() == EErrorType::RENDER_FAILED)
 	{
 		ErrorHandler::ShowError(EErrorType::RENDER_FAILED);
 	}
 
+#ifdef ACTIVATION_CONSOLE_DBL_BUFFERING
+	// 활성화시킬 버퍼를 변경할게요!
+	ConsoleController::I()->Flipping();
+#else
 	// 처음 콘솔 좌표로 이동시킬게요!
-	CommonFunc::MoveConsolePos(backupPos);
+	ConsoleController::I()->MoveConsolePos(backupPos);
+#endif
 }
 
 void GameMainHelper::DestorySingleton()
@@ -164,8 +176,10 @@ void GameMainHelper::DestorySingleton()
 	GameCtx::Destroy();
 	SceneMgr::Destroy();
 	TriggerTimerMgr::Destroy();
+	PerformanceProfileMgr::Destroy();
 	InputController::Destroy();
 	FrameController::Destroy();
+	ConsoleController::Destroy();
 	ConfigCtx::Destroy();
 	DEBUG_LOG("==============================================================================================");
 }

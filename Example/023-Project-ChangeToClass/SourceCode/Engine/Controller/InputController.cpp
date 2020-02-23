@@ -105,7 +105,7 @@ void InputController::PollInput()
 			else if (inputMappingState == EInputMappingState::UP)
 			{
 				inputMappingState = EInputMappingState::NONE;
-				DEBUG_LOG_CATEGORY(InputController, "입력 매핑을 계쏙 만족하지 않음!");
+				DEBUG_LOG_CATEGORY(InputController, "입력 매핑을 계속 만족하지 않음!");
 			}
 		}
 
@@ -117,7 +117,7 @@ void InputController::PollInput()
 /*
 모든 입력 매핑 정보를 제거합니다.
 */
-void InputController::DeleteAllInputMappingInfo()
+void InputController::Finalize()
 {
 	for (auto& iter : m_mapInputMappingInfo)
 	{

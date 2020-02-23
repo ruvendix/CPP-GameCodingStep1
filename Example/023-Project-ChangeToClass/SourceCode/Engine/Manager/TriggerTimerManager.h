@@ -17,7 +17,7 @@
 
 #include "Timer\TriggerTimer.h"
 
-DECLARE_LOG_CATEGORY(TriggerTimer);
+DECLARE_LOG_CATEGORY(TriggerTimerMgr);
 
 class TriggerTimerMgr final
 {
@@ -30,7 +30,7 @@ public:
 
 	void UpdateTriggerTimer();
 	void DeleteTriggerTimer(const std::string_view& szTriggerTimer);
-	void DeleteAllTriggerTimer();
+	void Finalize();
 
 	template <typename TElem>
 	void AddTriggerTimer(const std::string& strTriggerTimer, Real32 triggerTime,
@@ -46,7 +46,7 @@ public:
 			pTriggerTimer->setTime(triggerTime);
 			pTriggerTimer->setFunc(std::bind(elemMemberFunc, pElem));
 			pTriggerTimer->setRepeat(bRepeat);
-			DEBUG_LOG_CATEGORY(TriggerTimer, "타이머가 이미 존재하므로 이름(%s)을 제외한 모든 데이터를 갱신!", strTriggerTimer);
+			DEBUG_LOG_CATEGORY(TriggerTimerMgr, "타이머가 이미 존재하므로 이름(%s)을 제외한 모든 데이터를 갱신!", strTriggerTimer);
 
 			return;
 		}

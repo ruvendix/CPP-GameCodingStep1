@@ -27,7 +27,7 @@ void SceneMgr::FlipCurrentScene()
 /*
 모든 씬을 제거합니다.
 */
-void SceneMgr::DeleteScene()
+void SceneMgr::Finalize()
 {
 	SAFE_DELETE(m_pCurrentScene);
 	SAFE_DELETE(m_pNextScene);

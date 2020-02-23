@@ -11,7 +11,10 @@
 #ifndef COMMON_FUNC__H__
 #define COMMON_FUNC__H__
 
-#include "Common\CommonMacro.h"
+#include "CommonNecessary.h"
+#include "CommonType.h"
+#include "CommonStruct.h"
+#include "CommonMacro.h"
 
 class CommonFunc final
 {
@@ -49,23 +52,10 @@ public:
 #pragma endregion
 
 #pragma region 일반 함수
-    static void AdjustConsoleArea(Int32 width, Int32 height);
-    static void AdjustConsoleArea(const SizeInfo& sizeInfo);
-    static void GameConsoleStyle();
-    static void PauseGameApp();
-    static void ClearConsoleScreen();
-    static void ClearStdInputBuffer();
-    static void MoveConsolePos(Int32 x, Int32 y);
-    static void MoveConsolePos(const COORD& pos);
-    static void AlignCenterToConsole(const SizeInfo& sizeInfo, Uint32 length);
-    static void ChangeTitle(const std::string_view& szTitle);
-
     static std::string MakeFormatString(const char* szFormat, ...);
-    static COORD GetCurrentConsolePos();
     static bool InputNumClamp(_Out_ Int32& num, Int32 minNum, Int32 maxNum); // 직관적이도록 _Out_을 맨 앞으로!
     static Int32 Clamp(Int32 val, Int32 minVal, Int32 maxVal);
     static Int32 ClampCircular(Int32 val, Int32 minVal, Int32 maxVal);
-    static EConsoleTextColorType QueryCurrentConsoleTextColor();
 #pragma endregion
 
 #pragma region 매크로에서만 사용되는 함수

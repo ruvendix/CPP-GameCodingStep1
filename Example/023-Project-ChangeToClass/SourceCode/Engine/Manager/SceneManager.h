@@ -15,12 +15,18 @@
 
 DECLARE_LOG_CATEGORY(SceneMgr);
 
+enum class ESceneType : Int32
+{
+	CURRENT = 0,
+	NEXT,
+};
+
 class SceneMgr final
 {
 	DECLARE_SINGLETON(SceneMgr);
 
 public:
-	void DeleteScene();
+	void Finalize();
 	void FlipCurrentScene();
 
 	bool IsGotoNextScene() const

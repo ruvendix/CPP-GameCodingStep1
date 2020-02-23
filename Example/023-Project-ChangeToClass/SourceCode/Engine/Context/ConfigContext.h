@@ -9,6 +9,7 @@
 #ifndef CONFIG_CONTEXT__H__
 #define CONFIG_CONTEXT__H__
 
+#include "Common\CommonNecessary.h"
 #include "Common\CommonStruct.h"
 #include "Common\CommonMacro.h"
 
@@ -26,8 +27,6 @@ public:
 	{
 		m_resoultion = resolution;
 	}
-
-
 
 private:
 	SizeInfo m_resoultion;

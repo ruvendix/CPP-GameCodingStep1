@@ -10,145 +10,8 @@
 #include "PCH.h"
 #include "CommonFunc.h"
 
-/*
-콘솔 영역을 조정합니다.
-*/
-void CommonFunc::AdjustConsoleArea(Int32 width, Int32 height)
-{
-	std::string strConsoleProperty = MakeFormatString("mode con cols=%d lines=%d", width, height);
-	system(strConsoleProperty.c_str());
-}
-
-/*
-SizeInfo 오버로딩입니다.
-*/
-void CommonFunc::AdjustConsoleArea(const SizeInfo& sizeInfo)
-{
-	AdjustConsoleArea(sizeInfo.width, sizeInfo.height);
-}
-
-/*
-게임용 콘솔 스타일로 설정합니다.
-최대화, 최소화, 닫기 버튼이 없고 영역이 고정됩니다.
-*/
-void CommonFunc::GameConsoleStyle()
-{
-	HWND hConsoleWnd = ::GetConsoleWindow();
-	DWORD style = ::GetWindowLong(hConsoleWnd, GWL_STYLE);
-	style &= ~(WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_THICKFRAME); // WS_MAXIMIZEBOX와 WS_THICKFRAME 제외시키기
-	::SetWindowLong(hConsoleWnd, GWL_STYLE, style);
-
-	// 닫기 버튼을 비활성하는 방법
-	HMENU hSysMenu = ::GetSystemMenu(hConsoleWnd, FALSE);
-	::DeleteMenu(hSysMenu, SC_CLOSE, MF_BYCOMMAND);
-}
-
-/*
-응용 프로그램을 잠시 멈춥니다.
-*/
-void CommonFunc::PauseGameApp()
-{
-	system("pause");
-}
-
-/*
-콘솔창을 깨끗하게 지웁니다.
-참고 : https://docs.microsoft.com/en-us/windows/console/clearing-the-screen
-*/
-void CommonFunc::ClearConsoleScreen()
-{
-#if 0
-	system("cls"); // 느려
-#else
-	HANDLE hConsole = ::GetStdHandle(STD_OUTPUT_HANDLE);
-	CHECK_NULLPTR(hConsole);
-
-	// 현재 콘솔창의 정보를 가져옵니다.
-	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
-	::ZeroMemory(&consoleScreenBufferInfo, sizeof(consoleScreenBufferInfo));
-	if (::GetConsoleScreenBufferInfo(hConsole, &consoleScreenBufferInfo) == FALSE)
-	{
-		return;
-	}
-
-	// 가로 X 세로 = 사각형 넓이
-	Uint32 consoleSize = consoleScreenBufferInfo.dwSize.X * consoleScreenBufferInfo.dwSize.Y;
-
-	// 콘솔창의 버퍼를 공백으로 채웁니다.
-	Uint32 writtenCnt = 0;
-	COORD beginConsolePos = { 0, 0 };
-	if (::FillConsoleOutputCharacter(hConsole, ' ', consoleSize,
-		beginConsolePos, reinterpret_cast<LPDWORD>(&writtenCnt)) == FALSE)
-	{
-		return;
-	}
-
-	// 콘솔창의 버퍼 속성을 설정합니다.
-	if (::FillConsoleOutputAttribute(hConsole, consoleScreenBufferInfo.wAttributes,
-		consoleSize, beginConsolePos, reinterpret_cast<LPDWORD>(&writtenCnt)) == FALSE)
-	{
-		return;
-	}
-
-	// 커서 위치를 처음으로 이동시킵니다.
-	MoveConsolePos(beginConsolePos);
-#endif
-}
-
-/*
-표준 입력 버퍼를 비웁니다.
-*/
-void CommonFunc::ClearStdInputBuffer()
-{
-	char val = '0'; // EOF나 '\n'만 아니면 괜찮아요.
-
-	// 표준 입력 버퍼를 비우는 방법이에요.
-	// std::fflush(stdin)도 있지만, 표준에는 적합하지 않아서 생략할게요.
-	while ( (val != EOF) &&
-		    (val != '\n') )
-	{
-		val = static_cast<char>(getchar());
-	}
-}
-
-/*
-콘솔 좌표를 이동시킵니다.
-*/
-void CommonFunc::MoveConsolePos(Int32 x, Int32 y)
-{
-	const COORD pos{static_cast<short>(x), static_cast<short>(y)};
-	::SetConsoleCursorPosition(::GetStdHandle(STD_OUTPUT_HANDLE), pos);
-}
-
-/*
-COORD 오버로딩입니다.
-*/
-void CommonFunc::MoveConsolePos(const COORD& pos)
-{
-	::SetConsoleCursorPosition(::GetStdHandle(STD_OUTPUT_HANDLE), pos);
-}
-
-/*
-sizeInfo를 이용해서 중앙 정렬합니다.
-*/
-void CommonFunc::AlignCenterToConsole(const SizeInfo& sizeInfo, Uint32 length)
-{
-	if (sizeInfo.width < length)
-	{
-		DEBUG_LOG("기능은 작동하지만 정상적이지는 않음...");
-	}
-
-	Int32 resultPosX = (sizeInfo.width / 2) - static_cast<Int32>((length / 2));
-	MoveConsolePos(resultPosX, sizeInfo.height / 2);
-}
-
-/*
-게임 타이틀을 변경합니다.
-*/
-void CommonFunc::ChangeTitle(const std::string_view& szTitle)
-{
-	::SetWindowText(::GetConsoleWindow(), szTitle.data());
-}
+#include "Context\ConfigContext.h"
+#include "Controller\ConsoleController.h"
 
 /*
 로그를 출력합니다.
@@ -206,24 +69,11 @@ std::string CommonFunc::MakeFormatString(const char* szFormat, ...)
 }
 
 /*
-현재 콘솔 좌표를 알려줍니다.
-*/
-COORD CommonFunc::GetCurrentConsolePos()
-{
-	COORD pos{0, 0};
-	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
-	::ZeroMemory(&consoleScreenBufferInfo, sizeof(consoleScreenBufferInfo));
-
-	::GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &consoleScreenBufferInfo);
-	pos.X = consoleScreenBufferInfo.dwCursorPosition.X;
-	pos.Y = consoleScreenBufferInfo.dwCursorPosition.Y;
-
-	return pos;
-}
-
-/*
 숫자를 입력 받음과 동시에 입력 범위를 벗어나면 범위 안으로 자동 조절합니다.
 */
+
+// 이거 새로운 입력 방식으로 수정해야 함!
+// 마우스 클릭이나 왔다 갔다로 키보드
 bool CommonFunc::InputNumClamp(_Out_ Int32& num, Int32 minNum, Int32 maxNum)
 {
 	// 최솟값이 최댓값보다 크다면 둘을 바꿔야 해요! (swap)
@@ -232,12 +82,12 @@ bool CommonFunc::InputNumClamp(_Out_ Int32& num, Int32 minNum, Int32 maxNum)
 		std::swap(minNum, maxNum);
 	}
 
-	printf("입력 범위를 벗어나면 자동 조절됩니다. (%d ~ %d)\n", minNum, maxNum);
+	DEBUG_LOG_CATEGORY(Common, "입력 범위를 벗어나면 자동 조절됩니다. (%d ~ %d)\n", minNum, maxNum);
 	printf("> ");
 
 	Int32 inputResult = scanf_s("%d", &num);
 	printf("\n");
-	ClearStdInputBuffer();
+	ConsoleController::I()->ClearStdInputBuffer();
 
 	if (inputResult == 0)
 	{
@@ -286,23 +136,4 @@ Int32 CommonFunc::ClampCircular(Int32 val, Int32 minVal, Int32 maxVal)
 	}
 
 	return resultVal;
-}
-
-/*
-현재 콘솔 텍스트 색상을 알려줍니다.
-*/
-EConsoleTextColorType CommonFunc::QueryCurrentConsoleTextColor()
-{
-	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
-	::ZeroMemory(&consoleScreenBufferInfo, sizeof(consoleScreenBufferInfo));
-
-	::GetConsoleScreenBufferInfo(::GetStdHandle(STD_OUTPUT_HANDLE), &consoleScreenBufferInfo);
-
-	if ( (consoleScreenBufferInfo.wAttributes < static_cast<INT32>(EConsoleTextColorType::BLACK)) ||
-		 (consoleScreenBufferInfo.wAttributes > static_cast<INT32>(EConsoleTextColorType::BRIGHT_WHITE)) )
-	{
-		printf("제공되는 색상 범위를 초과했어요!\n");
-	}
-
-	return static_cast<EConsoleTextColorType>(consoleScreenBufferInfo.wAttributes);
 }

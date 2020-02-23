@@ -14,7 +14,6 @@
 // 엔진의 공용 헤더 파일부터 포함해야 해요!
 #include "Common\CommonNecessary.h"
 #include "Common\CommonType.h"
-#include "Common\CommonEnum.h"
 #include "Common\CommonStruct.h"
 #include "Common\CommonMacro.h"
 #include "Common\CommonFunc.h"

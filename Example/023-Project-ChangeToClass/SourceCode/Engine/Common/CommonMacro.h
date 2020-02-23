@@ -156,4 +156,34 @@ public:\
 private:\
 	NameTag m_nameTag;
 
+// ACTIVATION_CONSOLE_DBL_BUFFERING 활성화 여부에 따라 출력 함수가 변경됩니다.
+#ifdef ACTIVATION_CONSOLE_DBL_BUFFERING
+#define PRINTF(posX, posY, szFormat, ...)\
+	ConsoleController::I()->OutputStr(posX, posY, CommonFunc::MakeFormatString(szFormat, __VA_ARGS__));
+#else
+#define PRINTF(posX, posY, szFormat, ...)\
+	ConsoleController::I()->MoveConsolePos(posX, posY);\
+	printf(szFormat, __VA_ARGS__)
+#endif
+
+#define FRAME_UPDATE_LIMITED(FPS)\
+private:\
+	Real32 m_localTime = 0.0f;\
+	Real32 m_updateTime = (1.0f / FPS)
+
+#define BEGIN_FRAME_UPDDATE_LIMITED()\
+	m_localTime += FrameController::I()->getDeltaTime();\
+	if (m_updateTime < m_localTime)\
+	{\
+		m_localTime -= m_updateTime
+
+#define END_FRAME_UPDATE_LIMITED()\
+	}
+
+#define PERFORMANCE_PROFILE_START(inputDataCnt)\
+	Int32 ID = __COUNTER__;\
+	PerformanceProfileMgr::I()->Start(__FUNCSIG__, ID, inputDataCnt)
+
+#define PERFORMANCE_PROFILE_END() PerformanceProfileMgr::I()->End(ID)
+
 #endif

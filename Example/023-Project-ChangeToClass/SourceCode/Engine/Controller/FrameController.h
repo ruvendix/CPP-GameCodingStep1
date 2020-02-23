@@ -20,6 +20,13 @@
 
 DECLARE_LOG_CATEGORY(FrameController);
 
+enum class EFrameRateType : Int32
+{
+	CONSTANT = 0,
+	VARIABLE_LIMITED,
+	VARIABLE_UNLIMITED,
+};
+
 class FrameController final
 {
 	DECLARE_SINGLETON(FrameController);

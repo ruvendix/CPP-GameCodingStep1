@@ -15,6 +15,8 @@
 #include "Manager\SceneManager.h"
 #include "Manager\TriggerTimerManager.h"
 #include "Controller\InputController.h"
+#include "Controller\ConsoleController.h"
+#include "Controller\FrameController.h"
 
 namespace
 {
@@ -75,13 +77,13 @@ void GameIntroMenuSceneHelper::DrawScene(_Inout_ GameIntroMenuScene& helperTarge
 */
 void GameIntroMenuSceneHelper::DrawTitle()
 {
-	printf("   _______  __   __  _______  __    _  _______  _______    _______  _______    _______  ___      _______  _______  _______ \n");
-	printf("  |       ||  | |  ||   _   ||  |  | ||       ||       |  |       ||       |  |       ||   |    |   _   ||       ||       |\n");
-	printf("  |       ||  |_|  ||  |_|  ||   |_| ||    ___||    ___|  |_     _||   _   |  |       ||   |    |  |_|  ||  _____||  _____|\n");
-	printf("  |     __||       ||       ||       ||   | __ |   |___     |   |  |  | |  |  |     __||   |    |       || |_____ | |_____ \n");
-	printf("  |    |__ |       ||       ||  _    ||   ||  ||    ___|    |   |  |  |_|  |  |    |__ |   |___ |       ||_____  ||_____  |\n");
-	printf("  |       ||   _   ||   _   || | |   ||   |_| ||   |___     |   |  |       |  |       ||       ||   _   | _____| | _____| |\n");
-	printf("  |_______||__| |__||__| |__||_|  |__||_______||_______|    |___|  |_______|  |_______||_______||__| |__||_______||_______|\n");
+	PRINTF(0, 0, "   _______  __   __  _______  __    _  _______  _______    _______  _______    _______  ___      _______  _______  _______ ");
+	PRINTF(0, 1, "  |       ||  | |  ||   _   ||  |  | ||       ||       |  |       ||       |  |       ||   |    |   _   ||       ||       |");
+	PRINTF(0, 2, "  |       ||  |_|  ||  |_|  ||   |_| ||    ___||    ___|  |_     _||   _   |  |       ||   |    |  |_|  ||  _____||  _____|");
+	PRINTF(0, 3, "  |     __||       ||       ||       ||   | __ |   |___     |   |  |  | |  |  |     __||   |    |       || |_____ | |_____ ");
+	PRINTF(0, 4, "  |    |__ |       ||       ||  _    ||   ||  ||    ___|    |   |  |  |_|  |  |    |__ |   |___ |       ||_____  ||_____  |");
+	PRINTF(0, 5, "  |       ||   _   ||   _   || | |   ||   |_| ||   |___     |   |  |       |  |       ||       ||   _   | _____| | _____| |");
+	PRINTF(0, 6, "  |_______||__| |__||__| |__||_|  |__||_______||_______|    |___|  |_______|  |_______||_______||__| |__||_______||_______|");
 }
 
 /*
@@ -97,7 +99,9 @@ void GameIntroMenuSceneHelper::DrawAllMenu(_Inout_ GameIntroMenuScene& helperTar
 		}
 
 		AlignCenterMenu(helperTarget, *iter);
-		printf("%s", iter->getNameTag().c_str());
+
+		COORD currentConsolePos = ConsoleController::I()->GetCurrentConsolePos();
+		PRINTF(currentConsolePos.X, currentConsolePos.Y, "%s", iter->getNameTag().c_str());
 	}
 }
 
@@ -112,11 +116,8 @@ void GameIntroMenuSceneHelper::DrawSelector(const GameIntroMenuScene& helperTarg
 	GameIntroMenu* pGameIntroMenu = helperTarget.m_vecGameIntroMenu[helperTarget.m_selectedGameIntroMenuIdx];
 	CHECK_NULLPTR(pGameIntroMenu);
 
-	CommonFunc::MoveConsolePos(longestMenuPos.X - MENU_MARGIN_LENGTH, pGameIntroMenu->getPos().Y);
-	printf("◀");
-
-	CommonFunc::MoveConsolePos(longestMenuPos.X + strLongestMenuName.size() + MENU_MARGIN_LENGTH - 2, pGameIntroMenu->getPos().Y);
-	printf("▶");
+	PRINTF(longestMenuPos.X - MENU_MARGIN_LENGTH, pGameIntroMenu->getPos().Y, "◀");
+	PRINTF(longestMenuPos.X + strLongestMenuName.size() + MENU_MARGIN_LENGTH - 2, pGameIntroMenu->getPos().Y, "▶");
 }
 
 /*
@@ -124,15 +125,15 @@ void GameIntroMenuSceneHelper::DrawSelector(const GameIntroMenuScene& helperTarg
 */
 void GameIntroMenuSceneHelper::AlignCenterMenu(_Inout_ GameIntroMenuScene& helperTarget, _Inout_ GameIntroMenu& gameIntroMenu)
 {
-	CommonFunc::AlignCenterToConsole(ConfigCtx::I()->getResoultion(), gameIntroMenu.getNameTag().size());
+	ConsoleController::I()->AlignCenter(ConfigCtx::I()->getResoultion(), gameIntroMenu.getNameTag().size());
 
 	// 이동된 중앙 정렬 좌표에서 오프셋만큼 이동!
-	COORD currentPos = CommonFunc::GetCurrentConsolePos();
+	COORD currentPos = ConsoleController::I()->GetCurrentConsolePos();
 	currentPos.X += gameIntroMenu.getOffsetCenterPos().X;
 	currentPos.Y += gameIntroMenu.getOffsetCenterPos().Y;
 
 	gameIntroMenu.setPos(currentPos);
-	CommonFunc::MoveConsolePos(currentPos);
+	ConsoleController::I()->MoveConsolePos(currentPos);
 
 	m_queryLongestMenuInfoCallback(helperTarget, gameIntroMenu);
 }
@@ -190,6 +191,8 @@ EErrorType GameIntroMenuScene::OnInitialize()
 
 EErrorType GameIntroMenuScene::OnUpdate()
 {
+	BEGIN_FRAME_UPDDATE_LIMITED();
+
 	if (InputController::I()->CheckInputState("SelectUp", EInputMappingState::PRESSING) == true)
 	{
 		--m_selectedGameIntroMenuIdx;
@@ -204,11 +207,13 @@ EErrorType GameIntroMenuScene::OnUpdate()
 		DEBUG_LOG("SelectDown 눌렀다!");
 	}
 
-	if (InputController::I()->CheckInputState("SelectMenu", EInputMappingState::PRESSING) == true)
+	if (InputController::I()->CheckInputState("SelectMenu", EInputMappingState::DOWN) == true)
 	{
-		TriggerTimerMgr::I()->AddTriggerTimer("인트로 메뉴에서의 선택!", 3.0f, this, &GameIntroMenuScene::OnTrigger_ExcuteMenu, false);
+		TriggerTimerMgr::I()->AddTriggerTimer("ExcuteMenu", 3.0f, this, &GameIntroMenuScene::OnTrigger_ExcuteMenu, false);
 		DEBUG_LOG("SelectMenu 눌렀다!");
 	}
+
+	END_FRAME_UPDATE_LIMITED();
 	
 	return EErrorType::NONE;
 }
@@ -242,7 +247,7 @@ GameIntroMenu::GameIntroMenu(const std::string_view& szNameTag, const COORD& off
 	m_pos{ 0, 0 },
 	m_offsetCenterPos(offsetCenterPos)
 {
-
+	
 }
 
 EErrorType GameIntroMenu::OnExcute()

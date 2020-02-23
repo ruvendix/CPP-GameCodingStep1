@@ -24,8 +24,7 @@ public:
 #pragma endregion
 
 	void StartTime();
-	void EndTime();
-	void ShowResult();
+	Real32 EndTime();
 
 private:
 	Uint32 m_startTime = 0;

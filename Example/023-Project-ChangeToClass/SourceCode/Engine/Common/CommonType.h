@@ -20,11 +20,6 @@ using Uint16 = unsigned __int16;
 using Uint32 = unsigned __int32;
 using Uint64 = unsigned __int64;
 
-using Byte     = Uint8;
-using Word     = Uint16;
-using DblWord  = Uint32;
-using QuadWord = Uint64;
-
 using TInput = Uint8;
 using TSize  = Uint32;
 
