@@ -142,7 +142,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\Client\Context\GameContext.cpp" />
-    <ClCompile Include="SourceCode\Client\Element\Scene\GameIntroMenuScene.cpp" />
     <ClCompile Include="SourceCode\Client\GameMain.cpp" />
     <ClCompile Include="SourceCode\Client\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -168,7 +167,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Client\Context\GameContext.h" />
-    <ClInclude Include="SourceCode\Client\Element\Scene\GameIntroMenuScene.h" />
     <ClInclude Include="SourceCode\Client\GameMain.h" />
     <ClInclude Include="SourceCode\Client\PCH.h" />
     <ClInclude Include="SourceCode\Engine\Common\CommonStruct.h" />

@@ -53,6 +53,8 @@ void ConsoleController::Initialize(const std::string_view& szTitle, const SizeIn
 		// 정보 설정이 완료되었으니 저장할게요!
 		m_hConsoleScreenBuffers[i] = hConsoleScreenBuffer;
 	}
+
+	m_currentConsoleScreenBufferType = EConsoleScreenBufferType::BACK;
 #else
 	m_hConsoleScreenBuffers[CommonFunc::ToUnderlyingType(EConsoleScreenBufferType::FRONT)] = ::GetStdHandle(STD_OUTPUT_HANDLE);
 #endif
@@ -72,6 +74,9 @@ void ConsoleController::Initialize(const std::string_view& szTitle, const SizeIn
 */
 void ConsoleController::Flipping()
 {
+	// 버퍼에 렌더링한 내용을 활성화시키는 부분!
+	::SetConsoleActiveScreenBuffer(getCurrentConsoleScreenBufferHandle());
+
 	if (m_currentConsoleScreenBufferType == EConsoleScreenBufferType::FRONT)
 	{
 		m_currentConsoleScreenBufferType = EConsoleScreenBufferType::BACK;
@@ -82,11 +87,9 @@ void ConsoleController::Flipping()
 	}
 	else
 	{
-		DEBUG_LOG_CATEGORY(ConsoleController, "알 수 없는 버퍼에요!");
+		ErrorHandler::ShowErrorString(EErrorType::UNKNOWN_CONSOLE_SCREEN_BUFFER_TYPE);
 		return;
 	}
-
-	::SetConsoleActiveScreenBuffer(getCurrentConsoleScreenBufferHandle());
 }
 
 /*
@@ -264,7 +267,7 @@ void ConsoleController::ChangeConsoleOutputColor(EConsoleOutputType consoleOutpu
 	if ( (consoleOutputColorType < EConsoleOutputColorType::BLACK) ||
 		 (consoleOutputColorType > EConsoleOutputColorType::BRIGHT_WHITE) )
 	{
-		DEBUG_LOG_CATEGORY(ConsoleController, "제공되는 색상 범위를 초과했어요!\n");
+		ErrorHandler::ShowErrorString(EErrorType::UNKNOWN_CONSOLE_COLOR);
 		return;
 	}
 
@@ -290,7 +293,7 @@ void ConsoleController::ChangeConsoleOutputColor(EConsoleOutputType consoleOutpu
 	}
 	else
 	{
-		DEBUG_LOG_CATEGORY(ConsoleController, "알 수 없는 출력 타입이에요!");
+		ErrorHandler::ShowErrorString(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE);
 	}
 
 	::SetConsoleTextAttribute(hConsoleScreenBuffer, consoleScreenBufferAttr);
@@ -307,11 +310,14 @@ void ConsoleController::ShowConsoleCursor(bool bShow)
 	CONSOLE_CURSOR_INFO consoleCursorInfo;
 	::ZeroMemory(&consoleCursorInfo, sizeof(consoleCursorInfo));
 
-	HANDLE hConsoleScreenBuffer = getCurrentConsoleScreenBufferHandle();
-	::GetConsoleCursorInfo(hConsoleScreenBuffer, &consoleCursorInfo);
+	for (Uint32 i = 0; i < static_cast<Uint32>(EConsoleScreenBufferType::MAX); ++i)
+	{
+		HANDLE hConsoleScreenBuffer = m_hConsoleScreenBuffers[i];
+		::GetConsoleCursorInfo(hConsoleScreenBuffer, &consoleCursorInfo);
 
-	consoleCursorInfo.bVisible = bShow;
-	::SetConsoleCursorInfo(hConsoleScreenBuffer, &consoleCursorInfo);
+		consoleCursorInfo.bVisible = bShow;
+		::SetConsoleCursorInfo(hConsoleScreenBuffer, &consoleCursorInfo);
+	}
 }
 
 /*
@@ -354,14 +360,14 @@ EConsoleOutputColorType ConsoleController::QueryCurrentConsoleOutputColor(EConso
 	}
 	else
 	{
-		DEBUG_LOG_CATEGORY(ConsoleController, "알 수 없는 출력 타입이에요!");
+		ErrorHandler::ShowErrorString(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE);
 	}
 
 
 	if ( (consoleColorVal < static_cast<INT32>(EConsoleOutputColorType::BLACK)) ||
 		 (consoleColorVal > static_cast<INT32>(EConsoleOutputColorType::BRIGHT_WHITE)) )
 	{
-		DEBUG_LOG_CATEGORY(ConsoleController, "제공되는 색상 범위를 초과했어요!\n");
+		ErrorHandler::ShowErrorString(EErrorType::UNKNOWN_CONSOLE_COLOR);
 		return EConsoleOutputColorType::UNKNOWN;
 	}
 

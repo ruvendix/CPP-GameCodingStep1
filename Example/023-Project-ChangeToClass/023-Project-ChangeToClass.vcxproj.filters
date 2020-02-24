@@ -63,6 +63,12 @@
     <Filter Include="소스 파일\1. Engine\Timer">
       <UniqueIdentifier>{2a3d2b9b-a6fa-4f90-b0d2-ac37eb39e29b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\2. Client\Element\Scene\IntroMenuScene">
+      <UniqueIdentifier>{6fda6ba4-f3df-446e-b865-44395c1cc445}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenu">
+      <UniqueIdentifier>{d3164b5a-c506-4089-a642-95410849f075}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\Main.cpp">
@@ -100,9 +106,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Engine\Controller\InputController.cpp">
       <Filter>소스 파일\1. Engine\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Client\Element\Scene\GameIntroMenuScene.cpp">
-      <Filter>소스 파일\2. Client\Element\Scene</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Engine\Controller\FrameController.cpp">
       <Filter>소스 파일\1. Engine\Controller</Filter>
@@ -177,9 +180,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Engine\Controller\InputController.h">
       <Filter>소스 파일\1. Engine\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Client\Element\Scene\GameIntroMenuScene.h">
-      <Filter>소스 파일\2. Client\Element\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Engine\Controller\FrameController.h">
       <Filter>소스 파일\1. Engine\Controller</Filter>

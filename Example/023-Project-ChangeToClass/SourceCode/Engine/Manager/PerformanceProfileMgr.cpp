@@ -24,7 +24,7 @@ void PerformanceProfileMgr::Start(const std::string_view& szFuncSig, Int32 ID, I
 	if (iter != m_mapPerformanceProfileInfo.cend())
 	{
 		PerformanceProfileInfo* pPerformanceProfileInfo = iter->second;
-		CHECK_NULLPTR(pPerformanceProfileInfo);
+		CHECK_NULLPTR_RETURN(pPerformanceProfileInfo, void);
 
 		pPerformanceProfileInfo->stopwatchTimer.StartTime();
 		++pPerformanceProfileInfo->callCnt;
@@ -34,8 +34,6 @@ void PerformanceProfileMgr::Start(const std::string_view& szFuncSig, Int32 ID, I
 	}
 	
 	PerformanceProfileInfo* pPerformanceProfileInfo = new PerformanceProfileInfo;
-	CHECK_NULLPTR(pPerformanceProfileInfo);
-
 	pPerformanceProfileInfo->strFuncSig = szFuncSig;
 	pPerformanceProfileInfo->inputDataCnt = inputDataCnt;
 	pPerformanceProfileInfo->stopwatchTimer.StartTime();
@@ -52,12 +50,12 @@ void PerformanceProfileMgr::End(Int32 ID)
 	auto iter = m_mapPerformanceProfileInfo.find(ID);
 	if (iter == m_mapPerformanceProfileInfo.cend())
 	{
-		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "등록되지 않은 프로파일이에요! (%d)", ID);
+		ERROR_HANDLER_DETAIL(EErrorType::NO_PERFORMANCE_PROFILE_INFO, ID);
 		return;
 	}
 
 	PerformanceProfileInfo* pPerformanceProfileInfo = iter->second;
-	CHECK_NULLPTR(pPerformanceProfileInfo);
+	CHECK_NULLPTR_RETURN(pPerformanceProfileInfo, void);
 
 	pPerformanceProfileInfo->totalPerformanceTime += pPerformanceProfileInfo->stopwatchTimer.EndTime();
 }
@@ -72,7 +70,7 @@ void PerformanceProfileMgr::Report()
 	for (auto& iter : m_mapPerformanceProfileInfo)
 	{
 		PerformanceProfileInfo* pPerformanceProfileInfo = iter.second;
-		CHECK_NULLPTR(pPerformanceProfileInfo);
+		CHECK_NULLPTR_RETURN(pPerformanceProfileInfo, void);
 
 		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "<%d - Performance profile result>", iter.first);
 		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "%s", pPerformanceProfileInfo->strFuncSig.c_str());

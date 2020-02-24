@@ -207,13 +207,13 @@ EErrorType GameIntroMenuScene::OnUpdate()
 		DEBUG_LOG("SelectDown ´­·¶´Ù!");
 	}
 
+	END_FRAME_UPDATE_LIMITED();
+
 	if (InputController::I()->CheckInputState("SelectMenu", EInputMappingState::DOWN) == true)
 	{
 		TriggerTimerMgr::I()->AddTriggerTimer("ExcuteMenu", 3.0f, this, &GameIntroMenuScene::OnTrigger_ExcuteMenu, false);
 		DEBUG_LOG("SelectMenu ´­·¶´Ù!");
 	}
-
-	END_FRAME_UPDATE_LIMITED();
 	
 	return EErrorType::NONE;
 }

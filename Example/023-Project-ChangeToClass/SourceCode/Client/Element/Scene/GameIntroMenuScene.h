@@ -90,7 +90,7 @@ class GameIntroMenuScene final : public Scene
 {
 	NON_COPYABLE_CLASS(GameIntroMenuScene);
 	FRIEND_WITH_HELPER(GameIntroMenuSceneHelper);
-	FRAME_UPDATE_LIMITED(12);
+	FRAME_UPDATE_LIMITED(5);
 
 public:
 	using Scene::Scene;

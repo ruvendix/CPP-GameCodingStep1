@@ -40,7 +40,7 @@ public:
 		if (iter != m_mapTriggerTimer.cend())
 		{			
 			TriggerTimer* pTriggerTimer = iter->second;
-			CHECK_NULLPTR(pTriggerTimer);
+			CHECK_NULLPTR_RETURN(pTriggerTimer, void);
 			
 			// 이미 존재하는 트리거 타이머라면 데이터를 갱신해줍니다.
 			pTriggerTimer->setTime(triggerTime);
@@ -52,8 +52,6 @@ public:
 		}
 
 		TriggerTimer* pTriggerTimer = new TriggerTimer;
-		CHECK_NULLPTR(pTriggerTimer);
-
 		pTriggerTimer->setTime(triggerTime);
 		pTriggerTimer->setFunc(std::bind(elemMemberFunc, pElem));
 		pTriggerTimer->setRepeat(bRepeat);

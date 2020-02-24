@@ -57,7 +57,7 @@ public:
 		{
 			if (std::isupper((Int32)inputVal) == 0)
 			{
-				DEBUG_LOG_CATEGORY(InputController, "매핑 입력값은 대문자만 가능해요!");
+				ERROR_HANDLER(EErrorType::INPUT_MAPPING_VAL_IS_ONLY_UPPERCASE);
 				return;
 			}
 
@@ -86,7 +86,7 @@ public:
 		{
 			if (std::isupper((Int32)inputVal) == 0)
 			{
-				DEBUG_LOG_CATEGORY(InputController, "매핑 입력값은 대문자만 가능해요!");
+				ERROR_HANDLER(EErrorType::INPUT_MAPPING_VAL_IS_ONLY_UPPERCASE);
 				return;
 			}
 
@@ -100,7 +100,7 @@ public:
 		{
 			if (m_bInputMappingName == true)
 			{
-				DEBUG_LOG_CATEGORY(InputController, "입력값의 두 번째 인자는 문자열이 올 수 없어요!");
+				ERROR_HANDLER(EErrorType::INPUT_MAPPING_SECOND_ARG_IS_NOT_AVAILABLE_STRING);
 				return;
 			}
 

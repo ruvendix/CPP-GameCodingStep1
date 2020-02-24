@@ -50,8 +50,8 @@ void GameMainHelper::Initialize()
 	SceneMgr::I()->CreateScene<GameIntroMenuScene>(ESceneType::CURRENT);
 	
 	FrameController::I()->Initialize();
-	//FrameController::I()->setFrameRateType(EFrameRateType::CONSTANT);
-	FrameController::I()->ModifyLimitedFrame(30);
+	//FrameController::I()->setFrameRateType(EFrameRateType::VARIABLE_UNLIMITED);
+	FrameController::I()->ModifyLimitedFrame(60);
 
 	DEBUG_LOG("게임 초기화 처리 완료!");
 }
@@ -90,7 +90,7 @@ void GameMainHelper::Finalize()
 
 	if (SceneMgr::I()->getCurrentScene()->OnFinalize() == EErrorType::FINAL_FAILED)
 	{
-		ErrorHandler::ShowError(EErrorType::FINAL_FAILED);
+		ErrorHandler::ShowErrorString(EErrorType::FINAL_FAILED);
 	}
 	
 	SceneMgr::I()->Finalize();
@@ -135,7 +135,7 @@ void GameMainHelper::Update()
 
 	if (SceneMgr::I()->getCurrentScene()->OnUpdate() == EErrorType::UPDATE_FAILED)
 	{
-		ErrorHandler::ShowError(EErrorType::UPDATE_FAILED);
+		ErrorHandler::ShowErrorString(EErrorType::UPDATE_FAILED);
 	}
 
 	PERFORMANCE_PROFILE_END();
@@ -158,7 +158,7 @@ void GameMainHelper::Render()
 
 	if (SceneMgr::I()->getCurrentScene()->OnRender() == EErrorType::RENDER_FAILED)
 	{
-		ErrorHandler::ShowError(EErrorType::RENDER_FAILED);
+		ErrorHandler::ShowErrorString(EErrorType::RENDER_FAILED);
 	}
 
 #ifdef ACTIVATION_CONSOLE_DBL_BUFFERING

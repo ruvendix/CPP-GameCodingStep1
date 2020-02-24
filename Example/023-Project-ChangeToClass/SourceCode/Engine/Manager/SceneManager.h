@@ -36,7 +36,7 @@ public:
 
 	Scene* getCurrentScene() const
 	{
-		CHECK_NULLPTR(m_pCurrentScene);
+		CHECK_NULLPTR_RETURN(m_pCurrentScene, Scene*);
 		return m_pCurrentScene;
 	}
 
@@ -50,7 +50,7 @@ public:
 		{
 			if (m_pCurrentScene != nullptr)
 			{
-				DEBUG_LOG_CATEGORY(SceneMgr, "%s 씬이 이미 존재합니다!", m_pCurrentScene->getNameTag().data());
+				ERROR_HANDLER_DETAIL(EErrorType::OVERLAPPED_SCENE, m_pCurrentScene->getNameTag());
 				return;
 			}
 
@@ -58,7 +58,7 @@ public:
 
 			if (m_pCurrentScene->OnInitialize() == EErrorType::INIT_FAILED)
 			{
-				ErrorHandler::ShowError(EErrorType::INIT_FAILED);
+				ErrorHandler::ShowErrorString(EErrorType::INIT_FAILED);
 			}
 		}
 		else
@@ -69,7 +69,7 @@ public:
 			// 전환될 예정인 씬은 초기화가 완료된 상태로 전환되어야 해요!
 			if (m_pNextScene->OnInitialize() == EErrorType::INIT_FAILED)
 			{
-				ErrorHandler::ShowError(EErrorType::INIT_FAILED);
+				ErrorHandler::ShowErrorString(EErrorType::INIT_FAILED);
 			}
 
 			m_bGotoNextScene = true;

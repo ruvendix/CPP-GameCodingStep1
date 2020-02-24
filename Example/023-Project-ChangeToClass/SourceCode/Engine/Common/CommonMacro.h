@@ -96,12 +96,10 @@ private:\
 #define DEBUG_LOG_CATEGORY(logCategory, szFormat, ...) __noop
 #endif
 
-#define CHECK_NULLPTR(ptr)\
-	if (ptr == nullptr)\
-	{\
-		DEBUG_LOG_CATEGORY(Common, "%s는 널포인터!", #ptr);\
-		__debugbreak();\
-	}
+// 에러 핸들러에도 서식 문자열을 지원합니다.
+#define ERROR_HANDLER(errorType) ErrorHandler::ShowErrorString(errorType)
+#define ERROR_HANDLER_DETAIL(errorType, ...)\
+	ErrorHandler::ShowErrorFormatString(CommonFunc::MakeFormatString(ErrorHandler::GetErrorFormatString(errorType).data(), __VA_ARGS__))
 
 // NameTag를 상속 받는 새로운 로그 클래스를 선언합니다.
 #define DECLARE_LOG_CATEGORY(Tag)\
@@ -185,5 +183,37 @@ private:\
 	PerformanceProfileMgr::I()->Start(__FUNCSIG__, ID, inputDataCnt)
 
 #define PERFORMANCE_PROFILE_END() PerformanceProfileMgr::I()->End(ID)
+
+#define CHECK_NULLPTR(ptr)\
+	if (ptr == nullptr)\
+	{\
+		ERROR_HANDLER_DETAIL(EErrorType::NULLPTR, #ptr);\
+	}
+
+#define CHECK_NULLPTR_CONTINUE(ptr)\
+	if (ptr == nullptr)\
+	{\
+		ERROR_HANDLER_DETAIL(EErrorType::NULLPTR, #ptr);\
+		continue;\
+	}
+
+#define CHECK_NULLPTR_RETURN(ptr, TNegativeness)\
+	if (ptr == nullptr)\
+	{\
+		ERROR_HANDLER_DETAIL(EErrorType::NULLPTR, #ptr);\
+\
+		if constexpr (std::is_same_v<bool, TNegativeness>)\
+		{\
+			return false;\
+		}\
+		else if constexpr (std::is_void_v<TNegativeness>)\
+		{\
+			return;\
+		}\
+		else\
+		{\
+			return nullptr;\
+		}\
+	}
 
 #endif

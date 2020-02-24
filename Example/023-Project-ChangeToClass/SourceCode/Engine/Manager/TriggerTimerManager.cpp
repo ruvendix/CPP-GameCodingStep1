@@ -19,13 +19,8 @@ void TriggerTimerMgr::UpdateTriggerTimer()
 	const auto& iterEnd = m_mapTriggerTimer.cend();
 	for (auto iter = m_mapTriggerTimer.begin(); iter != iterEnd; /*증감 없음*/)
 	{
-		if (iter->second == nullptr)
-		{
-			continue;
-		}
-
 		TriggerTimer* pTriggerTimer = iter->second;
-		CHECK_NULLPTR(pTriggerTimer);
+		CHECK_NULLPTR_CONTINUE(pTriggerTimer);
 		pTriggerTimer->AddDeltaTime();
 
 		// 트리거 타임만큼 지나면 리셋하고, 반복 설정이 되어있지 않으면 트리거 타이머를 제거해야 해요!

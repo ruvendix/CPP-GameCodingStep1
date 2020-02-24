@@ -180,7 +180,7 @@ void FrameController::ModifyLimitedFrame(Int32 limitedFrame)
 {
 	if (m_frameRateType == EFrameRateType::VARIABLE_UNLIMITED)
 	{
-		DEBUG_LOG_CATEGORY(FrameController, "무제한 프레임이므로 값에 제한을 걸 수 없어요!");
+		ErrorHandler::ShowErrorString(EErrorType::NO_FRAME_LIMITED_ON_UNLIMITED_FRAME_RATE);
 		return;
 	}
 

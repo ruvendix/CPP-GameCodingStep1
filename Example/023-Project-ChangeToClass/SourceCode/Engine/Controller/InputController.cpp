@@ -21,13 +21,8 @@ void InputController::PollInput()
 {
 	for (auto& iter : m_mapInputMappingInfo)
 	{
-		if (iter.second == nullptr)
-		{
-			continue;
-		}
-
 		InputMappingInfo* pInputMappingInfo = iter.second;
-		CHECK_NULLPTR(pInputMappingInfo);
+		CHECK_NULLPTR_CONTINUE(pInputMappingInfo);
 
 		// 입력 매핑표가 없으면 무시!
 		if (pInputMappingInfo->vecInputTable.empty() == true)
@@ -131,7 +126,7 @@ void InputController::Finalize()
 bool InputController::CheckInputState(const std::string_view& szInputMappingName, EInputMappingState inputState) const
 {
 	InputMappingInfo* pInputMappingInfo = FindInputMappingInfo(szInputMappingName);
-	CHECK_NULLPTR(pInputMappingInfo);
+	CHECK_NULLPTR_RETURN(pInputMappingInfo, bool);
 	return (pInputMappingInfo->state == inputState);
 }
 
@@ -144,7 +139,7 @@ InputMappingInfo* InputController::FindInputMappingInfo(const std::string_view& 
 	if ( (iter == m_mapInputMappingInfo.cend()) ||
 		 (iter->second == nullptr) )
 	{
-		DEBUG_LOG_CATEGORY(InputController, "입력 매핑 정보(%s)가 없어요!", szInputMappingName.data());
+		ERROR_HANDLER_DETAIL(EErrorType::NO_INPUT_MAPPING_INFO, szInputMappingName);
 		return nullptr;
 	}
 
