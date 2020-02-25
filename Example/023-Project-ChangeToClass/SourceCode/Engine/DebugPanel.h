@@ -4,22 +4,26 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 게임 선택, 관리 등 핵심 기능을 담당합니다.
-// 인스턴스가 하나만 존재해야 하는 싱글톤입니다.
+// 디버그 모드에서만 사용되는 패널입니다.
+// 패널 기본형으로서 클라이언트에서는 상속 받아서 ShowContents를 구현해야 합니다.
 // =====================================================================================
 
-#ifndef GAME_MAIN__H__
-#define GAME_MAIN__H__
+#ifndef DEBUG_PANEL__H__
+#define DEBUG_PANEL__H__
 
 #include "Common\CommonType.h"
+#include "Common\CommonMacro.h"
 
-class GameMain final
+class DebugPanel
 {
-    DECLARE_PHOENIX_SINGLETON(GameMain);
-    FRIEND_WITH_HELPER(GameMainHelper);
+	DECLARE_PHOENIX_SINGLETON(DebugPanel);
 
 public:
-    Int32 Run();
+	void Initialize();
+	void ShowContents(Int32 posX, Int32 posY);
+
+private:
+	bool m_bShow = true;
 };
 
 #endif

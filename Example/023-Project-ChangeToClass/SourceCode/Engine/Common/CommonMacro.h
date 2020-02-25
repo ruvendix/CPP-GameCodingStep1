@@ -10,10 +10,10 @@
 #ifndef COMMON_MACRO__H__
 #define COMMON_MACRO__H__
 
-// VLD로 대체 가능한지 확인 필요!
-#ifdef _DEBUG
-#define new new(_NORMAL_BLOCK, __FILE__, __LINE__ )                                            
-#endif
+/*
+VLD로 대체 가능한지 확인 필요!
+*/
+#define trace_new new(_NORMAL_BLOCK, __FILE__, __LINE__ )                                            
 
 #define SAFE_DELETE(ptr)\
 	if (ptr != nullptr)\
@@ -27,7 +27,9 @@
 	srcPtr = destPtr;\
 	destPtr = nullptr
 
-// 복사 및 이동을 금지하는 매크로에요. (Copy Semantics, Move Semantics)
+/*
+복사 및 이동을 금지하는 매크로에요. (Copy Semantics, Move Semantics)
+*/
 #define NON_COPYABLE_CLASS(TClass)\
 public:\
 	TClass(const TClass&) = delete;\
@@ -35,8 +37,10 @@ public:\
 	TClass& operator=(const TClass&) = delete;\
 	TClass&& operator=(const TClass&&) = delete;
 
-// 외부에서만 생성 및 소멸을 막는 매크로에요. (기본 생성자만 막힘)
-// 하지만 상속 관계에서는 접근 가능하게 해줘야 해요.
+/*
+외부에서만 생성 및 소멸을 막는 매크로에요. (기본 생성자만 막힘)
+하지만 상속 관계에서는 접근 가능하게 해줘야 해요.
+*/
 #define NON_EXTERNAL_CLASS(TClass)\
 protected:\
 	TClass() = default;\
@@ -48,10 +52,14 @@ private:\
 	TClass() = default;\
 	~TClass() = default;
 
-// NON_COPYABLE_CLASS와 ONLY_PRIVATE_CLASS를 혼용했어요!
+/*
+NON_COPYABLE_CLASS와 ONLY_PRIVATE_CLASS를 혼용했어요!
+*/
 #define NON_COPYABLE_ONLY_PRIVATE_CLASS(TClass) NON_COPYABLE_CLASS(TClass) ONLY_PRIVATE_CLASS(TClass)
 
-// 싱글톤은 NON_COPYABLE_ONLY_PRIVATE_CLASS입니다!
+/*
+싱글톤은 NON_COPYABLE_ONLY_PRIVATE_CLASS입니다!
+*/
 #define DECLARE_SINGLETON(TClass)\
 	NON_COPYABLE_ONLY_PRIVATE_CLASS(TClass)\
 \
@@ -60,7 +68,7 @@ public:\
 	static void Destroy();\
 \
 private:\
-	static TClass* m_pInst;
+	static TClass* m_pInst
 
 #define DEFINE_SINGLETON(TClass)\
 	TClass* TClass::m_pInst = nullptr;\
@@ -72,7 +80,7 @@ private:\
 			return m_pInst;\
 		}\
 \
-		m_pInst = new TClass;\
+		m_pInst = trace_new TClass;\
 \
 		return m_pInst;\
 	}\
@@ -81,6 +89,74 @@ private:\
 	{\
 		SAFE_DELETE(m_pInst);\
 		DEBUG_LOG("싱글톤 삭제! (%s)", TO_STRING(TClass));\
+	}
+
+/*
+싱글톤 중에는 피닉스 싱글톤이라는 게 있어요.
+죽었다가 다시 부활한다는 의미를 이용하기 위해 피닉스가 되었다네요...
+
+static은 생성과 소멸 순서를 보장할 수 없어요.
+이미 소멸된 피닉스 싱글톤을 다른 곳에서 호출하게 되면 다시 부활시킵니다.
+다시 소멸시켜야 할 때는 프로그램이 종료되면 자동으로 소멸되도록 std::atexit()을 이용해요!
+
+중간에 new(m_pInst) placement New라고 하는데,
+메모리를 새로 할당하는 게 아니라!
+이미 할당된 메모리 공간을 이용하므로 생성자만 호출해요.
+따라서 피닉스 싱글톤에서는 동적할당을 이용하지 않습니다.
+*/
+#define DECLARE_PHOENIX_SINGLETON(TClass)\
+	NON_COPYABLE_CLASS(TClass)\
+\
+public:\
+	static TClass* I();\
+\
+private:\
+	TClass()\
+	{\
+		DEBUG_LOG("싱글톤 생성! (%s)", TO_STRING(TClass));\
+	}\
+\
+	~TClass()\
+	{\
+		m_pInst = nullptr;\
+		m_bDead = true;\
+		DEBUG_LOG("싱글톤 소멸! (%s)", TO_STRING(TClass));\
+	}\
+\
+	static void Create()\
+	{\
+		static TClass inst;\
+		m_pInst = &inst;\
+	}\
+\
+	static void Destroy()\
+	{\
+		m_pInst->~TClass();\
+	}\
+\
+	static bool m_bDead;\
+	static TClass* m_pInst
+
+#define DEFINE_PHOENIX_SINGLETON(TClass)\
+	TClass* TClass::m_pInst = nullptr;\
+	bool TClass::m_bDead = false;\
+\
+	TClass* TClass::I()\
+	{\
+		if (m_bDead == true)\
+		{\
+			Create();\
+			new(m_pInst) TClass;\
+			std::atexit(Destroy);\
+			m_bDead = true;\
+		}\
+\
+		if (m_pInst == nullptr)\
+		{\
+			Create();\
+		}\
+\
+		return m_pInst;\
 	}
 
 #define FRIEND_WITH_HELPER(THelperClass) friend class THelperClass
@@ -97,9 +173,9 @@ private:\
 #endif
 
 // 에러 핸들러에도 서식 문자열을 지원합니다.
-#define ERROR_HANDLER(errorType) ErrorHandler::ShowErrorString(errorType)
+#define ERROR_HANDLER(errorType) ErrorHandler::ShowString(errorType)
 #define ERROR_HANDLER_DETAIL(errorType, ...)\
-	ErrorHandler::ShowErrorFormatString(CommonFunc::MakeFormatString(ErrorHandler::GetErrorFormatString(errorType).data(), __VA_ARGS__))
+	ErrorHandler::ShowFormatString(CommonFunc::MakeFormatString(ErrorHandler::ToFormatString(errorType).data(), __VA_ARGS__))
 
 // NameTag를 상속 받는 새로운 로그 클래스를 선언합니다.
 #define DECLARE_LOG_CATEGORY(Tag)\
@@ -157,7 +233,7 @@ private:\
 // ACTIVATION_CONSOLE_DBL_BUFFERING 활성화 여부에 따라 출력 함수가 변경됩니다.
 #ifdef ACTIVATION_CONSOLE_DBL_BUFFERING
 #define PRINTF(posX, posY, szFormat, ...)\
-	ConsoleController::I()->OutputStr(posX, posY, CommonFunc::MakeFormatString(szFormat, __VA_ARGS__));
+	ConsoleController::I()->PrintString(posX, posY, CommonFunc::MakeFormatString(szFormat, __VA_ARGS__));
 #else
 #define PRINTF(posX, posY, szFormat, ...)\
 	ConsoleController::I()->MoveConsolePos(posX, posY);\
@@ -183,6 +259,19 @@ private:\
 	PerformanceProfileMgr::I()->Start(__FUNCSIG__, ID, inputDataCnt)
 
 #define PERFORMANCE_PROFILE_END() PerformanceProfileMgr::I()->End(ID)
+
+#define CASE_LOG_BREAK(enumVal, szLog)\
+	case enumVal:\
+	{\
+		DEBUG_LOG_CATEGORY(ErrorHandler, szLog);\
+		break;\
+	}
+
+#define CASE_RETURN_STRING(enumVal, sz)\
+	case enumVal:\
+	{\
+		return sz;\
+	}
 
 #define CHECK_NULLPTR(ptr)\
 	if (ptr == nullptr)\

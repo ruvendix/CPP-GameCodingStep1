@@ -10,4 +10,4 @@
 #include "PCH.h"
 #include "GameContext.h"
 
-DEFINE_SINGLETON(GameCtx);
+DEFINE_PHOENIX_SINGLETON(GameCtx);

@@ -35,7 +35,7 @@ struct InputMappingInfo
 
 class InputController final
 {
-	DECLARE_SINGLETON(InputController);
+	DECLARE_PHOENIX_SINGLETON(InputController);
 
 public:
 	using MapInputMappingInfo = std::unordered_map<std::string, InputMappingInfo*>;
@@ -78,7 +78,7 @@ public:
 	{
 		if (m_pInputMappingInfo == nullptr)
 		{
-			m_pInputMappingInfo = new InputMappingInfo; // 해제는 자료구조에서!
+			m_pInputMappingInfo = trace_new InputMappingInfo; // 해제는 자료구조에서!
 		}
 
 		const std::string& strInputValType = typeid(TInputVal).name();

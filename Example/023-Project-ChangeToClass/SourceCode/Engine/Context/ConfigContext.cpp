@@ -9,4 +9,4 @@
 #include "PCH.h"
 #include "ConfigContext.h"
 
-DEFINE_SINGLETON(ConfigCtx);
+DEFINE_PHOENIX_SINGLETON(ConfigCtx);

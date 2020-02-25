@@ -29,7 +29,7 @@ enum class EFrameRateType : Int32
 
 class FrameController final
 {
-	DECLARE_SINGLETON(FrameController);
+	DECLARE_PHOENIX_SINGLETON(FrameController);
 	FRIEND_WITH_HELPER(FrameControllerHelper);
 
 public:
@@ -58,6 +58,16 @@ public:
 		return m_timeScale;
 	}
 
+	Int32 getFPS() const
+	{
+		return m_FPS;
+	}
+
+	Int32 getAvgFPS() const
+	{
+		return m_avgFPS;
+	}
+
 	void setTimeScale(Real32 timeScale)
 	{
 		m_timeScale = timeScale;
@@ -78,6 +88,7 @@ private:
 
 	Int32 m_frameCnt = 0; // 게임 루프당 프레임 하나입니다.
 	Int32 m_FPS = 0; // 초당 프레임 개수입니다. (Frame Per Second)
+	Int32 m_avgFPS = 0; // 평균 FPS입니다. (10개 기준)
 	Int32 m_limitedFrame = 60;
 
 	Real32 m_accumulationFrameTime = 0.0f;

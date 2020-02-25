@@ -8,7 +8,7 @@
 // =====================================================================================
 
 #include "PCH.h"
-#include "GameIntroMenuScene.h"
+#include "IntroMenuScene.h"
 
 #include "Context\ConfigContext.h"
 #include "Context\GameContext.h"
@@ -17,6 +17,8 @@
 #include "Controller\InputController.h"
 #include "Controller\ConsoleController.h"
 #include "Controller\FrameController.h"
+#include "IntroMenu\IntroMenu_Quit.h"
+#include "IntroMenu\IntroMenu_SceneLoader.h"
 
 namespace
 {
@@ -30,21 +32,21 @@ namespace
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class GameIntroMenuSceneHelper final
+class IntroMenuSceneHelper final
 {
-	NON_COPYABLE_ONLY_PRIVATE_CLASS(GameIntroMenuSceneHelper);
+	NON_COPYABLE_ONLY_PRIVATE_CLASS(IntroMenuSceneHelper);
 
 public:
-	using QueryLongestMenuInfoCallback = std::function<void(_Inout_ GameIntroMenuScene&, _Inout_ GameIntroMenu&)>;
+	using QueryLongestMenuInfoCallback = std::function<void(_Inout_ IntroMenuScene&, _Inout_ IntroMenu&)>;
 
-	static void DrawScene(_Inout_ GameIntroMenuScene& helperTarget);
+	static void DrawScene(_Inout_ IntroMenuScene& helperTarget);
 	static void DrawTitle();
-	static void DrawAllMenu(_Inout_ GameIntroMenuScene& helperTarget);
-	static void DrawSelector(const GameIntroMenuScene& helperTarget);
-	static void AlignCenterMenu(_Inout_ GameIntroMenuScene& helperTarget, _Inout_ GameIntroMenu& gameIntroMenu);
+	static void DrawAllMenu(_Inout_ IntroMenuScene& helperTarget);
+	static void DrawSelector(const IntroMenuScene& helperTarget);
+	static void AlignCenterMenu(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu);
 	
-	static void OnCallback_QueryLongestMenuInfo(_Inout_ GameIntroMenuScene& helperTarget, _Inout_ GameIntroMenu& gameIntroMenu);
-	static void OnCallback_NonQueryLongestMenuInfo(_Inout_ GameIntroMenuScene& helperTarget, _Inout_ GameIntroMenu& gameIntroMenu);
+	static void OnCallback_QueryLongestMenuInfo(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu);
+	static void OnCallback_NonQueryLongestMenuInfo(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu);
 
 private:
 	static QueryLongestMenuInfoCallback m_queryLongestMenuInfoCallback; // 전략 패턴
@@ -52,12 +54,12 @@ private:
 
 // 헬퍼 클래스의 멤버변수는 콜백과 상수만 넣을게요!
 // 다른 용도의 멤버변수를 넣게 되면 static이라 모든 인스턴스가 공유해버려서 망해요...
-GameIntroMenuSceneHelper::QueryLongestMenuInfoCallback GameIntroMenuSceneHelper::m_queryLongestMenuInfoCallback = OnCallback_QueryLongestMenuInfo;
+IntroMenuSceneHelper::QueryLongestMenuInfoCallback IntroMenuSceneHelper::m_queryLongestMenuInfoCallback = OnCallback_QueryLongestMenuInfo;
 
 /*
 인트로 게임 메뉴 씬을 렌더링합니다.
 */
-void GameIntroMenuSceneHelper::DrawScene(_Inout_ GameIntroMenuScene& helperTarget)
+void IntroMenuSceneHelper::DrawScene(_Inout_ IntroMenuScene& helperTarget)
 {
 	DrawTitle();
 	DrawAllMenu(helperTarget);
@@ -75,8 +77,9 @@ void GameIntroMenuSceneHelper::DrawScene(_Inout_ GameIntroMenuScene& helperTarge
 /*
 인트로 게임 메뉴 씬의 타이틀을 렌더링합니다.
 */
-void GameIntroMenuSceneHelper::DrawTitle()
+void IntroMenuSceneHelper::DrawTitle()
 {
+	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::GREEN);
 	PRINTF(0, 0, "   _______  __   __  _______  __    _  _______  _______    _______  _______    _______  ___      _______  _______  _______ ");
 	PRINTF(0, 1, "  |       ||  | |  ||   _   ||  |  | ||       ||       |  |       ||       |  |       ||   |    |   _   ||       ||       |");
 	PRINTF(0, 2, "  |       ||  |_|  ||  |_|  ||   |_| ||    ___||    ___|  |_     _||   _   |  |       ||   |    |  |_|  ||  _____||  _____|");
@@ -84,14 +87,15 @@ void GameIntroMenuSceneHelper::DrawTitle()
 	PRINTF(0, 4, "  |    |__ |       ||       ||  _    ||   ||  ||    ___|    |   |  |  |_|  |  |    |__ |   |___ |       ||_____  ||_____  |");
 	PRINTF(0, 5, "  |       ||   _   ||   _   || | |   ||   |_| ||   |___     |   |  |       |  |       ||       ||   _   | _____| | _____| |");
 	PRINTF(0, 6, "  |_______||__| |__||__| |__||_|  |__||_______||_______|    |___|  |_______|  |_______||_______||__| |__||_______||_______|");
+	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::WHITE);
 }
 
 /*
 인트로 게임 메뉴 씬의 모든 메뉴를 렌더링합니다.
 */
-void GameIntroMenuSceneHelper::DrawAllMenu(_Inout_ GameIntroMenuScene& helperTarget)
+void IntroMenuSceneHelper::DrawAllMenu(_Inout_ IntroMenuScene& helperTarget)
 {
-	for (auto& iter : helperTarget.m_vecGameIntroMenu)
+	for (auto& iter : helperTarget.m_vecIntroMenu)
 	{
 		if (iter == nullptr)
 		{
@@ -108,12 +112,12 @@ void GameIntroMenuSceneHelper::DrawAllMenu(_Inout_ GameIntroMenuScene& helperTar
 /*
 인트로 게임 메뉴 씬의 셀렉터를 렌더링합니다.
 */
-void GameIntroMenuSceneHelper::DrawSelector(const GameIntroMenuScene& helperTarget)
+void IntroMenuSceneHelper::DrawSelector(const IntroMenuScene& helperTarget)
 {	
 	const std::string_view& strLongestMenuName = std::get<0>(helperTarget.m_tupleLongestMenuInfo);
 	const COORD& longestMenuPos = std::get<1>(helperTarget.m_tupleLongestMenuInfo);
 
-	GameIntroMenu* pGameIntroMenu = helperTarget.m_vecGameIntroMenu[helperTarget.m_selectedGameIntroMenuIdx];
+	IntroMenu* pGameIntroMenu = helperTarget.m_vecIntroMenu[helperTarget.m_selectedIntroMenuIdx];
 	CHECK_NULLPTR(pGameIntroMenu);
 
 	PRINTF(longestMenuPos.X - MENU_MARGIN_LENGTH, pGameIntroMenu->getPos().Y, "◀");
@@ -123,7 +127,7 @@ void GameIntroMenuSceneHelper::DrawSelector(const GameIntroMenuScene& helperTarg
 /*
 인트로 게임 메뉴 씬의 메뉴를 중앙 정렬합니다.
 */
-void GameIntroMenuSceneHelper::AlignCenterMenu(_Inout_ GameIntroMenuScene& helperTarget, _Inout_ GameIntroMenu& gameIntroMenu)
+void IntroMenuSceneHelper::AlignCenterMenu(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu)
 {
 	ConsoleController::I()->AlignCenter(ConfigCtx::I()->getResoultion(), gameIntroMenu.getNameTag().size());
 
@@ -141,8 +145,8 @@ void GameIntroMenuSceneHelper::AlignCenterMenu(_Inout_ GameIntroMenuScene& helpe
 /*
 전달받은 메뉴 정보와 비교하면서 가장 긴 메뉴 정보를 알아냅니다.
 */
-void GameIntroMenuSceneHelper::OnCallback_QueryLongestMenuInfo(_Inout_ GameIntroMenuScene& helperTarget,
-	_Inout_ GameIntroMenu& gameIntroMenu)
+void IntroMenuSceneHelper::OnCallback_QueryLongestMenuInfo(_Inout_ IntroMenuScene& helperTarget,
+	_Inout_ IntroMenu& gameIntroMenu)
 {
 	const COORD& menuPos = gameIntroMenu.getPos();
 
@@ -158,15 +162,15 @@ void GameIntroMenuSceneHelper::OnCallback_QueryLongestMenuInfo(_Inout_ GameIntro
 /*
 가장 긴 메뉴 정보를 알아낸 후이므로 아무것도 하지 않습니다.
 */
-void GameIntroMenuSceneHelper::OnCallback_NonQueryLongestMenuInfo(_Inout_ GameIntroMenuScene& helperTarget,
-	_Inout_ GameIntroMenu& gameIntroMenu)
+void IntroMenuSceneHelper::OnCallback_NonQueryLongestMenuInfo(_Inout_ IntroMenuScene& helperTarget,
+	_Inout_ IntroMenu& gameIntroMenu)
 {
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-EErrorType GameIntroMenuScene::OnInitialize()
+EErrorType IntroMenuScene::OnInitialize()
 {
 	InputController::I()->InsertInputMappingInfo("SelectUp", VK_UP);
 	InputController::I()->InsertInputMappingInfo("SelectDown", VK_DOWN);
@@ -174,36 +178,36 @@ EErrorType GameIntroMenuScene::OnInitialize()
 
 	m_tupleLongestMenuInfo = std::make_tuple("Default", COORD{ SHRT_MIN, SHRT_MIN }, false);
 
-	m_vecGameIntroMenu.push_back(new GameIntroMenu_SceneLoader("배틀 시뮬레이터",
-		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_BATTLE_SIMULATOR_OFFSET_POS_Y }));
+	m_vecIntroMenu.push_back(trace_new IntroMenu_SceneLoader("배틀 시뮬레이터",
+		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_BATTLE_SIMULATOR_OFFSET_POS_Y }, EIntroMenu_SceneLoaderType::BATTLE_SIMULATOR));
 
-	m_vecGameIntroMenu.push_back(new GameIntroMenu_SceneLoader("잡화 상점２",
-		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_MISCELLANEOUS_SHOP2_OFFSET_POS_Y }));
+	m_vecIntroMenu.push_back(trace_new IntroMenu_SceneLoader("잡화 상점２",
+		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_MISCELLANEOUS_SHOP2_OFFSET_POS_Y }, EIntroMenu_SceneLoaderType::MISCELLANEOUS_SHOP2));
 
-	m_vecGameIntroMenu.push_back(new GameIntroMenu_SceneLoader("다이얼로그 트리",
-		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_DIALOGUE_TREE_OFFSET_POS_Y }));
+	m_vecIntroMenu.push_back(trace_new IntroMenu_SceneLoader("다이얼로그 트리",
+		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_DIALOGUE_TREE_OFFSET_POS_Y }, EIntroMenu_SceneLoaderType::DIALOGUE_TREE));
 
-	m_vecGameIntroMenu.push_back(new GameIntroMenu_Quit("게임 종료",
+	m_vecIntroMenu.push_back(trace_new IntroMenu_Quit("게임 종료",
 		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_QUIT_OFFSET_POS_Y }));
 
 	return EErrorType::NONE;
 }
 
-EErrorType GameIntroMenuScene::OnUpdate()
+EErrorType IntroMenuScene::OnUpdate()
 {
 	BEGIN_FRAME_UPDDATE_LIMITED();
 
 	if (InputController::I()->CheckInputState("SelectUp", EInputMappingState::PRESSING) == true)
 	{
-		--m_selectedGameIntroMenuIdx;
-		m_selectedGameIntroMenuIdx = CommonFunc::ClampCircular(m_selectedGameIntroMenuIdx, 0, m_vecGameIntroMenu.size() - 1);
+		--m_selectedIntroMenuIdx;
+		m_selectedIntroMenuIdx = CommonFunc::ClampCircular(m_selectedIntroMenuIdx, 0, m_vecIntroMenu.size() - 1);
 		DEBUG_LOG("SelectUp 눌렀다!");
 	}
 
 	if (InputController::I()->CheckInputState("SelectDown", EInputMappingState::PRESSING) == true)
 	{
-		++m_selectedGameIntroMenuIdx;
-		m_selectedGameIntroMenuIdx = CommonFunc::ClampCircular(m_selectedGameIntroMenuIdx, 0, m_vecGameIntroMenu.size() - 1);
+		++m_selectedIntroMenuIdx;
+		m_selectedIntroMenuIdx = CommonFunc::ClampCircular(m_selectedIntroMenuIdx, 0, m_vecIntroMenu.size() - 1);
 		DEBUG_LOG("SelectDown 눌렀다!");
 	}
 
@@ -211,22 +215,22 @@ EErrorType GameIntroMenuScene::OnUpdate()
 
 	if (InputController::I()->CheckInputState("SelectMenu", EInputMappingState::DOWN) == true)
 	{
-		TriggerTimerMgr::I()->AddTriggerTimer("ExcuteMenu", 3.0f, this, &GameIntroMenuScene::OnTrigger_ExcuteMenu, false);
+		TriggerTimerMgr::I()->AddTriggerTimer("ExcuteMenu", 3.0f, this, &IntroMenuScene::OnTrigger_ExcuteMenu, false);
 		DEBUG_LOG("SelectMenu 눌렀다!");
 	}
 	
 	return EErrorType::NONE;
 }
 
-EErrorType GameIntroMenuScene::OnRender()
+EErrorType IntroMenuScene::OnRender()
 {
-	GameIntroMenuSceneHelper::DrawScene(*this);
+	IntroMenuSceneHelper::DrawScene(*this);
 	return EErrorType::NONE;
 }
 
-EErrorType GameIntroMenuScene::OnFinalize()
+EErrorType IntroMenuScene::OnFinalize()
 {
-	for (auto& iter : m_vecGameIntroMenu)
+	for (auto& iter : m_vecIntroMenu)
 	{
 		SAFE_DELETE(iter);
 	}
@@ -234,42 +238,8 @@ EErrorType GameIntroMenuScene::OnFinalize()
 	return EErrorType::NONE;
 }
 
-void GameIntroMenuScene::OnTrigger_ExcuteMenu()
+void IntroMenuScene::OnTrigger_ExcuteMenu()
 {
-	CHECK_NULLPTR(m_vecGameIntroMenu[m_selectedGameIntroMenuIdx]);
-	m_vecGameIntroMenu[m_selectedGameIntroMenuIdx]->OnExcute();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-GameIntroMenu::GameIntroMenu(const std::string_view& szNameTag, const COORD& offsetCenterPos) :
-	m_nameTag(szNameTag),
-	m_pos{ 0, 0 },
-	m_offsetCenterPos(offsetCenterPos)
-{
-	
-}
-
-EErrorType GameIntroMenu::OnExcute()
-{
-	DEBUG_LOG("GameIntroMenu에서 이게 보이면 OnExcute()를 재정의해주세요!");
-	return EErrorType::NONE;
-}
-
-EErrorType GameIntroMenu_Quit::OnExcute()
-{
-	DEBUG_LOG("GameIntroMenuScene에서 게임 종료!");
-	GameCtx::I()->setCurrentGameState(EGameState::TERMINATION_SUCCESS);
-	return EErrorType::NONE;
-}
-
-EErrorType GameIntroMenu_SceneLoader::OnExcute()
-{
-	// 씬 자체가 타입이므로 여기서는 분기 처리...
-	//switch (switch_on)
-	//{
-	//default:
-	//	break;
-	//}
-	return EErrorType::NONE;
+	CHECK_NULLPTR(m_vecIntroMenu[m_selectedIntroMenuIdx]);
+	m_vecIntroMenu[m_selectedIntroMenuIdx]->OnExcute();
 }

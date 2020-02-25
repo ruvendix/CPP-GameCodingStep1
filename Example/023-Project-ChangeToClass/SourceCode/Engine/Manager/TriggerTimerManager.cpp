@@ -12,7 +12,7 @@
 #include "TriggerTimerManager.h"
 
 DEFINE_LOG_CATEGORY(TriggerTimerMgr);
-DEFINE_SINGLETON(TriggerTimerMgr);
+DEFINE_PHOENIX_SINGLETON(TriggerTimerMgr);
 
 void TriggerTimerMgr::UpdateTriggerTimer()
 {

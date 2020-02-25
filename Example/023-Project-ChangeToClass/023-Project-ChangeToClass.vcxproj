@@ -142,6 +142,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\Client\Context\GameContext.cpp" />
+    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenuScene.cpp" />
+    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu.cpp" />
+    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu_Quit.cpp" />
+    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu_SceneLoader.cpp" />
     <ClCompile Include="SourceCode\Client\GameMain.cpp" />
     <ClCompile Include="SourceCode\Client\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -154,6 +158,7 @@
     <ClCompile Include="SourceCode\Engine\Controller\ConsoleController.cpp" />
     <ClCompile Include="SourceCode\Engine\Controller\FrameController.cpp" />
     <ClCompile Include="SourceCode\Engine\Controller\InputController.cpp" />
+    <ClCompile Include="SourceCode\Engine\DebugPanel.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\GameElement.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\NameTag.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\Scene.cpp" />
@@ -167,6 +172,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Client\Context\GameContext.h" />
+    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenuScene.h" />
+    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu.h" />
+    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu_Quit.h" />
+    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu_SceneLoader.h" />
     <ClInclude Include="SourceCode\Client\GameMain.h" />
     <ClInclude Include="SourceCode\Client\PCH.h" />
     <ClInclude Include="SourceCode\Engine\Common\CommonStruct.h" />
@@ -179,6 +188,7 @@
     <ClInclude Include="SourceCode\Engine\Controller\ConsoleController.h" />
     <ClInclude Include="SourceCode\Engine\Controller\FrameController.h" />
     <ClInclude Include="SourceCode\Engine\Controller\InputController.h" />
+    <ClInclude Include="SourceCode\Engine\DebugPanel.h" />
     <ClInclude Include="SourceCode\Engine\Element\GameElement.h" />
     <ClInclude Include="SourceCode\Engine\Element\NameTag.h" />
     <ClInclude Include="SourceCode\Engine\Element\Scene.h" />

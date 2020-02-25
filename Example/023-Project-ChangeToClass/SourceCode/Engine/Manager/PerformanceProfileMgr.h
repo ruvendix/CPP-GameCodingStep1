@@ -27,7 +27,7 @@ struct PerformanceProfileInfo
 
 class PerformanceProfileMgr
 {
-	DECLARE_SINGLETON(PerformanceProfileMgr);
+	DECLARE_PHOENIX_SINGLETON(PerformanceProfileMgr);
 
 public:
 	void Start(const std::string_view& szFuncSig, Int32 ID, Int32 inputDataCnt = 0);

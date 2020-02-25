@@ -26,7 +26,7 @@ enum class EGameState : Int32
 
 class GameCtx final
 {
-	DECLARE_SINGLETON(GameCtx);
+	DECLARE_PHOENIX_SINGLETON(GameCtx);
 
 public:
 	bool IsTerminateGame() const

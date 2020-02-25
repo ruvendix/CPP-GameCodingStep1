@@ -11,7 +11,7 @@
 #include "SceneManager.h"
 
 DEFINE_LOG_CATEGORY(SceneMgr);
-DEFINE_SINGLETON(SceneMgr);
+DEFINE_PHOENIX_SINGLETON(SceneMgr);
 
 /*
 현재 씬과 다음 씬을 전환합니다.

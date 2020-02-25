@@ -12,7 +12,7 @@
 #include "InputController.h"
 
 DEFINE_LOG_CATEGORY(InputController);
-DEFINE_SINGLETON(InputController);
+DEFINE_PHOENIX_SINGLETON(InputController);
 
 /*
 입력 매핑 정보를 기반으로 입력 상태를 계속 확인하며 갱신합니다.

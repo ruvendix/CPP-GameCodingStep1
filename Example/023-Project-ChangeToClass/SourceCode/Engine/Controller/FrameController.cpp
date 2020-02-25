@@ -118,7 +118,7 @@ void FrameControllerHelper::RefreshLimitedDeltaTime()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-DEFINE_SINGLETON(FrameController);
+DEFINE_PHOENIX_SINGLETON(FrameController);
 DEFINE_LOG_CATEGORY(FrameController);
 
 /*
@@ -168,7 +168,8 @@ void FrameController::UpdateFPSAndDeltatime()
 			totalFPS += iter;
 		}
 		
-		DEBUG_LOG_CATEGORY(FrameController, "ЦђБе FPS(%d)", totalFPS / MAX_LIST_FPS);
+		m_avgFPS = totalFPS / MAX_LIST_FPS;
+		DEBUG_LOG_CATEGORY(FrameController, "ЦђБе FPS(%d)", m_avgFPS);
 		m_listFPS.clear();
 	}
 }
@@ -180,7 +181,7 @@ void FrameController::ModifyLimitedFrame(Int32 limitedFrame)
 {
 	if (m_frameRateType == EFrameRateType::VARIABLE_UNLIMITED)
 	{
-		ErrorHandler::ShowErrorString(EErrorType::NO_FRAME_LIMITED_ON_UNLIMITED_FRAME_RATE);
+		ErrorHandler::ShowString(EErrorType::NO_FRAME_LIMITED_ON_UNLIMITED_FRAME_RATE);
 		return;
 	}
 

@@ -21,7 +21,7 @@ DECLARE_LOG_CATEGORY(TriggerTimerMgr);
 
 class TriggerTimerMgr final
 {
-	DECLARE_SINGLETON(TriggerTimerMgr);
+	DECLARE_PHOENIX_SINGLETON(TriggerTimerMgr);
 
 public:	
 	// 템플릿을 이용해서 멤버 함수 포인터 형식을 using으로 선언하는 방법
@@ -51,7 +51,7 @@ public:
 			return;
 		}
 
-		TriggerTimer* pTriggerTimer = new TriggerTimer;
+		TriggerTimer* pTriggerTimer = trace_new TriggerTimer;
 		pTriggerTimer->setTime(triggerTime);
 		pTriggerTimer->setFunc(std::bind(elemMemberFunc, pElem));
 		pTriggerTimer->setRepeat(bRepeat);

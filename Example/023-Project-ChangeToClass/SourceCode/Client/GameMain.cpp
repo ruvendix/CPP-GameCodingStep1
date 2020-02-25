@@ -19,7 +19,8 @@
 #include "Controller\InputController.h"
 #include "Controller\FrameController.h"
 #include "Controller\ConsoleController.h"
-#include "Element\Scene\GameIntroMenuScene.h"
+#include "DebugPanel.h"
+#include "Element\Scene\IntroMenuScene\IntroMenuScene.h"
 
 class GameMainHelper final
 {
@@ -43,11 +44,12 @@ public:
 */
 void GameMainHelper::Initialize()
 {
+	DebugPanel::I()->Initialize();
 	ConsoleController::I()->Initialize("Change To Class", SizeInfo{ 125, 30 });
 	//ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::BACKGROUND, EConsoleOutputColorType::GREEN);
 
 	GameCtx::I()->setCurrentGameState(EGameState::INIT);
-	SceneMgr::I()->CreateScene<GameIntroMenuScene>(ESceneType::CURRENT);
+	SceneMgr::I()->CreateScene<IntroMenuScene>(ESceneType::CURRENT);
 	
 	FrameController::I()->Initialize();
 	//FrameController::I()->setFrameRateType(EFrameRateType::VARIABLE_UNLIMITED);
@@ -90,7 +92,7 @@ void GameMainHelper::Finalize()
 
 	if (SceneMgr::I()->getCurrentScene()->OnFinalize() == EErrorType::FINAL_FAILED)
 	{
-		ErrorHandler::ShowErrorString(EErrorType::FINAL_FAILED);
+		ErrorHandler::ShowString(EErrorType::FINAL_FAILED);
 	}
 	
 	SceneMgr::I()->Finalize();
@@ -135,7 +137,7 @@ void GameMainHelper::Update()
 
 	if (SceneMgr::I()->getCurrentScene()->OnUpdate() == EErrorType::UPDATE_FAILED)
 	{
-		ErrorHandler::ShowErrorString(EErrorType::UPDATE_FAILED);
+		ErrorHandler::ShowString(EErrorType::UPDATE_FAILED);
 	}
 
 	PERFORMANCE_PROFILE_END();
@@ -148,8 +150,7 @@ void GameMainHelper::Render()
 		GameCtx::I()->setCurrentGameState(EGameState::RENDER);
 	}
 
-	// 콘솔 스크린 버퍼를 깨끗하게 지울게요! (Clear)
-	ConsoleController::I()->ClearConsoleScreen();
+	ConsoleController::I()->ClearConsoleScreen(); // 콘솔 스크린 버퍼를 깨끗하게 지울게요! (Clear)
 
 #ifndef ACTIVATION_CONSOLE_DBL_BUFFERING
 	// 렌더링이 끝난 후에 콘솔 좌표를 처음으로 복구해야 해요! (Flip)
@@ -158,35 +159,35 @@ void GameMainHelper::Render()
 
 	if (SceneMgr::I()->getCurrentScene()->OnRender() == EErrorType::RENDER_FAILED)
 	{
-		ErrorHandler::ShowErrorString(EErrorType::RENDER_FAILED);
+		ErrorHandler::ShowString(EErrorType::RENDER_FAILED);
 	}
 
-#ifdef ACTIVATION_CONSOLE_DBL_BUFFERING
-	// 활성화시킬 버퍼를 변경할게요!
-	ConsoleController::I()->Flipping();
+	DebugPanel::I()->ShowContents(0, 0);
+
+#ifdef ACTIVATION_CONSOLE_DBL_BUFFERING	
+	ConsoleController::I()->Flipping(); // 활성화시킬 버퍼를 변경할게요!
 #else
-	// 처음 콘솔 좌표로 이동시킬게요!
-	ConsoleController::I()->MoveConsolePos(backupPos);
+	ConsoleController::I()->MoveConsolePos(backupPos); // 처음 콘솔 좌표로 이동시킬게요!
 #endif
 }
 
 void GameMainHelper::DestorySingleton()
 {
-	DEBUG_LOG("==============================================================================================");
-	GameCtx::Destroy();
-	SceneMgr::Destroy();
-	TriggerTimerMgr::Destroy();
-	PerformanceProfileMgr::Destroy();
-	InputController::Destroy();
-	FrameController::Destroy();
-	ConsoleController::Destroy();
-	ConfigCtx::Destroy();
-	DEBUG_LOG("==============================================================================================");
+	//DEBUG_LOG("==============================================================================================");
+	//GameCtx::Destroy();
+	//SceneMgr::Destroy();
+	//TriggerTimerMgr::Destroy();
+	//PerformanceProfileMgr::Destroy();
+	//InputController::Destroy();
+	//FrameController::Destroy();
+	//ConsoleController::Destroy();
+	//ConfigCtx::Destroy();
+	//DEBUG_LOG("==============================================================================================");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-DEFINE_SINGLETON(GameMain);
+DEFINE_PHOENIX_SINGLETON(GameMain);
 
 /*
 게임의 핵심 흐름입니다.

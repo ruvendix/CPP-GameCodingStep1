@@ -14,7 +14,7 @@
 #include "Context\ConfigContext.h"
 
 DEFINE_LOG_CATEGORY(ConsoleController);
-DEFINE_SINGLETON(ConsoleController);
+DEFINE_PHOENIX_SINGLETON(ConsoleController);
 
 /*
 콘솔창을 초기화합니다.
@@ -28,9 +28,8 @@ void ConsoleController::Initialize(const std::string_view& szTitle, const SizeIn
 
 #ifdef ACTIVATION_CONSOLE_DBL_BUFFERING
 	// 표준 출력 콘솔창의 버퍼 정보를 가져오는 부분이에요!
-	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
-	::ZeroMemory(&consoleScreenBufferInfo, sizeof(consoleScreenBufferInfo));
-	::GetConsoleScreenBufferInfo(::GetStdHandle(STD_OUTPUT_HANDLE), &consoleScreenBufferInfo);
+	::ZeroMemory(&m_consoleScreenBufferInfo, sizeof(m_consoleScreenBufferInfo));
+	::GetConsoleScreenBufferInfo(::GetStdHandle(STD_OUTPUT_HANDLE), &m_consoleScreenBufferInfo);
 
 	// 표준 출력 콘솔창의 커서 정보를 가져오는 부분이에요!
 	CONSOLE_CURSOR_INFO consoleCursorInfo;
@@ -45,9 +44,9 @@ void ConsoleController::Initialize(const std::string_view& szTitle, const SizeIn
 			::CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, nullptr, CONSOLE_TEXTMODE_BUFFER, nullptr);
 
 		// 표준 출력 콘솔창의 정보로 복사하는 부분이에요!
-		::SetConsoleScreenBufferSize(hConsoleScreenBuffer, consoleScreenBufferInfo.dwSize);
-		::SetConsoleWindowInfo(hConsoleScreenBuffer, TRUE, &consoleScreenBufferInfo.srWindow);
-		::SetConsoleTextAttribute(hConsoleScreenBuffer, consoleScreenBufferInfo.wAttributes);
+		::SetConsoleScreenBufferSize(hConsoleScreenBuffer, m_consoleScreenBufferInfo.dwSize);
+		::SetConsoleWindowInfo(hConsoleScreenBuffer, TRUE, &m_consoleScreenBufferInfo.srWindow);
+		::SetConsoleTextAttribute(hConsoleScreenBuffer, m_consoleScreenBufferInfo.wAttributes);
 		::SetConsoleCursorInfo(hConsoleScreenBuffer, &consoleCursorInfo);
 
 		// 정보 설정이 완료되었으니 저장할게요!
@@ -87,7 +86,7 @@ void ConsoleController::Flipping()
 	}
 	else
 	{
-		ErrorHandler::ShowErrorString(EErrorType::UNKNOWN_CONSOLE_SCREEN_BUFFER_TYPE);
+		ErrorHandler::ShowString(EErrorType::UNKNOWN_CONSOLE_SCREEN_BUFFER_TYPE);
 		return;
 	}
 }
@@ -111,11 +110,14 @@ void ConsoleController::Finalize()
 콘솔창에 문자열을 출력합니다.
 더블 버퍼링인 경우, 활성화되지 않은 버퍼에 문자열을 출력합니다.
 */
-void ConsoleController::OutputStr(Int32 posX, Int32 posY, const std::string_view& szOutput)
+void ConsoleController::PrintString(Int32 posX, Int32 posY, const std::string_view& szOutput)
 {
 	DWORD dwWrittenCnt = 0;
-	WriteConsoleOutputCharacter(getCurrentConsoleScreenBufferHandle(),
-		szOutput.data(), szOutput.size(), COORD{ static_cast<SHORT>(posX), static_cast<SHORT>(posY) }, &dwWrittenCnt);
+	COORD printPos = { static_cast<SHORT>(posX), static_cast<SHORT>(posY) };
+	HANDLE hConsoleScreenBuffer = getCurrentConsoleScreenBufferHandle();
+
+	::FillConsoleOutputAttribute(hConsoleScreenBuffer, m_consoleScreenBufferInfo.wAttributes, szOutput.size(), printPos, &dwWrittenCnt);
+	::WriteConsoleOutputCharacter(hConsoleScreenBuffer, szOutput.data(), szOutput.size(), printPos, &dwWrittenCnt);
 }
 
 /*
@@ -172,16 +174,8 @@ void ConsoleController::ClearConsoleScreen()
 #else
 	HANDLE hConsoleScreenBuffer = getCurrentConsoleScreenBufferHandle();
 
-	// 현재 콘솔창의 정보를 가져옵니다.
-	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
-	::ZeroMemory(&consoleScreenBufferInfo, sizeof(consoleScreenBufferInfo));
-	if (::GetConsoleScreenBufferInfo(hConsoleScreenBuffer, &consoleScreenBufferInfo) == FALSE)
-	{
-		return;
-	}
-
 	// 가로 X 세로 = 사각형 넓이
-	Uint32 consoleSize = consoleScreenBufferInfo.dwSize.X * consoleScreenBufferInfo.dwSize.Y;
+	Uint32 consoleSize = m_consoleScreenBufferInfo.dwSize.X * m_consoleScreenBufferInfo.dwSize.Y;
 
 	// 콘솔창의 버퍼를 공백으로 채웁니다.
 	DWORD dwWrittenCnt = 0;
@@ -192,8 +186,7 @@ void ConsoleController::ClearConsoleScreen()
 	}
 
 	// 콘솔창의 버퍼 속성을 설정합니다.
-	if (::FillConsoleOutputAttribute(hConsoleScreenBuffer, consoleScreenBufferInfo.wAttributes,
-			consoleSize, beginConsolePos, &dwWrittenCnt) == FALSE)
+	if (::FillConsoleOutputAttribute(hConsoleScreenBuffer, m_consoleScreenBufferInfo.wAttributes, consoleSize, beginConsolePos, &dwWrittenCnt) == FALSE)
 	{
 		return;
 	}
@@ -267,36 +260,31 @@ void ConsoleController::ChangeConsoleOutputColor(EConsoleOutputType consoleOutpu
 	if ( (consoleOutputColorType < EConsoleOutputColorType::BLACK) ||
 		 (consoleOutputColorType > EConsoleOutputColorType::BRIGHT_WHITE) )
 	{
-		ErrorHandler::ShowErrorString(EErrorType::UNKNOWN_CONSOLE_COLOR);
+		ErrorHandler::ShowString(EErrorType::UNKNOWN_CONSOLE_COLOR);
 		return;
 	}
-
-	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
-	::ZeroMemory(&consoleScreenBufferInfo, sizeof(consoleScreenBufferInfo));
-
-	HANDLE hConsoleScreenBuffer = getCurrentConsoleScreenBufferHandle();
-	::GetConsoleScreenBufferInfo(hConsoleScreenBuffer, &consoleScreenBufferInfo);
 
 	// CONSOLE_SCREEN_BUFFER_INFO의 wAttributes에 색상 정보가 있어요!
 	// 하위 1바이트에서 상위 4비트는 배경 색상, 하위 4비트는 글자 색상을 의미하죠.
 	// 이 정보와 비트 연산을 이용하면 배경 색상과 글자 색상을 따로 알아낼 수 있습니다!
-	WORD consoleScreenBufferAttr = 0;
+	WORD consoleScreenBufferAttr = m_consoleScreenBufferInfo.wAttributes;
 	if (consoleOutputType == EConsoleOutputType::TEXT)
 	{
-		consoleScreenBufferAttr = consoleScreenBufferInfo.wAttributes & 0xFFF0;
+		consoleScreenBufferAttr &= 0xFFF0;
 		consoleScreenBufferAttr |= static_cast<BYTE>(consoleOutputColorType);
 	}
 	else if (consoleOutputType == EConsoleOutputType::BACKGROUND)
 	{
-		consoleScreenBufferAttr = consoleScreenBufferInfo.wAttributes & 0xFF0F;
+		consoleScreenBufferAttr = m_consoleScreenBufferInfo.wAttributes & 0xFF0F;
 		consoleScreenBufferAttr |= (static_cast<BYTE>(consoleOutputColorType) << 4);
 	}
 	else
 	{
-		ErrorHandler::ShowErrorString(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE);
+		ErrorHandler::ShowString(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE);
 	}
 
-	::SetConsoleTextAttribute(hConsoleScreenBuffer, consoleScreenBufferAttr);
+	m_consoleScreenBufferInfo.wAttributes = consoleScreenBufferAttr;
+	::SetConsoleTextAttribute(getCurrentConsoleScreenBufferHandle(), m_consoleScreenBufferInfo.wAttributes);
 
 	return;
 }
@@ -325,13 +313,11 @@ void ConsoleController::ShowConsoleCursor(bool bShow)
 */
 COORD ConsoleController::GetCurrentConsolePos()
 {
-	COORD pos{ 0, 0 };
-	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
-	::ZeroMemory(&consoleScreenBufferInfo, sizeof(consoleScreenBufferInfo));
+	COORD pos = { 0, 0 };
 
-	::GetConsoleScreenBufferInfo(getCurrentConsoleScreenBufferHandle(), &consoleScreenBufferInfo);
-	pos.X = consoleScreenBufferInfo.dwCursorPosition.X;
-	pos.Y = consoleScreenBufferInfo.dwCursorPosition.Y;
+	::GetConsoleScreenBufferInfo(getCurrentConsoleScreenBufferHandle(), &m_consoleScreenBufferInfo);
+	pos.X = m_consoleScreenBufferInfo.dwCursorPosition.X;
+	pos.Y = m_consoleScreenBufferInfo.dwCursorPosition.Y;
 
 	return pos;
 }
@@ -341,33 +327,28 @@ COORD ConsoleController::GetCurrentConsolePos()
 */
 EConsoleOutputColorType ConsoleController::QueryCurrentConsoleOutputColor(EConsoleOutputType consoleOutputType)
 {
-	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
-	::ZeroMemory(&consoleScreenBufferInfo, sizeof(consoleScreenBufferInfo));
-
-	::GetConsoleScreenBufferInfo(getCurrentConsoleScreenBufferHandle(), &consoleScreenBufferInfo);
-
 	// CONSOLE_SCREEN_BUFFER_INFO의 wAttributes에 색상 정보가 있어요!
 	// 하위 1바이트에서 상위 4비트는 배경 색상, 하위 4비트는 글자 색상을 의미하죠.
 	// 이 정보와 비트 연산을 이용하면 배경 색상과 글자 색상을 따로 알아낼 수 있습니다!
 	BYTE consoleColorVal = 0;
 	if (consoleOutputType == EConsoleOutputType::TEXT)
 	{
-		consoleColorVal = static_cast<BYTE>(consoleScreenBufferInfo.wAttributes & 0x000F);
+		consoleColorVal = static_cast<BYTE>(m_consoleScreenBufferInfo.wAttributes & 0x000F);
 	}
 	else if (consoleOutputType == EConsoleOutputType::BACKGROUND)
 	{
-		consoleColorVal = static_cast<BYTE>((consoleScreenBufferInfo.wAttributes & 0x00F0) >> 4);
+		consoleColorVal = static_cast<BYTE>((m_consoleScreenBufferInfo.wAttributes & 0x00F0) >> 4);
 	}
 	else
 	{
-		ErrorHandler::ShowErrorString(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE);
+		ErrorHandler::ShowString(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE);
 	}
 
 
 	if ( (consoleColorVal < static_cast<INT32>(EConsoleOutputColorType::BLACK)) ||
 		 (consoleColorVal > static_cast<INT32>(EConsoleOutputColorType::BRIGHT_WHITE)) )
 	{
-		ErrorHandler::ShowErrorString(EErrorType::UNKNOWN_CONSOLE_COLOR);
+		ErrorHandler::ShowString(EErrorType::UNKNOWN_CONSOLE_COLOR);
 		return EConsoleOutputColorType::UNKNOWN;
 	}
 

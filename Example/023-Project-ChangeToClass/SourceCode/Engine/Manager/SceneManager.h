@@ -23,7 +23,7 @@ enum class ESceneType : Int32
 
 class SceneMgr final
 {
-	DECLARE_SINGLETON(SceneMgr);
+	DECLARE_PHOENIX_SINGLETON(SceneMgr);
 
 public:
 	void Finalize();
@@ -54,22 +54,22 @@ public:
 				return;
 			}
 
-			m_pCurrentScene = new TScene(szSceneName);
+			m_pCurrentScene = trace_new TScene(szSceneName);
 
 			if (m_pCurrentScene->OnInitialize() == EErrorType::INIT_FAILED)
 			{
-				ErrorHandler::ShowErrorString(EErrorType::INIT_FAILED);
+				ErrorHandler::ShowString(EErrorType::INIT_FAILED);
 			}
 		}
 		else
 		{
 			SAFE_DELETE(m_pNextScene);
-			m_pNextScene = new TScene(szSceneName);
+			m_pNextScene = trace_new TScene(szSceneName);
 
 			// 전환될 예정인 씬은 초기화가 완료된 상태로 전환되어야 해요!
 			if (m_pNextScene->OnInitialize() == EErrorType::INIT_FAILED)
 			{
-				ErrorHandler::ShowErrorString(EErrorType::INIT_FAILED);
+				ErrorHandler::ShowString(EErrorType::INIT_FAILED);
 			}
 
 			m_bGotoNextScene = true;

@@ -53,7 +53,7 @@ enum class EConsoleOutputType : Int32
 
 class ConsoleController
 {
-	DECLARE_SINGLETON(ConsoleController);
+	DECLARE_PHOENIX_SINGLETON(ConsoleController);
 
 public:
 	using ConsoleDblBufferingHandle = std::array<HANDLE, CommonFunc::ToUnderlyingType(EConsoleScreenBufferType::MAX)>;
@@ -62,7 +62,7 @@ public:
 	void Flipping();
 	void Finalize();
 
-	void OutputStr(Int32 posX, Int32 posY, const std::string_view& szOutput);
+	void PrintString(Int32 posX, Int32 posY, const std::string_view& szOutput);
     void AdjustConsoleArea(Uint32 width, Uint32 height);
     void AdjustConsoleArea(const SizeInfo& sizeInfo);
     void DefaultConsoleGameStyle();
@@ -93,6 +93,7 @@ public:
 
 private:
 	ConsoleDblBufferingHandle m_hConsoleScreenBuffers;
+	CONSOLE_SCREEN_BUFFER_INFO m_consoleScreenBufferInfo;
 	EConsoleScreenBufferType m_currentConsoleScreenBufferType = EConsoleScreenBufferType::FRONT;
 };
 

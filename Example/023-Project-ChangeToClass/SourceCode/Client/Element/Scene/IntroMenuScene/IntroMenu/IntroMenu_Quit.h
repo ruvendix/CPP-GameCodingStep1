@@ -4,22 +4,26 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 게임 선택, 관리 등 핵심 기능을 담당합니다.
-// 인스턴스가 하나만 존재해야 하는 싱글톤입니다.
+// 인트로 메뉴 씬에서 사용되는 보조 클래스입니다.
+// 게임을 종료시킬 때 사용됩니다.
 // =====================================================================================
 
-#ifndef GAME_MAIN__H__
-#define GAME_MAIN__H__
+#ifndef INTRO_MENU_QUIT_H__
+#define INTRO_MENU_QUIT_H__
 
-#include "Common\CommonType.h"
+#include "./IntroMenu.h"
 
-class GameMain final
+class IntroMenu_Quit : public IntroMenu
 {
-    DECLARE_PHOENIX_SINGLETON(GameMain);
-    FRIEND_WITH_HELPER(GameMainHelper);
-
 public:
-    Int32 Run();
+	using IntroMenu::IntroMenu;
+
+#pragma region 생성자 및 소멸자
+	IntroMenu_Quit() = default;
+	virtual ~IntroMenu_Quit() = default;
+#pragma endregion
+
+	virtual EErrorType OnExcute() override;
 };
 
 #endif

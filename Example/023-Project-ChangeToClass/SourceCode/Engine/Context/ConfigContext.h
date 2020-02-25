@@ -15,7 +15,7 @@
 
 class ConfigCtx final
 {
-	DECLARE_SINGLETON(ConfigCtx);
+	DECLARE_PHOENIX_SINGLETON(ConfigCtx);
 
 public:
 	const SizeInfo& getResoultion() const

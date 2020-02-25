@@ -69,6 +69,9 @@
     <Filter Include="소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenu">
       <UniqueIdentifier>{d3164b5a-c506-4089-a642-95410849f075}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\1. Engine\Math">
+      <UniqueIdentifier>{57f11e1d-a5a7-41c9-85f3-753e900bdf2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\Main.cpp">
@@ -127,6 +130,21 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Engine\Timer\StopwatchTimer.cpp">
       <Filter>소스 파일\1. Engine\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenuScene.cpp">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu.cpp">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu_Quit.cpp">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu_SceneLoader.cpp">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\DebugPanel.cpp">
+      <Filter>소스 파일\1. Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,6 +219,21 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Engine\Timer\StopwatchTimer.h">
       <Filter>소스 파일\1. Engine\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenuScene.h">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu.h">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu_Quit.h">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu_SceneLoader.h">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\DebugPanel.h">
+      <Filter>소스 파일\1. Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

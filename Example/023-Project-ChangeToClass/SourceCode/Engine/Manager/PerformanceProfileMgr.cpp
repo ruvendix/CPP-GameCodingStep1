@@ -12,7 +12,7 @@
 #include "PerformanceProfileMgr.h"
 
 DEFINE_LOG_CATEGORY(PerformanceProfileMgr);
-DEFINE_SINGLETON(PerformanceProfileMgr);
+DEFINE_PHOENIX_SINGLETON(PerformanceProfileMgr);
 
 /*
 ID를 이용해서 기존에 있는 정보인지 찾아보고 없으면 새로 생성합니다. (ID는 __COUNTER__)
@@ -33,7 +33,7 @@ void PerformanceProfileMgr::Start(const std::string_view& szFuncSig, Int32 ID, I
 		return;
 	}
 	
-	PerformanceProfileInfo* pPerformanceProfileInfo = new PerformanceProfileInfo;
+	PerformanceProfileInfo* pPerformanceProfileInfo = trace_new PerformanceProfileInfo;
 	pPerformanceProfileInfo->strFuncSig = szFuncSig;
 	pPerformanceProfileInfo->inputDataCnt = inputDataCnt;
 	pPerformanceProfileInfo->stopwatchTimer.StartTime();
