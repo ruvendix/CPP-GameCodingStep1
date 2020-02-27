@@ -37,7 +37,7 @@ class IntroMenuSceneHelper final
 	NON_COPYABLE_ONLY_PRIVATE_CLASS(IntroMenuSceneHelper);
 
 public:
-	using QueryLongestMenuInfoCallback = std::function<void(_Inout_ IntroMenuScene&, _Inout_ IntroMenu&)>;
+	using CompMenuInfoCallback = std::function<void(_Inout_ IntroMenuScene&, _Inout_ IntroMenu&)>;
 
 	static void DrawScene(_Inout_ IntroMenuScene& helperTarget);
 	static void DrawTitle();
@@ -45,16 +45,16 @@ public:
 	static void DrawSelector(const IntroMenuScene& helperTarget);
 	static void AlignCenterMenu(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu);
 	
-	static void OnCallback_QueryLongestMenuInfo(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu);
-	static void OnCallback_NonQueryLongestMenuInfo(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu);
+	static void OnCallback_CompMenuInfo_QueryLongest(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu);
+	static void OnCallback_CompMenuInfo_None(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu);
 
 private:
-	static QueryLongestMenuInfoCallback m_queryLongestMenuInfoCallback; // 전략 패턴
+	static CompMenuInfoCallback m_compMenuInfoCallback; // 전략 패턴
 };
 
 // 헬퍼 클래스의 멤버변수는 콜백과 상수만 넣을게요!
 // 다른 용도의 멤버변수를 넣게 되면 static이라 모든 인스턴스가 공유해버려서 망해요...
-IntroMenuSceneHelper::QueryLongestMenuInfoCallback IntroMenuSceneHelper::m_queryLongestMenuInfoCallback = OnCallback_QueryLongestMenuInfo;
+IntroMenuSceneHelper::CompMenuInfoCallback IntroMenuSceneHelper::m_compMenuInfoCallback = OnCallback_CompMenuInfo_QueryLongest;
 
 /*
 인트로 게임 메뉴 씬을 렌더링합니다.
@@ -68,7 +68,7 @@ void IntroMenuSceneHelper::DrawScene(_Inout_ IntroMenuScene& helperTarget)
 	if (std::get<2>(helperTarget.m_tupleLongestMenuInfo) == true)
 	{
 		std::get<2>(helperTarget.m_tupleLongestMenuInfo) = false;
-		m_queryLongestMenuInfoCallback = OnCallback_NonQueryLongestMenuInfo;
+		m_compMenuInfoCallback = OnCallback_CompMenuInfo_None;
 	}
 
 	DrawSelector(helperTarget);
@@ -139,14 +139,13 @@ void IntroMenuSceneHelper::AlignCenterMenu(_Inout_ IntroMenuScene& helperTarget,
 	gameIntroMenu.setPos(currentPos);
 	ConsoleController::I()->MoveConsolePos(currentPos);
 
-	m_queryLongestMenuInfoCallback(helperTarget, gameIntroMenu);
+	m_compMenuInfoCallback(helperTarget, gameIntroMenu);
 }
 
 /*
 전달받은 메뉴 정보와 비교하면서 가장 긴 메뉴 정보를 알아냅니다.
 */
-void IntroMenuSceneHelper::OnCallback_QueryLongestMenuInfo(_Inout_ IntroMenuScene& helperTarget,
-	_Inout_ IntroMenu& gameIntroMenu)
+void IntroMenuSceneHelper::OnCallback_CompMenuInfo_QueryLongest(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu)
 {
 	const COORD& menuPos = gameIntroMenu.getPos();
 
@@ -162,8 +161,7 @@ void IntroMenuSceneHelper::OnCallback_QueryLongestMenuInfo(_Inout_ IntroMenuScen
 /*
 가장 긴 메뉴 정보를 알아낸 후이므로 아무것도 하지 않습니다.
 */
-void IntroMenuSceneHelper::OnCallback_NonQueryLongestMenuInfo(_Inout_ IntroMenuScene& helperTarget,
-	_Inout_ IntroMenu& gameIntroMenu)
+void IntroMenuSceneHelper::OnCallback_CompMenuInfo_None(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu)
 {
 
 }

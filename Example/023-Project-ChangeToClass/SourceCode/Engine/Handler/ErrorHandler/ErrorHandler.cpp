@@ -28,6 +28,7 @@ void ErrorHandler::ShowString(EErrorType errorType)
 		CASE_LOG_BREAK(EErrorType::UNKNOWN_CONSOLE_COLOR, "알 수 없는 콘솔 색상!");
 		CASE_LOG_BREAK(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE, "알 수 없는 콘솔 출력 타입!");
 		CASE_LOG_BREAK(EErrorType::UNKNOWN_INTRO_MENU_SCENE_LOADER_TYPE, "알 수 없는 인트로 메뉴 씬 로더 타입!");
+		CASE_LOG_BREAK(EErrorType::UNKNOWN_FRAME_RATE_TYPE, "알 수 없는 프레임 레이트 타입!");
 
 		CASE_LOG_BREAK(EErrorType::NO_FRAME_LIMITED_ON_UNLIMITED_FRAME_RATE, "무제한 프레임 레이트에서는 프레임 제한을 걸 수 없음!");
 		CASE_LOG_BREAK(EErrorType::INPUT_MAPPING_VAL_IS_ONLY_UPPERCASE, "입력 매핑 입력값은 대문자만 가능!");

@@ -34,8 +34,9 @@ class FrameController final
 
 public:
 	void Initialize();
-	void UpdateFPSAndDeltatime();
+	void UpdateFrame();
 	void ModifyLimitedFrame(Int32 limitedFrame);
+	void ChangeFrameRateType(EFrameRateType frameRateType);
 
 	void ResetTimeScale()
 	{
@@ -78,12 +79,9 @@ public:
 		return m_frameRateType;
 	}
 
-	void setFrameRateType(EFrameRateType frameRateType)
-	{
-		m_frameRateType = frameRateType;
-	}
-
 private:
+	void OnTrigger_RefreshFPS();
+
 	std::list<Int32> m_listFPS; // 평균 프레임값을 구하기 위해 사용합니다.
 
 	Int32 m_frameCnt = 0; // 게임 루프당 프레임 하나입니다.

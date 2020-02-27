@@ -18,7 +18,7 @@ class IntroMenuScene final : public Scene
 {
 	NON_COPYABLE_CLASS(IntroMenuScene);
 	FRIEND_WITH_HELPER(IntroMenuSceneHelper);
-	FRAME_UPDATE_LIMITED(5);
+	FRAME_UPDATE_LIMITED(8);
 
 public:
 	using Scene::Scene;
@@ -32,9 +32,9 @@ public:
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnFinalize() override;
 
+private:
 	void OnTrigger_ExcuteMenu();
 
-private:
 	TupleCompMenuInfo m_tupleLongestMenuInfo;
 	std::vector<IntroMenu*> m_vecIntroMenu;
 	Int32 m_selectedIntroMenuIdx = 0;

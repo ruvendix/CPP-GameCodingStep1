@@ -52,8 +52,8 @@ void GameMainHelper::Initialize()
 	SceneMgr::I()->CreateScene<IntroMenuScene>(ESceneType::CURRENT);
 	
 	FrameController::I()->Initialize();
-	//FrameController::I()->setFrameRateType(EFrameRateType::VARIABLE_UNLIMITED);
-	FrameController::I()->ModifyLimitedFrame(60);
+	FrameController::I()->ChangeFrameRateType(EFrameRateType::CONSTANT);
+	//FrameController::I()->ModifyLimitedFrame(60);
 
 	DEBUG_LOG("게임 초기화 처리 완료!");
 }
@@ -112,7 +112,7 @@ void GameMainHelper::Update()
 	GameCtx::I()->setCurrentGameState(EGameState::UPDATE);
 
 	// FPS와 델타타임부터 갱신해야 해요!
-	FrameController::I()->UpdateFPSAndDeltatime();
+	FrameController::I()->UpdateFrame();
 
 	// 씬이 변경되는지 확인해야 해요!
 	// 전환될 씬은 초기화가 완료된 상태이므로 현재 씬과 바꿔주기만 하면 돼죠!

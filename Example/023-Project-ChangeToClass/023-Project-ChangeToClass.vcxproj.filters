@@ -146,6 +146,9 @@
     <ClCompile Include="SourceCode\Engine\DebugPanel.cpp">
       <Filter>소스 파일\1. Engine</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Math\Random.cpp">
+      <Filter>소스 파일\1. Engine\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Client\GameMain.h">
@@ -234,6 +237,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Engine\DebugPanel.h">
       <Filter>소스 파일\1. Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Math\Random.h">
+      <Filter>소스 파일\1. Engine\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

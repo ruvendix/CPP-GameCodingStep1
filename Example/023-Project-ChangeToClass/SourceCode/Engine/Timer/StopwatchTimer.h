@@ -15,7 +15,7 @@
 #include "Common\CommonMacro.h"
 #include "Common\CommonNecessary.h"
 
-class StopwatchTimer final
+class StopwatchTimer
 {
 public:
 #pragma region 생성자 및 소멸자
@@ -26,9 +26,17 @@ public:
 	void StartTime();
 	Real32 EndTime();
 
+	void SwapTime()
+	{
+		m_startTime = m_endTime;
+	}
+
 private:
 	Uint32 m_startTime = 0;
 	Uint32 m_endTime = 0;
+
+	//std::chrono::steady_clock::time_point m_startTime;
+	//std::chrono::steady_clock::time_point m_endTime;
 };
 
 #endif

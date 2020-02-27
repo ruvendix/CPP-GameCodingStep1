@@ -166,6 +166,7 @@
     <ClCompile Include="SourceCode\Engine\Manager\PerformanceProfileMgr.cpp" />
     <ClCompile Include="SourceCode\Engine\Manager\SceneManager.cpp" />
     <ClCompile Include="SourceCode\Engine\Manager\TriggerTimerManager.cpp" />
+    <ClCompile Include="SourceCode\Engine\Math\Random.cpp" />
     <ClCompile Include="SourceCode\Engine\Timer\StopwatchTimer.cpp" />
     <ClCompile Include="SourceCode\Engine\Timer\TriggerTimer.cpp" />
     <ClCompile Include="SourceCode\Main.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="SourceCode\Engine\Manager\PerformanceProfileMgr.h" />
     <ClInclude Include="SourceCode\Engine\Manager\SceneManager.h" />
     <ClInclude Include="SourceCode\Engine\Manager\TriggerTimerManager.h" />
+    <ClInclude Include="SourceCode\Engine\Math\Random.h" />
     <ClInclude Include="SourceCode\Engine\Timer\StopwatchTimer.h" />
     <ClInclude Include="SourceCode\Engine\Timer\TriggerTimer.h" />
   </ItemGroup>

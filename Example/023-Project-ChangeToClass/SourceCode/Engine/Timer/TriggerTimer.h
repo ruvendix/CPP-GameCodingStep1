@@ -12,11 +12,10 @@
 #ifndef TRIGGER_TIMER__H__
 #define TRIGGER_TIMER__H__
 
-#include "Common\CommonType.h"
-#include "Common\CommonMacro.h"
 #include "Element\NameTag.h"
+#include "StopwatchTimer.h"
 
-class TriggerTimer final
+class TriggerTimer final : public StopwatchTimer
 {
 public:
 	using TriggerTimerCallback = std::function<void()>;

@@ -43,15 +43,17 @@ public:
 			CHECK_NULLPTR_RETURN(pTriggerTimer, void);
 			
 			// 이미 존재하는 트리거 타이머라면 데이터를 갱신해줍니다.
+			pTriggerTimer->StartTime();
 			pTriggerTimer->setTime(triggerTime);
 			pTriggerTimer->setFunc(std::bind(elemMemberFunc, pElem));
 			pTriggerTimer->setRepeat(bRepeat);
-			DEBUG_LOG_CATEGORY(TriggerTimerMgr, "타이머가 이미 존재하므로 이름(%s)을 제외한 모든 데이터를 갱신!", strTriggerTimer);
+			DEBUG_LOG_CATEGORY(TriggerTimerMgr, "타이머가 이미 존재하므로 이름(%s)을 제외한 모든 데이터를 갱신!", strTriggerTimer.c_str());
 
 			return;
 		}
 
 		TriggerTimer* pTriggerTimer = trace_new TriggerTimer;
+		pTriggerTimer->StartTime();
 		pTriggerTimer->setTime(triggerTime);
 		pTriggerTimer->setFunc(std::bind(elemMemberFunc, pElem));
 		pTriggerTimer->setRepeat(bRepeat);

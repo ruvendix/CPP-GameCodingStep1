@@ -14,7 +14,18 @@
 
 #include "Controller\FrameController.h"
 
+/*
+경과 시간에 시간 간격을 더합니다.
+게임 시간이 아니라 실제 시간만큼 더해야 합니다.
+*/
 void TriggerTimer::AddDeltaTime()
 {
-	m_elapsedTime += FrameController::I()->getDeltaTime();
+	m_elapsedTime += EndTime();
+	SwapTime();
+
+	//DEBUG_LOG("(%f)초 체크!", m_elapsedTime);
+
+	//m_elapsedTime += FrameController::I()->getDeltaTime();
+	//static Int32 cnt = 0;
+	//DEBUG_LOG("%f초 체크! (%f) (%d)", m_elapsedTime, FrameController::I()->getDeltaTime(), ++cnt);
 }
