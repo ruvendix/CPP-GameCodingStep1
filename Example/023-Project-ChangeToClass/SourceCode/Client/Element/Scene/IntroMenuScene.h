@@ -11,6 +11,9 @@
 #define INTRO_MENU_SCENE_H__
 
 #include "Element\Scene.h"
+#include "Controller\ConsoleControllerEnum.h"
+
+DECLARE_LOG_CATEGORY(IntroMenuScene);
 
 class IntroMenu;
 
@@ -33,8 +36,10 @@ public:
 	virtual EErrorType OnFinalize() override;
 
 private:
+	void OnTrigger_ChangeRandomColorToTitle();
 	void OnTrigger_ExcuteMenu();
 
+	EConsoleOutputColorType m_titleColorType = EConsoleOutputColorType::WHITE;
 	TupleCompMenuInfo m_tupleLongestMenuInfo;
 	std::vector<IntroMenu*> m_vecIntroMenu;
 	Int32 m_selectedIntroMenuIdx = 0;

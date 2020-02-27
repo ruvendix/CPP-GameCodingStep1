@@ -20,7 +20,7 @@
 #include "Controller\FrameController.h"
 #include "Controller\ConsoleController.h"
 #include "DebugPanel.h"
-#include "Element\Scene\IntroMenuScene\IntroMenuScene.h"
+#include "Element\Scene\IntroMenuScene.h"
 
 class GameMainHelper final
 {

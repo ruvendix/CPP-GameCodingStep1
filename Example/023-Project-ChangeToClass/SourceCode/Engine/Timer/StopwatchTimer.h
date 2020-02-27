@@ -32,11 +32,8 @@ public:
 	}
 
 private:
-	Uint32 m_startTime = 0;
-	Uint32 m_endTime = 0;
-
-	//std::chrono::steady_clock::time_point m_startTime;
-	//std::chrono::steady_clock::time_point m_endTime;
+	std::chrono::steady_clock::time_point m_startTime;
+	std::chrono::steady_clock::time_point m_endTime;
 };
 
 #endif

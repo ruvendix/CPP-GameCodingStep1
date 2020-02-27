@@ -66,11 +66,14 @@
     <Filter Include="소스 파일\2. Client\Element\Scene\IntroMenuScene">
       <UniqueIdentifier>{6fda6ba4-f3df-446e-b865-44395c1cc445}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenu">
-      <UniqueIdentifier>{d3164b5a-c506-4089-a642-95410849f075}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\1. Engine\Math">
       <UniqueIdentifier>{57f11e1d-a5a7-41c9-85f3-753e900bdf2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\1. Engine\Controller\Console">
+      <UniqueIdentifier>{444bdb29-730a-44c9-bf72-8869e0965f55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist">
+      <UniqueIdentifier>{d3164b5a-c506-4089-a642-95410849f075}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -122,32 +125,32 @@
     <ClCompile Include="SourceCode\Engine\Element\GameElement.cpp">
       <Filter>소스 파일\1. Engine\Element</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Engine\Controller\ConsoleController.cpp">
-      <Filter>소스 파일\1. Engine\Controller</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Engine\Manager\PerformanceProfileMgr.cpp">
       <Filter>소스 파일\1. Engine\Manager</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Engine\Timer\StopwatchTimer.cpp">
       <Filter>소스 파일\1. Engine\Timer</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenuScene.cpp">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu.cpp">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenu</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu_Quit.cpp">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenu</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu_SceneLoader.cpp">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenu</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Engine\DebugPanel.cpp">
       <Filter>소스 파일\1. Engine</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Engine\Math\Random.cpp">
       <Filter>소스 파일\1. Engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Controller\ConsoleController.cpp">
+      <Filter>소스 파일\1. Engine\Controller\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene.cpp">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu.cpp">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_Quit.cpp">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_SceneLoader.cpp">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,32 +217,35 @@
     <ClInclude Include="SourceCode\Engine\Element\GameElement.h">
       <Filter>소스 파일\1. Engine\Element</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Engine\Controller\ConsoleController.h">
-      <Filter>소스 파일\1. Engine\Controller</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Engine\Manager\PerformanceProfileMgr.h">
       <Filter>소스 파일\1. Engine\Manager</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Engine\Timer\StopwatchTimer.h">
       <Filter>소스 파일\1. Engine\Timer</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenuScene.h">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu.h">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu_Quit.h">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene\IntroMenu\IntroMenu_SceneLoader.h">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenu</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Engine\DebugPanel.h">
       <Filter>소스 파일\1. Engine</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Engine\Math\Random.h">
       <Filter>소스 파일\1. Engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Controller\ConsoleController.h">
+      <Filter>소스 파일\1. Engine\Controller\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Controller\ConsoleControllerEnum.h">
+      <Filter>소스 파일\1. Engine\Controller\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene.h">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu.h">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_Quit.h">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_SceneLoader.h">
+      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

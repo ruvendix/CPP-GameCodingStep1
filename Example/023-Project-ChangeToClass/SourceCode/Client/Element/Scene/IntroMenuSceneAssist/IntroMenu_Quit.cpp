@@ -12,10 +12,11 @@
 #include "IntroMenu_Quit.h"
 
 #include "Context\GameContext.h"
+#include "Element\Scene\IntroMenuScene.h"
 
 EErrorType IntroMenu_Quit::OnExcute()
 {
-	DEBUG_LOG("IntroMenu_Quit에서 게임 종료!");
+	DEBUG_LOG_CATEGORY(IntroMenuScene, "IntroMenu_Quit에서 게임 종료!");
 	GameCtx::I()->setCurrentGameState(EGameState::TERMINATION_SUCCESS);
 	return EErrorType::NONE;
 }

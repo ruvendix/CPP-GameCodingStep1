@@ -13,43 +13,9 @@
 
 #include "Common\CommonFunc.h"
 #include "Element\NameTag.h"
+#include "ConsoleControllerEnum.h"
 
 DECLARE_LOG_CATEGORY(ConsoleController);
-
-enum class EConsoleScreenBufferType : Int32
-{
-	FRONT = 0,
-	BACK,
-	MAX,
-};
-
-// 글자색과 배경색 둘 다 사용됩니다.
-enum class EConsoleOutputColorType : Int32
-{
-	UNKNOWN = -1,
-	BLACK,
-	BLUE,
-	GREEN,
-	AQUA,
-	RED,
-	PURPLE,
-	YELLOW,
-	WHITE,
-	GRAY,
-	LIGHT_BLUE,
-	LIGHT_GREEN,
-	LIGHT_AQUA,
-	LIGHT_RED,
-	LIGHT_PURPLE,
-	LIGHT_YELLOW,
-	BRIGHT_WHITE,
-};
-
-enum class EConsoleOutputType : Int32
-{
-	TEXT = 0,
-	BACKGROUND,
-};
 
 class ConsoleController
 {

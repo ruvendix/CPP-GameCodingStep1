@@ -10,15 +10,16 @@
 #include "PCH.h"
 #include "IntroMenuScene.h"
 
+#include "Math\Random.h"
 #include "Context\ConfigContext.h"
 #include "Context\GameContext.h"
 #include "Manager\SceneManager.h"
 #include "Manager\TriggerTimerManager.h"
 #include "Controller\InputController.h"
-#include "Controller\ConsoleController.h"
 #include "Controller\FrameController.h"
-#include "IntroMenu\IntroMenu_Quit.h"
-#include "IntroMenu\IntroMenu_SceneLoader.h"
+#include "Controller\ConsoleController.h"
+#include "IntroMenuSceneAssist\IntroMenu_Quit.h"
+#include "IntroMenuSceneAssist\IntroMenu_SceneLoader.h"
 
 namespace
 {
@@ -40,7 +41,7 @@ public:
 	using CompMenuInfoCallback = std::function<void(_Inout_ IntroMenuScene&, _Inout_ IntroMenu&)>;
 
 	static void DrawScene(_Inout_ IntroMenuScene& helperTarget);
-	static void DrawTitle();
+	static void DrawTitle(const IntroMenuScene& helperTarget);
 	static void DrawAllMenu(_Inout_ IntroMenuScene& helperTarget);
 	static void DrawSelector(const IntroMenuScene& helperTarget);
 	static void AlignCenterMenu(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu);
@@ -61,7 +62,7 @@ IntroMenuSceneHelper::CompMenuInfoCallback IntroMenuSceneHelper::m_compMenuInfoC
 */
 void IntroMenuSceneHelper::DrawScene(_Inout_ IntroMenuScene& helperTarget)
 {
-	DrawTitle();
+	DrawTitle(helperTarget);
 	DrawAllMenu(helperTarget);
 
 	// 가장 긴 메뉴 정보를 알아냈다면 더 이상 업데이트하지 않습니다!
@@ -77,9 +78,9 @@ void IntroMenuSceneHelper::DrawScene(_Inout_ IntroMenuScene& helperTarget)
 /*
 인트로 게임 메뉴 씬의 타이틀을 렌더링합니다.
 */
-void IntroMenuSceneHelper::DrawTitle()
+void IntroMenuSceneHelper::DrawTitle(const IntroMenuScene& helperTarget)
 {
-	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::GREEN);
+	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, helperTarget.m_titleColorType);
 	PRINTF(0, 0, "   _______  __   __  _______  __    _  _______  _______    _______  _______    _______  ___      _______  _______  _______ ");
 	PRINTF(0, 1, "  |       ||  | |  ||   _   ||  |  | ||       ||       |  |       ||       |  |       ||   |    |   _   ||       ||       |");
 	PRINTF(0, 2, "  |       ||  |_|  ||  |_|  ||   |_| ||    ___||    ___|  |_     _||   _   |  |       ||   |    |  |_|  ||  _____||  _____|");
@@ -168,6 +169,8 @@ void IntroMenuSceneHelper::OnCallback_CompMenuInfo_None(_Inout_ IntroMenuScene& 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+DEFINE_LOG_CATEGORY(IntroMenuScene);
+
 EErrorType IntroMenuScene::OnInitialize()
 {
 	InputController::I()->InsertInputMappingInfo("SelectUp", VK_UP);
@@ -188,6 +191,8 @@ EErrorType IntroMenuScene::OnInitialize()
 	m_vecIntroMenu.push_back(trace_new IntroMenu_Quit("게임 종료",
 		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_QUIT_OFFSET_POS_Y }));
 
+	TriggerTimerMgr::I()->AddTriggerTimer("ChangeIntroTitle", 0.3f, this, &IntroMenuScene::OnTrigger_ChangeRandomColorToTitle, true);
+
 	return EErrorType::NONE;
 }
 
@@ -199,14 +204,14 @@ EErrorType IntroMenuScene::OnUpdate()
 	{
 		--m_selectedIntroMenuIdx;
 		m_selectedIntroMenuIdx = CommonFunc::ClampCircular(m_selectedIntroMenuIdx, 0, m_vecIntroMenu.size() - 1);
-		DEBUG_LOG("SelectUp 눌렀다!");
+		DEBUG_LOG_CATEGORY(IntroMenuScene, "SelectUp 눌렀다!");
 	}
 
 	if (InputController::I()->CheckInputState("SelectDown", EInputMappingState::PRESSING) == true)
 	{
 		++m_selectedIntroMenuIdx;
 		m_selectedIntroMenuIdx = CommonFunc::ClampCircular(m_selectedIntroMenuIdx, 0, m_vecIntroMenu.size() - 1);
-		DEBUG_LOG("SelectDown 눌렀다!");
+		DEBUG_LOG_CATEGORY(IntroMenuScene, "SelectDown 눌렀다!");
 	}
 
 	END_FRAME_UPDATE_LIMITED();
@@ -214,7 +219,7 @@ EErrorType IntroMenuScene::OnUpdate()
 	if (InputController::I()->CheckInputState("SelectMenu", EInputMappingState::DOWN) == true)
 	{
 		TriggerTimerMgr::I()->AddTriggerTimer("ExcuteMenu", 3.0f, this, &IntroMenuScene::OnTrigger_ExcuteMenu, false);
-		DEBUG_LOG("SelectMenu 눌렀다!");
+		DEBUG_LOG_CATEGORY(IntroMenuScene, "SelectMenu 눌렀다!");
 	}
 	
 	return EErrorType::NONE;
@@ -233,7 +238,16 @@ EErrorType IntroMenuScene::OnFinalize()
 		SAFE_DELETE(iter);
 	}
 
+	TriggerTimerMgr::I()->DeleteTriggerTimer("ChangeIntroTitle");
+
 	return EErrorType::NONE;
+}
+
+void IntroMenuScene::OnTrigger_ChangeRandomColorToTitle()
+{
+	m_titleColorType = static_cast<EConsoleOutputColorType>(
+		math::RandomUtil::GenerateUniformDistribution(CommonFunc::ToUnderlyingType(EConsoleOutputColorType::BLUE),
+			CommonFunc::ToUnderlyingType(EConsoleOutputColorType::BRIGHT_WHITE)));
 }
 
 void IntroMenuScene::OnTrigger_ExcuteMenu()
