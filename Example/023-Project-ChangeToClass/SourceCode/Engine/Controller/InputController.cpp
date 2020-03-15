@@ -126,7 +126,7 @@ void InputController::Finalize()
 bool InputController::CheckInputState(const std::string_view& szInputMappingName, EInputMappingState inputState) const
 {
 	InputMappingInfo* pInputMappingInfo = FindInputMappingInfo(szInputMappingName);
-	CHECK_NULLPTR_RETURN(pInputMappingInfo, bool);
+	CHECK_NULLPTR_RETURN_FALSE(pInputMappingInfo);
 	return (pInputMappingInfo->state == inputState);
 }
 
@@ -139,7 +139,7 @@ InputMappingInfo* InputController::FindInputMappingInfo(const std::string_view& 
 	if ( (iter == m_mapInputMappingInfo.cend()) ||
 		 (iter->second == nullptr) )
 	{
-		ERROR_HANDLER_DETAIL(EErrorType::NO_INPUT_MAPPING_INFO, szInputMappingName);
+		//ERROR_HANDLER_DETAIL(EErrorType::NO_INPUT_MAPPING_INFO, szInputMappingName);
 		return nullptr;
 	}
 

@@ -22,7 +22,7 @@ namespace math
 		NON_COPYABLE_ONLY_PRIVATE_CLASS(RandomUtil);
 
 	public:
-		void Initialize();
+		static void Initialize();
 		
 		static Int32 GenerateUniformDistribution(Int32 begin, Int32 end);
 		static Int32 GenerateBinormalDistribution(Int32 eventCnt, Real32 probability);

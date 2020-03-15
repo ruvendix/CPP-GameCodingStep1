@@ -21,6 +21,7 @@
 #include "Controller\ConsoleController.h"
 #include "DebugPanel.h"
 #include "Element\Scene\IntroMenuScene.h"
+#include "Math\Random.h"
 
 class GameMainHelper final
 {
@@ -54,6 +55,8 @@ void GameMainHelper::Initialize()
 	FrameController::I()->Initialize();
 	FrameController::I()->ChangeFrameRateType(EFrameRateType::CONSTANT);
 	//FrameController::I()->ModifyLimitedFrame(60);
+
+	math::RandomUtil::Initialize();
 
 	DEBUG_LOG("게임 초기화 처리 완료!");
 }

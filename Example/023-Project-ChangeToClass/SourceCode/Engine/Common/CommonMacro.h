@@ -286,23 +286,51 @@ private:\
 		continue;\
 	}
 
-#define CHECK_NULLPTR_RETURN(ptr, TNegativeness)\
+#define CHECK_NULLPTR_RETURN_FALSE(ptr)\
 	if (ptr == nullptr)\
 	{\
 		ERROR_HANDLER_DETAIL(EErrorType::NULLPTR, #ptr);\
-\
-		if constexpr (std::is_same_v<bool, TNegativeness>)\
-		{\
-			return false;\
-		}\
-		else if constexpr (std::is_void_v<TNegativeness>)\
-		{\
-			return;\
-		}\
-		else\
-		{\
-			return nullptr;\
-		}\
+		return false;\
 	}
+
+#define CHECK_NULLPTR_RETURN_VOID(ptr)\
+	if (ptr == nullptr)\
+	{\
+		ERROR_HANDLER_DETAIL(EErrorType::NULLPTR, #ptr);\
+		return;\
+	}
+
+#define CHECK_NULLPTR_RETURN_NULLPTR(ptr)\
+	if (ptr == nullptr)\
+	{\
+		ERROR_HANDLER_DETAIL(EErrorType::NULLPTR, #ptr);\
+		return nullptr;\
+	}
+
+#define CHECK_NULLPTR_RETURN_ERRORTYPE(ptr)\
+	if (ptr == nullptr)\
+	{\
+		ERROR_HANDLER_DETAIL(EErrorType::NULLPTR, #ptr);\
+		return EErrorType::NULLPTR;\
+	}
+
+//#define CHECK_NULLPTR_RETURN(ptr, TNegativeness)\
+//	if (ptr == nullptr)\
+//	{\
+//		ERROR_HANDLER_DETAIL(EErrorType::NULLPTR, #ptr);\
+//\
+//		if constexpr (std::is_same_v<bool, TNegativeness>)\
+//		{\
+//			return false;\
+//		}\
+//		else if constexpr (std::is_void_v<TNegativeness>)\
+//		{\
+//			return;\
+//		}\
+//		else\
+//		{\
+//			return nullptr;\
+//		}\
+//	}
 
 #endif

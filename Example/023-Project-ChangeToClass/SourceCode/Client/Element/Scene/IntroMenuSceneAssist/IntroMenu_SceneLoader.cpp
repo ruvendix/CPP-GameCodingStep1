@@ -11,6 +11,9 @@
 #include "PCH.h"
 #include "IntroMenu_SceneLoader.h"
 
+#include "Manager\SceneManager.h"
+#include "Element\Scene\BattleSimulatorScene.h"
+
 IntroMenu_SceneLoader::IntroMenu_SceneLoader(const std::string_view& szNameTag,
 	const COORD& offsetCenterPos, EIntroMenu_SceneLoaderType sceneLoaderType) :
 	IntroMenu(szNameTag, offsetCenterPos),
@@ -25,7 +28,7 @@ EErrorType IntroMenu_SceneLoader::OnExcute()
 	{
 	case EIntroMenu_SceneLoaderType::BATTLE_SIMULATOR:
 	{
-
+		SceneMgr::I()->CreateScene<BattleSimulatorScene>(ESceneType::NEXT);
 		break;
 	}
 

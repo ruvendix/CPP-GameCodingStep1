@@ -36,7 +36,7 @@ public:
 
 	Scene* getCurrentScene() const
 	{
-		CHECK_NULLPTR_RETURN(m_pCurrentScene, Scene*);
+		CHECK_NULLPTR_RETURN_NULLPTR(m_pCurrentScene);
 		return m_pCurrentScene;
 	}
 
@@ -82,7 +82,9 @@ public:
 	template <typename TScene>
 	void CreateScene(ESceneType sceneType)
 	{
-		CreateScene<TScene>(TO_STRING(TScene), sceneType);
+		std::string strSceneName = typeid(TScene).name();
+		strSceneName = strSceneName.substr(5 + 1, _TRUNCATE); // 5 + 1Àº "class" + " "
+		CreateScene<TScene>(strSceneName, sceneType);
 	}
 
 private:

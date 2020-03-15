@@ -21,7 +21,7 @@ class IntroMenuScene final : public Scene
 {
 	NON_COPYABLE_CLASS(IntroMenuScene);
 	FRIEND_WITH_HELPER(IntroMenuSceneHelper);
-	FRAME_UPDATE_LIMITED(8);
+	FRAME_UPDATE_LIMITED(10);
 
 public:
 	using Scene::Scene;

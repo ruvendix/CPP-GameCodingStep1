@@ -152,6 +152,18 @@
     <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_SceneLoader.cpp">
       <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Client\Element\Scene\BattleSimulatorScene.cpp">
+      <Filter>소스 파일\2. Client\Element\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\Unit.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\MedievalKnight.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\Viking.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Client\GameMain.h">
@@ -246,6 +258,18 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_SceneLoader.h">
       <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Element\Scene\BattleSimulatorScene.h">
+      <Filter>소스 파일\2. Client\Element\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\Unit.h">
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\MedievalKnight.h">
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\Viking.h">
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

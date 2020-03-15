@@ -65,7 +65,7 @@ void DebugPanel::ShowContents(Int32 posX, Int32 posY)
 	PRINTF(posX, drawPosY, "Resolution(%d X %d)", ConfigCtx::I()->getResoultion().width, ConfigCtx::I()->getResoultion().height);
 	++drawPosY;
 
-	PRINTF(posX, drawPosY, "FPS type(%s)", DebugPanelHelper::ToStringFrameRate(FrameController::I()->getFrameRateType()));
+	PRINTF(posX, drawPosY, "FPS type(%s)", DebugPanelHelper::ToStringFrameRate(FrameController::I()->getFrameRateType()).data());
 	++drawPosY;
 
 	PRINTF(posX, drawPosY, "FPS(%d)", FrameController::I()->getFPS());

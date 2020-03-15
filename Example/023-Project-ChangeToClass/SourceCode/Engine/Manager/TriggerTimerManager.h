@@ -40,7 +40,7 @@ public:
 		if (iter != m_mapTriggerTimer.cend())
 		{			
 			TriggerTimer* pTriggerTimer = iter->second;
-			CHECK_NULLPTR_RETURN(pTriggerTimer, void);
+			CHECK_NULLPTR_RETURN_VOID(pTriggerTimer);
 			
 			// 이미 존재하는 트리거 타이머라면 데이터를 갱신해줍니다.
 			pTriggerTimer->StartTime();

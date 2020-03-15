@@ -45,8 +45,7 @@ int main()
 	printf("-------------------------------------------\n");
 	printf("HP           : %7d\t%7d\n", medievalKnightMaxHP, vikingMaxHP);
 	printf("공격력       : %7d\t%7d\n", medievalKnightAttackDamage, vikingAttackDamage);
-	printf("공격 성공율  : %7d%%\t%7d%%\n", (int32)(medievalKnightAttackSuccessRate * 100.0f),
-		(int32)(vikingAttackSuccessRate * 100.0f));
+	printf("공격 성공율  : %7d%%\t%7d%%\n", (int32)(medievalKnightAttackSuccessRate * 100.0f), (int32)(vikingAttackSuccessRate * 100.0f));
 	printf("-------------------------------------------\n\n");
 
 	// 의사 난수 발생기의 시드값을 설정할게요.

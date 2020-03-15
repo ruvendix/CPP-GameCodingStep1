@@ -142,11 +142,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\Client\Context\GameContext.cpp" />
+    <ClCompile Include="SourceCode\Client\Element\Scene\BattleSimulatorScene.cpp" />
     <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene.cpp" />
     <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu.cpp" />
     <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_Quit.cpp" />
     <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_SceneLoader.cpp" />
     <ClCompile Include="SourceCode\Client\GameMain.cpp" />
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\MedievalKnight.cpp" />
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\Unit.cpp" />
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\Viking.cpp" />
     <ClCompile Include="SourceCode\Client\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -173,11 +177,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Client\Context\GameContext.h" />
+    <ClInclude Include="SourceCode\Client\Element\Scene\BattleSimulatorScene.h" />
     <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene.h" />
     <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu.h" />
     <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_Quit.h" />
     <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_SceneLoader.h" />
     <ClInclude Include="SourceCode\Client\GameMain.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\MedievalKnight.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\Unit.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\Viking.h" />
     <ClInclude Include="SourceCode\Client\PCH.h" />
     <ClInclude Include="SourceCode\Engine\Common\CommonStruct.h" />
     <ClInclude Include="SourceCode\Engine\Common\CommonType.h" />

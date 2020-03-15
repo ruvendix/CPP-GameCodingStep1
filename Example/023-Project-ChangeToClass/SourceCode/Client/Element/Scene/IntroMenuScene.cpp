@@ -119,7 +119,7 @@ void IntroMenuSceneHelper::DrawSelector(const IntroMenuScene& helperTarget)
 	const COORD& longestMenuPos = std::get<1>(helperTarget.m_tupleLongestMenuInfo);
 
 	IntroMenu* pGameIntroMenu = helperTarget.m_vecIntroMenu[helperTarget.m_selectedIntroMenuIdx];
-	CHECK_NULLPTR(pGameIntroMenu);
+	CHECK_NULLPTR_RETURN_VOID(pGameIntroMenu);
 
 	PRINTF(longestMenuPos.X - MENU_MARGIN_LENGTH, pGameIntroMenu->getPos().Y, "◀");
 	PRINTF(longestMenuPos.X + strLongestMenuName.size() + MENU_MARGIN_LENGTH - 2, pGameIntroMenu->getPos().Y, "▶");
@@ -188,8 +188,7 @@ EErrorType IntroMenuScene::OnInitialize()
 	m_vecIntroMenu.push_back(trace_new IntroMenu_SceneLoader("다이얼로그 트리",
 		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_DIALOGUE_TREE_OFFSET_POS_Y }, EIntroMenu_SceneLoaderType::DIALOGUE_TREE));
 
-	m_vecIntroMenu.push_back(trace_new IntroMenu_Quit("게임 종료",
-		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_QUIT_OFFSET_POS_Y }));
+	m_vecIntroMenu.push_back(trace_new IntroMenu_Quit("게임 종료", COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_QUIT_OFFSET_POS_Y }));
 
 	TriggerTimerMgr::I()->AddTriggerTimer("ChangeIntroTitle", 0.3f, this, &IntroMenuScene::OnTrigger_ChangeRandomColorToTitle, true);
 

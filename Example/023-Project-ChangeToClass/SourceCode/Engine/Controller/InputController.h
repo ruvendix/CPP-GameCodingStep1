@@ -76,7 +76,12 @@ public:
 	template <typename TInputVal, typename ... types>
 	void InsertInputMappingInfo(const TInputVal& inputVal, const types& ... args)
 	{
-		if (m_pInputMappingInfo == nullptr)
+		m_pInputMappingInfo = FindInputMappingInfo(inputVal);
+		if (m_pInputMappingInfo != nullptr)
+		{
+			return; // 이미 자료구조에 있는 정보면 아무것도 하지 않아야 해요!
+		}
+		else
 		{
 			m_pInputMappingInfo = trace_new InputMappingInfo; // 해제는 자료구조에서!
 		}

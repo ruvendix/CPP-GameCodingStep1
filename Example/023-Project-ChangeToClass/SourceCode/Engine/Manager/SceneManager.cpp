@@ -18,10 +18,13 @@ DEFINE_PHOENIX_SINGLETON(SceneMgr);
 */
 void SceneMgr::FlipCurrentScene()
 {
-	const std::string& strPrevSceneName = m_pCurrentScene->getNameTag();
+	std::string strPrevSceneName = m_pCurrentScene->getNameTag();
+
+	m_pCurrentScene->OnFinalize();
 	SAFE_SWAP_DELETE(m_pCurrentScene, m_pNextScene);
-	DEBUG_LOG_CATEGORY(SceneMgr, "(%s) ¾À¿¡¼­ (%s) ¾ÀÀ¸·Î ÀüÈ¯!",
-		strPrevSceneName.c_str(), m_pCurrentScene->getNameTag().c_str());
+
+	DEBUG_LOG_CATEGORY(SceneMgr, "(%s) ¾À¿¡¼­ (%s) ¾ÀÀ¸·Î ÀüÈ¯!", strPrevSceneName.data(), m_pCurrentScene->getNameTag().c_str());
+	m_bGotoNextScene = false;
 }
 
 /*
