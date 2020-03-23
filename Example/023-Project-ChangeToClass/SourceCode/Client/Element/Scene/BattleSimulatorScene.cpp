@@ -85,7 +85,7 @@ void BattleSimulatorSceneHelper::DrawBattleReport(const BattleSimulatorScene& he
 	if (helperTarget.m_vecViking.empty() == false)
 	{
 		Viking* pViking = helperTarget.m_vecViking[0];
-		CHECK_NULLPTR_RETURN_VOID(pViking);
+		CHECK_NULLPTR(pViking);
 		totalMedievalKnightAttackDamage += (s_dummyViking.getMaxHP() - pViking->getHP());
 	}
 
@@ -94,7 +94,7 @@ void BattleSimulatorSceneHelper::DrawBattleReport(const BattleSimulatorScene& he
 	if (helperTarget.m_vecMedievalKnight.empty() == false)
 	{
 		MedievalKnight* pMedievalKnight = helperTarget.m_vecMedievalKnight[0];
-		CHECK_NULLPTR_RETURN_VOID(pMedievalKnight);
+		CHECK_NULLPTR(pMedievalKnight);
 		totalVikingAttackDamage += (s_dummyMedievalKnight.getMaxHP() - pMedievalKnight->getHP());
 	}
 
@@ -151,7 +151,7 @@ DEFINE_LOG_CATEGORY(BattleSimulatorScene);
 
 EErrorType BattleSimulatorScene::OnInitialize()
 {
-	DEBUG_LOG("배틀 시뮬레이터 씬!");
+	DEBUG_LOG_CATEGORY(BattleSimulatorScene, "배틀 시뮬레이터 씬!");
 	InputController::I()->InsertInputMappingInfo("GotoIntro", VK_ESCAPE);
 
 	// 더미 중세기사의 스탯을 정할게요.
@@ -199,10 +199,10 @@ EErrorType BattleSimulatorScene::OnUpdate()
 
 	// 턴제로 한번씩 공격
 	Unit* pMedievalKnight = m_vecMedievalKnight[0];
-	CHECK_NULLPTR_RETURN_ERRORTYPE(pMedievalKnight);
+	CHECK_NULLPTR(pMedievalKnight);
 
 	Unit* pViking = m_vecViking[0];
-	CHECK_NULLPTR_RETURN_ERRORTYPE(pViking);
+	CHECK_NULLPTR(pViking);
 
 #pragma region 중세기사 -> 바이킹
 	pMedievalKnight->Attack(pViking);
@@ -217,7 +217,7 @@ EErrorType BattleSimulatorScene::OnUpdate()
 		}
 
 		pViking = m_vecViking[0];
-		CHECK_NULLPTR_RETURN_ERRORTYPE(pViking);
+		CHECK_NULLPTR(pViking);
 	}
 #pragma endregion
 

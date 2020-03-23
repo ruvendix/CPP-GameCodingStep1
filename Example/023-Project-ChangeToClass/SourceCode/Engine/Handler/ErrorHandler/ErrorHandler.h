@@ -23,9 +23,15 @@ class ErrorHandler final
 	NON_COPYABLE_ONLY_PRIVATE_CLASS(ErrorHandler);
 
 public:
-	static void ShowString(EErrorType errorType);
-	static void ShowFormatString(const std::string_view& szError);
+	static void RenderString();
+	static void OuputDebugString(bool bOutput);
+	static void DebugBreak(bool bDebugBreak);
+
+	static std::string_view ToString(EErrorType errorType);
 	static std::string_view ToFormatString(EErrorType errorType);
+
+	static COORD m_renderPos;
+	static std::string m_strError;
 };
 
 #endif

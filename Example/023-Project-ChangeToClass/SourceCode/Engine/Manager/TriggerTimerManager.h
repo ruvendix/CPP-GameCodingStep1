@@ -28,24 +28,35 @@ public:
 	template <typename TElem>
 	using ElemMemberFunc = void(TElem::*)(); // TriggerTimer에서 사용하는 콜백 형식과 동일해야 해요!
 
+	void AddTriggerTimer(const std::string& strTriggerTimer, Real32 triggerTime, Real32 keepTime,
+		const TriggerTimer::TCallback& func, bool bRender, bool bRepeat);
 	void UpdateTriggerTimer();
+	void CallTriggerTimerFuncForRender();
 	void DeleteTriggerTimer(const std::string_view& szTriggerTimer);
 	void Finalize();
 
 	template <typename TElem>
-	void AddTriggerTimer(const std::string& strTriggerTimer, Real32 triggerTime,
-		TElem* pElem, const ElemMemberFunc<TElem>& elemMemberFunc, bool bRepeat)
+	void AddTriggerTimer(const std::string& strTriggerTimer, Real32 triggerTime, Real32 keepTime,
+		TElem* pElem, const ElemMemberFunc<TElem>& elemMemberFunc, bool bRender, bool bRepeat)
 	{
+		if (triggerTime < keepTime)
+		{
+			// 이건 오류임!
+			return;
+		}
+
 		const auto& iter = m_mapTriggerTimer.find(strTriggerTimer);
 		if (iter != m_mapTriggerTimer.cend())
 		{			
 			TriggerTimer* pTriggerTimer = iter->second;
-			CHECK_NULLPTR_RETURN_VOID(pTriggerTimer);
+			CHECK_NULLPTR(pTriggerTimer);
 			
 			// 이미 존재하는 트리거 타이머라면 데이터를 갱신해줍니다.
 			pTriggerTimer->StartTime();
 			pTriggerTimer->setTime(triggerTime);
+			pTriggerTimer->setKeepTime(keepTime);
 			pTriggerTimer->setFunc(std::bind(elemMemberFunc, pElem));
+			pTriggerTimer->setRender(bRender);
 			pTriggerTimer->setRepeat(bRepeat);
 			DEBUG_LOG_CATEGORY(TriggerTimerMgr, "타이머가 이미 존재하므로 이름(%s)을 제외한 모든 데이터를 갱신!", strTriggerTimer.c_str());
 

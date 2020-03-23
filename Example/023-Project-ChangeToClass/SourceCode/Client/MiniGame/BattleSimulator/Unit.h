@@ -10,7 +10,7 @@
 #ifndef UNIT_H__
 #define UNIT_H__
 
-#include "Element\GameElement.h"
+#include "Common\CommonType.h"
 
 class Unit
 {
@@ -28,6 +28,7 @@ public:
 		return (m_HP < 0);
 	}
 
+#pragma region 접근자 Getter
 	Int32 getHP() const
 	{
 		return m_HP;
@@ -47,7 +48,9 @@ public:
 	{
 		return m_attackSuccessRate;
 	}
+#pragma endregion
 
+#pragma region 접근자 Setter
 	void setHP(Int32 HP)
 	{
 		m_HP = HP;
@@ -67,6 +70,7 @@ public:
 	{
 		m_attackSuccessRate = attackSuccessRate;
 	}
+#pragma endregion
 
 private:
 	Int32  m_HP = 0;
@@ -74,4 +78,5 @@ private:
 	Int32  m_attackDamage = 0;
 	Real32 m_attackSuccessRate = 0.0f;
 };
+
 #endif

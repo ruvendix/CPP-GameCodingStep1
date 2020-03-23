@@ -24,7 +24,6 @@ void SceneMgr::FlipCurrentScene()
 	SAFE_SWAP_DELETE(m_pCurrentScene, m_pNextScene);
 
 	DEBUG_LOG_CATEGORY(SceneMgr, "(%s) ¾À¿¡¼­ (%s) ¾ÀÀ¸·Î ÀüÈ¯!", strPrevSceneName.data(), m_pCurrentScene->getNameTag().c_str());
-	m_bGotoNextScene = false;
 }
 
 /*

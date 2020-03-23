@@ -172,10 +172,24 @@ private:\
 #define DEBUG_LOG_CATEGORY(logCategory, szFormat, ...) __noop
 #endif
 
+// 에러 핸들러 방법
+// 1. 문자열 생성
+// 2. 목록에 없으면 포멧 스트링
+// 3. 출력할 곳 정하기(기본은 디버그 로그, 브레이크 여부 = 기본은 true)
+
 // 에러 핸들러에도 서식 문자열을 지원합니다.
-#define ERROR_HANDLER(errorType) ErrorHandler::ShowString(errorType)
-#define ERROR_HANDLER_DETAIL(errorType, ...)\
-	ErrorHandler::ShowFormatString(CommonFunc::MakeFormatString(ErrorHandler::ToFormatString(errorType).data(), __VA_ARGS__))
+#define ERROR_HANDLER(errorType, ...)\
+	ErrorHandler::m_strError = CommonFunc::MakeFormatString(ErrorHandler::ToString(errorType).data(), __VA_ARGS__);\
+	ErrorHandler::OuputDebugString(true);\
+	ErrorHandler::DebugBreak(true)
+
+#define ERROR_HANDLER_RENDERING(x, y, keepTime, bOutputDebug, bDebugBreak, errorType, ...)\
+	TriggerTimerMgr::I()->AddTriggerTimer("GameError", 0.0f, keepTime, &ErrorHandler::RenderString, true, false);\
+	ErrorHandler::m_renderPos = COORD{ x, y };\
+	ErrorHandler::m_strError = CommonFunc::MakeFormatString(ErrorHandler::ToString(errorType).data(), __VA_ARGS__);\
+	ErrorHandler::OuputDebugString(bOutputDebug);\
+	ErrorHandler::DebugBreak(bDebugBreak)
+
 
 // NameTag를 상속 받는 새로운 로그 클래스를 선언합니다.
 #define DECLARE_LOG_CATEGORY(Tag)\
@@ -232,11 +246,11 @@ private:\
 
 // ACTIVATION_CONSOLE_DBL_BUFFERING 활성화 여부에 따라 출력 함수가 변경됩니다.
 #ifdef ACTIVATION_CONSOLE_DBL_BUFFERING
-#define PRINTF(posX, posY, szFormat, ...)\
-	ConsoleController::I()->PrintString(posX, posY, CommonFunc::MakeFormatString(szFormat, __VA_ARGS__));
+#define PRINTF(x, y, szFormat, ...)\
+	ConsoleController::I()->PrintString(x, y, CommonFunc::MakeFormatString(szFormat, __VA_ARGS__));
 #else
-#define PRINTF(posX, posY, szFormat, ...)\
-	ConsoleController::I()->MoveConsolePos(posX, posY);\
+#define PRINTF(x, y, szFormat, ...)\
+	ConsoleController::I()->MoveConsolePos(x, y);\
 	printf(szFormat, __VA_ARGS__)
 #endif
 
@@ -245,11 +259,17 @@ private:\
 	Real32 m_localTime = 0.0f;\
 	Real32 m_updateTime = (1.0f / FPS)
 
-#define BEGIN_FRAME_UPDDATE_LIMITED()\
+#define BEGIN_FRAME_UPDATE_LIMITED()\
 	m_localTime += FrameController::I()->getDeltaTime();\
 	if (m_updateTime < m_localTime)\
 	{\
 		m_localTime -= m_updateTime
+
+#define BEGIN_FRAME_UPDATE_LIMITED_HELPER(targetHelper)\
+	targetHelper.m_localTime += FrameController::I()->getDeltaTime();\
+	if (targetHelper.m_updateTime < targetHelper.m_localTime)\
+	{\
+		targetHelper.m_localTime -= targetHelper.m_updateTime
 
 #define END_FRAME_UPDATE_LIMITED()\
 	}
@@ -260,13 +280,6 @@ private:\
 
 #define PERFORMANCE_PROFILE_END() PerformanceProfileMgr::I()->End(ID)
 
-#define CASE_LOG_BREAK(enumVal, szLog)\
-	case enumVal:\
-	{\
-		DEBUG_LOG_CATEGORY(ErrorHandler, szLog);\
-		break;\
-	}
-
 #define CASE_RETURN_STRING(enumVal, sz)\
 	case enumVal:\
 	{\
@@ -276,48 +289,20 @@ private:\
 #define CHECK_NULLPTR(ptr)\
 	if (ptr == nullptr)\
 	{\
-		ERROR_HANDLER_DETAIL(EErrorType::NULLPTR, #ptr);\
+		ERROR_HANDLER(EErrorType::NULLPTR, #ptr);\
 	}
 
 #define CHECK_NULLPTR_CONTINUE(ptr)\
 	if (ptr == nullptr)\
 	{\
-		ERROR_HANDLER_DETAIL(EErrorType::NULLPTR, #ptr);\
+		ERROR_HANDLER(EErrorType::NULLPTR, #ptr);\
 		continue;\
-	}
-
-#define CHECK_NULLPTR_RETURN_FALSE(ptr)\
-	if (ptr == nullptr)\
-	{\
-		ERROR_HANDLER_DETAIL(EErrorType::NULLPTR, #ptr);\
-		return false;\
-	}
-
-#define CHECK_NULLPTR_RETURN_VOID(ptr)\
-	if (ptr == nullptr)\
-	{\
-		ERROR_HANDLER_DETAIL(EErrorType::NULLPTR, #ptr);\
-		return;\
-	}
-
-#define CHECK_NULLPTR_RETURN_NULLPTR(ptr)\
-	if (ptr == nullptr)\
-	{\
-		ERROR_HANDLER_DETAIL(EErrorType::NULLPTR, #ptr);\
-		return nullptr;\
-	}
-
-#define CHECK_NULLPTR_RETURN_ERRORTYPE(ptr)\
-	if (ptr == nullptr)\
-	{\
-		ERROR_HANDLER_DETAIL(EErrorType::NULLPTR, #ptr);\
-		return EErrorType::NULLPTR;\
 	}
 
 //#define CHECK_NULLPTR_RETURN(ptr, TNegativeness)\
 //	if (ptr == nullptr)\
 //	{\
-//		ERROR_HANDLER_DETAIL(EErrorType::NULLPTR, #ptr);\
+//		ERROR_HANDLER(EErrorType::NULLPTR, #ptr);\
 //\
 //		if constexpr (std::is_same_v<bool, TNegativeness>)\
 //		{\

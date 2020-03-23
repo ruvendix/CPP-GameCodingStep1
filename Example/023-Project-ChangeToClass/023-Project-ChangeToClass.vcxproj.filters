@@ -75,6 +75,15 @@
     <Filter Include="소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist">
       <UniqueIdentifier>{d3164b5a-c506-4089-a642-95410849f075}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item">
+      <UniqueIdentifier>{83df1686-30bf-4fbd-bfe4-f5baa021a8ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item\ShopItem">
+      <UniqueIdentifier>{35968c5d-2cd4-4f4d-b6ff-1babb19ea1ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase">
+      <UniqueIdentifier>{7ae7c283-7d5a-436f-ba01-f58a7469efed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\Main.cpp">
@@ -163,6 +172,60 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\Viking.cpp">
       <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ItemBase.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item\ShopItem</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem_Camping.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item\ShopItem</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem_Grocery.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item\ShopItem</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem_Potion.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item\ShopItem</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\MiscellaneousShop2.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Element\Scene\MiscellaneousShop2Scene.cpp">
+      <Filter>소스 파일\2. Client\Element\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\EntrancePhase.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\BuyPhase.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\SellPhase.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\ArrangePhase.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\PhaseBase.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ItemDB.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ItemDBContext.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\MiscellaneousShop2Util.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\PlayerContext.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Math\Math.cpp">
+      <Filter>소스 파일\1. Engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Inven.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -270,6 +333,69 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\Viking.h">
       <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ItemBase.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item\ShopItem</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem_Camping.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item\ShopItem</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem_Grocery.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item\ShopItem</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem_Potion.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item\ShopItem</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\MiscellaneousShop2.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Element\Scene\MiscellaneousShop2Scene.h">
+      <Filter>소스 파일\2. Client\Element\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\PhaseBase.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\EntrancePhase.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\BuyPhase.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\SellPhase.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\ArrangePhase.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\PhaseEnum.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ItemDBEnum.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ItemDB.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ItemDBContext.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\MiscellaneousShop2Util.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\PlayerContext.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Math\Math.h">
+      <Filter>소스 파일\1. Engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Inven.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Common\CommonTemplate.h">
+      <Filter>소스 파일\1. Engine\1. Common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

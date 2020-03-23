@@ -11,8 +11,9 @@
 #ifndef MATH_UTILITY_RANDOM__H__
 #define MATH_UTILITY_RANDOM__H__
 
-#include "Common\CommonNecessary.h"
+#include "Common\CommonType.h"
 #include "Common\CommonMacro.h"
+#include "Common\CommonNecessary.h"
 
 namespace math
 {

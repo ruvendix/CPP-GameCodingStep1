@@ -11,6 +11,8 @@
 #include "PCH.h"
 #include "InputController.h"
 
+#include "FrameController.h"
+
 DEFINE_LOG_CATEGORY(InputController);
 DEFINE_PHOENIX_SINGLETON(InputController);
 
@@ -121,12 +123,20 @@ void InputController::Finalize()
 }
 
 /*
+매핑된 입력 정보를 제거합니다.
+*/
+void InputController::DeleteInputMappingInfo(const std::string& strInputMappingName)
+{
+	m_mapInputMappingInfo.erase(strInputMappingName);
+}
+
+/*
 원하는 입력 매핑 이름에 해당되는 상태를 알려줍니다.
 */
 bool InputController::CheckInputState(const std::string_view& szInputMappingName, EInputMappingState inputState) const
 {
 	InputMappingInfo* pInputMappingInfo = FindInputMappingInfo(szInputMappingName);
-	CHECK_NULLPTR_RETURN_FALSE(pInputMappingInfo);
+	CHECK_NULLPTR(pInputMappingInfo);
 	return (pInputMappingInfo->state == inputState);
 }
 
@@ -139,7 +149,7 @@ InputMappingInfo* InputController::FindInputMappingInfo(const std::string_view& 
 	if ( (iter == m_mapInputMappingInfo.cend()) ||
 		 (iter->second == nullptr) )
 	{
-		//ERROR_HANDLER_DETAIL(EErrorType::NO_INPUT_MAPPING_INFO, szInputMappingName);
+		//ERROR_HANDLER(EErrorType::NO_INPUT_MAPPING_INFO, szInputMappingName);
 		return nullptr;
 	}
 

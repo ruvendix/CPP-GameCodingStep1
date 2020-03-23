@@ -119,7 +119,7 @@ void IntroMenuSceneHelper::DrawSelector(const IntroMenuScene& helperTarget)
 	const COORD& longestMenuPos = std::get<1>(helperTarget.m_tupleLongestMenuInfo);
 
 	IntroMenu* pGameIntroMenu = helperTarget.m_vecIntroMenu[helperTarget.m_selectedIntroMenuIdx];
-	CHECK_NULLPTR_RETURN_VOID(pGameIntroMenu);
+	CHECK_NULLPTR(pGameIntroMenu);
 
 	PRINTF(longestMenuPos.X - MENU_MARGIN_LENGTH, pGameIntroMenu->getPos().Y, "¢¸");
 	PRINTF(longestMenuPos.X + strLongestMenuName.size() + MENU_MARGIN_LENGTH - 2, pGameIntroMenu->getPos().Y, "¢º");
@@ -176,6 +176,7 @@ EErrorType IntroMenuScene::OnInitialize()
 	InputController::I()->InsertInputMappingInfo("SelectUp", VK_UP);
 	InputController::I()->InsertInputMappingInfo("SelectDown", VK_DOWN);
 	InputController::I()->InsertInputMappingInfo("SelectMenu", VK_RETURN);
+	InputController::I()->InsertInputMappingInfo("Exit", VK_ESCAPE);
 
 	m_tupleLongestMenuInfo = std::make_tuple("Default", COORD{ SHRT_MIN, SHRT_MIN }, false);
 
@@ -190,35 +191,55 @@ EErrorType IntroMenuScene::OnInitialize()
 
 	m_vecIntroMenu.push_back(trace_new IntroMenu_Quit("°ÔÀÓ Á¾·á", COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_QUIT_OFFSET_POS_Y }));
 
-	TriggerTimerMgr::I()->AddTriggerTimer("ChangeIntroTitle", 0.3f, this, &IntroMenuScene::OnTrigger_ChangeRandomColorToTitle, true);
+	TriggerTimerMgr::I()->AddTriggerTimer("ChangeIntroTitle", 0.3f, 0.0f, this, &IntroMenuScene::OnTrigger_ChangeRandomColorToTitle, false, true);
 
 	return EErrorType::NONE;
 }
 
 EErrorType IntroMenuScene::OnUpdate()
 {
-	BEGIN_FRAME_UPDDATE_LIMITED();
+	if (InputController::I()->CheckInputState("SelectUp", EInputMappingState::DOWN) == true)
+	{
+		--m_selectedIntroMenuIdx;
+		m_selectedIntroMenuIdx = math::ClampCycle(m_selectedIntroMenuIdx, 0, m_vecIntroMenu.size() - 1);
+		m_localTime = 0.0f;
+		DEBUG_LOG_CATEGORY(IntroMenuScene, "SelectUp ´­·¶´Ù!");
+	}
 
+	if (InputController::I()->CheckInputState("SelectDown", EInputMappingState::DOWN) == true)
+	{
+		++m_selectedIntroMenuIdx;
+		m_selectedIntroMenuIdx = math::ClampCycle(m_selectedIntroMenuIdx, 0, m_vecIntroMenu.size() - 1);
+		m_localTime = 0.0f;
+		DEBUG_LOG_CATEGORY(IntroMenuScene, "SelectDown ´­·¶´Ù!");
+	}
+
+	BEGIN_FRAME_UPDATE_LIMITED();
 	if (InputController::I()->CheckInputState("SelectUp", EInputMappingState::PRESSING) == true)
 	{
 		--m_selectedIntroMenuIdx;
-		m_selectedIntroMenuIdx = CommonFunc::ClampCircular(m_selectedIntroMenuIdx, 0, m_vecIntroMenu.size() - 1);
-		DEBUG_LOG_CATEGORY(IntroMenuScene, "SelectUp ´­·¶´Ù!");
+		m_selectedIntroMenuIdx = math::ClampCycle(m_selectedIntroMenuIdx, 0, m_vecIntroMenu.size() - 1);
+		DEBUG_LOG_CATEGORY(IntroMenuScene, "SelectUp ´©¸£´Â Áß!");
 	}
 
 	if (InputController::I()->CheckInputState("SelectDown", EInputMappingState::PRESSING) == true)
 	{
 		++m_selectedIntroMenuIdx;
-		m_selectedIntroMenuIdx = CommonFunc::ClampCircular(m_selectedIntroMenuIdx, 0, m_vecIntroMenu.size() - 1);
-		DEBUG_LOG_CATEGORY(IntroMenuScene, "SelectDown ´­·¶´Ù!");
+		m_selectedIntroMenuIdx = math::ClampCycle(m_selectedIntroMenuIdx, 0, m_vecIntroMenu.size() - 1);
+		DEBUG_LOG_CATEGORY(IntroMenuScene, "SelectDown ´©¸£´Â Áß!");
 	}
-
 	END_FRAME_UPDATE_LIMITED();
 
 	if (InputController::I()->CheckInputState("SelectMenu", EInputMappingState::DOWN) == true)
 	{
-		TriggerTimerMgr::I()->AddTriggerTimer("ExcuteMenu", 3.0f, this, &IntroMenuScene::OnTrigger_ExcuteMenu, false);
+		TriggerTimerMgr::I()->AddTriggerTimer("ExcuteMenu", 1.0f, 0.0f, this, &IntroMenuScene::OnTrigger_ExcuteMenu, false, false);
 		DEBUG_LOG_CATEGORY(IntroMenuScene, "SelectMenu ´­·¶´Ù!");
+	}
+
+	if (InputController::I()->CheckInputState("Exit", EInputMappingState::DOWN) == true)
+	{
+		m_vecIntroMenu[static_cast<Int32>(m_vecIntroMenu.size() - 1)]->OnExcute();
+		DEBUG_LOG_CATEGORY(IntroMenuScene, "Exit ´­·¶´Ù!");
 	}
 	
 	return EErrorType::NONE;

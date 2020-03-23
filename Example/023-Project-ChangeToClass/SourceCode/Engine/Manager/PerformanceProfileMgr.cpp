@@ -24,7 +24,7 @@ void PerformanceProfileMgr::Start(const std::string_view& szFuncSig, Int32 ID, I
 	if (iter != m_mapPerformanceProfileInfo.cend())
 	{
 		PerformanceProfileInfo* pPerformanceProfileInfo = iter->second;
-		CHECK_NULLPTR_RETURN_VOID(pPerformanceProfileInfo);
+		CHECK_NULLPTR(pPerformanceProfileInfo);
 
 		pPerformanceProfileInfo->stopwatchTimer.StartTime();
 		++pPerformanceProfileInfo->callCnt;
@@ -50,12 +50,12 @@ void PerformanceProfileMgr::End(Int32 ID)
 	auto iter = m_mapPerformanceProfileInfo.find(ID);
 	if (iter == m_mapPerformanceProfileInfo.cend())
 	{
-		ERROR_HANDLER_DETAIL(EErrorType::NO_PERFORMANCE_PROFILE_INFO, ID);
+		ERROR_HANDLER(EErrorType::NO_PERFORMANCE_PROFILE_INFO, ID);
 		return;
 	}
 
 	PerformanceProfileInfo* pPerformanceProfileInfo = iter->second;
-	CHECK_NULLPTR_RETURN_VOID(pPerformanceProfileInfo);
+	CHECK_NULLPTR(pPerformanceProfileInfo);
 
 	pPerformanceProfileInfo->totalPerformanceTime += pPerformanceProfileInfo->stopwatchTimer.EndTime();
 }
@@ -70,7 +70,7 @@ void PerformanceProfileMgr::Report()
 	for (auto& iter : m_mapPerformanceProfileInfo)
 	{
 		PerformanceProfileInfo* pPerformanceProfileInfo = iter.second;
-		CHECK_NULLPTR_RETURN_VOID(pPerformanceProfileInfo);
+		CHECK_NULLPTR(pPerformanceProfileInfo);
 
 		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "<%d - Performance profile result>", iter.first);
 		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "%s", pPerformanceProfileInfo->strFuncSig.c_str());

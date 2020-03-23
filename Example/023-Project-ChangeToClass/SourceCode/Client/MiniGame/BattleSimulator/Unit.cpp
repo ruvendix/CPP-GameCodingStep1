@@ -14,7 +14,7 @@
 
 void Unit::Attack(Unit* pTargetUnit)
 {
-	CHECK_NULLPTR_RETURN_VOID(pTargetUnit);
+	CHECK_NULLPTR(pTargetUnit);
 
 	if (m_attackSuccessRate > math::RandomUtil::GenerateUniformDistribution(0.0f, 1.0f))
 	{

@@ -11,6 +11,10 @@
 #ifndef PCH__H__
 #define PCH__H__
 
+// 자주 출력되는 경고는 무효시킵니다.
+#pragma warning(disable : 6011) // 널포인터 역참조
+#pragma warning(disable : 26495) // 멤버변수 초기화 필수
+
 // 엔진의 공용 헤더 파일부터 포함해야 해요!
 #include "Common\CommonNecessary.h"
 #include "Common\CommonType.h"
@@ -18,9 +22,11 @@
 #include "Common\CommonMacro.h"
 #include "Common\CommonFunc.h"
 #include "Common\CommonLog.h"
+#include "Common\CommonTemplate.h"
 
 // 엔진 헤더파일은 여기부터!
 #include "Handler\ErrorHandler\ErrorHandler.h"
+#include "Math\Math.h"
 
 // 이제 프로젝트의 공용 헤더 파일을 포함해야 해요!
 

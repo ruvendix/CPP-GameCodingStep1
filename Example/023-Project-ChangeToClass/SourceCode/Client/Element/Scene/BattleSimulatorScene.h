@@ -23,10 +23,8 @@ class BattleSimulatorScene final : public Scene
 	FRIEND_WITH_HELPER(BattleSimulatorSceneHelper);
 
 public:
-	using Scene::Scene;
-
 #pragma region 생성자 및 소멸자
-	BattleSimulatorScene() = default;
+	using Scene::Scene;
 	virtual ~BattleSimulatorScene() = default;
 #pragma endregion
 

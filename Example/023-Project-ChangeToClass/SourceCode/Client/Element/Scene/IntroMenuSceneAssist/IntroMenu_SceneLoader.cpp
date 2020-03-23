@@ -13,6 +13,7 @@
 
 #include "Manager\SceneManager.h"
 #include "Element\Scene\BattleSimulatorScene.h"
+#include "Element\Scene\MiscellaneousShop2Scene.h"
 
 IntroMenu_SceneLoader::IntroMenu_SceneLoader(const std::string_view& szNameTag,
 	const COORD& offsetCenterPos, EIntroMenu_SceneLoaderType sceneLoaderType) :
@@ -40,7 +41,7 @@ EErrorType IntroMenu_SceneLoader::OnExcute()
 
 	case EIntroMenu_SceneLoaderType::MISCELLANEOUS_SHOP2:
 	{
-
+		SceneMgr::I()->CreateScene<MiscellaneousShop2Scene>(ESceneType::NEXT);
 		break;
 	}
 

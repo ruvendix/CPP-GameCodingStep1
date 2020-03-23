@@ -246,7 +246,7 @@ void FrameController::Initialize()
 	::QueryPerformanceFrequency(&m_CPUFrequency);
 	::QueryPerformanceCounter(&m_prevTick);
 
-	TriggerTimerMgr::I()->AddTriggerTimer("FPS", 1.0f, this, &FrameController::OnTrigger_RefreshFPS, true);
+	TriggerTimerMgr::I()->AddTriggerTimer("FPS", 1.0f, 0.0f, this, &FrameController::OnTrigger_RefreshFPS, false, true);
 }
 
 /*
@@ -267,7 +267,7 @@ void FrameController::ModifyLimitedFrame(Int32 limitedFrame)
 {
 	if (m_frameRateType == EFrameRateType::VARIABLE_UNLIMITED)
 	{
-		ErrorHandler::ShowString(EErrorType::NO_FRAME_LIMITED_ON_UNLIMITED_FRAME_RATE);
+		ErrorHandler::ToString(EErrorType::NO_FRAME_LIMITED_ON_UNLIMITED_FRAME_RATE);
 		return;
 	}
 

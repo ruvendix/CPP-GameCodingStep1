@@ -45,7 +45,7 @@ void DebugPanel::Initialize()
 	InputController::I()->InsertInputMappingInfo("FlipDebugPanel", VK_F1);
 }
 
-void DebugPanel::ShowContents(Int32 posX, Int32 posY)
+void DebugPanel::ShowContents(Int32 x, Int32 y)
 {
 	if (InputController::I()->CheckInputState("FlipDebugPanel", EInputMappingState::DOWN))
 	{
@@ -60,21 +60,21 @@ void DebugPanel::ShowContents(Int32 posX, Int32 posY)
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::YELLOW);
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::BACKGROUND, EConsoleOutputColorType::PURPLE);
 
-	Int32 drawPosY = posY;
+	Int32 drawPosY = y;
 
-	PRINTF(posX, drawPosY, "Resolution(%d X %d)", ConfigCtx::I()->getResoultion().width, ConfigCtx::I()->getResoultion().height);
+	PRINTF(x, drawPosY, "Resolution(%d X %d)", ConfigCtx::I()->getResoultion().width, ConfigCtx::I()->getResoultion().height);
 	++drawPosY;
 
-	PRINTF(posX, drawPosY, "FPS type(%s)", DebugPanelHelper::ToStringFrameRate(FrameController::I()->getFrameRateType()).data());
+	PRINTF(x, drawPosY, "FPS type(%s)", DebugPanelHelper::ToStringFrameRate(FrameController::I()->getFrameRateType()).data());
 	++drawPosY;
 
-	PRINTF(posX, drawPosY, "FPS(%d)", FrameController::I()->getFPS());
+	PRINTF(x, drawPosY, "FPS(%d)", FrameController::I()->getFPS());
 	++drawPosY;
 
-	PRINTF(posX, drawPosY, "Avg FPS(%d)", FrameController::I()->getAvgFPS());
+	PRINTF(x, drawPosY, "Avg FPS(%d)", FrameController::I()->getAvgFPS());
 	++drawPosY;
 
-	PRINTF(posX, drawPosY, "DeltaTime(%f)", FrameController::I()->getDeltaTime());
+	PRINTF(x, drawPosY, "DeltaTime(%f)", FrameController::I()->getDeltaTime());
 	++drawPosY;
 
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::BLACK);

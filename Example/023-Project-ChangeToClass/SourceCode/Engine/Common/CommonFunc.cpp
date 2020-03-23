@@ -71,9 +71,6 @@ std::string CommonFunc::MakeFormatString(const char* szFormat, ...)
 /*
 숫자를 입력 받음과 동시에 입력 범위를 벗어나면 범위 안으로 자동 조절합니다.
 */
-
-// 이거 새로운 입력 방식으로 수정해야 함!
-// 마우스 클릭이나 왔다 갔다로 키보드
 bool CommonFunc::InputNumClamp(_Out_ Int32& num, Int32 minNum, Int32 maxNum)
 {
 	// 최솟값이 최댓값보다 크다면 둘을 바꿔야 해요! (swap)
@@ -95,45 +92,6 @@ bool CommonFunc::InputNumClamp(_Out_ Int32& num, Int32 minNum, Int32 maxNum)
 		return false;
 	}
 
-	num = Clamp(num, minNum, maxNum);
+	num = math::Clamp(num, minNum, maxNum);
 	return true;
-}
-
-/*
-숫자를 제한된 범위로 고정시킵니다.
-*/
-Int32 CommonFunc::Clamp(Int32 val, Int32 minVal, Int32 maxVal)
-{
-	Int32 resultVal = val;
-
-	if (resultVal < minVal)
-	{
-		resultVal = minVal;
-	}
-	else if (resultVal > maxVal)
-	{
-		resultVal = maxVal;
-	}
-
-	return resultVal;
-}
-
-/*
-Clamp()와 비슷하지만 최솟값보다 작아지면 최댓값으로,
-최댓값보다 커지면 최솟값으로 순환되는 버전입니다.
-*/
-Int32 CommonFunc::ClampCircular(Int32 val, Int32 minVal, Int32 maxVal)
-{
-	Int32 resultVal = val;
-
-	if (resultVal < minVal)
-	{
-		resultVal = maxVal;
-	}
-	else if (resultVal > maxVal)
-	{
-		resultVal = minVal;
-	}
-
-	return resultVal;
 }

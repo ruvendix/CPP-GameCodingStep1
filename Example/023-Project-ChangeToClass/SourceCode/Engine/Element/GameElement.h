@@ -29,10 +29,10 @@ public:
 	}
 #pragma endregion
 
-	virtual EErrorType OnInitialize();
-	virtual EErrorType OnUpdate();
-	virtual EErrorType OnRender();
-	virtual EErrorType OnFinalize();
+	virtual EErrorType OnInitialize() override;
+	virtual EErrorType OnUpdate() override;
+	virtual EErrorType OnRender() override;
+	virtual EErrorType OnFinalize() override;
 };
 
 #endif

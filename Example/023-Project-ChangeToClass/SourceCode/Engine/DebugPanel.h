@@ -20,7 +20,7 @@ class DebugPanel
 
 public:
 	void Initialize();
-	void ShowContents(Int32 posX, Int32 posY);
+	void ShowContents(Int32 x, Int32 y);
 
 private:
 	bool m_bShow = true;

@@ -14,6 +14,47 @@
 DEFINE_LOG_CATEGORY(TriggerTimerMgr);
 DEFINE_PHOENIX_SINGLETON(TriggerTimerMgr);
 
+void TriggerTimerMgr::AddTriggerTimer(const std::string& strTriggerTimer, Real32 triggerTime, Real32 keepTime,
+	const TriggerTimer::TCallback& func, bool bRender, bool bRepeat)
+{
+	if ( (bRepeat == true) && 
+		 (triggerTime < keepTime) )
+	{
+		// 이건 오류임!
+		return;
+	}
+
+	const auto& iter = m_mapTriggerTimer.find(strTriggerTimer);
+	if (iter != m_mapTriggerTimer.cend())
+	{
+		TriggerTimer* pTriggerTimer = iter->second;
+		CHECK_NULLPTR(pTriggerTimer);
+
+		// 이미 존재하는 트리거 타이머라면 데이터를 갱신해줍니다.
+		pTriggerTimer->StartTime();
+		pTriggerTimer->setTime(triggerTime);
+		pTriggerTimer->setKeepTime(keepTime);
+		pTriggerTimer->setFunc(func);
+		pTriggerTimer->setRender(bRender);
+		pTriggerTimer->setRepeat(bRepeat);
+		DEBUG_LOG_CATEGORY(TriggerTimerMgr, "타이머가 이미 존재하므로 이름(%s)을 제외한 모든 데이터를 갱신!", strTriggerTimer.c_str());
+
+		return;
+	}
+
+	TriggerTimer* pTriggerTimer = trace_new TriggerTimer;
+	pTriggerTimer->StartTime();
+	pTriggerTimer->setTime(triggerTime);
+	pTriggerTimer->setKeepTime(keepTime);
+	pTriggerTimer->setFunc(func);
+	pTriggerTimer->setRender(bRender);
+	pTriggerTimer->setRepeat(bRepeat);
+
+	m_mapTriggerTimer.insert(std::make_pair(strTriggerTimer, pTriggerTimer));
+
+	return;
+}
+
 void TriggerTimerMgr::UpdateTriggerTimer()
 {
 	const auto& iterEnd = m_mapTriggerTimer.cend();
@@ -21,13 +62,30 @@ void TriggerTimerMgr::UpdateTriggerTimer()
 	{
 		TriggerTimer* pTriggerTimer = iter->second;
 		CHECK_NULLPTR_CONTINUE(pTriggerTimer);
-		pTriggerTimer->AddDeltaTime();
+
+		if (pTriggerTimer->HasKeepTime() == false)
+		{
+			pTriggerTimer->AddElapsedTime();
+		}
 
 		// 트리거 타임만큼 지나면 리셋하고, 반복 설정이 되어있지 않으면 트리거 타이머를 제거해야 해요!
 		if (pTriggerTimer->IsTriggerTime())
 		{
-			pTriggerTimer->CallTriggerTimerFunc();
-			pTriggerTimer->Reset();
+			if (pTriggerTimer->IsRender() == false)
+			{
+				pTriggerTimer->CallTriggerTimerFunc();
+			}
+
+			if (pTriggerTimer->IsExistKeepTime() == false)
+			{
+				pTriggerTimer->Reset();
+			}
+			else
+			{
+				pTriggerTimer->UpdateKeepTime();
+				++iter;
+				continue;
+			}
 
 			if (pTriggerTimer->IsRepeat() == false)
 			{
@@ -44,6 +102,20 @@ void TriggerTimerMgr::UpdateTriggerTimer()
 		else
 		{
 			++iter;
+		}
+	}
+}
+
+void TriggerTimerMgr::CallTriggerTimerFuncForRender()
+{
+	for (const auto& iter : m_mapTriggerTimer)
+	{
+		TriggerTimer* pTriggerTimer = iter.second;
+		CHECK_NULLPTR_CONTINUE(pTriggerTimer);
+		
+		if (pTriggerTimer->IsRender())
+		{
+			pTriggerTimer->CallTriggerTimerFunc();
 		}
 	}
 }

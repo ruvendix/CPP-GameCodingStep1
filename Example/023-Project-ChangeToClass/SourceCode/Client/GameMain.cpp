@@ -95,7 +95,7 @@ void GameMainHelper::Finalize()
 
 	if (SceneMgr::I()->getCurrentScene()->OnFinalize() == EErrorType::FINAL_FAILED)
 	{
-		ErrorHandler::ShowString(EErrorType::FINAL_FAILED);
+		ErrorHandler::ToString(EErrorType::FINAL_FAILED);
 	}
 	
 	SceneMgr::I()->Finalize();
@@ -140,7 +140,7 @@ void GameMainHelper::Update()
 
 	if (SceneMgr::I()->getCurrentScene()->OnUpdate() == EErrorType::UPDATE_FAILED)
 	{
-		ErrorHandler::ShowString(EErrorType::UPDATE_FAILED);
+		ErrorHandler::ToString(EErrorType::UPDATE_FAILED);
 	}
 
 	PERFORMANCE_PROFILE_END();
@@ -162,8 +162,10 @@ void GameMainHelper::Render()
 
 	if (SceneMgr::I()->getCurrentScene()->OnRender() == EErrorType::RENDER_FAILED)
 	{
-		ErrorHandler::ShowString(EErrorType::RENDER_FAILED);
+		ErrorHandler::ToString(EErrorType::RENDER_FAILED);
 	}
+	
+	TriggerTimerMgr::I()->CallTriggerTimerFuncForRender();
 
 	DebugPanel::I()->ShowContents(0, 0);
 

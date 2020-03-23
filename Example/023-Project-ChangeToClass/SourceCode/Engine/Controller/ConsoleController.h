@@ -28,14 +28,14 @@ public:
 	void Flipping();
 	void Finalize();
 
-	void PrintString(Int32 posX, Int32 posY, const std::string_view& szOutput);
+	void PrintString(Int32 x, Int32 y, const std::string_view& szOutput);
     void AdjustConsoleArea(Uint32 width, Uint32 height);
     void AdjustConsoleArea(const SizeInfo& sizeInfo);
     void DefaultConsoleGameStyle();
     void PauseGame();
     void ClearConsoleScreen();
     void ClearStdInputBuffer();
-    void MoveConsolePos(Int32 posX, Int32 posY);
+    void MoveConsolePos(Int32 x, Int32 y);
     void MoveConsolePos(const COORD& pos);
     void AlignCenter(const SizeInfo& sizeInfo, Uint32 length);
     void ChangeTitle(const std::string_view& szTitle);

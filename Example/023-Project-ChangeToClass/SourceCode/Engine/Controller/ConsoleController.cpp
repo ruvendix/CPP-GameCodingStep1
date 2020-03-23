@@ -86,7 +86,7 @@ void ConsoleController::Flipping()
 	}
 	else
 	{
-		ErrorHandler::ShowString(EErrorType::UNKNOWN_CONSOLE_SCREEN_BUFFER_TYPE);
+		ErrorHandler::ToString(EErrorType::UNKNOWN_CONSOLE_SCREEN_BUFFER_TYPE);
 		return;
 	}
 }
@@ -110,10 +110,10 @@ void ConsoleController::Finalize()
 콘솔창에 문자열을 출력합니다.
 더블 버퍼링인 경우, 활성화되지 않은 버퍼에 문자열을 출력합니다.
 */
-void ConsoleController::PrintString(Int32 posX, Int32 posY, const std::string_view& szOutput)
+void ConsoleController::PrintString(Int32 x, Int32 y, const std::string_view& szOutput)
 {
 	DWORD dwWrittenCnt = 0;
-	COORD printPos = { static_cast<SHORT>(posX), static_cast<SHORT>(posY) };
+	COORD printPos = { static_cast<SHORT>(x), static_cast<SHORT>(y) };
 	HANDLE hConsoleScreenBuffer = getCurrentConsoleScreenBufferHandle();
 
 	::FillConsoleOutputAttribute(hConsoleScreenBuffer, m_consoleScreenBufferInfo.wAttributes, szOutput.size(), printPos, &dwWrittenCnt);
@@ -215,9 +215,9 @@ void ConsoleController::ClearStdInputBuffer()
 /*
 콘솔창의 좌표를 이동시킵니다.
 */
-void ConsoleController::MoveConsolePos(Int32 posX, Int32 posY)
+void ConsoleController::MoveConsolePos(Int32 x, Int32 y)
 {
-	COORD pos{ static_cast<SHORT>(posX), static_cast<SHORT>(posY) };
+	COORD pos{ static_cast<SHORT>(x), static_cast<SHORT>(y) };
 	::SetConsoleCursorPosition(getCurrentConsoleScreenBufferHandle(), pos);
 }
 
@@ -260,7 +260,7 @@ void ConsoleController::ChangeConsoleOutputColor(EConsoleOutputType consoleOutpu
 	if ( (consoleOutputColorType < EConsoleOutputColorType::BLACK) ||
 		 (consoleOutputColorType > EConsoleOutputColorType::BRIGHT_WHITE) )
 	{
-		ErrorHandler::ShowString(EErrorType::UNKNOWN_CONSOLE_COLOR);
+		ErrorHandler::ToString(EErrorType::UNKNOWN_CONSOLE_COLOR);
 		return;
 	}
 
@@ -280,7 +280,7 @@ void ConsoleController::ChangeConsoleOutputColor(EConsoleOutputType consoleOutpu
 	}
 	else
 	{
-		ErrorHandler::ShowString(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE);
+		ErrorHandler::ToString(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE);
 	}
 
 	m_consoleScreenBufferInfo.wAttributes = consoleScreenBufferAttr;
@@ -341,14 +341,14 @@ EConsoleOutputColorType ConsoleController::QueryCurrentConsoleOutputColor(EConso
 	}
 	else
 	{
-		ErrorHandler::ShowString(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE);
+		ErrorHandler::ToString(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE);
 	}
 
 
 	if ( (consoleColorVal < static_cast<INT32>(EConsoleOutputColorType::BLACK)) ||
 		 (consoleColorVal > static_cast<INT32>(EConsoleOutputColorType::BRIGHT_WHITE)) )
 	{
-		ErrorHandler::ShowString(EErrorType::UNKNOWN_CONSOLE_COLOR);
+		ErrorHandler::ToString(EErrorType::UNKNOWN_CONSOLE_COLOR);
 		return EConsoleOutputColorType::UNKNOWN;
 	}
 

@@ -31,12 +31,12 @@ public:
 
 	bool IsGotoNextScene() const
 	{
-		return (m_bGotoNextScene == true);
+		return (m_pNextScene != nullptr);
 	}
 
 	Scene* getCurrentScene() const
 	{
-		CHECK_NULLPTR_RETURN_NULLPTR(m_pCurrentScene);
+		CHECK_NULLPTR(m_pCurrentScene);
 		return m_pCurrentScene;
 	}
 
@@ -50,7 +50,7 @@ public:
 		{
 			if (m_pCurrentScene != nullptr)
 			{
-				ERROR_HANDLER_DETAIL(EErrorType::OVERLAPPED_SCENE, m_pCurrentScene->getNameTag());
+				ERROR_HANDLER(EErrorType::OVERLAPPED_SCENE, m_pCurrentScene->getNameTag());
 				return;
 			}
 
@@ -58,7 +58,7 @@ public:
 
 			if (m_pCurrentScene->OnInitialize() == EErrorType::INIT_FAILED)
 			{
-				ErrorHandler::ShowString(EErrorType::INIT_FAILED);
+				ErrorHandler::ToString(EErrorType::INIT_FAILED);
 			}
 		}
 		else
@@ -69,10 +69,8 @@ public:
 			// 전환될 예정인 씬은 초기화가 완료된 상태로 전환되어야 해요!
 			if (m_pNextScene->OnInitialize() == EErrorType::INIT_FAILED)
 			{
-				ErrorHandler::ShowString(EErrorType::INIT_FAILED);
+				ErrorHandler::ToString(EErrorType::INIT_FAILED);
 			}
-
-			m_bGotoNextScene = true;
 		}
 	}
 
@@ -90,7 +88,6 @@ public:
 private:
 	Scene* m_pCurrentScene = nullptr;
 	Scene* m_pNextScene = nullptr;
-	bool m_bGotoNextScene = false;
 };
 
 #endif
