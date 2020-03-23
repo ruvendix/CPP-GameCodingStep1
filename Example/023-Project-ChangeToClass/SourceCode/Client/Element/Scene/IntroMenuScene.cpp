@@ -118,11 +118,9 @@ void IntroMenuSceneHelper::DrawSelector(const IntroMenuScene& helperTarget)
 	const std::string_view& strLongestMenuName = std::get<0>(helperTarget.m_tupleLongestMenuInfo);
 	const COORD& longestMenuPos = std::get<1>(helperTarget.m_tupleLongestMenuInfo);
 
-	IntroMenu* pGameIntroMenu = helperTarget.m_vecIntroMenu[helperTarget.m_selectedIntroMenuIdx];
-	CHECK_NULLPTR(pGameIntroMenu);
-
-	PRINTF(longestMenuPos.X - MENU_MARGIN_LENGTH, pGameIntroMenu->getPos().Y, "◀");
-	PRINTF(longestMenuPos.X + strLongestMenuName.size() + MENU_MARGIN_LENGTH - 2, pGameIntroMenu->getPos().Y, "▶");
+	std::shared_ptr spGameIntroMenu = helperTarget.m_vecIntroMenu[helperTarget.m_selectedIntroMenuIdx];
+	PRINTF(longestMenuPos.X - MENU_MARGIN_LENGTH, spGameIntroMenu->getPos().Y, "◀");
+	PRINTF(longestMenuPos.X + strLongestMenuName.size() + MENU_MARGIN_LENGTH - 2, spGameIntroMenu->getPos().Y, "▶");
 }
 
 /*
@@ -180,16 +178,16 @@ EErrorType IntroMenuScene::OnInitialize()
 
 	m_tupleLongestMenuInfo = std::make_tuple("Default", COORD{ SHRT_MIN, SHRT_MIN }, false);
 
-	m_vecIntroMenu.push_back(trace_new IntroMenu_SceneLoader("배틀 시뮬레이터",
+	m_vecIntroMenu.push_back(std::make_shared<IntroMenu_SceneLoader>("배틀 시뮬레이터",
 		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_BATTLE_SIMULATOR_OFFSET_POS_Y }, EIntroMenu_SceneLoaderType::BATTLE_SIMULATOR));
 
-	m_vecIntroMenu.push_back(trace_new IntroMenu_SceneLoader("잡화 상점２",
+	m_vecIntroMenu.push_back(std::make_shared<IntroMenu_SceneLoader>("잡화 상점２",
 		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_MISCELLANEOUS_SHOP2_OFFSET_POS_Y }, EIntroMenu_SceneLoaderType::MISCELLANEOUS_SHOP2));
 
-	m_vecIntroMenu.push_back(trace_new IntroMenu_SceneLoader("다이얼로그 트리",
+	m_vecIntroMenu.push_back(std::make_shared<IntroMenu_SceneLoader>("다이얼로그 트리",
 		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_DIALOGUE_TREE_OFFSET_POS_Y }, EIntroMenu_SceneLoaderType::DIALOGUE_TREE));
 
-	m_vecIntroMenu.push_back(trace_new IntroMenu_Quit("게임 종료", COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_QUIT_OFFSET_POS_Y }));
+	m_vecIntroMenu.push_back(std::make_shared<IntroMenu_Quit>("게임 종료", COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_QUIT_OFFSET_POS_Y }));
 
 	TriggerTimerMgr::I()->AddTriggerTimer("ChangeIntroTitle", 0.3f, 0.0f, this, &IntroMenuScene::OnTrigger_ChangeRandomColorToTitle, false, true);
 
@@ -253,13 +251,7 @@ EErrorType IntroMenuScene::OnRender()
 
 EErrorType IntroMenuScene::OnFinalize()
 {
-	for (auto& iter : m_vecIntroMenu)
-	{
-		SAFE_DELETE(iter);
-	}
-
 	TriggerTimerMgr::I()->DeleteTriggerTimer("ChangeIntroTitle");
-
 	return EErrorType::NONE;
 }
 

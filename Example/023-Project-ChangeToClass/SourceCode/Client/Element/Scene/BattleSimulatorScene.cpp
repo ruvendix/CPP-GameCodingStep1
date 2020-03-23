@@ -35,8 +35,8 @@ public:
 	static void DrawUnitStat();
 	static void DrawBattleReport(const BattleSimulatorScene& helperTarget);
 
-	static MedievalKnight* CloneMedievalKnight();
-	static Viking* CloneViking();
+	static std::shared_ptr<MedievalKnight> CloneMedievalKnight();
+	static std::shared_ptr<Viking> CloneViking();
 };
 
 void BattleSimulatorSceneHelper::DrawTitle()
@@ -84,18 +84,16 @@ void BattleSimulatorSceneHelper::DrawBattleReport(const BattleSimulatorScene& he
 	Int32 totalMedievalKnightAttackDamage = (s_dummyViking.getMaxHP() * vikingDeadCnt);
 	if (helperTarget.m_vecViking.empty() == false)
 	{
-		Viking* pViking = helperTarget.m_vecViking[0];
-		CHECK_NULLPTR(pViking);
-		totalMedievalKnightAttackDamage += (s_dummyViking.getMaxHP() - pViking->getHP());
+		std::shared_ptr<Viking> spViking = helperTarget.m_vecViking[0];
+		totalMedievalKnightAttackDamage += (s_dummyViking.getMaxHP() - spViking->getHP());
 	}
 
 	// 바이킹 부대가 준 피해량
 	Int32 totalVikingAttackDamage = (s_dummyMedievalKnight.getMaxHP() * medievalKnightDeadCnt);
 	if (helperTarget.m_vecMedievalKnight.empty() == false)
 	{
-		MedievalKnight* pMedievalKnight = helperTarget.m_vecMedievalKnight[0];
-		CHECK_NULLPTR(pMedievalKnight);
-		totalVikingAttackDamage += (s_dummyMedievalKnight.getMaxHP() - pMedievalKnight->getHP());
+		std::shared_ptr<MedievalKnight> spMedievalKnight = helperTarget.m_vecMedievalKnight[0];
+		totalVikingAttackDamage += (s_dummyMedievalKnight.getMaxHP() - spMedievalKnight->getHP());
 	}
 
 	PRINTF(drawPosX, ++drawPosY, "준 피해량   : %7d   %7d", totalMedievalKnightAttackDamage, totalVikingAttackDamage);
@@ -131,18 +129,14 @@ void BattleSimulatorSceneHelper::DrawBattleReport(const BattleSimulatorScene& he
 	}
 }
 
-MedievalKnight* BattleSimulatorSceneHelper::CloneMedievalKnight()
+std::shared_ptr<MedievalKnight> BattleSimulatorSceneHelper::CloneMedievalKnight()
 {
-	MedievalKnight* pUnit = trace_new MedievalKnight;
-	*pUnit = s_dummyMedievalKnight;
-	return pUnit;
+	return (std::make_shared<MedievalKnight>(s_dummyMedievalKnight));
 }
 
-Viking* BattleSimulatorSceneHelper::CloneViking()
+std::shared_ptr<Viking> BattleSimulatorSceneHelper::CloneViking()
 {
-	Viking* pUnit = trace_new Viking;
-	*pUnit = s_dummyViking;
-	return pUnit;
+	return (std::make_shared<Viking>(s_dummyViking));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -198,35 +192,29 @@ EErrorType BattleSimulatorScene::OnUpdate()
 	}
 
 	// 턴제로 한번씩 공격
-	Unit* pMedievalKnight = m_vecMedievalKnight[0];
-	CHECK_NULLPTR(pMedievalKnight);
-
-	Unit* pViking = m_vecViking[0];
-	CHECK_NULLPTR(pViking);
+	std::shared_ptr<MedievalKnight> spMedievalKnight = m_vecMedievalKnight[0];
+	std::shared_ptr<Viking> spViking = m_vecViking[0];
 
 #pragma region 중세기사 -> 바이킹
-	pMedievalKnight->Attack(pViking);
+	spMedievalKnight->Attack(spViking);
 
-	if (pViking->IsDeath())
+	if (spViking->IsDeath())
 	{
-		SAFE_DELETE(pViking);
 		m_vecViking.erase(m_vecViking.begin());
 		if (m_vecViking.empty() == true)
 		{
 			return EErrorType::NONE;
 		}
 
-		pViking = m_vecViking[0];
-		CHECK_NULLPTR(pViking);
+		spViking = m_vecViking[0];
 	}
 #pragma endregion
 
 #pragma region 바이킹 -> 중세기사
-	pViking->Attack(pMedievalKnight);
+	spViking->Attack(spMedievalKnight);
 
-	if (pMedievalKnight->IsDeath())
+	if (spMedievalKnight->IsDeath())
 	{
-		SAFE_DELETE(pMedievalKnight);
 		m_vecMedievalKnight.erase(m_vecMedievalKnight.begin());
 	}
 #pragma endregion
@@ -266,15 +254,5 @@ EErrorType BattleSimulatorScene::OnRender()
 
 EErrorType BattleSimulatorScene::OnFinalize()
 {
-	for (auto& iter : m_vecMedievalKnight)
-	{
-		SAFE_DELETE(iter);
-	}
-
-	for (auto& iter : m_vecViking)
-	{
-		SAFE_DELETE(iter);
-	}
-
 	return EErrorType::NONE;
 }

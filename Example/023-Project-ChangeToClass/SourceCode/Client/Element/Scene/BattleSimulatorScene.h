@@ -34,8 +34,8 @@ public:
 	virtual EErrorType OnFinalize() override;
 
 private:
-	std::vector<MedievalKnight*> m_vecMedievalKnight;
-	std::vector<Viking*> m_vecViking;
+	std::vector<std::shared_ptr<MedievalKnight>> m_vecMedievalKnight;
+	std::vector<std::shared_ptr<Viking>> m_vecViking;
 
 	bool m_bBattleEnd = false;
 };

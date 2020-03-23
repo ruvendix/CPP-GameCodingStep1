@@ -12,13 +12,11 @@
 
 #include "Math\Random.h"
 
-void Unit::Attack(Unit* pTargetUnit)
+void Unit::Attack(std::shared_ptr<Unit> spTargetUnit)
 {
-	CHECK_NULLPTR(pTargetUnit);
-
 	if (m_attackSuccessRate > math::RandomUtil::GenerateUniformDistribution(0.0f, 1.0f))
 	{
-		pTargetUnit->Damage(m_attackDamage);
+		spTargetUnit->Damage(m_attackDamage);
 	}
 }
 

@@ -39,9 +39,9 @@ private:
 	void OnTrigger_ChangeRandomColorToTitle();
 	void OnTrigger_ExcuteMenu();
 
+	std::vector<std::shared_ptr<IntroMenu>> m_vecIntroMenu;
 	EConsoleOutputColorType m_titleColorType = EConsoleOutputColorType::WHITE;
 	TupleCompMenuInfo m_tupleLongestMenuInfo;
-	std::vector<IntroMenu*> m_vecIntroMenu;
 	Int32 m_selectedIntroMenuIdx = 0;
 };
 

@@ -31,11 +31,11 @@ void InputController::PollInput()
 		{
 			continue;
 		}
-
-		TSize size = pInputMappingInfo->vecInputTable.size();
+		
 		const std::vector<TInput>& vecInputTable = pInputMappingInfo->vecInputTable;
 		std::list<TInput>& listInputChecker = pInputMappingInfo->listInputChecker;
-
+		
+		TSize size = pInputMappingInfo->vecInputTable.size();
 		for (TSize i = 0; i < size; ++i)
 		{
 			TInput inputVal = vecInputTable[i];

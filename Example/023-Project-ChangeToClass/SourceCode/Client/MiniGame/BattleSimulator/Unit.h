@@ -20,7 +20,7 @@ public:
 	virtual ~Unit() = default;
 #pragma endregion
 
-	void Attack(Unit* pTargetUnit);
+	void Attack(std::shared_ptr<Unit> spTargetUnit);
 	void Damage(Int32 damageVal);
 
 	bool IsDeath() const
