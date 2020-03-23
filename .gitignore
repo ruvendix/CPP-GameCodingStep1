@@ -10,6 +10,7 @@
 *.lo
 *.o
 *.obj
+*.iobj
 
 # Precompiled Headers
 *.gch
@@ -37,8 +38,12 @@
 # Debug
 *.ilk
 *.pdb
+*.ipdb
+
+# Solution
+*.db-shm
+*.db-wal
+
 /Example/Binaries/Intermediate
-/Example/.vs/Example/v16/*.db-shm
-/Example/.vs/Example/v16/*.db-wal
 /Example/001-HelloGameCodingWorld/SourceCode/main2.cpp
 /Example/001-HelloGameCodingWorld/SourceCode/ring_buffer.hpp
