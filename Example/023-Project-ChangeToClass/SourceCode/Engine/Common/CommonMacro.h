@@ -190,6 +190,8 @@ private:\
 	ErrorHandler::OuputDebugString(bOutputDebug);\
 	ErrorHandler::DebugBreak(bDebugBreak)
 
+#define ERROR_HANDLER_DEFAULT_RENDERING(x, y, keepTime, errorType, ...) ERROR_HANDLER_RENDERING(x, y, keepTime, true, false, errorType, __VA_ARGS__)
+
 
 // NameTag를 상속 받는 새로운 로그 클래스를 선언합니다.
 #define DECLARE_LOG_CATEGORY(Tag)\

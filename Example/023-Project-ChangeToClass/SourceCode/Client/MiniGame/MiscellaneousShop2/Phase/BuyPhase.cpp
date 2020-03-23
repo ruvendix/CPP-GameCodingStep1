@@ -188,7 +188,7 @@ void BuyPhaseHelper::BuyItem(const BuyPhase& targetHelper)
 	if ( (pInven->FindInvenItemInfo(pItem->getNameTag()) == nullptr) &&
 		 (pInven->IsFull()) )
 	{
-		ERROR_HANDLER_RENDERING(0, 12, 3.0f, true, false, EErrorType::FULL_INVEN);
+		ERROR_HANDLER_DEFAULT_RENDERING(0, 12, 3.0f, EErrorType::FULL_INVEN);
 		return;
 	}
 
@@ -198,7 +198,7 @@ void BuyPhaseHelper::BuyItem(const BuyPhase& targetHelper)
 	// 가격 확인
 	if (playerGameMoney < pItem->getPrice())
 	{
-		ERROR_HANDLER_RENDERING(0, 12, 3.0f, true, false, EErrorType::NOT_ENOUGH_GAME_MONEY, playerGameMoney, itemPrice);
+		ERROR_HANDLER_DEFAULT_RENDERING(0, 12, 3.0f, EErrorType::NOT_ENOUGH_GAME_MONEY, playerGameMoney, itemPrice);
 		return;
 	}
 	else
