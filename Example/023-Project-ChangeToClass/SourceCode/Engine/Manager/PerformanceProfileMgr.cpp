@@ -50,7 +50,7 @@ void PerformanceProfileMgr::End(Int32 ID)
 	auto iter = m_mapPerformanceProfileInfo.find(ID);
 	if (iter == m_mapPerformanceProfileInfo.cend())
 	{
-		ERROR_HANDLER(EErrorType::NO_PERFORMANCE_PROFILE_INFO, ID);
+		DEFAULT_ERROR_HANDLER(EErrorType::NO_PERFORMANCE_PROFILE_INFO, ID);
 		return;
 	}
 

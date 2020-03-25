@@ -20,7 +20,7 @@ void Unit::Attack(std::shared_ptr<Unit> spTargetUnit)
 	}
 }
 
-void Unit::Damage(Int32 damageVal)
+void Unit::Damage(Int32 damage)
 {
-	m_HP -= damageVal;
+	m_HP -= damage;
 }

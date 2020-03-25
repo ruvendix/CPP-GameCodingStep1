@@ -38,29 +38,29 @@ void InputController::PollInput()
 		TSize size = pInputMappingInfo->vecInputTable.size();
 		for (TSize i = 0; i < size; ++i)
 		{
-			TInput inputVal = vecInputTable[i];
+			TInput inputValue = vecInputTable[i];
 
 			// 리스트에 없는 값만 넣어야 함!
-			if (CommonFunc::IsOverlapVal(listInputChecker, inputVal) == false)
+			if (CommonFunc::IsOverlapValue(listInputChecker, inputValue) == false)
 			{
 				// 리스트에 없는 값에서만 입력값 추가!
-				if (::GetAsyncKeyState(inputVal) & INPUT_DOWN_FLAG)
+				if (::GetAsyncKeyState(inputValue) & INPUT_DOWN_FLAG)
 				{
-					listInputChecker.push_back(inputVal);
-					DEBUG_LOG_CATEGORY(InputController, "값 추가! (%d)", inputVal);
+					listInputChecker.push_back(inputValue);
+					DEBUG_LOG_CATEGORY(InputController, "값 추가! (%d)", inputValue);
 				}
 			}
 			// 이미 리스트에 있는 값이면? 여전히 값이 눌려있는지 확인!
 			else
 			{
-				if (IS_INPUT_DOWN(inputVal))
+				if (IS_INPUT_DOWN(inputValue))
 				{
-					DEBUG_LOG_CATEGORY(InputController, "이미 누르고 있는 값! (%d)", inputVal);
+					DEBUG_LOG_CATEGORY(InputController, "이미 누르고 있는 값! (%d)", inputValue);
 				}
 				else
 				{
 					listInputChecker.pop_back();
-					DEBUG_LOG_CATEGORY(InputController, "누르고 있던 값을 뗌! (%d)", inputVal);
+					DEBUG_LOG_CATEGORY(InputController, "누르고 있던 값을 뗌! (%d)", inputValue);
 				}
 			}
 		}
@@ -149,7 +149,7 @@ InputMappingInfo* InputController::FindInputMappingInfo(const std::string_view& 
 	if ( (iter == m_mapInputMappingInfo.cend()) ||
 		 (iter->second == nullptr) )
 	{
-		//ERROR_HANDLER(EErrorType::NO_INPUT_MAPPING_INFO, szInputMappingName);
+		//DEFAULT_ERROR_HANDLER(EErrorType::NO_INPUT_MAPPING_INFO, szInputMappingName);
 		return nullptr;
 	}
 

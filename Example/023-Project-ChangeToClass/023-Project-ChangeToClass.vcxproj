@@ -180,9 +180,11 @@
     <ClCompile Include="SourceCode\Engine\Controller\FrameController.cpp" />
     <ClCompile Include="SourceCode\Engine\Controller\InputController.cpp" />
     <ClCompile Include="SourceCode\Engine\DebugPanel.cpp" />
+    <ClCompile Include="SourceCode\Engine\Element\DoubleConsoleSelector.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\GameElement.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\NameTag.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\Scene.cpp" />
+    <ClCompile Include="SourceCode\Engine\Element\ConsoleSelector.cpp" />
     <ClCompile Include="SourceCode\Engine\Handler\ErrorHandler\ErrorHandler.cpp" />
     <ClCompile Include="SourceCode\Engine\Manager\PerformanceProfileMgr.cpp" />
     <ClCompile Include="SourceCode\Engine\Manager\SceneManager.cpp" />
@@ -237,9 +239,11 @@
     <ClInclude Include="SourceCode\Engine\Controller\FrameController.h" />
     <ClInclude Include="SourceCode\Engine\Controller\InputController.h" />
     <ClInclude Include="SourceCode\Engine\DebugPanel.h" />
+    <ClInclude Include="SourceCode\Engine\Element\DoubleConsoleSelector.h" />
     <ClInclude Include="SourceCode\Engine\Element\GameElement.h" />
     <ClInclude Include="SourceCode\Engine\Element\NameTag.h" />
     <ClInclude Include="SourceCode\Engine\Element\Scene.h" />
+    <ClInclude Include="SourceCode\Engine\Element\ConsoleSelector.h" />
     <ClInclude Include="SourceCode\Engine\Handler\ErrorHandler\ErrorHandler.h" />
     <ClInclude Include="SourceCode\Engine\Handler\ErrorHandler\ErrorType.h" />
     <ClInclude Include="SourceCode\Engine\Interface\IGameMechanism.h" />

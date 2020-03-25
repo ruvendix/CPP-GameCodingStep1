@@ -227,6 +227,12 @@
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Inven.cpp">
       <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Element\ConsoleSelector.cpp">
+      <Filter>소스 파일\1. Engine\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Element\DoubleConsoleSelector.cpp">
+      <Filter>소스 파일\1. Engine\Element</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Client\GameMain.h">
@@ -396,6 +402,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Engine\Common\CommonTemplate.h">
       <Filter>소스 파일\1. Engine\1. Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Element\ConsoleSelector.h">
+      <Filter>소스 파일\1. Engine\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Element\DoubleConsoleSelector.h">
+      <Filter>소스 파일\1. Engine\Element</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

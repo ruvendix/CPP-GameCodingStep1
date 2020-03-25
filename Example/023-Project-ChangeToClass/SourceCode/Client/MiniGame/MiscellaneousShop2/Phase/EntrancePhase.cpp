@@ -14,6 +14,7 @@
 #include "Controller\ConsoleController.h"
 #include "Controller\InputController.h"
 #include "Manager\SceneManager.h"
+#include "Element\ConsoleSelector.h"
 #include "Element\Scene\IntroMenuScene.h"
 #include "BuyPhase.h"
 #include "SellPhase.h"
@@ -93,11 +94,7 @@ PhaseBase* EntrancePhaseHelper::CreateNextPhase(EPhaseType phaseType)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 EErrorType EntrancePhase::OnInitialize()
-{
-	setSelectorPos(2, 4);
-	setMinSelectorPos(2, 4);
-	setMaxSelectorPos(19, 6);
-	
+{	
 	InputController::I()->InsertInputMappingInfo("GotoIntro", VK_ESCAPE);
 	InputController::I()->InsertInputMappingInfo("SelectUp", VK_UP);
 	InputController::I()->InsertInputMappingInfo("SelectDown", VK_DOWN);
@@ -106,6 +103,16 @@ EErrorType EntrancePhase::OnInitialize()
 	InputController::I()->InsertInputMappingInfo("SelectMenu", VK_RETURN);
 
 	return EErrorType::NONE;
+}
+
+EErrorType EntrancePhase::OnPostInitialize()
+{
+	ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
+	consoleSelector.setSelectorPos(2, 4);
+	consoleSelector.setMinSelectorPos(2, 4);
+	consoleSelector.setMaxSelectorPos(19, 6);
+
+	return EErrorType();
 }
 
 EErrorType EntrancePhase::OnUpdate()
@@ -117,31 +124,31 @@ EErrorType EntrancePhase::OnUpdate()
 
 	if (InputController::I()->CheckInputState("SelectLeft", EInputMappingState::DOWN) == true)
 	{
-		AddSelectorPosX(-17);
+		ConsoleController::I()->AddSelectorPosX(-17);
 		DEBUG_LOG("SelectLeft 揚毓棻!");
 	}
 
 	if (InputController::I()->CheckInputState("SelectRight", EInputMappingState::DOWN) == true)
 	{
-		AddSelectorPosX(+17);
+		ConsoleController::I()->AddSelectorPosX(+17);
 		DEBUG_LOG("SelectRight 揚毓棻!");
 	}
 
 	if (InputController::I()->CheckInputState("SelectUp", EInputMappingState::DOWN) == true)
 	{
-		AddSelectorPosY(-2);
+		ConsoleController::I()->AddSelectorPosY(-2);
 		DEBUG_LOG("SelectUp 揚毓棻!");
 	}
 
 	if (InputController::I()->CheckInputState("SelectDown", EInputMappingState::DOWN) == true)
 	{
-		AddSelectorPosY(+2);
+		ConsoleController::I()->AddSelectorPosY(+2);
 		DEBUG_LOG("SelectDown 揚毓棻!");
 	}
 
 	if (InputController::I()->CheckInputState("SelectMenu", EInputMappingState::DOWN) == true)
 	{
-		setCurrentPhaseType(EntrancePhaseHelper::ToPhaseType(getSelectorPos()));
+		setCurrentPhaseType(EntrancePhaseHelper::ToPhaseType(ConsoleController::I()->GetCurrentConsoleSelectorPos()));
 
 		PhaseBase* pNextPhase = EntrancePhaseHelper::CreateNextPhase(getCurrentPhaseType());
 		if (pNextPhase == nullptr)
@@ -150,7 +157,6 @@ EErrorType EntrancePhase::OnUpdate()
 		}
 		
 		setNextPhase(pNextPhase);
-
 		DEBUG_LOG("SelectMenu 揚毓棻!");
 	}
 
@@ -169,8 +175,7 @@ EErrorType EntrancePhase::OnRender()
 	PRINTF(0, ++drawPosY, "早    薑葬        早    釭陛晦      早");
 	PRINTF(0, ++drawPosY, "曲收收收收收收收收收收收收收收收收朴收收收收收收收收收收收收收收收收旭");
 
-	PRINTF(getSelectorPos().X, getSelectorPos().Y, "Ⅱ");
-
+	ConsoleController::I()->DrawSelector();
 	return EErrorType::NONE;
 }
 

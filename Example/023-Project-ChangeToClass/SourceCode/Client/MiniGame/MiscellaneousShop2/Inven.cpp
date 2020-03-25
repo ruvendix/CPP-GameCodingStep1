@@ -133,21 +133,22 @@ void Inven::DrawInvenForSell(Int32 x, Int32 y) const
 	PRINTF(x, ++drawPosY, "┃    이름                            ┃     가격┃ 소지┃");
 	PRINTF(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━╋━━━━━┫");
 
-	for (const auto& iter : m_vecInvenItemInfo)
+	for (Int32 i = 0; i < m_maxInvenSize; ++i)
 	{
-		if (iter == nullptr)
+		if (i >= static_cast<Int32>(m_vecInvenItemInfo.size()))
 		{
+			PRINTF(x, ++drawPosY, "┃    %-32s┃ %8d┃ %4d┃", "No Item", 0, 0);
 			continue;
 		}
 
-		ItemBase* pItem = iter->pItem;
-		if (pItem == nullptr)
-		{
-			continue;
-		}
+		InvenItemInfo* pInvenItemInfo = m_vecInvenItemInfo.at(i);
+		CHECK_NULLPTR_CONTINUE(pInvenItemInfo);
+
+		ItemBase* pItem = pInvenItemInfo->pItem;
+		CHECK_NULLPTR_CONTINUE(pItem);
 
 		Int32 itemPrice = static_cast<Int32>(pItem->getPrice() * 0.8f);
-		PRINTF(x, ++drawPosY, "┃    %-32s┃ %8d┃ %4d┃", pItem->getNameTag().c_str(), itemPrice, iter->cnt);
+		PRINTF(x, ++drawPosY, "┃    %-32s┃ %8d┃ %4d┃", pItem->getNameTag().c_str(), itemPrice, pInvenItemInfo->cnt);
 	}
 
 	PRINTF(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━┻━━━━━┫");

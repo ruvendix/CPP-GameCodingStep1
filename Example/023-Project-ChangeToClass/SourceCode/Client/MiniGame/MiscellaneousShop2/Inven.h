@@ -38,6 +38,11 @@ public:
 	void DrawInvenForSell(Int32 x, Int32 y) const;
 	bool IsFull() const;
 
+	Int32 getMaxInvenSize() const
+	{
+		return m_maxInvenSize;
+	}
+
 private:
 	Int32 m_maxInvenSize = 5; // 인벤에 담을 수 있는 개수는 5개
 	std::vector<InvenItemInfo*> m_vecInvenItemInfo;

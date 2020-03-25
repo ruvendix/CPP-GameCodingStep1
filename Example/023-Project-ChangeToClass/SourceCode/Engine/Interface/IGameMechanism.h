@@ -16,6 +16,7 @@ class IGameMechanism
 {
 public:
 	virtual EErrorType OnInitialize() = 0;
+	virtual EErrorType OnPostInitialize() = 0;
 	virtual EErrorType OnUpdate() = 0;
 	virtual EErrorType OnRender() = 0;
 	virtual EErrorType OnFinalize() = 0;

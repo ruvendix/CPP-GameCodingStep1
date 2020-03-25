@@ -17,8 +17,8 @@
 namespace math
 {
 
-	Int32 Clamp(Int32 val, Int32 minVal, Int32 maxVal);
-	Int32 ClampCycle(Int32 val, Int32 minVal, Int32 maxVal);
+	Int32 Clamp(Int32 value, Int32 min, Int32 max);
+	Int32 ClampCycle(Int32 value, Int32 min, Int32 max);
 
 } // namespace math end
 

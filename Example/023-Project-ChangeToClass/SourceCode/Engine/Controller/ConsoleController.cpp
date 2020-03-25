@@ -36,7 +36,7 @@ void ConsoleController::Initialize(const std::string_view& szTitle, const SizeIn
 	::ZeroMemory(&consoleCursorInfo, sizeof(consoleCursorInfo));
 	::GetConsoleCursorInfo(::GetStdHandle(STD_OUTPUT_HANDLE), &consoleCursorInfo);
 
-	for (Int32 i = 0; i < CommonFunc::ToUnderlyingType(EConsoleScreenBufferType::MAX); ++i)
+	for (Int32 i = 0; i < CommonFunc::ToUnderlyingType(EConsoleScreenBufferTypeIdx::MAX); ++i)
 	{
 		// 읽기와 쓰기가 가능한 콘솔창의 버퍼를 생성하는 부분이에요!
 		// 더블 버퍼링에서는 콘솔창의 버퍼가 2개 필요합니다!
@@ -53,7 +53,7 @@ void ConsoleController::Initialize(const std::string_view& szTitle, const SizeIn
 		m_hConsoleScreenBuffers[i] = hConsoleScreenBuffer;
 	}
 
-	m_currentConsoleScreenBufferType = EConsoleScreenBufferType::BACK;
+	m_currentConsoleScreenBufferType = EConsoleScreenBufferTypeIdx::BACK;
 #else
 	m_hConsoleScreenBuffers[CommonFunc::ToUnderlyingType(EConsoleScreenBufferType::FRONT)] = ::GetStdHandle(STD_OUTPUT_HANDLE);
 #endif
@@ -65,6 +65,8 @@ void ConsoleController::Initialize(const std::string_view& szTitle, const SizeIn
 
 	// 커서는 표시하지 않을게요!
 	ShowConsoleCursor(false);
+
+	m_pCurrentConsoleSelector = trace_new ConsoleSelector;
 }
 
 /*
@@ -76,17 +78,17 @@ void ConsoleController::Flipping()
 	// 버퍼에 렌더링한 내용을 활성화시키는 부분!
 	::SetConsoleActiveScreenBuffer(getCurrentConsoleScreenBufferHandle());
 
-	if (m_currentConsoleScreenBufferType == EConsoleScreenBufferType::FRONT)
+	if (m_currentConsoleScreenBufferType == EConsoleScreenBufferTypeIdx::FRONT)
 	{
-		m_currentConsoleScreenBufferType = EConsoleScreenBufferType::BACK;
+		m_currentConsoleScreenBufferType = EConsoleScreenBufferTypeIdx::BACK;
 	}
-	else if (m_currentConsoleScreenBufferType == EConsoleScreenBufferType::BACK)
+	else if (m_currentConsoleScreenBufferType == EConsoleScreenBufferTypeIdx::BACK)
 	{
-		m_currentConsoleScreenBufferType = EConsoleScreenBufferType::FRONT;
+		m_currentConsoleScreenBufferType = EConsoleScreenBufferTypeIdx::FRONT;
 	}
 	else
 	{
-		ErrorHandler::ToString(EErrorType::UNKNOWN_CONSOLE_SCREEN_BUFFER_TYPE);
+		DEFAULT_ERROR_HANDLER(EErrorType::UNKNOWN_CONSOLE_SCREEN_BUFFER_TYPE);
 		return;
 	}
 }
@@ -97,13 +99,15 @@ void ConsoleController::Flipping()
 void ConsoleController::Finalize()
 {
 #ifdef ACTIVATION_CONSOLE_DBL_BUFFERING
-	for (Int32 i = 0; i < CommonFunc::ToUnderlyingType(EConsoleScreenBufferType::MAX); ++i)
+	for (Int32 i = 0; i < CommonFunc::ToUnderlyingType(EConsoleScreenBufferTypeIdx::MAX); ++i)
 	{
 		::CloseHandle(m_hConsoleScreenBuffers[i]);
 	}
 #else
 	::CloseHandle(m_hConsoleScreenBuffers[CommonFunc::ToUnderlyingType(EConsoleScreenBufferType::FRONT)]);
 #endif
+
+	SAFE_DELETE(m_pCurrentConsoleSelector);
 }
 
 /*
@@ -201,14 +205,14 @@ void ConsoleController::ClearConsoleScreen()
 */
 void ConsoleController::ClearStdInputBuffer()
 {
-	char val = '0'; // EOF나 '\n'만 아니면 괜찮아요.
+	char value = '0'; // EOF나 '\n'만 아니면 괜찮아요.
 
 	// 표준 입력 버퍼를 비우는 방법이에요.
 	// std::fflush(stdin)도 있지만, 표준에는 적합하지 않아서 생략할게요.
-	while ( (val != EOF) &&
-		    (val != '\n') )
+	while ( (value != EOF) &&
+		    (value != '\n') )
 	{
-		val = static_cast<char>(getchar());
+		value = static_cast<char>(getchar());
 	}
 }
 
@@ -260,7 +264,7 @@ void ConsoleController::ChangeConsoleOutputColor(EConsoleOutputType consoleOutpu
 	if ( (consoleOutputColorType < EConsoleOutputColorType::BLACK) ||
 		 (consoleOutputColorType > EConsoleOutputColorType::BRIGHT_WHITE) )
 	{
-		ErrorHandler::ToString(EErrorType::UNKNOWN_CONSOLE_COLOR);
+		DEFAULT_ERROR_HANDLER(EErrorType::UNKNOWN_CONSOLE_COLOR);
 		return;
 	}
 
@@ -280,7 +284,7 @@ void ConsoleController::ChangeConsoleOutputColor(EConsoleOutputType consoleOutpu
 	}
 	else
 	{
-		ErrorHandler::ToString(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE);
+		DEFAULT_ERROR_HANDLER(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE);
 	}
 
 	m_consoleScreenBufferInfo.wAttributes = consoleScreenBufferAttr;
@@ -298,7 +302,7 @@ void ConsoleController::ShowConsoleCursor(bool bShow)
 	CONSOLE_CURSOR_INFO consoleCursorInfo;
 	::ZeroMemory(&consoleCursorInfo, sizeof(consoleCursorInfo));
 
-	for (Uint32 i = 0; i < static_cast<Uint32>(EConsoleScreenBufferType::MAX); ++i)
+	for (Uint32 i = 0; i < static_cast<Uint32>(EConsoleScreenBufferTypeIdx::MAX); ++i)
 	{
 		HANDLE hConsoleScreenBuffer = m_hConsoleScreenBuffers[i];
 		::GetConsoleCursorInfo(hConsoleScreenBuffer, &consoleCursorInfo);
@@ -308,10 +312,46 @@ void ConsoleController::ShowConsoleCursor(bool bShow)
 	}
 }
 
+void ConsoleController::RestoreConsoleSelector()
+{
+	*m_pCurrentConsoleSelector = *(m_stackConsoleSelector.top());
+	m_stackConsoleSelector.pop();
+}
+
+void ConsoleController::PushBackupConsoleSelector()
+{
+	m_stackConsoleSelector.push(std::make_unique<ConsoleSelector>(*m_pCurrentConsoleSelector));
+}
+
+void ConsoleController::AddSelectorPosX(Int32 x)
+{
+	m_pCurrentConsoleSelector->AddSelectorPosX(x);
+}
+
+void ConsoleController::AddSelectorPosY(Int32 y)
+{
+	m_pCurrentConsoleSelector->AddSelectorPosY(y);
+}
+
+void ConsoleController::DrawSelector() const
+{
+	m_pCurrentConsoleSelector->OnDrawSelector();
+}
+
+const COORD& ConsoleController::GetCurrentConsoleSelectorPos() const
+{
+	return m_pCurrentConsoleSelector->getSelectorPos();
+}
+
+void ConsoleController::SetCurrentConsoleSelectorPos(const COORD& pos)
+{
+	m_pCurrentConsoleSelector->setSelectorPos(pos);
+}
+
 /*
 콘솔창의 좌표를 알려줍니다.
 */
-COORD ConsoleController::GetCurrentConsolePos()
+COORD ConsoleController::QueryCurrentConsolePos()
 {
 	COORD pos = { 0, 0 };
 
@@ -325,32 +365,31 @@ COORD ConsoleController::GetCurrentConsolePos()
 /*
 현재 콘솔 텍스트 색상을 알려줍니다.
 */
-EConsoleOutputColorType ConsoleController::QueryCurrentConsoleOutputColor(EConsoleOutputType consoleOutputType)
+EConsoleOutputColorType ConsoleController::QueryCurrentConsoleOutputColor(EConsoleOutputType consoleOutputType) const
 {
 	// CONSOLE_SCREEN_BUFFER_INFO의 wAttributes에 색상 정보가 있어요!
 	// 하위 1바이트에서 상위 4비트는 배경 색상, 하위 4비트는 글자 색상을 의미하죠.
 	// 이 정보와 비트 연산을 이용하면 배경 색상과 글자 색상을 따로 알아낼 수 있습니다!
-	BYTE consoleColorVal = 0;
+	BYTE consoleColor = 0;
 	if (consoleOutputType == EConsoleOutputType::TEXT)
 	{
-		consoleColorVal = static_cast<BYTE>(m_consoleScreenBufferInfo.wAttributes & 0x000F);
+		consoleColor = static_cast<BYTE>(m_consoleScreenBufferInfo.wAttributes & 0x000F);
 	}
 	else if (consoleOutputType == EConsoleOutputType::BACKGROUND)
 	{
-		consoleColorVal = static_cast<BYTE>((m_consoleScreenBufferInfo.wAttributes & 0x00F0) >> 4);
+		consoleColor = static_cast<BYTE>((m_consoleScreenBufferInfo.wAttributes & 0x00F0) >> 4);
 	}
 	else
 	{
-		ErrorHandler::ToString(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE);
+		DEFAULT_ERROR_HANDLER(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE);
 	}
 
-
-	if ( (consoleColorVal < static_cast<INT32>(EConsoleOutputColorType::BLACK)) ||
-		 (consoleColorVal > static_cast<INT32>(EConsoleOutputColorType::BRIGHT_WHITE)) )
+	if ( (consoleColor < static_cast<INT32>(EConsoleOutputColorType::BLACK)) ||
+		 (consoleColor > static_cast<INT32>(EConsoleOutputColorType::BRIGHT_WHITE)) )
 	{
-		ErrorHandler::ToString(EErrorType::UNKNOWN_CONSOLE_COLOR);
+		DEFAULT_ERROR_HANDLER(EErrorType::UNKNOWN_CONSOLE_COLOR);
 		return EConsoleOutputColorType::UNKNOWN;
 	}
 
-	return static_cast<EConsoleOutputColorType>(consoleColorVal);
+	return static_cast<EConsoleOutputColorType>(consoleColor);
 }

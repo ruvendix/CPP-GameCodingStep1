@@ -36,7 +36,9 @@ std::string_view ErrorHandler::ToString(EErrorType errorType)
 		CASE_RETURN_STRING(EErrorType::UNKNOWN_FRAME_RATE_TYPE, "알 수 없는 프레임 레이트 타입!");
 
 		CASE_RETURN_STRING(EErrorType::NO_FRAME_LIMITED_ON_UNLIMITED_FRAME_RATE, "무제한 프레임 레이트에서는 프레임 제한을 걸 수 없음!");
-		CASE_RETURN_STRING(EErrorType::INPUT_MAPPING_VAL_IS_ONLY_UPPERCASE, "입력 매핑 입력값은 대문자만 가능!");
+		CASE_RETURN_STRING(EErrorType::NO_PREV_CONSOLE_SELECTOR, "이전 콘솔 셀렉터가 없음!");
+		
+		CASE_RETURN_STRING(EErrorType::INPUT_MAPPING_VALUE_IS_ONLY_UPPERCASE, "입력 매핑 입력값은 대문자만 가능!");
 		CASE_RETURN_STRING(EErrorType::INPUT_MAPPING_SECOND_ARG_IS_NOT_AVAILABLE_STRING, "입력 매핑 입력값의 두 번째 인자는 문자열이 될 수 없음!");
 		CASE_RETURN_STRING(EErrorType::FULL_INVEN, "인벤이 가득 찼음!");
 

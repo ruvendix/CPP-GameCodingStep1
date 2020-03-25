@@ -12,6 +12,7 @@
 
 #include "Element\Scene.h"
 #include "Controller\ConsoleControllerEnum.h"
+#include "Element\DoubleConsoleSelector.h"
 
 DECLARE_LOG_CATEGORY(IntroMenuScene);
 
@@ -31,6 +32,7 @@ public:
 	virtual ~IntroMenuScene() = default;
 
 	virtual EErrorType OnInitialize() override;
+	virtual EErrorType OnPostInitialize() override;
 	virtual EErrorType OnUpdate() override;
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnFinalize() override;
@@ -39,6 +41,7 @@ private:
 	void OnTrigger_ChangeRandomColorToTitle();
 	void OnTrigger_ExcuteMenu();
 
+	std::unique_ptr<DblConsoleSelector> m_spDblConsoleSelector;
 	std::vector<std::shared_ptr<IntroMenu>> m_vecIntroMenu;
 	EConsoleOutputColorType m_titleColorType = EConsoleOutputColorType::WHITE;
 	TupleCompMenuInfo m_tupleLongestMenuInfo;

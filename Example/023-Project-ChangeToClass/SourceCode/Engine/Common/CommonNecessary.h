@@ -36,6 +36,7 @@
 #include <new>
 #include <random>
 #include <chrono>
+#include <stack>
 
 #pragma comment(lib, "winmm.lib") // 윈도우 멀티미디어 링크
 

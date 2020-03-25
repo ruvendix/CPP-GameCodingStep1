@@ -102,7 +102,7 @@ void FrameControllerHelper::ChangeUpdateDeltaTimeCallback(EFrameRateType frameRa
 
 	default:
 	{
-		ERROR_HANDLER(EErrorType::UNKNOWN_FRAME_RATE_TYPE);
+		DEFAULT_ERROR_HANDLER(EErrorType::UNKNOWN_FRAME_RATE_TYPE);
 		break;
 	}
 	}
@@ -267,7 +267,7 @@ void FrameController::ModifyLimitedFrame(Int32 limitedFrame)
 {
 	if (m_frameRateType == EFrameRateType::VARIABLE_UNLIMITED)
 	{
-		ErrorHandler::ToString(EErrorType::NO_FRAME_LIMITED_ON_UNLIMITED_FRAME_RATE);
+		DEFAULT_ERROR_HANDLER(EErrorType::NO_FRAME_LIMITED_ON_UNLIMITED_FRAME_RATE);
 		return;
 	}
 

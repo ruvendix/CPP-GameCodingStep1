@@ -16,8 +16,8 @@ Real32 StopwatchTimer::EndTime()
 {
 	m_endTime = std::chrono::steady_clock::now();
 
-	std::chrono::duration<Real32> timeInterval = m_endTime - m_startTime; // 기본 단위는 초!
+	std::chrono::duration<Real32> timeIntervalue = m_endTime - m_startTime; // 기본 단위는 초!
 	//DEBUG_LOG("시간 간격 : (%f)초", timeInterval.count());
 
-	return timeInterval.count();
+	return timeIntervalue.count();
 }

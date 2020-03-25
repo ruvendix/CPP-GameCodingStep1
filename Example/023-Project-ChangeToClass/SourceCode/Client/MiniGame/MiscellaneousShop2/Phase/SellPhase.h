@@ -15,6 +15,8 @@
 
 class SellPhase : public PhaseBase
 {
+	FRAME_UPDATE_LIMITED(3);
+
 public:
 #pragma region 생성자 및 소멸자
 	using PhaseBase::PhaseBase;
@@ -22,6 +24,7 @@ public:
 #pragma endregion
 
 	virtual EErrorType OnInitialize() override;
+	virtual EErrorType OnPostInitialize() override;
 	virtual EErrorType OnUpdate() override;
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnFinalize() override;

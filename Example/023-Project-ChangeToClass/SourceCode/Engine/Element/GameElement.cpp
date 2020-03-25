@@ -16,6 +16,12 @@ EErrorType GameElem::OnInitialize()
 	return EErrorType::NONE;
 }
 
+EErrorType GameElem::OnPostInitialize()
+{
+	DEBUG_LOG("GameElem에서 이게 보이면 OnPostInitialize()를 재정의해주세요!");
+	return EErrorType::NONE;
+}
+
 EErrorType GameElem::OnUpdate()
 {
 	DEBUG_LOG("GameElem에서 이게 보이면 OnUpdate()를 재정의해주세요!");

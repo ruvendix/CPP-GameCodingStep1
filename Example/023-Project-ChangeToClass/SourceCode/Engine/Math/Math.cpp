@@ -16,40 +16,40 @@ namespace math
 	/*
 	숫자를 제한된 범위로 고정시킵니다.
 	*/
-	Int32 Clamp(Int32 val, Int32 minVal, Int32 maxVal)
+	Int32 Clamp(Int32 value, Int32 min, Int32 max)
 	{
-		Int32 resultVal = val;
+		Int32 resultValue = value;
 
-		if (resultVal < minVal)
+		if (resultValue < min)
 		{
-			resultVal = minVal;
+			resultValue = min;
 		}
-		else if (resultVal > maxVal)
+		else if (resultValue > max)
 		{
-			resultVal = maxVal;
+			resultValue = max;
 		}
 
-		return resultVal;
+		return resultValue;
 	}
 
 	/*
 	Clamp()와 비슷하지만 최솟값보다 작아지면 최댓값으로,
 	최댓값보다 커지면 최솟값으로 순환되는 버전입니다.
 	*/
-	Int32 ClampCycle(Int32 val, Int32 minVal, Int32 maxVal)
+	Int32 ClampCycle(Int32 value, Int32 min, Int32 max)
 	{
-		Int32 resultVal = val;
+		Int32 resultValue = value;
 
-		if (resultVal < minVal)
+		if (resultValue < min)
 		{
-			resultVal = maxVal;
+			resultValue = max;
 		}
-		else if (resultVal > maxVal)
+		else if (resultValue > max)
 		{
-			resultVal = minVal;
+			resultValue = min;
 		}
 
-		return resultVal;
+		return resultValue;
 	}
 
 } // namespace math end

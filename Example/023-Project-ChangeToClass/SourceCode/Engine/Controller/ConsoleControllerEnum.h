@@ -10,7 +10,7 @@
 #ifndef CONSOLE_CONTROLLER_ENUM__H__
 #define CONSOLE_CONTROLLER_ENUM__H__
 
-enum class EConsoleScreenBufferType : Int32
+enum class EConsoleScreenBufferTypeIdx : Int32
 {
 	FRONT = 0,
 	BACK,

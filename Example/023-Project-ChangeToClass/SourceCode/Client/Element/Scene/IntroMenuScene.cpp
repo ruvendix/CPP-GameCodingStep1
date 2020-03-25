@@ -46,8 +46,11 @@ public:
 	static void DrawSelector(const IntroMenuScene& helperTarget);
 	static void AlignCenterMenu(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu);
 	
+	static void ResetCallback_CompMenuInfo();
 	static void OnCallback_CompMenuInfo_QueryLongest(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu);
 	static void OnCallback_CompMenuInfo_None(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu);
+
+	static Int32 ToMenuIdx(Int32 y);
 
 private:
 	static CompMenuInfoCallback m_compMenuInfoCallback; // 전략 패턴
@@ -66,9 +69,9 @@ void IntroMenuSceneHelper::DrawScene(_Inout_ IntroMenuScene& helperTarget)
 	DrawAllMenu(helperTarget);
 
 	// 가장 긴 메뉴 정보를 알아냈다면 더 이상 업데이트하지 않습니다!
-	if (std::get<2>(helperTarget.m_tupleLongestMenuInfo) == true)
+	if (std::get<2>(helperTarget.m_tupleLongestMenuInfo) == false)
 	{
-		std::get<2>(helperTarget.m_tupleLongestMenuInfo) = false;
+		std::get<2>(helperTarget.m_tupleLongestMenuInfo) = true;
 		m_compMenuInfoCallback = OnCallback_CompMenuInfo_None;
 	}
 
@@ -105,7 +108,7 @@ void IntroMenuSceneHelper::DrawAllMenu(_Inout_ IntroMenuScene& helperTarget)
 
 		AlignCenterMenu(helperTarget, *iter);
 
-		COORD currentConsolePos = ConsoleController::I()->GetCurrentConsolePos();
+		COORD currentConsolePos = ConsoleController::I()->QueryCurrentConsolePos();
 		PRINTF(currentConsolePos.X, currentConsolePos.Y, "%s", iter->getNameTag().c_str());
 	}
 }
@@ -115,12 +118,20 @@ void IntroMenuSceneHelper::DrawAllMenu(_Inout_ IntroMenuScene& helperTarget)
 */
 void IntroMenuSceneHelper::DrawSelector(const IntroMenuScene& helperTarget)
 {	
-	const std::string_view& strLongestMenuName = std::get<0>(helperTarget.m_tupleLongestMenuInfo);
+	const std::string_view& szLongestMenuName = std::get<0>(helperTarget.m_tupleLongestMenuInfo);
 	const COORD& longestMenuPos = std::get<1>(helperTarget.m_tupleLongestMenuInfo);
-
 	std::shared_ptr spGameIntroMenu = helperTarget.m_vecIntroMenu[helperTarget.m_selectedIntroMenuIdx];
-	PRINTF(longestMenuPos.X - MENU_MARGIN_LENGTH, spGameIntroMenu->getPos().Y, "◀");
-	PRINTF(longestMenuPos.X + strLongestMenuName.size() + MENU_MARGIN_LENGTH - 2, spGameIntroMenu->getPos().Y, "▶");
+
+	helperTarget.m_spDblConsoleSelector->setSelectorPos(longestMenuPos.X - MENU_MARGIN_LENGTH, spGameIntroMenu->getPos().Y);
+	helperTarget.m_spDblConsoleSelector->setSecondSelectorOffsetPosX((2 * MENU_MARGIN_LENGTH) + szLongestMenuName.size() - 2);
+
+	// 다음 씬으로 전환이 시작될 때는 셀렉터의 좌표를 갱신하지 않아야 해요!
+	if (SceneMgr::I()->IsGotoNextScene() == false)
+	{
+		ConsoleController::I()->SetCurrentConsoleSelectorPos(helperTarget.m_spDblConsoleSelector->getSelectorPos());
+	}
+
+	helperTarget.m_spDblConsoleSelector->OnDrawSelector();
 }
 
 /*
@@ -131,7 +142,7 @@ void IntroMenuSceneHelper::AlignCenterMenu(_Inout_ IntroMenuScene& helperTarget,
 	ConsoleController::I()->AlignCenter(ConfigCtx::I()->getResoultion(), gameIntroMenu.getNameTag().size());
 
 	// 이동된 중앙 정렬 좌표에서 오프셋만큼 이동!
-	COORD currentPos = ConsoleController::I()->GetCurrentConsolePos();
+	COORD currentPos = ConsoleController::I()->QueryCurrentConsolePos();
 	currentPos.X += gameIntroMenu.getOffsetCenterPos().X;
 	currentPos.Y += gameIntroMenu.getOffsetCenterPos().Y;
 
@@ -165,6 +176,39 @@ void IntroMenuSceneHelper::OnCallback_CompMenuInfo_None(_Inout_ IntroMenuScene& 
 
 }
 
+/*
+콜백함수를 리셋합니다.
+*/
+void IntroMenuSceneHelper::ResetCallback_CompMenuInfo()
+{
+	m_compMenuInfoCallback = OnCallback_CompMenuInfo_QueryLongest;
+}
+
+Int32 IntroMenuSceneHelper::ToMenuIdx(Int32 y)
+{
+	ConsoleController::I()->AlignCenter(ConfigCtx::I()->getResoultion(), 0);
+	Int32 currentConsolePosY = ConsoleController::I()->QueryCurrentConsolePos().Y;
+
+	if (y == (currentConsolePosY + MENU_BATTLE_SIMULATOR_OFFSET_POS_Y))
+	{
+		return 0;
+	}
+	else if (y == (currentConsolePosY + MENU_MISCELLANEOUS_SHOP2_OFFSET_POS_Y))
+	{
+		return 1;
+	}
+	else if (y == (currentConsolePosY + MENU_DIALOGUE_TREE_OFFSET_POS_Y))
+	{
+		return 2;
+	}
+	else if (y == (currentConsolePosY + MENU_QUIT_OFFSET_POS_Y))
+	{
+		return 3;
+	}
+
+	return 0;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEFINE_LOG_CATEGORY(IntroMenuScene);
@@ -180,16 +224,32 @@ EErrorType IntroMenuScene::OnInitialize()
 
 	m_vecIntroMenu.push_back(std::make_shared<IntroMenu_SceneLoader>("배틀 시뮬레이터",
 		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_BATTLE_SIMULATOR_OFFSET_POS_Y }, EIntroMenu_SceneLoaderType::BATTLE_SIMULATOR));
-
 	m_vecIntroMenu.push_back(std::make_shared<IntroMenu_SceneLoader>("잡화 상점２",
 		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_MISCELLANEOUS_SHOP2_OFFSET_POS_Y }, EIntroMenu_SceneLoaderType::MISCELLANEOUS_SHOP2));
-
 	m_vecIntroMenu.push_back(std::make_shared<IntroMenu_SceneLoader>("다이얼로그 트리",
 		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_DIALOGUE_TREE_OFFSET_POS_Y }, EIntroMenu_SceneLoaderType::DIALOGUE_TREE));
-
 	m_vecIntroMenu.push_back(std::make_shared<IntroMenu_Quit>("게임 종료", COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_QUIT_OFFSET_POS_Y }));
 
+	m_spDblConsoleSelector = std::make_unique<DblConsoleSelector>();
+	m_spDblConsoleSelector->setShape("◀");
+	m_spDblConsoleSelector->setSecondShape("▶");
+
 	TriggerTimerMgr::I()->AddTriggerTimer("ChangeIntroTitle", 0.3f, 0.0f, this, &IntroMenuScene::OnTrigger_ChangeRandomColorToTitle, false, true);
+	IntroMenuSceneHelper::ResetCallback_CompMenuInfo();
+
+	return EErrorType::NONE;
+}
+
+EErrorType IntroMenuScene::OnPostInitialize()
+{
+	if (ConsoleController::I()->IsEmptySelector())
+	{
+		return EErrorType::NO_PREV_CONSOLE_SELECTOR;
+	}
+
+	ConsoleController::I()->RestoreConsoleSelector();
+	ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
+	m_selectedIntroMenuIdx = IntroMenuSceneHelper::ToMenuIdx(consoleSelector.getSelectorPos().Y);
 
 	return EErrorType::NONE;
 }
@@ -231,6 +291,7 @@ EErrorType IntroMenuScene::OnUpdate()
 	if (InputController::I()->CheckInputState("SelectMenu", EInputMappingState::DOWN) == true)
 	{
 		TriggerTimerMgr::I()->AddTriggerTimer("ExcuteMenu", 1.0f, 0.0f, this, &IntroMenuScene::OnTrigger_ExcuteMenu, false, false);
+		ConsoleController::I()->PushBackupConsoleSelector();
 		DEBUG_LOG_CATEGORY(IntroMenuScene, "SelectMenu 눌렀다!");
 	}
 

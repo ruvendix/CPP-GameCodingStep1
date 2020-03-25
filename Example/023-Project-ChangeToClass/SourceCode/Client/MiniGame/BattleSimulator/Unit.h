@@ -21,7 +21,7 @@ public:
 #pragma endregion
 
 	void Attack(std::shared_ptr<Unit> spTargetUnit);
-	void Damage(Int32 damageVal);
+	void Damage(Int32 damage);
 
 	bool IsDeath() const
 	{

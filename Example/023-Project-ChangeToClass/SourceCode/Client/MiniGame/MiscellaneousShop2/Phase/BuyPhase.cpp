@@ -15,6 +15,7 @@
 #include "Controller\ConsoleController.h"
 #include "Controller\FrameController.h"
 #include "Manager\TriggerTimerManager.h"
+#include "Element\ConsoleSelector.h"
 #include "EntrancePhase.h"
 
 #include "..\PlayerContext.h"
@@ -74,31 +75,32 @@ void BuyPhaseHelper::OnUpdate_ProductFamily(_Inout_ BuyPhase& targetHelper)
 
 	if (InputController::I()->CheckInputState("SelectLeft", EInputMappingState::DOWN) == true)
 	{
-		targetHelper.setSelectorPosX(2);
+		ConsoleController::I()->AddSelectorPosX(-17);
 		DEBUG_LOG("SelectLeft ´­·¶´Ù!");
 	}
 
 	if (InputController::I()->CheckInputState("SelectRight", EInputMappingState::DOWN) == true)
 	{
-		targetHelper.setSelectorPosX(19);
+		ConsoleController::I()->AddSelectorPosX(+17);
 		DEBUG_LOG("SelectRight ´­·¶´Ù!");
 	}
 
 	if (InputController::I()->CheckInputState("SelectUp", EInputMappingState::DOWN) == true)
 	{
-		targetHelper.setSelectorPosY(3);
+		ConsoleController::I()->AddSelectorPosY(-2);
 		DEBUG_LOG("SelectUp ´­·¶´Ù!");
 	}
 
 	if (InputController::I()->CheckInputState("SelectDown", EInputMappingState::DOWN) == true)
 	{
-		targetHelper.setSelectorPosY(5);
+		ConsoleController::I()->AddSelectorPosY(+2);
 		DEBUG_LOG("SelectDown ´­·¶´Ù!");
 	}
 
 	if (InputController::I()->CheckInputState("SelectMenu", EInputMappingState::DOWN) == true)
 	{
-		targetHelper.m_itemDBType = ToItemDBType(targetHelper.getSelectorPos());
+		ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
+		targetHelper.m_itemDBType = ToItemDBType(consoleSelector.getSelectorPos());
 		if (targetHelper.m_itemDBType == EItemDBType::NONE)
 		{
 			targetHelper.setNextPhase(trace_new EntrancePhase);
@@ -106,7 +108,7 @@ void BuyPhaseHelper::OnUpdate_ProductFamily(_Inout_ BuyPhase& targetHelper)
 		else
 		{
 			targetHelper.m_bSelectedProductFamily = true;
-			targetHelper.m_selectedProductFamilyPos = targetHelper.getSelectorPos();
+			ConsoleController::I()->PushBackupConsoleSelector();
 
 			ItemDB* pItemDB = ItemDBCtx::I()->QueryItemDB(targetHelper.m_itemDBType);
 			CHECK_NULLPTR(pItemDB);
@@ -118,9 +120,9 @@ void BuyPhaseHelper::OnUpdate_ProductFamily(_Inout_ BuyPhase& targetHelper)
 			targetHelper.m_vecDisplayItem.reserve(itemCnt);
 			pItemDB->CopyToVector(targetHelper.m_vecDisplayItem);
 
-			targetHelper.setMinSelectorPosY(3);
-			targetHelper.setMaxSelectorPosY(3 + itemCnt - 1);
-			targetHelper.setSelectorPos(2, 3);
+			consoleSelector.setMinSelectorPosY(3);
+			consoleSelector.setMaxSelectorPosY(3 + itemCnt - 1);
+			consoleSelector.setSelectorPos(2, 3);
 		}
 
 		DEBUG_LOG("SelectMenu ´­·¶´Ù!");
@@ -134,22 +136,19 @@ void BuyPhaseHelper::OnUpdate_SelectedProductFamily(_Inout_ BuyPhase& targetHelp
 		TriggerTimerMgr::I()->DeleteTriggerTimer("GameError");
 
 		targetHelper.m_bSelectedProductFamily = false;
-
-		targetHelper.setMinSelectorPosY(3);
-		targetHelper.setMaxSelectorPosY(5);
-		targetHelper.setSelectorPos(targetHelper.m_selectedProductFamilyPos);
+		ConsoleController::I()->RestoreConsoleSelector();
 	}
 
 	if (InputController::I()->CheckInputState("SelectUp", EInputMappingState::DOWN) == true)
 	{
-		targetHelper.AddSelectorPosY(-1);
+		ConsoleController::I()->AddSelectorPosY(-1);
 		targetHelper.m_localTime = 0.0f;
 		DEBUG_LOG("SelectUp ´­·¶´Ù!");
 	}
 
 	if (InputController::I()->CheckInputState("SelectDown", EInputMappingState::DOWN) == true)
 	{
-		targetHelper.AddSelectorPosY(+1);
+		ConsoleController::I()->AddSelectorPosY(+1);
 		targetHelper.m_localTime = 0.0f;
 		DEBUG_LOG("SelectDown ´­·¶´Ù!");
 	}
@@ -157,13 +156,13 @@ void BuyPhaseHelper::OnUpdate_SelectedProductFamily(_Inout_ BuyPhase& targetHelp
 	BEGIN_FRAME_UPDATE_LIMITED_HELPER(targetHelper);
 	if (InputController::I()->CheckInputState("SelectUp", EInputMappingState::PRESSING) == true)
 	{
-		targetHelper.AddSelectorPosY(-1);
+		ConsoleController::I()->AddSelectorPosY(-1);
 		DEBUG_LOG("SelectUp ´©¸£´Â Áß!");
 	}
 
 	if (InputController::I()->CheckInputState("SelectDown", EInputMappingState::PRESSING) == true)
 	{
-		targetHelper.AddSelectorPosY(+1);
+		ConsoleController::I()->AddSelectorPosY(+1);
 		DEBUG_LOG("SelectDown ´©¸£´Â Áß!");
 	}
 	END_FRAME_UPDATE_LIMITED();
@@ -177,7 +176,8 @@ void BuyPhaseHelper::OnUpdate_SelectedProductFamily(_Inout_ BuyPhase& targetHelp
 
 void BuyPhaseHelper::BuyItem(const BuyPhase& targetHelper)
 {
-	Int32 selectedIdx = targetHelper.getSelectorPos().Y - targetHelper.getMinSelectorPos().Y;
+	const ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
+	Int32 selectedIdx = consoleSelector.getSelectorPos().Y - consoleSelector.getMinSelectorPos().Y;
 	ItemBase* pItem = targetHelper.m_vecDisplayItem.at(selectedIdx);
 	CHECK_NULLPTR(pItem);
 
@@ -213,6 +213,15 @@ void BuyPhaseHelper::BuyItem(const BuyPhase& targetHelper)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+EErrorType BuyPhase::OnPostInitialize()
+{
+	ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
+	consoleSelector.setSelectorPos(2, 3);
+	consoleSelector.setMinSelectorPosY(3);
+
+	return EErrorType();
+}
+
 EErrorType BuyPhase::OnInitialize()
 {
 	InputController::I()->InsertInputMappingInfo("GotoEntrancPhase", VK_ESCAPE);
@@ -223,8 +232,8 @@ EErrorType BuyPhase::OnInitialize()
 	InputController::I()->InsertInputMappingInfo("SelectRight", VK_RIGHT);
 	InputController::I()->InsertInputMappingInfo("SelectMenu", VK_RETURN);
 	InputController::I()->InsertInputMappingInfo("BuyItem", VK_RETURN);
-
-	setSelectorPos(2, 3);
+	
+	setLevel(1);
 
 	return EErrorType::NONE;
 }
@@ -265,7 +274,7 @@ EErrorType BuyPhase::OnRender()
 		pInven->DrawInven(50, 0);
 	}
 
-	PRINTF(getSelectorPos().X, getSelectorPos().Y, "¢º");
+	ConsoleController::I()->DrawSelector();
 
 	return EErrorType::NONE;
 }

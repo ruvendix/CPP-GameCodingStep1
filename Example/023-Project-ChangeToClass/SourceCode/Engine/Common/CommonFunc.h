@@ -27,21 +27,21 @@ public:
     열거형 클래스의 바탕 타입을 알려줍니다.
     */
     template <typename EType>
-    static constexpr auto ToUnderlyingType(EType val) noexcept
+    static constexpr auto ToUnderlyingType(EType value) noexcept
     {
         static_assert(std::is_enum_v<EType>, "Only use enum type!");
-        return static_cast<std::underlying_type_t<EType>>(val);
+        return static_cast<std::underlying_type_t<EType>>(value);
     }
 
     /*
     컨테이너의 요소에 중복된 값이 있는지 알려줍니다.
     */
     template <typename TContainer>
-    static bool IsOverlapVal(const TContainer& container, const typename TContainer::value_type& val)
+    static bool IsOverlapValue(const TContainer& container, const typename TContainer::value_type& value)
     {
         for (const auto& iter : container)
         {
-            if (iter == val)
+            if (iter == value)
             {
                 return true;
             }

@@ -28,6 +28,7 @@ public:
 #pragma endregion
 
 	virtual EErrorType OnInitialize() override;
+	virtual EErrorType OnPostInitialize() override;
 	virtual EErrorType OnUpdate() override;
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnFinalize() override;
@@ -36,7 +37,6 @@ private:
 	EItemDBType m_itemDBType = EItemDBType::POTION;
 	std::vector<ItemBase*> m_vecDisplayItem;
 	bool m_bSelectedProductFamily = false;
-	COORD m_selectedProductFamilyPos{ 0, 0 };
 };
 
 #endif

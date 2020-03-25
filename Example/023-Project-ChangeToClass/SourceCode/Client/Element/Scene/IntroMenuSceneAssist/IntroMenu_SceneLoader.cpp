@@ -47,7 +47,7 @@ EErrorType IntroMenu_SceneLoader::OnExcute()
 
 	default:
 	{
-		ERROR_HANDLER(EErrorType::UNKNOWN_INTRO_MENU_SCENE_LOADER_TYPE);
+		DEFAULT_ERROR_HANDLER(EErrorType::UNKNOWN_INTRO_MENU_SCENE_LOADER_TYPE);
 		break;
 	}
 	}

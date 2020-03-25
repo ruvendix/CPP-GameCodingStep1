@@ -50,7 +50,12 @@ void GameMainHelper::Initialize()
 	//ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::BACKGROUND, EConsoleOutputColorType::GREEN);
 
 	GameCtx::I()->setCurrentGameState(EGameState::INIT);
+	
 	SceneMgr::I()->CreateScene<IntroMenuScene>(ESceneType::CURRENT);
+	if (SceneMgr::I()->getCurrentScene()->OnPostInitialize() == EErrorType::INIT_FAILED)
+	{
+		DEFAULT_ERROR_HANDLER(EErrorType::INIT_FAILED);
+	}
 	
 	FrameController::I()->Initialize();
 	FrameController::I()->ChangeFrameRateType(EFrameRateType::CONSTANT);
@@ -95,7 +100,7 @@ void GameMainHelper::Finalize()
 
 	if (SceneMgr::I()->getCurrentScene()->OnFinalize() == EErrorType::FINAL_FAILED)
 	{
-		ErrorHandler::ToString(EErrorType::FINAL_FAILED);
+		DEFAULT_ERROR_HANDLER(EErrorType::FINAL_FAILED);
 	}
 	
 	SceneMgr::I()->Finalize();
@@ -140,7 +145,7 @@ void GameMainHelper::Update()
 
 	if (SceneMgr::I()->getCurrentScene()->OnUpdate() == EErrorType::UPDATE_FAILED)
 	{
-		ErrorHandler::ToString(EErrorType::UPDATE_FAILED);
+		DEFAULT_ERROR_HANDLER(EErrorType::UPDATE_FAILED);
 	}
 
 	PERFORMANCE_PROFILE_END();
@@ -162,7 +167,7 @@ void GameMainHelper::Render()
 
 	if (SceneMgr::I()->getCurrentScene()->OnRender() == EErrorType::RENDER_FAILED)
 	{
-		ErrorHandler::ToString(EErrorType::RENDER_FAILED);
+		DEFAULT_ERROR_HANDLER(EErrorType::RENDER_FAILED);
 	}
 	
 	TriggerTimerMgr::I()->CallTriggerTimerFuncForRender();

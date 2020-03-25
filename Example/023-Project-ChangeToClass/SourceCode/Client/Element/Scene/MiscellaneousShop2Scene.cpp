@@ -35,7 +35,7 @@ EErrorType MiscellaneousShop2Scene::OnInitialize()
 	m_pMiscellanouseShop2 = trace_new MiscellanouseShop2;
 	if (m_pMiscellanouseShop2->OnInitialize() == EErrorType::INIT_FAILED)
 	{
-		ErrorHandler::ToString(EErrorType::INIT_FAILED);
+		return EErrorType::INIT_FAILED;
 	}
 
 	return EErrorType::NONE;
@@ -45,7 +45,7 @@ EErrorType MiscellaneousShop2Scene::OnUpdate()
 {
 	if (m_pMiscellanouseShop2->OnUpdate() == EErrorType::UPDATE_FAILED)
 	{
-		ErrorHandler::ToString(EErrorType::UPDATE_FAILED);
+		return EErrorType::UPDATE_FAILED;
 	}
 
 	return EErrorType::NONE;
@@ -55,7 +55,7 @@ EErrorType MiscellaneousShop2Scene::OnRender()
 {
 	if (m_pMiscellanouseShop2->OnRender() == EErrorType::RENDER_FAILED)
 	{
-		ErrorHandler::ToString(EErrorType::RENDER_FAILED);
+		return EErrorType::RENDER_FAILED;
 	}
 
 	return EErrorType::NONE;
@@ -65,7 +65,7 @@ EErrorType MiscellaneousShop2Scene::OnFinalize()
 {
 	if (m_pMiscellanouseShop2->OnFinalize() == EErrorType::FINAL_FAILED)
 	{
-		ErrorHandler::ToString(EErrorType::FINAL_FAILED);
+		return EErrorType::FINAL_FAILED;
 	}
 
 	PlayerCtx::I()->Finalize();

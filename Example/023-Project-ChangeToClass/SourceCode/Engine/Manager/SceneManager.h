@@ -12,6 +12,7 @@
 
 #include "Common\CommonType.h"
 #include "Element\Scene.h"
+#include "Controller\ConsoleController.h"
 
 DECLARE_LOG_CATEGORY(SceneMgr);
 
@@ -50,7 +51,7 @@ public:
 		{
 			if (m_pCurrentScene != nullptr)
 			{
-				ERROR_HANDLER(EErrorType::OVERLAPPED_SCENE, m_pCurrentScene->getNameTag());
+				DEFAULT_ERROR_HANDLER(EErrorType::OVERLAPPED_SCENE, m_pCurrentScene->getNameTag());
 				return;
 			}
 
@@ -58,7 +59,7 @@ public:
 
 			if (m_pCurrentScene->OnInitialize() == EErrorType::INIT_FAILED)
 			{
-				ErrorHandler::ToString(EErrorType::INIT_FAILED);
+				DEFAULT_ERROR_HANDLER(EErrorType::INIT_FAILED);
 			}
 		}
 		else
@@ -69,7 +70,12 @@ public:
 			// 전환될 예정인 씬은 초기화가 완료된 상태로 전환되어야 해요!
 			if (m_pNextScene->OnInitialize() == EErrorType::INIT_FAILED)
 			{
-				ErrorHandler::ToString(EErrorType::INIT_FAILED);
+				DEFAULT_ERROR_HANDLER(EErrorType::INIT_FAILED);
+			}
+
+			if (m_pNextScene->OnPostInitialize() == EErrorType::NO_PREV_CONSOLE_SELECTOR)
+			{
+				ERROR_HANDLER(false, EErrorType::NO_PREV_CONSOLE_SELECTOR);
 			}
 		}
 	}

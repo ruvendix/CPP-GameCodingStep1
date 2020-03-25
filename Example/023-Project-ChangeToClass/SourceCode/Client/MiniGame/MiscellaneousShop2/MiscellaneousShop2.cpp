@@ -18,6 +18,12 @@ EErrorType MiscellanouseShop2::OnInitialize()
 {
 	SAFE_DELETE(m_pCurrentPhase);
 	m_pCurrentPhase = trace_new EntrancePhase;
+
+	if (m_pCurrentPhase->OnPostInitialize() == EErrorType::INIT_FAILED)
+	{
+		return EErrorType::INIT_FAILED;
+	}
+
 	if (m_pCurrentPhase->OnInitialize() == EErrorType::INIT_FAILED)
 	{
 		return EErrorType::INIT_FAILED;
@@ -39,14 +45,26 @@ EErrorType MiscellanouseShop2::OnUpdate()
 		{
 			return EErrorType::FINAL_FAILED;
 		}
-
+		
 		PhaseBase* pNextPhase = m_pCurrentPhase->getNextPhase();
-		SAFE_SWAP_DELETE(m_pCurrentPhase, pNextPhase);
+		CHECK_NULLPTR(pNextPhase);
 
-		if (m_pCurrentPhase->OnInitialize() == EErrorType::INIT_FAILED)
+		if (pNextPhase->OnInitialize() == EErrorType::INIT_FAILED)
 		{
 			return EErrorType::INIT_FAILED;
 		}
+
+		if (m_pCurrentPhase->getLevel() < pNextPhase->getLevel())
+		{
+			ConsoleController::I()->PushBackupConsoleSelector();
+			pNextPhase->OnPostInitialize();
+		}
+		else if (ConsoleController::I()->IsEmptySelector() == false)
+		{
+			ConsoleController::I()->RestoreConsoleSelector();
+		}
+		
+		SAFE_SWAP_DELETE(m_pCurrentPhase, pNextPhase);
 	}
 
 	return EErrorType::NONE;

@@ -178,10 +178,15 @@ private:\
 // 3. 출력할 곳 정하기(기본은 디버그 로그, 브레이크 여부 = 기본은 true)
 
 // 에러 핸들러에도 서식 문자열을 지원합니다.
-#define ERROR_HANDLER(errorType, ...)\
+#define DEFAULT_ERROR_HANDLER(errorType, ...)\
 	ErrorHandler::m_strError = CommonFunc::MakeFormatString(ErrorHandler::ToString(errorType).data(), __VA_ARGS__);\
 	ErrorHandler::OuputDebugString(true);\
 	ErrorHandler::DebugBreak(true)
+
+#define ERROR_HANDLER(bDebugBreak, errorType, ...)\
+	ErrorHandler::m_strError = CommonFunc::MakeFormatString(ErrorHandler::ToString(errorType).data(), __VA_ARGS__);\
+	ErrorHandler::OuputDebugString(true);\
+	ErrorHandler::DebugBreak(bDebugBreak)
 
 #define ERROR_HANDLER_RENDERING(x, y, keepTime, bOutputDebug, bDebugBreak, errorType, ...)\
 	TriggerTimerMgr::I()->AddTriggerTimer("GameError", 0.0f, keepTime, &ErrorHandler::RenderString, true, false);\
@@ -282,8 +287,8 @@ private:\
 
 #define PERFORMANCE_PROFILE_END() PerformanceProfileMgr::I()->End(ID)
 
-#define CASE_RETURN_STRING(enumVal, sz)\
-	case enumVal:\
+#define CASE_RETURN_STRING(enumValue, sz)\
+	case enumValue:\
 	{\
 		return sz;\
 	}
@@ -291,20 +296,20 @@ private:\
 #define CHECK_NULLPTR(ptr)\
 	if (ptr == nullptr)\
 	{\
-		ERROR_HANDLER(EErrorType::NULLPTR, #ptr);\
+		DEFAULT_ERROR_HANDLER(EErrorType::NULLPTR, #ptr);\
 	}
 
 #define CHECK_NULLPTR_CONTINUE(ptr)\
 	if (ptr == nullptr)\
 	{\
-		ERROR_HANDLER(EErrorType::NULLPTR, #ptr);\
+		DEFAULT_ERROR_HANDLER(EErrorType::NULLPTR, #ptr);\
 		continue;\
 	}
 
 //#define CHECK_NULLPTR_RETURN(ptr, TNegativeness)\
 //	if (ptr == nullptr)\
 //	{\
-//		ERROR_HANDLER(EErrorType::NULLPTR, #ptr);\
+//		DEFAULT_ERROR_HANDLER(EErrorType::NULLPTR, #ptr);\
 //\
 //		if constexpr (std::is_same_v<bool, TNegativeness>)\
 //		{\

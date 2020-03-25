@@ -13,6 +13,7 @@
 
 #include "Common\CommonFunc.h"
 #include "Element\NameTag.h"
+#include "Element\ConsoleSelector.h"
 #include "ConsoleControllerEnum.h"
 
 DECLARE_LOG_CATEGORY(ConsoleController);
@@ -22,7 +23,7 @@ class ConsoleController
 	DECLARE_PHOENIX_SINGLETON(ConsoleController);
 
 public:
-	using ConsoleDblBufferingHandle = std::array<HANDLE, CommonFunc::ToUnderlyingType(EConsoleScreenBufferType::MAX)>;
+	using ConsoleDblBufferingHandle = std::array<HANDLE, CommonFunc::ToUnderlyingType(EConsoleScreenBufferTypeIdx::MAX)>;
 
 	void Initialize(const std::string_view& szTitle, const SizeInfo& sizeInfo);
 	void Flipping();
@@ -41,15 +42,25 @@ public:
     void ChangeTitle(const std::string_view& szTitle);
 	void ChangeConsoleOutputColor(EConsoleOutputType consoleOutputType, EConsoleOutputColorType consoleOutputColorType);
     void ShowConsoleCursor(bool bShow);
+	void RestoreConsoleSelector();
+	void PushBackupConsoleSelector();
+	void AddSelectorPosX(Int32 x);
+	void AddSelectorPosY(Int32 y);
+	void DrawSelector() const;
 
-    COORD GetCurrentConsolePos();
-    EConsoleOutputColorType QueryCurrentConsoleOutputColor(EConsoleOutputType consoleOutputType);
+	const COORD& GetCurrentConsoleSelectorPos() const;
+	void SetCurrentConsoleSelectorPos(const COORD& pos);
+	COORD QueryCurrentConsolePos();
+    EConsoleOutputColorType QueryCurrentConsoleOutputColor(EConsoleOutputType consoleOutputType) const;
 
-    HANDLE getConsoleScreenBufferHandle(EConsoleScreenBufferType consoleScreenBufferType) const
+	bool IsEmptySelector() const
+	{
+		return (m_stackConsoleSelector.empty() == true);
+	}
+
+    HANDLE getConsoleScreenBufferHandle(EConsoleScreenBufferTypeIdx consoleScreenBufferType) const
     {
-        HANDLE hConsoleScreenBuffer = m_hConsoleScreenBuffers[CommonFunc::ToUnderlyingType(consoleScreenBufferType)];
-        CHECK_NULLPTR(hConsoleScreenBuffer);
-        return hConsoleScreenBuffer;
+		return m_hConsoleScreenBuffers.at(CommonFunc::ToUnderlyingType(consoleScreenBufferType));
     }
 
 	HANDLE getCurrentConsoleScreenBufferHandle() const
@@ -57,10 +68,18 @@ public:
 		return getConsoleScreenBufferHandle(m_currentConsoleScreenBufferType);
 	}
 
+	ConsoleSelector& getCurrentConsoleSelector() const
+	{
+		return *m_pCurrentConsoleSelector;
+	}
+
 private:
 	ConsoleDblBufferingHandle m_hConsoleScreenBuffers;
 	CONSOLE_SCREEN_BUFFER_INFO m_consoleScreenBufferInfo;
-	EConsoleScreenBufferType m_currentConsoleScreenBufferType = EConsoleScreenBufferType::FRONT;
+	EConsoleScreenBufferTypeIdx m_currentConsoleScreenBufferType = EConsoleScreenBufferTypeIdx::FRONT;
+
+    ConsoleSelector* m_pCurrentConsoleSelector = nullptr; // 백업이 필요할 때는 스마트 포인터를 사용하지 않아요!
+	std::stack<std::unique_ptr<ConsoleSelector>> m_stackConsoleSelector;
 };
 
 #endif
