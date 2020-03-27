@@ -32,9 +32,10 @@ class BuyPhaseHelper final
 public:
 	static EItemDBType ToItemDBType(const COORD& selectorPos);
 	static void BuyItem(const BuyPhase& targetHelper);
+	static void ResultBuyItem();
 
-	static void OnUpdate_ProductFamily(_Inout_ BuyPhase& targetHelper);
-	static void OnUpdate_SelectedProductFamily(_Inout_ BuyPhase& targetHelper);
+	static void OnInput_ProductFamily(_Inout_ BuyPhase& targetHelper);
+	static void OnInput_SelectedProductFamily(_Inout_ BuyPhase& targetHelper);
 };
 
 EItemDBType BuyPhaseHelper::ToItemDBType(const COORD& selectorPos)
@@ -66,7 +67,50 @@ EItemDBType BuyPhaseHelper::ToItemDBType(const COORD& selectorPos)
 	return EItemDBType::NONE;
 }
 
-void BuyPhaseHelper::OnUpdate_ProductFamily(_Inout_ BuyPhase& targetHelper)
+void BuyPhaseHelper::BuyItem(const BuyPhase& targetHelper)
+{
+	const ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
+	Int32 selectedIdx = consoleSelector.getSelectorPos().Y - consoleSelector.getMinSelectorPos().Y;
+	ItemBase* pItem = targetHelper.m_vecDisplayItem.at(selectedIdx);
+	CHECK_NULLPTR(pItem);
+
+	Inven* pInven = PlayerCtx::I()->getInven();
+	CHECK_NULLPTR(pInven);
+
+	// 이미 인벤에 있는 아이템인지 확인!
+	if ( (pInven->FindInvenItemInfo(pItem->getNameTag()) == nullptr) &&
+		 (pInven->IsFull()) )
+	{
+		DEFAULT_ERROR_HANDLER_RENDERING(0, 12, 3.0f, EErrorType::FULL_INVEN);
+		return;
+	}
+
+	Int32 playerGameMoney = PlayerCtx::I()->getGameMoney();
+	Int32 itemPrice = pItem->getPrice();
+
+	// 가격 확인
+	if (playerGameMoney < pItem->getPrice())
+	{
+		DEFAULT_ERROR_HANDLER_RENDERING(0, 12, 3.0f, EErrorType::NOT_ENOUGH_GAME_MONEY, playerGameMoney, itemPrice);
+		return;
+	}
+	else
+	{
+		playerGameMoney -= itemPrice;
+		PlayerCtx::I()->setGameMoney(playerGameMoney);
+	}
+
+	// 위에서 이미 확인했지만 내부에서도 또 확인해요...
+	pInven->AddInvenItemInfo(pItem);
+	RESERVE_RENDERING_STRING(3.0f, &BuyPhaseHelper::ResultBuyItem);
+}
+
+void BuyPhaseHelper::ResultBuyItem()
+{
+	PRINTF(0, 12, "아이템을 구매했습니다!");
+}
+
+void BuyPhaseHelper::OnInput_ProductFamily(_Inout_ BuyPhase& targetHelper)
 {
 	if (InputController::I()->CheckInputState("GotoEntrancPhase", EInputMappingState::DOWN) == true)
 	{
@@ -129,11 +173,11 @@ void BuyPhaseHelper::OnUpdate_ProductFamily(_Inout_ BuyPhase& targetHelper)
 	}
 }
 
-void BuyPhaseHelper::OnUpdate_SelectedProductFamily(_Inout_ BuyPhase& targetHelper)
+void BuyPhaseHelper::OnInput_SelectedProductFamily(_Inout_ BuyPhase& targetHelper)
 {
 	if (InputController::I()->CheckInputState("GotoProductFamily", EInputMappingState::DOWN) == true)
 	{
-		TriggerTimerMgr::I()->DeleteTriggerTimer("GameError");
+		TriggerTimerMgr::I()->DeleteTriggerTimer("RenderString");
 
 		targetHelper.m_bSelectedProductFamily = false;
 		ConsoleController::I()->RestoreConsoleSelector();
@@ -153,7 +197,7 @@ void BuyPhaseHelper::OnUpdate_SelectedProductFamily(_Inout_ BuyPhase& targetHelp
 		DEBUG_LOG("SelectDown 눌렀다!");
 	}
 
-	BEGIN_FRAME_UPDATE_LIMITED_HELPER(targetHelper);
+	BEGIN_INPUT_FPS_LIMITED_HELPER(targetHelper);
 	if (InputController::I()->CheckInputState("SelectUp", EInputMappingState::PRESSING) == true)
 	{
 		ConsoleController::I()->AddSelectorPosY(-1);
@@ -165,50 +209,13 @@ void BuyPhaseHelper::OnUpdate_SelectedProductFamily(_Inout_ BuyPhase& targetHelp
 		ConsoleController::I()->AddSelectorPosY(+1);
 		DEBUG_LOG("SelectDown 누르는 중!");
 	}
-	END_FRAME_UPDATE_LIMITED();
+	END_INPUT_FPS_LIMITED();
 
 	if (InputController::I()->CheckInputState("BuyItem", EInputMappingState::DOWN) == true)
 	{
 		BuyItem(targetHelper);
 		DEBUG_LOG("SelectMenu 눌렀다!");
 	}
-}
-
-void BuyPhaseHelper::BuyItem(const BuyPhase& targetHelper)
-{
-	const ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
-	Int32 selectedIdx = consoleSelector.getSelectorPos().Y - consoleSelector.getMinSelectorPos().Y;
-	ItemBase* pItem = targetHelper.m_vecDisplayItem.at(selectedIdx);
-	CHECK_NULLPTR(pItem);
-
-	Inven* pInven = PlayerCtx::I()->getInven();
-	CHECK_NULLPTR(pInven);
-
-	// 이미 인벤에 있는 아이템인지 확인!
-	if ( (pInven->FindInvenItemInfo(pItem->getNameTag()) == nullptr) &&
-		 (pInven->IsFull()) )
-	{
-		ERROR_HANDLER_DEFAULT_RENDERING(0, 12, 3.0f, EErrorType::FULL_INVEN);
-		return;
-	}
-
-	Int32 playerGameMoney = PlayerCtx::I()->getGameMoney();
-	Int32 itemPrice = pItem->getPrice();
-
-	// 가격 확인
-	if (playerGameMoney < pItem->getPrice())
-	{
-		ERROR_HANDLER_DEFAULT_RENDERING(0, 12, 3.0f, EErrorType::NOT_ENOUGH_GAME_MONEY, playerGameMoney, itemPrice);
-		return;
-	}
-	else
-	{
-		playerGameMoney -= itemPrice;
-		PlayerCtx::I()->setGameMoney(playerGameMoney);
-	}
-
-	// 위에서 이미 확인했지만 내부에서도 또 확인해요...
-	pInven->AddInvenItemInfo(pItem);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,8 +225,9 @@ EErrorType BuyPhase::OnPostInitialize()
 	ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
 	consoleSelector.setSelectorPos(2, 3);
 	consoleSelector.setMinSelectorPosY(3);
+	consoleSelector.setMaxSelectorPosY(5);
 
-	return EErrorType();
+	return EErrorType::NONE;
 }
 
 EErrorType BuyPhase::OnInitialize()
@@ -238,15 +246,15 @@ EErrorType BuyPhase::OnInitialize()
 	return EErrorType::NONE;
 }
 
-EErrorType BuyPhase::OnUpdate()
+EErrorType BuyPhase::OnInput()
 {
 	if (m_bSelectedProductFamily == false)
 	{
-		BuyPhaseHelper::OnUpdate_ProductFamily(*this);
+		BuyPhaseHelper::OnInput_ProductFamily(*this);
 	}
 	else
 	{
-		BuyPhaseHelper::OnUpdate_SelectedProductFamily(*this);
+		BuyPhaseHelper::OnInput_SelectedProductFamily(*this);
 	}
 
 	return EErrorType::NONE;
@@ -271,7 +279,7 @@ EErrorType BuyPhase::OnRender()
 
 		Inven* pInven = PlayerCtx::I()->getInven();
 		CHECK_NULLPTR(pInven);
-		pInven->DrawInven(50, 0);
+		pInven->Draw(50, 0);
 	}
 
 	ConsoleController::I()->DrawSelector();

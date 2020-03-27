@@ -52,4 +52,15 @@ namespace math
 		return resultValue;
 	}
 
+	bool IsValidRange(Int32 value, Int32 min, Int32 max)
+	{
+		if ( (value < min) || 
+			 (value > max) )
+		{
+			return false;
+		}
+
+		return true;
+	}
+
 } // namespace math end

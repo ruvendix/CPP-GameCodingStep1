@@ -22,7 +22,7 @@ class IntroMenuScene final : public Scene
 {
 	NON_COPYABLE_CLASS(IntroMenuScene);
 	FRIEND_WITH_HELPER(IntroMenuSceneHelper);
-	FRAME_UPDATE_LIMITED(3);
+	INPUT_FPS_LIMITED(12);
 
 public:
 	using Scene::Scene;
@@ -33,7 +33,7 @@ public:
 
 	virtual EErrorType OnInitialize() override;
 	virtual EErrorType OnPostInitialize() override;
-	virtual EErrorType OnUpdate() override;
+	virtual EErrorType OnInput() override;
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnFinalize() override;
 

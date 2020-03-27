@@ -20,6 +20,54 @@
 
 #include "..\PlayerContext.h"
 #include "..\Inven.h"
+#include "..\Item\ItemBase.h"
+
+class SellPhaseHelper final
+{
+	NON_COPYABLE_ONLY_PRIVATE_CLASS(SellPhaseHelper);
+
+public:
+	static void SellItem(const SellPhase& targetHelper);
+	static void ResultSellItem();
+};
+
+void SellPhaseHelper::SellItem(const SellPhase& targetHelper)
+{
+	const ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
+	Int32 selectedIdx = consoleSelector.getSelectorPos().Y - consoleSelector.getMinSelectorPos().Y;
+
+	Inven* pInven = PlayerCtx::I()->getInven();
+	CHECK_NULLPTR(pInven);
+	
+	InvenItemInfo* pInvenItemInfo = pInven->FindInvenItemInfo(selectedIdx);
+	if ( (pInvenItemInfo == nullptr) ||
+		 (pInvenItemInfo->cnt <= 0) )
+	{
+		DEFAULT_ERROR_HANDLER_RENDERING(0, 12, 3.0f, EErrorType::NO_ITEM_IN_INVEN);
+		return;
+	}
+
+	ItemBase* pItem = pInvenItemInfo->pItem;
+	CHECK_NULLPTR(pItem);
+
+	Int32 itemPrice = static_cast<Int32>(pItem->getPrice() * 0.8f);
+	PlayerCtx::I()->AddGameMoney(itemPrice);
+	--pInvenItemInfo->cnt;
+
+	if (pInvenItemInfo->cnt <= 0)
+	{
+		pInven->DeleteInvenItemInfo(selectedIdx);
+	}
+
+	RESERVE_RENDERING_STRING(3.0f, &SellPhaseHelper::ResultSellItem);
+}
+
+void SellPhaseHelper::ResultSellItem()
+{
+	PRINTF(0, 12, "아이템을 판매했습니다!");
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 EErrorType SellPhase::OnInitialize()
 {
@@ -45,14 +93,18 @@ EErrorType SellPhase::OnPostInitialize()
 	CHECK_NULLPTR(pInven);
 	consoleSelector.setMaxSelectorPosY(3 + pInven->getMaxInvenSize() - 1);
 
-	return EErrorType();
+	return EErrorType::NONE;
 }
 
-EErrorType SellPhase::OnUpdate()
+EErrorType SellPhase::OnInput()
 {
+	if (PhaseBase::OnInput() == EErrorType::FIRST_INPUT)
+	{
+		return EErrorType::FIRST_INPUT;
+	}
+
 	if (InputController::I()->CheckInputState("GotoEntrancPhase", EInputMappingState::DOWN) == true)
 	{
-		TriggerTimerMgr::I()->DeleteTriggerTimer("GameError");
 		setNextPhase(trace_new EntrancePhase);
 	}
 
@@ -70,7 +122,7 @@ EErrorType SellPhase::OnUpdate()
 		DEBUG_LOG("SelectDown 눌렀다!");
 	}
 
-	BEGIN_FRAME_UPDATE_LIMITED();
+	BEGIN_INPUT_FPS_LIMITED();
 	if (InputController::I()->CheckInputState("SelectUp", EInputMappingState::PRESSING) == true)
 	{
 		ConsoleController::I()->AddSelectorPosY(-1);
@@ -82,11 +134,11 @@ EErrorType SellPhase::OnUpdate()
 		ConsoleController::I()->AddSelectorPosY(+1);
 		DEBUG_LOG("SelectDown 누르는 중!");
 	}
-	END_FRAME_UPDATE_LIMITED();
+	END_INPUT_FPS_LIMITED();
 
 	if (InputController::I()->CheckInputState("SellItem", EInputMappingState::DOWN) == true)
 	{
-		//SellItem(targetHelper);
+		SellPhaseHelper::SellItem(*this);
 		DEBUG_LOG("SellItem 눌렀다!");
 	}
 
@@ -97,7 +149,7 @@ EErrorType SellPhase::OnRender()
 {
 	Inven* pInven = PlayerCtx::I()->getInven();
 	CHECK_NULLPTR(pInven);
-	pInven->DrawInvenForSell(0, 0);
+	pInven->DrawForSell(0, 0);
 
 	ConsoleController::I()->DrawSelector();
 	return EErrorType::NONE;

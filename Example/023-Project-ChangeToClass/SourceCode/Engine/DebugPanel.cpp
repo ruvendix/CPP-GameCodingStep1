@@ -45,13 +45,16 @@ void DebugPanel::Initialize()
 	InputController::I()->InsertInputMappingInfo("FlipDebugPanel", VK_F1);
 }
 
-void DebugPanel::ShowContents(Int32 x, Int32 y)
+void DebugPanel::PollInput()
 {
 	if (InputController::I()->CheckInputState("FlipDebugPanel", EInputMappingState::DOWN))
 	{
 		m_bShow = !m_bShow;
 	}
+}
 
+void DebugPanel::ShowContents(Int32 x, Int32 y)
+{
 	if (m_bShow == false)
 	{
 		return;
@@ -66,6 +69,9 @@ void DebugPanel::ShowContents(Int32 x, Int32 y)
 	++drawPosY;
 
 	PRINTF(x, drawPosY, "FPS type(%s)", DebugPanelHelper::ToStringFrameRate(FrameController::I()->getFrameRateType()).data());
+	++drawPosY;
+
+	PRINTF(x, drawPosY, "Input FPS(%d)", FrameController::I()->getInputFPS());
 	++drawPosY;
 
 	PRINTF(x, drawPosY, "FPS(%d)", FrameController::I()->getFPS());

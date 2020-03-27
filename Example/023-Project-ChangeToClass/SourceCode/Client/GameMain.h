@@ -12,11 +12,14 @@
 #define GAME_MAIN__H__
 
 #include "Common\CommonType.h"
+#include "Common\CommonMacro.h"
+#include "Controller\FrameController.h"
 
 class GameMain final
 {
     DECLARE_PHOENIX_SINGLETON(GameMain);
     FRIEND_WITH_HELPER(GameMainHelper);
+    INPUT_FPS_LIMITED(FrameController::I()->getInputFPS());
 
 public:
     Int32 Run();

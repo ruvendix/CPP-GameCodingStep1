@@ -31,9 +31,13 @@ public:
 
 	virtual EErrorType OnInitialize() override;
 	virtual EErrorType OnPostInitialize() override;
+	virtual EErrorType OnInput() override;
 	virtual EErrorType OnUpdate() override;
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnFinalize() override;
+
+private:
+	bool m_bFirstInput = true; // 첫 입력 처리는 무시 (우연히 입력 조합이 겹칠 경우 중복 처리가 될 수 있음)
 };
 
 #endif

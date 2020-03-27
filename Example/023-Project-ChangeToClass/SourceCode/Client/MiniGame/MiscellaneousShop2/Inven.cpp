@@ -11,6 +11,7 @@
 #include "PCH.h"
 #include "Inven.h"
 
+#include "Common\CommonMacro.h"
 #include "Controller\ConsoleController.h"
 #include "PlayerContext.h"
 #include "Item\ItemBase.h"
@@ -25,7 +26,11 @@ public:
 
 	bool operator()(const InvenItemInfo* pInvenItemInfo)
 	{
-		CHECK_NULLPTR(pInvenItemInfo);
+		if (pInvenItemInfo == nullptr)
+		{
+			return false;
+		}
+
 		CHECK_NULLPTR(pInvenItemInfo->pItem);
 
 		return (m_strItemNameTag == pInvenItemInfo->pItem->getNameTag());
@@ -37,24 +42,20 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+Inven::Inven()
+{
+	m_vecInvenItemInfo.resize(m_maxInvenSize);
+}
+
 Inven::~Inven()
 {
 	for (auto& iter : m_vecInvenItemInfo)
 	{
+		CHECK_NULLPTR_CONTINUE(iter);
+
 		SAFE_DELETE(iter->pItem);
 		SAFE_DELETE(iter);
 	}
-}
-
-InvenItemInfo* Inven::FindInvenItemInfo(const std::string& strItemNameTag) const
-{
-	auto iter = std::find_if(m_vecInvenItemInfo.cbegin(), m_vecInvenItemInfo.cend(), PredInvenItemInfo(strItemNameTag));
-	if (iter != m_vecInvenItemInfo.cend())
-	{
-		return (*iter);
-	}
-
-	return nullptr;
 }
 
 void Inven::AddInvenItemInfo(const ItemBase* pItem)
@@ -69,19 +70,36 @@ void Inven::AddInvenItemInfo(const ItemBase* pItem)
 		pInvenItemInfo = trace_new InvenItemInfo;
 		pInvenItemInfo->cnt = 1; // 최초로 인벤토리에 넣었으니 1개!
 		pInvenItemInfo->pItem = pItem->Clone();
-		m_vecInvenItemInfo.push_back(pInvenItemInfo);
+		
+		// 비어있는 인덱스 찾기
+		for (Int32 i = 0; i < m_maxInvenSize; ++i)
+		{
+			if (m_vecInvenItemInfo.at(i) == nullptr)
+			{
+				m_currentIdx = i;
+				break;
+			}
+		}
+
+		CHECK_RANGE(m_currentIdx, 0, m_maxInvenSize);
+		m_vecInvenItemInfo[m_currentIdx] = pInvenItemInfo;
+		math::Clamp(m_currentIdx, 0, m_maxInvenSize);
 	}	
 }
 
 // 인벤토리에서 아이템을 삭제할 때는 순서를 유지시켜야 해요!
-void Inven::DeleteInvenItemInfo(const std::string& strItemNameTag)
+void Inven::DeleteInvenItemInfo(Int32 invenIdx)
 {
-	InvenItemInfo* pInvenItemInfo = FindInvenItemInfo(strItemNameTag);
-	SAFE_DELETE(pInvenItemInfo->pItem);
-	SAFE_DELETE(pInvenItemInfo);
+	CHECK_RANGE(invenIdx, 0, m_maxInvenSize);
+
+	auto& iter = m_vecInvenItemInfo.at(invenIdx);
+	CHECK_NULLPTR(iter);
+
+	SAFE_DELETE(iter->pItem);
+	SAFE_DELETE(iter);
 }
 
-void Inven::DrawInven(Int32 x, Int32 y) const
+void Inven::Draw(Int32 x, Int32 y) const
 {
 	if (m_vecInvenItemInfo.empty() == true)
 	{
@@ -96,8 +114,10 @@ void Inven::DrawInven(Int32 x, Int32 y) const
 
 	for (const auto& iter : m_vecInvenItemInfo)
 	{
-		if (iter == nullptr)
+		if ( (iter == nullptr) ||
+			 (iter->cnt <= 0) )
 		{
+			PRINTF(x, ++drawPosY, "┃    %-32s┃ %4d┃", "No Item", 0);
 			continue;
 		}
 
@@ -120,7 +140,7 @@ void Inven::DrawInven(Int32 x, Int32 y) const
 	PRINTF(x, ++drawPosY, "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 }
 
-void Inven::DrawInvenForSell(Int32 x, Int32 y) const
+void Inven::DrawForSell(Int32 x, Int32 y) const
 {
 	if (m_vecInvenItemInfo.empty() == true)
 	{
@@ -133,22 +153,20 @@ void Inven::DrawInvenForSell(Int32 x, Int32 y) const
 	PRINTF(x, ++drawPosY, "┃    이름                            ┃     가격┃ 소지┃");
 	PRINTF(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━╋━━━━━┫");
 
-	for (Int32 i = 0; i < m_maxInvenSize; ++i)
+	for (const auto& iter : m_vecInvenItemInfo)
 	{
-		if (i >= static_cast<Int32>(m_vecInvenItemInfo.size()))
+		if ( (iter == nullptr) ||
+			 (iter->cnt <= 0) )
 		{
 			PRINTF(x, ++drawPosY, "┃    %-32s┃ %8d┃ %4d┃", "No Item", 0, 0);
 			continue;
 		}
 
-		InvenItemInfo* pInvenItemInfo = m_vecInvenItemInfo.at(i);
-		CHECK_NULLPTR_CONTINUE(pInvenItemInfo);
-
-		ItemBase* pItem = pInvenItemInfo->pItem;
+		ItemBase* pItem = iter->pItem;
 		CHECK_NULLPTR_CONTINUE(pItem);
 
 		Int32 itemPrice = static_cast<Int32>(pItem->getPrice() * 0.8f);
-		PRINTF(x, ++drawPosY, "┃    %-32s┃ %8d┃ %4d┃", pItem->getNameTag().c_str(), itemPrice, pInvenItemInfo->cnt);
+		PRINTF(x, ++drawPosY, "┃    %-32s┃ %8d┃ %4d┃", pItem->getNameTag().c_str(), itemPrice, iter->cnt);
 	}
 
 	PRINTF(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━┻━━━━━┫");
@@ -161,12 +179,46 @@ void Inven::DrawInvenForSell(Int32 x, Int32 y) const
 	PRINTF(x, ++drawPosY, "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 }
 
-bool Inven::IsFull() const
+void Inven::Arrange()
 {
-	if (m_maxInvenSize <= static_cast<Int32>(m_vecInvenItemInfo.size()))
+	m_currentIdx = 0;
+
+	std::vector<InvenItemInfo*> vecNew(m_maxInvenSize);
+	for (auto& iter : m_vecInvenItemInfo)
 	{
-		return true;
+		CHECK_NULLPTR_CONTINUE(iter);
+		vecNew[m_currentIdx] = iter;
+		++m_currentIdx;
 	}
 
-	return false;
+	std::swap(m_vecInvenItemInfo, vecNew);
+}
+
+bool Inven::IsFull() const
+{
+	for (const auto& iter : m_vecInvenItemInfo)
+	{
+		if (iter == nullptr)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+InvenItemInfo* Inven::FindInvenItemInfo(const std::string& strItemNameTag) const
+{
+	auto iter = std::find_if(m_vecInvenItemInfo.cbegin(), m_vecInvenItemInfo.cend(), PredInvenItemInfo(strItemNameTag));
+	if (iter != m_vecInvenItemInfo.cend())
+	{
+		return (*iter);
+	}
+
+	return nullptr;
+}
+
+InvenItemInfo* Inven::FindInvenItemInfo(Int32 invenIdx) const
+{
+	return m_vecInvenItemInfo.at(invenIdx);
 }

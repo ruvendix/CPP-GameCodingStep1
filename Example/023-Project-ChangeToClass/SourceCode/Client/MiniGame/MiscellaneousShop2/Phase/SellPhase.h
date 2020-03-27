@@ -15,7 +15,8 @@
 
 class SellPhase : public PhaseBase
 {
-	FRAME_UPDATE_LIMITED(3);
+	FRIEND_WITH_HELPER(SellPhaseHelper);
+	INPUT_FPS_LIMITED(12);
 
 public:
 #pragma region 생성자 및 소멸자
@@ -25,7 +26,7 @@ public:
 
 	virtual EErrorType OnInitialize() override;
 	virtual EErrorType OnPostInitialize() override;
-	virtual EErrorType OnUpdate() override;
+	virtual EErrorType OnInput() override;
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnFinalize() override;
 };

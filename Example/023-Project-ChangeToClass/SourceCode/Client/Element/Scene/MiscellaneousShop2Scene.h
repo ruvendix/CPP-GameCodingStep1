@@ -26,6 +26,7 @@ public:
 #pragma endregion
 
 	virtual EErrorType OnInitialize() override;
+	virtual EErrorType OnInput() override;
 	virtual EErrorType OnUpdate() override;
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnFinalize() override;

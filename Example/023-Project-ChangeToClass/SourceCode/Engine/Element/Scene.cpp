@@ -23,6 +23,11 @@ EErrorType Scene::OnPostInitialize()
 	return GameElem::OnPostInitialize();
 }
 
+EErrorType Scene::OnInput()
+{
+	return GameElem::OnInput();
+}
+
 EErrorType Scene::OnUpdate()
 {
 	return GameElem::OnUpdate();

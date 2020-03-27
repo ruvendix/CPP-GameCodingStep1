@@ -12,30 +12,42 @@
 
 EErrorType GameElem::OnInitialize()
 {
-	DEBUG_LOG("GameElem에서 이게 보이면 OnInitialize()를 재정의해주세요!");
+	//DEBUG_LOG("GameElem에서 이게 보이면 OnInitialize()를 재정의해주세요!");
 	return EErrorType::NONE;
 }
 
 EErrorType GameElem::OnPostInitialize()
 {
-	DEBUG_LOG("GameElem에서 이게 보이면 OnPostInitialize()를 재정의해주세요!");
+	//DEBUG_LOG("GameElem에서 이게 보이면 OnPostInitialize()를 재정의해주세요!");
+	return EErrorType::NONE;
+}
+
+EErrorType GameElem::OnInput()
+{
+	if (m_bFirstInput == true)
+	{
+		m_bFirstInput = false;
+		return EErrorType::FIRST_INPUT; // 에러는 아니지만 반환을 위해
+	}
+
+	//DEBUG_LOG("GameElem에서 이게 보이면 OnInput()를 재정의해주세요!");
 	return EErrorType::NONE;
 }
 
 EErrorType GameElem::OnUpdate()
 {
-	DEBUG_LOG("GameElem에서 이게 보이면 OnUpdate()를 재정의해주세요!");
+	//DEBUG_LOG("GameElem에서 이게 보이면 OnUpdate()를 재정의해주세요!");
 	return EErrorType::NONE;
 }
 
 EErrorType GameElem::OnRender()
 {
-	DEBUG_LOG("GameElem에서 이게 보이면 OnRender()를 재정의해주세요!");
+	//DEBUG_LOG("GameElem에서 이게 보이면 OnRender()를 재정의해주세요!");
 	return EErrorType::NONE;
 }
 
 EErrorType GameElem::OnFinalize()
 {
-	DEBUG_LOG("GameElem에서 이게 보이면 OnFinalize()를 재정의해주세요!");
+	//DEBUG_LOG("GameElem에서 이게 보이면 OnFinalize()를 재정의해주세요!");
 	return EErrorType::NONE;
 }

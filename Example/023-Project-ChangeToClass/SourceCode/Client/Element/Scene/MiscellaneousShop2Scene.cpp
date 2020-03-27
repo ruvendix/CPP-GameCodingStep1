@@ -41,6 +41,16 @@ EErrorType MiscellaneousShop2Scene::OnInitialize()
 	return EErrorType::NONE;
 }
 
+EErrorType MiscellaneousShop2Scene::OnInput()
+{
+	if (m_pMiscellanouseShop2->OnInput() == EErrorType::INPUT_FAILED)
+	{
+		return EErrorType::INPUT_FAILED;
+	}
+
+	return EErrorType::NONE;
+}
+
 EErrorType MiscellaneousShop2Scene::OnUpdate()
 {
 	if (m_pMiscellanouseShop2->OnUpdate() == EErrorType::UPDATE_FAILED)

@@ -25,6 +25,7 @@ std::string_view ErrorHandler::ToString(EErrorType errorType)
 	switch (errorType)
 	{
 		CASE_RETURN_STRING(EErrorType::INIT_FAILED, "초기화 실패!");
+		CASE_RETURN_STRING(EErrorType::INPUT_FAILED, "입력 처리 실패!");
 		CASE_RETURN_STRING(EErrorType::UPDATE_FAILED, "갱신 실패!");
 		CASE_RETURN_STRING(EErrorType::RENDER_FAILED, "렌더링 실패!");
 		CASE_RETURN_STRING(EErrorType::FINAL_FAILED, "마무리 실패!");
@@ -37,6 +38,8 @@ std::string_view ErrorHandler::ToString(EErrorType errorType)
 
 		CASE_RETURN_STRING(EErrorType::NO_FRAME_LIMITED_ON_UNLIMITED_FRAME_RATE, "무제한 프레임 레이트에서는 프레임 제한을 걸 수 없음!");
 		CASE_RETURN_STRING(EErrorType::NO_PREV_CONSOLE_SELECTOR, "이전 콘솔 셀렉터가 없음!");
+		CASE_RETURN_STRING(EErrorType::NO_ITEM_IN_INVEN, "인벤에 아이템이 없음!");
+		CASE_RETURN_STRING(EErrorType::NO_INPUT_FOCUS, "입력 포커스가 없음!");		
 		
 		CASE_RETURN_STRING(EErrorType::INPUT_MAPPING_VALUE_IS_ONLY_UPPERCASE, "입력 매핑 입력값은 대문자만 가능!");
 		CASE_RETURN_STRING(EErrorType::INPUT_MAPPING_SECOND_ARG_IS_NOT_AVAILABLE_STRING, "입력 매핑 입력값의 두 번째 인자는 문자열이 될 수 없음!");
@@ -93,6 +96,7 @@ std::string_view ErrorHandler::ToFormatString(EErrorType errorType)
 		CASE_RETURN_STRING(EErrorType::NO_PERFORMANCE_PROFILE_INFO, "프로파일 목록에 (%d)에 해당되는 정보가 없음!");
 		CASE_RETURN_STRING(EErrorType::OVERLAPPED_SCENE, "(%s) 씬은 이미 등록되어있음!");
 		CASE_RETURN_STRING(EErrorType::NOT_ENOUGH_GAME_MONEY, "가진 돈 (%d)원보다 아이템 가격 (%d)원이 더 많음!");
+		CASE_RETURN_STRING(EErrorType::INVALID_RANGE, "현재값(%d)은 최솟값(%d) ~ 최댓값(%d)의 범위를 벗어남!");
 	}
 
 	return "등록된 에러 서식 문자열이 없음!";

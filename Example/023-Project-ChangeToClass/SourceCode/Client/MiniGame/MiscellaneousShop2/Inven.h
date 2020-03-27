@@ -27,16 +27,19 @@ class Inven
 {
 public:
 #pragma region 생성자 및 소멸자
-	Inven() = default;
+	Inven();
 	virtual ~Inven();
 #pragma endregion
 
-	InvenItemInfo* FindInvenItemInfo(const std::string& strItemNameTag) const;
 	void AddInvenItemInfo(const ItemBase* pItem);
-	void DeleteInvenItemInfo(const std::string& strItemNameTag);
-	void DrawInven(Int32 x, Int32 y) const;
-	void DrawInvenForSell(Int32 x, Int32 y) const;
+	void DeleteInvenItemInfo(Int32 invenIdx);
+	void Draw(Int32 x, Int32 y) const;
+	void DrawForSell(Int32 x, Int32 y) const;
+	void Arrange();
 	bool IsFull() const;
+
+	InvenItemInfo* FindInvenItemInfo(Int32 invenIdx) const;
+	InvenItemInfo* FindInvenItemInfo(const std::string& strItemNameTag) const;
 
 	Int32 getMaxInvenSize() const
 	{
@@ -44,6 +47,7 @@ public:
 	}
 
 private:
+	Int32 m_currentIdx = 0;
 	Int32 m_maxInvenSize = 5; // 인벤에 담을 수 있는 개수는 5개
 	std::vector<InvenItemInfo*> m_vecInvenItemInfo;
 };

@@ -254,7 +254,7 @@ EErrorType IntroMenuScene::OnPostInitialize()
 	return EErrorType::NONE;
 }
 
-EErrorType IntroMenuScene::OnUpdate()
+EErrorType IntroMenuScene::OnInput()
 {
 	if (InputController::I()->CheckInputState("SelectUp", EInputMappingState::DOWN) == true)
 	{
@@ -272,7 +272,7 @@ EErrorType IntroMenuScene::OnUpdate()
 		DEBUG_LOG_CATEGORY(IntroMenuScene, "SelectDown ´­·¶´Ù!");
 	}
 
-	BEGIN_FRAME_UPDATE_LIMITED();
+	BEGIN_INPUT_FPS_LIMITED();
 	if (InputController::I()->CheckInputState("SelectUp", EInputMappingState::PRESSING) == true)
 	{
 		--m_selectedIntroMenuIdx;
@@ -286,7 +286,7 @@ EErrorType IntroMenuScene::OnUpdate()
 		m_selectedIntroMenuIdx = math::ClampCycle(m_selectedIntroMenuIdx, 0, m_vecIntroMenu.size() - 1);
 		DEBUG_LOG_CATEGORY(IntroMenuScene, "SelectDown ´©¸£´Â Áß!");
 	}
-	END_FRAME_UPDATE_LIMITED();
+	END_INPUT_FPS_LIMITED();
 
 	if (InputController::I()->CheckInputState("SelectMenu", EInputMappingState::DOWN) == true)
 	{
@@ -300,7 +300,7 @@ EErrorType IntroMenuScene::OnUpdate()
 		m_vecIntroMenu[static_cast<Int32>(m_vecIntroMenu.size() - 1)]->OnExcute();
 		DEBUG_LOG_CATEGORY(IntroMenuScene, "Exit ´­·¶´Ù!");
 	}
-	
+
 	return EErrorType::NONE;
 }
 

@@ -12,6 +12,7 @@
 
 #include "Controller\InputController.h"
 #include "Controller\ConsoleController.h"
+#include "Manager\TriggerTimerManager.h"
 #include "Phase\EntrancePhase.h"
 
 EErrorType MiscellanouseShop2::OnInitialize()
@@ -32,6 +33,16 @@ EErrorType MiscellanouseShop2::OnInitialize()
 	return EErrorType::NONE;
 }
 
+EErrorType MiscellanouseShop2::OnInput()
+{
+	if (m_pCurrentPhase->OnInput() == EErrorType::INPUT_FAILED)
+	{
+		return EErrorType::INPUT_FAILED;
+	}
+
+	return EErrorType::NONE;
+}
+
 EErrorType MiscellanouseShop2::OnUpdate()
 {
 	if (m_pCurrentPhase->OnUpdate() == EErrorType::UPDATE_FAILED)
@@ -41,6 +52,8 @@ EErrorType MiscellanouseShop2::OnUpdate()
 
 	if (m_pCurrentPhase->HasNextPhase())
 	{
+		TriggerTimerMgr::I()->DeleteTriggerTimer("RenderString");
+
 		if (m_pCurrentPhase->OnFinalize() == EErrorType::FINAL_FAILED)
 		{
 			return EErrorType::FINAL_FAILED;

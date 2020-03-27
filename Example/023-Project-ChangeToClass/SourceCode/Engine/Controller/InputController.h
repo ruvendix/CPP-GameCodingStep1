@@ -46,6 +46,7 @@ public:
 	void PollInput();
 	void Finalize();
 	void DeleteInputMappingInfo(const std::string& strInputMappingName);
+	void ResetInputState();
 		
 	bool CheckInputState(const std::string_view& szInputMappingName, EInputMappingState inputState) const;
 	InputMappingInfo* FindInputMappingInfo(const std::string_view& szInputMappingName) const;

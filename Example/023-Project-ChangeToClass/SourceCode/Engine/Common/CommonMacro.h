@@ -172,10 +172,7 @@ private:\
 #define DEBUG_LOG_CATEGORY(logCategory, szFormat, ...) __noop
 #endif
 
-// 에러 핸들러 방법
-// 1. 문자열 생성
-// 2. 목록에 없으면 포멧 스트링
-// 3. 출력할 곳 정하기(기본은 디버그 로그, 브레이크 여부 = 기본은 true)
+#define RESERVE_RENDERING_STRING(keepTime, func) TriggerTimerMgr::I()->AddTriggerTimer("RenderString", 0.0f, keepTime, func, true, false)
 
 // 에러 핸들러에도 서식 문자열을 지원합니다.
 #define DEFAULT_ERROR_HANDLER(errorType, ...)\
@@ -189,13 +186,13 @@ private:\
 	ErrorHandler::DebugBreak(bDebugBreak)
 
 #define ERROR_HANDLER_RENDERING(x, y, keepTime, bOutputDebug, bDebugBreak, errorType, ...)\
-	TriggerTimerMgr::I()->AddTriggerTimer("GameError", 0.0f, keepTime, &ErrorHandler::RenderString, true, false);\
+	RESERVE_RENDERING_STRING(keepTime, &ErrorHandler::RenderString);\
 	ErrorHandler::m_renderPos = COORD{ x, y };\
 	ErrorHandler::m_strError = CommonFunc::MakeFormatString(ErrorHandler::ToString(errorType).data(), __VA_ARGS__);\
 	ErrorHandler::OuputDebugString(bOutputDebug);\
 	ErrorHandler::DebugBreak(bDebugBreak)
 
-#define ERROR_HANDLER_DEFAULT_RENDERING(x, y, keepTime, errorType, ...) ERROR_HANDLER_RENDERING(x, y, keepTime, true, false, errorType, __VA_ARGS__)
+#define DEFAULT_ERROR_HANDLER_RENDERING(x, y, keepTime, errorType, ...) ERROR_HANDLER_RENDERING(x, y, keepTime, true, false, errorType, __VA_ARGS__)
 
 
 // NameTag를 상속 받는 새로운 로그 클래스를 선언합니다.
@@ -261,24 +258,24 @@ private:\
 	printf(szFormat, __VA_ARGS__)
 #endif
 
-#define FRAME_UPDATE_LIMITED(FPS)\
+#define INPUT_FPS_LIMITED(FPS)\
 private:\
 	Real32 m_localTime = 0.0f;\
-	Real32 m_updateTime = (1.0f / FPS)
+	Real32 m_inputTime = (1.0f / FPS)
 
-#define BEGIN_FRAME_UPDATE_LIMITED()\
+#define BEGIN_INPUT_FPS_LIMITED()\
 	m_localTime += FrameController::I()->getDeltaTime();\
-	if (m_updateTime < m_localTime)\
+	if (m_inputTime < m_localTime)\
 	{\
-		m_localTime -= m_updateTime
+		m_localTime -= m_inputTime
 
-#define BEGIN_FRAME_UPDATE_LIMITED_HELPER(targetHelper)\
+#define BEGIN_INPUT_FPS_LIMITED_HELPER(targetHelper)\
 	targetHelper.m_localTime += FrameController::I()->getDeltaTime();\
-	if (targetHelper.m_updateTime < targetHelper.m_localTime)\
+	if (targetHelper.m_inputTime < targetHelper.m_localTime)\
 	{\
-		targetHelper.m_localTime -= targetHelper.m_updateTime
+		targetHelper.m_localTime -= targetHelper.m_inputTime
 
-#define END_FRAME_UPDATE_LIMITED()\
+#define END_INPUT_FPS_LIMITED()\
 	}
 
 #define PERFORMANCE_PROFILE_START(inputDataCnt)\
@@ -296,13 +293,13 @@ private:\
 #define CHECK_NULLPTR(ptr)\
 	if (ptr == nullptr)\
 	{\
-		DEFAULT_ERROR_HANDLER(EErrorType::NULLPTR, #ptr);\
+		ERROR_HANDLER(false, EErrorType::NULLPTR, #ptr);\
 	}
 
 #define CHECK_NULLPTR_CONTINUE(ptr)\
 	if (ptr == nullptr)\
 	{\
-		DEFAULT_ERROR_HANDLER(EErrorType::NULLPTR, #ptr);\
+		ERROR_HANDLER(false, EErrorType::NULLPTR, #ptr);\
 		continue;\
 	}
 
@@ -324,5 +321,12 @@ private:\
 //			return nullptr;\
 //		}\
 //	}
+
+#define CHECK_RANGE(value, min, max)\
+		if (math::IsValidRange(value, min, max) == false)\
+		{\
+			DEFAULT_ERROR_HANDLER(EErrorType::INVALID_RANGE, value, min, max);\
+			return;\
+		}
 
 #endif

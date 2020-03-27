@@ -112,10 +112,10 @@ EErrorType EntrancePhase::OnPostInitialize()
 	consoleSelector.setMinSelectorPos(2, 4);
 	consoleSelector.setMaxSelectorPos(19, 6);
 
-	return EErrorType();
+	return EErrorType::NONE;
 }
 
-EErrorType EntrancePhase::OnUpdate()
+EErrorType EntrancePhase::OnInput()
 {
 	if (InputController::I()->CheckInputState("GotoIntro", EInputMappingState::DOWN) == true)
 	{

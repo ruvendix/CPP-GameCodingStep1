@@ -21,9 +21,17 @@ class PlayerCtx final
 {
 	DECLARE_PHOENIX_SINGLETON(PlayerCtx);
 
+	static const Int32 MAX_GAME_MONEY = 9999;
+
 public:
 	void Initialize();
 	void Finalize();
+
+	void AddGameMoney(Int32 gameMoney)
+	{
+		m_gameMoney += gameMoney;
+		math::Clamp(m_gameMoney, 0, MAX_GAME_MONEY);
+	}
 
 	Inven* getInven() const
 	{

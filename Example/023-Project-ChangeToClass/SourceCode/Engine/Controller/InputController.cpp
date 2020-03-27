@@ -47,7 +47,7 @@ void InputController::PollInput()
 				if (::GetAsyncKeyState(inputValue) & INPUT_DOWN_FLAG)
 				{
 					listInputChecker.push_back(inputValue);
-					DEBUG_LOG_CATEGORY(InputController, "값 추가! (%d)", inputValue);
+					DEBUG_LOG_CATEGORY(InputController, "값 추가! (%d) (%s)", inputValue, iter.first.c_str());
 				}
 			}
 			// 이미 리스트에 있는 값이면? 여전히 값이 눌려있는지 확인!
@@ -55,12 +55,12 @@ void InputController::PollInput()
 			{
 				if (IS_INPUT_DOWN(inputValue))
 				{
-					DEBUG_LOG_CATEGORY(InputController, "이미 누르고 있는 값! (%d)", inputValue);
+					DEBUG_LOG_CATEGORY(InputController, "이미 누르고 있는 값! (%d) (%s)", inputValue, iter.first.c_str());
 				}
 				else
 				{
 					listInputChecker.pop_back();
-					DEBUG_LOG_CATEGORY(InputController, "누르고 있던 값을 뗌! (%d)", inputValue);
+					DEBUG_LOG_CATEGORY(InputController, "누르고 있던 값을 뗌! (%d) (%s)", inputValue, iter.first.c_str());
 				}
 			}
 		}
@@ -128,6 +128,15 @@ void InputController::Finalize()
 void InputController::DeleteInputMappingInfo(const std::string& strInputMappingName)
 {
 	m_mapInputMappingInfo.erase(strInputMappingName);
+}
+
+void InputController::ResetInputState()
+{
+	for (auto& iter : m_mapInputMappingInfo)
+	{
+		CHECK_NULLPTR_CONTINUE(iter.second);
+		iter.second->state = EInputMappingState::NONE;
+	}
 }
 
 /*

@@ -176,13 +176,18 @@ EErrorType BattleSimulatorScene::OnInitialize()
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulatorScene::OnUpdate()
+EErrorType BattleSimulatorScene::OnInput()
 {
 	if (InputController::I()->CheckInputState("GotoIntro", EInputMappingState::DOWN) == true)
 	{
 		SceneMgr::I()->CreateScene<IntroMenuScene>(ESceneType::NEXT);
 	}
 
+	return EErrorType::NONE;
+}
+
+EErrorType BattleSimulatorScene::OnUpdate()
+{
 	// 중세기사 또는 바이킹이 없으면 아무 처리도 하지 않을게요!
 	if ( (m_vecMedievalKnight.empty() == true) ||
 		 (m_vecViking.empty() == true) )

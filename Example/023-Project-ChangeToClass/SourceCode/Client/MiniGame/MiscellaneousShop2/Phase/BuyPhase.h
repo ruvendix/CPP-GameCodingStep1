@@ -19,7 +19,7 @@ class ItemBase;
 class BuyPhase : public PhaseBase
 {
 	FRIEND_WITH_HELPER(BuyPhaseHelper);
-	FRAME_UPDATE_LIMITED(3);
+	INPUT_FPS_LIMITED(12);
 
 public:
 #pragma region 생성자 및 소멸자
@@ -29,7 +29,7 @@ public:
 
 	virtual EErrorType OnInitialize() override;
 	virtual EErrorType OnPostInitialize() override;
-	virtual EErrorType OnUpdate() override;
+	virtual EErrorType OnInput() override;
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnFinalize() override;
 

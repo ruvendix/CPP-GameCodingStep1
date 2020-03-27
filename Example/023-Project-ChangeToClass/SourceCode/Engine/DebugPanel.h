@@ -20,6 +20,7 @@ class DebugPanel
 
 public:
 	void Initialize();
+	void PollInput();
 	void ShowContents(Int32 x, Int32 y);
 
 private:

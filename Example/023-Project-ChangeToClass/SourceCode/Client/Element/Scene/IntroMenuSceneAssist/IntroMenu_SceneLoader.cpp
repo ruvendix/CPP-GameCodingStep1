@@ -52,5 +52,5 @@ EErrorType IntroMenu_SceneLoader::OnExcute()
 	}
 	}
 
-	return EErrorType();
+	return EErrorType::NONE;
 }

@@ -29,11 +29,12 @@ class GameMainHelper final
 
 public:
 #pragma region 게임의 핵심 흐름이에요!
-	static void Initialize();
-	static void GameLoop();
+	static void Initialize(_Out_ GameMain& targetHelper);
+	static void GameLoop(_Out_ GameMain& targetHelper);
 	static void Finalize();
 #pragma endregion
 
+	static void Input();
 	static void Update();
 	static void Render();
 
@@ -43,7 +44,7 @@ public:
 /*
 콘솔창 스타일, 해상도, 게임 상태 등을 초기화합니다.
 */
-void GameMainHelper::Initialize()
+void GameMainHelper::Initialize(_Out_ GameMain& targetHelper)
 {
 	DebugPanel::I()->Initialize();
 	ConsoleController::I()->Initialize("Change To Class", SizeInfo{ 125, 30 });
@@ -81,11 +82,15 @@ void GameMainHelper::Initialize()
 사양이 높은 컴퓨터에서는 델타타임이 빨라도 무조건 갱신하므로 프레임이 왔다 갔다 할 수 있습니다.
 즉, 저사양과 고사양 둘 다 게임 상태는 비슷하지만 웬만한 고사양이 아니라면 저사양이 유리합니다.
 */
-void GameMainHelper::GameLoop()
+void GameMainHelper::GameLoop(_Out_ GameMain& targetHelper)
 {
 	// 정상 또는 비정상 종료일 때만 게임루프를 탈출!
 	while (GameCtx::I()->IsTerminateGame() == false)
 	{
+		BEGIN_INPUT_FPS_LIMITED_HELPER(targetHelper);
+		Input();
+		END_INPUT_FPS_LIMITED();
+
 		Update();
 		Render();
 	}
@@ -113,11 +118,35 @@ void GameMainHelper::Finalize()
 	DEBUG_LOG("게임 마무리 처리 완료!");
 }
 
+void GameMainHelper::Input()
+{
+	// 입력 갱신은 콘솔창이 활성화되었을 때만! (포커스를 받고 있다는 의미)
+	if (::GetConsoleWindow() != ::GetForegroundWindow())
+	{
+		//DEFAULT_ERROR_HANDLER(EErrorType::NO_INPUT_FOCUS);
+		return;
+	}
+
+	InputController::I()->PollInput();
+
+	if (SceneMgr::I()->getCurrentScene()->OnInput() == EErrorType::INPUT_FAILED)
+	{
+		DEFAULT_ERROR_HANDLER(EErrorType::INPUT_FAILED);
+	}
+
+	DebugPanel::I()->PollInput();
+
+	//DEBUG_LOG_CATEGORY(Common, "콘솔창이 활성화된 상태!");
+}
+
 void GameMainHelper::Update()
 {
 	PERFORMANCE_PROFILE_START(0);
 
-	GameCtx::I()->setCurrentGameState(EGameState::UPDATE);
+	if (GameCtx::I()->IsTerminateGame() == false)
+	{
+		GameCtx::I()->setCurrentGameState(EGameState::UPDATE);
+	}
 
 	// FPS와 델타타임부터 갱신해야 해요!
 	FrameController::I()->UpdateFrame();
@@ -131,17 +160,6 @@ void GameMainHelper::Update()
 
 	// 트리거 타이머를 업데이트해야 해요!
 	TriggerTimerMgr::I()->UpdateTriggerTimer();
-
-	// 입력 갱신은 콘솔창이 활성화되었을 때만! (포커스를 받고 있다는 의미)
-	if (::GetConsoleWindow() == ::GetForegroundWindow())
-	{
-		InputController::I()->PollInput();
-		//DEBUG_LOG_CATEGORY(Common, "콘솔창이 활성화된 상태!");
-	}
-	else
-	{
-		//DEBUG_LOG_CATEGORY(Common, "콘솔창이 활성화되지 않은 상태!");
-	}
 
 	if (SceneMgr::I()->getCurrentScene()->OnUpdate() == EErrorType::UPDATE_FAILED)
 	{
@@ -208,8 +226,8 @@ Int32 GameMain::Run()
 	// 메모리 누수를 확인하는 방법이에요.
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	
-	GameMainHelper::Initialize();
-	GameMainHelper::GameLoop();
+	GameMainHelper::Initialize(*this);
+	GameMainHelper::GameLoop(*this);
 	GameMainHelper::Finalize();
 
 	Int32 ret = EXIT_SUCCESS;

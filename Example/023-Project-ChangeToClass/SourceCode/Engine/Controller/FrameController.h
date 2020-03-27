@@ -69,6 +69,11 @@ public:
 		return m_avgFPS;
 	}
 
+	Int32 getInputFPS() const
+	{
+		return m_inputFPS;
+	}
+
 	void setTimeScale(Real32 timeScale)
 	{
 		m_timeScale = timeScale;
@@ -88,6 +93,7 @@ private:
 	Int32 m_FPS = 0; // 초당 프레임 개수입니다. (Frame Per Second)
 	Int32 m_avgFPS = 0; // 평균 FPS입니다. (10개 기준)
 	Int32 m_limitedFrame = 60;
+	Int32 m_inputFPS = 30; // 입력 FPS입니다.
 
 	Real32 m_accumulationFrameTime = 0.0f;
 	Real32 m_timeScale = 1.0f; // 값이 크면 빨라지고, 작으면 느려집니다.
