@@ -338,14 +338,19 @@ void ConsoleController::DrawSelector() const
 	m_pCurrentConsoleSelector->OnDrawSelector();
 }
 
-const COORD& ConsoleController::GetCurrentConsoleSelectorPos() const
+const COORD& ConsoleController::QueryCurrentConsoleSelectorPos() const
 {
 	return m_pCurrentConsoleSelector->getSelectorPos();
 }
 
-void ConsoleController::SetCurrentConsoleSelectorPos(const COORD& pos)
+void ConsoleController::ModifyCurrentConsoleSelectorPos(const COORD& pos)
 {
 	m_pCurrentConsoleSelector->setSelectorPos(pos);
+}
+
+void ConsoleController::ModifyCurrentConsoleSelectorPosY(Int32 y)
+{
+	m_pCurrentConsoleSelector->setSelectorPosY(y);
 }
 
 /*

@@ -17,7 +17,7 @@ enum class EIntroMenu_SceneLoaderType
 {
 	UNKNOWN = 0,
 	BATTLE_SIMULATOR,
-	DIALOGUE_TREE,
+	Dialog_TREE,
 	MISCELLANEOUS_SHOP2
 };
 

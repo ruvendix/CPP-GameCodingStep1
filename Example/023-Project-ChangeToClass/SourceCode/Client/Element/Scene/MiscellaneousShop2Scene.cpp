@@ -14,16 +14,10 @@
 #include "Controller\InputController.h"
 #include "IntroMenuScene.h"
 
-#include "MiniGame\MiscellaneousShop2\MiscellaneousShop2.h"
 #include "MiniGame\MiscellaneousShop2\Item\ItemDBContext.h"
 #include "MiniGame\MiscellaneousShop2\PlayerContext.h"
 
 DEFINE_LOG_CATEGORY(MiscellaneousShop2Scene);
-
-MiscellaneousShop2Scene::~MiscellaneousShop2Scene()
-{
-	SAFE_DELETE(m_pMiscellanouseShop2);
-}
 
 EErrorType MiscellaneousShop2Scene::OnInitialize()
 {
@@ -32,8 +26,8 @@ EErrorType MiscellaneousShop2Scene::OnInitialize()
 
 	PlayerCtx::I()->setGameMoney(2000);
 
-	m_pMiscellanouseShop2 = trace_new MiscellanouseShop2;
-	if (m_pMiscellanouseShop2->OnInitialize() == EErrorType::INIT_FAILED)
+	m_spMiscellaneousShop2 = std::make_unique<MiscellaneousShop2>();
+	if (m_spMiscellaneousShop2->OnInitialize() == EErrorType::INIT_FAILED)
 	{
 		return EErrorType::INIT_FAILED;
 	}
@@ -43,7 +37,7 @@ EErrorType MiscellaneousShop2Scene::OnInitialize()
 
 EErrorType MiscellaneousShop2Scene::OnInput()
 {
-	if (m_pMiscellanouseShop2->OnInput() == EErrorType::INPUT_FAILED)
+	if (m_spMiscellaneousShop2->OnInput() == EErrorType::INPUT_FAILED)
 	{
 		return EErrorType::INPUT_FAILED;
 	}
@@ -53,7 +47,7 @@ EErrorType MiscellaneousShop2Scene::OnInput()
 
 EErrorType MiscellaneousShop2Scene::OnUpdate()
 {
-	if (m_pMiscellanouseShop2->OnUpdate() == EErrorType::UPDATE_FAILED)
+	if (m_spMiscellaneousShop2->OnUpdate() == EErrorType::UPDATE_FAILED)
 	{
 		return EErrorType::UPDATE_FAILED;
 	}
@@ -63,7 +57,7 @@ EErrorType MiscellaneousShop2Scene::OnUpdate()
 
 EErrorType MiscellaneousShop2Scene::OnRender()
 {
-	if (m_pMiscellanouseShop2->OnRender() == EErrorType::RENDER_FAILED)
+	if (m_spMiscellaneousShop2->OnRender() == EErrorType::RENDER_FAILED)
 	{
 		return EErrorType::RENDER_FAILED;
 	}
@@ -73,7 +67,7 @@ EErrorType MiscellaneousShop2Scene::OnRender()
 
 EErrorType MiscellaneousShop2Scene::OnFinalize()
 {
-	if (m_pMiscellanouseShop2->OnFinalize() == EErrorType::FINAL_FAILED)
+	if (m_spMiscellaneousShop2->OnFinalize() == EErrorType::FINAL_FAILED)
 	{
 		return EErrorType::FINAL_FAILED;
 	}

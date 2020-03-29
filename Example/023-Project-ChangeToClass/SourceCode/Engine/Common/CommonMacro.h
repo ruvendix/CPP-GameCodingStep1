@@ -326,7 +326,6 @@ private:\
 		if (math::IsValidRange(value, min, max) == false)\
 		{\
 			DEFAULT_ERROR_HANDLER(EErrorType::INVALID_RANGE, value, min, max);\
-			return;\
 		}
 
 #endif

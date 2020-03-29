@@ -4,10 +4,15 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 게임과 관계없는 공통적인 설정 내용 모음입니다.
+// 대화 모듈에서 공용되는 상수 모음입니다.
 // =====================================================================================
 
-#include "PCH.h"
-#include "ConfigContext.h"
+#ifndef DIALOG_CONSTANT_H__
+#define DIALOG_CONSTANT_H__
 
-DEFINE_PHOENIX_SINGLETON(ConfigCtx);
+#include "Common\CommonType.h"
+
+const Int32 DIALOG_BOX_WIDTH = 60;
+const Int32 DIALOG_BOX_HEIGHT = 6;
+
+#endif

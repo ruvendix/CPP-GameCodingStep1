@@ -115,8 +115,3 @@ EErrorType ArrangePhase::OnRender()
 	ConsoleController::I()->DrawSelector();
 	return EErrorType::NONE;
 }
-
-EErrorType ArrangePhase::OnFinalize()
-{
-	return EErrorType::NONE;
-}

@@ -14,14 +14,14 @@
 
 class PhaseBase;
 
-class MiscellanouseShop2 final : public GameElem
+class MiscellaneousShop2 final : public GameElem
 {
 	FRIEND_WITH_HELPER(MiscellaneousShop2Helper);
 
 public:
 #pragma region 생성자 및 소멸자
 	using GameElem::GameElem;
-	virtual ~MiscellanouseShop2() = default;
+	virtual ~MiscellaneousShop2() = default;
 #pragma endregion
 
 	virtual EErrorType OnInitialize() override;

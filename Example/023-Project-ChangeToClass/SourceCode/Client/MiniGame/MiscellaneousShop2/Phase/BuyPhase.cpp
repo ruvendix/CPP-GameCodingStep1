@@ -286,8 +286,3 @@ EErrorType BuyPhase::OnRender()
 
 	return EErrorType::NONE;
 }
-
-EErrorType BuyPhase::OnFinalize()
-{
-	return EErrorType::NONE;
-}

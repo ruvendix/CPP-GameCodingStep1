@@ -154,9 +154,3 @@ EErrorType SellPhase::OnRender()
 	ConsoleController::I()->DrawSelector();
 	return EErrorType::NONE;
 }
-
-EErrorType SellPhase::OnFinalize()
-{
-
-	return EErrorType::NONE;
-}

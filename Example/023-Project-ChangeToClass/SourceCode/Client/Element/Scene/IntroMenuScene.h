@@ -22,11 +22,11 @@ class IntroMenuScene final : public Scene
 {
 	NON_COPYABLE_CLASS(IntroMenuScene);
 	FRIEND_WITH_HELPER(IntroMenuSceneHelper);
-	INPUT_FPS_LIMITED(12);
+	INPUT_FPS_LIMITED(8);
 
 public:
 	using Scene::Scene;
-	using TupleCompMenuInfo = std::tuple<std::string, COORD, bool>;
+	using TupleCompMenu = std::tuple<std::string, COORD, bool>;
 
 	IntroMenuScene() = default;
 	virtual ~IntroMenuScene() = default;
@@ -44,7 +44,7 @@ private:
 	std::unique_ptr<DblConsoleSelector> m_spDblConsoleSelector;
 	std::vector<std::shared_ptr<IntroMenu>> m_vecIntroMenu;
 	EConsoleOutputColorType m_titleColorType = EConsoleOutputColorType::WHITE;
-	TupleCompMenuInfo m_tupleLongestMenuInfo;
+	TupleCompMenu m_tupleLongestMenuInfo;
 	Int32 m_selectedIntroMenuIdx = 0;
 };
 

@@ -14,6 +14,7 @@
 #include "Manager\SceneManager.h"
 #include "Element\Scene\BattleSimulatorScene.h"
 #include "Element\Scene\MiscellaneousShop2Scene.h"
+#include "Element\Scene\DialogTreeScene.h"
 
 IntroMenu_SceneLoader::IntroMenu_SceneLoader(const std::string_view& szNameTag,
 	const COORD& offsetCenterPos, EIntroMenu_SceneLoaderType sceneLoaderType) :
@@ -33,9 +34,9 @@ EErrorType IntroMenu_SceneLoader::OnExcute()
 		break;
 	}
 
-	case EIntroMenu_SceneLoaderType::DIALOGUE_TREE:
+	case EIntroMenu_SceneLoaderType::Dialog_TREE:
 	{
-
+		SceneMgr::I()->CreateScene<DialogTreeScene>(ESceneType::NEXT);
 		break;
 	}
 

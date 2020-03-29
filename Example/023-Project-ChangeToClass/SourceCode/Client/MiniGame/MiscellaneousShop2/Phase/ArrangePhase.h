@@ -25,7 +25,6 @@ public:
 	virtual EErrorType OnPostInitialize() override;
 	virtual EErrorType OnInput() override;
 	virtual EErrorType OnRender() override;
-	virtual EErrorType OnFinalize() override;
 };
 
 #endif

@@ -16,8 +16,8 @@
 #include "Manager\SceneManager.h"
 #include "Manager\TriggerTimerManager.h"
 #include "Controller\InputController.h"
-#include "Controller\FrameController.h"
 #include "Controller\ConsoleController.h"
+#include "Controller\FrameController.h"
 #include "IntroMenuSceneAssist\IntroMenu_Quit.h"
 #include "IntroMenuSceneAssist\IntroMenu_SceneLoader.h"
 
@@ -27,8 +27,8 @@ namespace
 	const Int32 MENU_MARGIN_LENGTH = 4;
 	const Int32 MENU_BATTLE_SIMULATOR_OFFSET_POS_Y = 2;
 	const Int32 MENU_MISCELLANEOUS_SHOP2_OFFSET_POS_Y = MENU_BATTLE_SIMULATOR_OFFSET_POS_Y + 2;
-	const Int32 MENU_DIALOGUE_TREE_OFFSET_POS_Y = MENU_MISCELLANEOUS_SHOP2_OFFSET_POS_Y + 2;
-	const Int32 MENU_QUIT_OFFSET_POS_Y = MENU_DIALOGUE_TREE_OFFSET_POS_Y + 2;
+	const Int32 MENU_Dialog_TREE_OFFSET_POS_Y = MENU_MISCELLANEOUS_SHOP2_OFFSET_POS_Y + 2;
+	const Int32 MENU_QUIT_OFFSET_POS_Y = MENU_Dialog_TREE_OFFSET_POS_Y + 2;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ public:
 	static void DrawSelector(const IntroMenuScene& helperTarget);
 	static void AlignCenterMenu(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu);
 	
-	static void ResetCallback_CompMenuInfo();
+	static void ResetCallback();
 	static void OnCallback_CompMenuInfo_QueryLongest(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu);
 	static void OnCallback_CompMenuInfo_None(_Inout_ IntroMenuScene& helperTarget, _Inout_ IntroMenu& gameIntroMenu);
 
@@ -128,7 +128,7 @@ void IntroMenuSceneHelper::DrawSelector(const IntroMenuScene& helperTarget)
 	// 다음 씬으로 전환이 시작될 때는 셀렉터의 좌표를 갱신하지 않아야 해요!
 	if (SceneMgr::I()->IsGotoNextScene() == false)
 	{
-		ConsoleController::I()->SetCurrentConsoleSelectorPos(helperTarget.m_spDblConsoleSelector->getSelectorPos());
+		ConsoleController::I()->ModifyCurrentConsoleSelectorPos(helperTarget.m_spDblConsoleSelector->getSelectorPos());
 	}
 
 	helperTarget.m_spDblConsoleSelector->OnDrawSelector();
@@ -179,7 +179,7 @@ void IntroMenuSceneHelper::OnCallback_CompMenuInfo_None(_Inout_ IntroMenuScene& 
 /*
 콜백함수를 리셋합니다.
 */
-void IntroMenuSceneHelper::ResetCallback_CompMenuInfo()
+void IntroMenuSceneHelper::ResetCallback()
 {
 	m_compMenuInfoCallback = OnCallback_CompMenuInfo_QueryLongest;
 }
@@ -197,7 +197,7 @@ Int32 IntroMenuSceneHelper::ToMenuIdx(Int32 y)
 	{
 		return 1;
 	}
-	else if (y == (currentConsolePosY + MENU_DIALOGUE_TREE_OFFSET_POS_Y))
+	else if (y == (currentConsolePosY + MENU_Dialog_TREE_OFFSET_POS_Y))
 	{
 		return 2;
 	}
@@ -227,7 +227,7 @@ EErrorType IntroMenuScene::OnInitialize()
 	m_vecIntroMenu.push_back(std::make_shared<IntroMenu_SceneLoader>("잡화 상점２",
 		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_MISCELLANEOUS_SHOP2_OFFSET_POS_Y }, EIntroMenu_SceneLoaderType::MISCELLANEOUS_SHOP2));
 	m_vecIntroMenu.push_back(std::make_shared<IntroMenu_SceneLoader>("다이얼로그 트리",
-		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_DIALOGUE_TREE_OFFSET_POS_Y }, EIntroMenu_SceneLoaderType::DIALOGUE_TREE));
+		COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_Dialog_TREE_OFFSET_POS_Y }, EIntroMenu_SceneLoaderType::Dialog_TREE));
 	m_vecIntroMenu.push_back(std::make_shared<IntroMenu_Quit>("게임 종료", COORD{ -SCENE_RIGHT_MARGIN_LENGTH, MENU_QUIT_OFFSET_POS_Y }));
 
 	m_spDblConsoleSelector = std::make_unique<DblConsoleSelector>();
@@ -235,7 +235,7 @@ EErrorType IntroMenuScene::OnInitialize()
 	m_spDblConsoleSelector->setSecondShape("▶");
 
 	TriggerTimerMgr::I()->AddTriggerTimer("ChangeIntroTitle", 0.3f, 0.0f, this, &IntroMenuScene::OnTrigger_ChangeRandomColorToTitle, false, true);
-	IntroMenuSceneHelper::ResetCallback_CompMenuInfo();
+	IntroMenuSceneHelper::ResetCallback();
 
 	return EErrorType::NONE;
 }

@@ -60,6 +60,8 @@ void DebugPanel::ShowContents(Int32 x, Int32 y)
 		return;
 	}
 
+	EConsoleOutputColorType currentConsoleOutputColor = ConsoleController::I()->QueryCurrentConsoleOutputColor(EConsoleOutputType::TEXT);
+
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::YELLOW);
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::BACKGROUND, EConsoleOutputColorType::PURPLE);
 
@@ -83,6 +85,6 @@ void DebugPanel::ShowContents(Int32 x, Int32 y)
 	PRINTF(x, drawPosY, "DeltaTime(%f)", FrameController::I()->getDeltaTime());
 	++drawPosY;
 
-	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::BLACK);
+	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, currentConsoleOutputColor);
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::BACKGROUND, EConsoleOutputColorType::BLACK);
 }

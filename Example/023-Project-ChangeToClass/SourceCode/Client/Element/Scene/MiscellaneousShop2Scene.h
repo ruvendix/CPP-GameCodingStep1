@@ -12,8 +12,7 @@
 
 #include "Element\Scene.h"
 #include "Controller\ConsoleControllerEnum.h"
-
-class MiscellanouseShop2;
+#include "MiniGame\MiscellaneousShop2\MiscellaneousShop2.h"
 
 DECLARE_LOG_CATEGORY(MiscellaneousShop2Scene);
 
@@ -22,7 +21,7 @@ class MiscellaneousShop2Scene final : public Scene
 public:
 #pragma region 생성자 및 소멸자
 	using Scene::Scene;
-	virtual ~MiscellaneousShop2Scene();
+	virtual ~MiscellaneousShop2Scene() = default;
 #pragma endregion
 
 	virtual EErrorType OnInitialize() override;
@@ -32,7 +31,7 @@ public:
 	virtual EErrorType OnFinalize() override;
 
 private:
-	MiscellanouseShop2* m_pMiscellanouseShop2 = nullptr;
+	std::unique_ptr<MiscellaneousShop2> m_spMiscellaneousShop2;
 };
 
 #endif

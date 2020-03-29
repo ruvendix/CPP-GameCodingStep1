@@ -15,7 +15,7 @@
 #include "Manager\TriggerTimerManager.h"
 #include "Phase\EntrancePhase.h"
 
-EErrorType MiscellanouseShop2::OnInitialize()
+EErrorType MiscellaneousShop2::OnInitialize()
 {
 	SAFE_DELETE(m_pCurrentPhase);
 	m_pCurrentPhase = trace_new EntrancePhase;
@@ -33,7 +33,7 @@ EErrorType MiscellanouseShop2::OnInitialize()
 	return EErrorType::NONE;
 }
 
-EErrorType MiscellanouseShop2::OnInput()
+EErrorType MiscellaneousShop2::OnInput()
 {
 	if (m_pCurrentPhase->OnInput() == EErrorType::INPUT_FAILED)
 	{
@@ -43,7 +43,7 @@ EErrorType MiscellanouseShop2::OnInput()
 	return EErrorType::NONE;
 }
 
-EErrorType MiscellanouseShop2::OnUpdate()
+EErrorType MiscellaneousShop2::OnUpdate()
 {
 	if (m_pCurrentPhase->OnUpdate() == EErrorType::UPDATE_FAILED)
 	{
@@ -83,7 +83,7 @@ EErrorType MiscellanouseShop2::OnUpdate()
 	return EErrorType::NONE;
 }
 
-EErrorType MiscellanouseShop2::OnRender()
+EErrorType MiscellaneousShop2::OnRender()
 {
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::WHITE);
 
@@ -95,7 +95,7 @@ EErrorType MiscellanouseShop2::OnRender()
 	return EErrorType::NONE;
 }
 
-EErrorType MiscellanouseShop2::OnFinalize()
+EErrorType MiscellaneousShop2::OnFinalize()
 {
 	if (m_pCurrentPhase->OnFinalize() == EErrorType::FINAL_FAILED)
 	{

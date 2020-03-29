@@ -48,8 +48,10 @@ public:
 	void AddSelectorPosY(Int32 y);
 	void DrawSelector() const;
 
-	const COORD& GetCurrentConsoleSelectorPos() const;
-	void SetCurrentConsoleSelectorPos(const COORD& pos);
+	void ModifyCurrentConsoleSelectorPos(const COORD& pos);
+	void ModifyCurrentConsoleSelectorPosY(Int32 y);
+
+	const COORD& QueryCurrentConsoleSelectorPos() const;
 	COORD QueryCurrentConsolePos();
     EConsoleOutputColorType QueryCurrentConsoleOutputColor(EConsoleOutputType consoleOutputType) const;
 

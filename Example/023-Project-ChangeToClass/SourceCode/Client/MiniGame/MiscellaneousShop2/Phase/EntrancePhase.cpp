@@ -148,7 +148,7 @@ EErrorType EntrancePhase::OnInput()
 
 	if (InputController::I()->CheckInputState("SelectMenu", EInputMappingState::DOWN) == true)
 	{
-		setCurrentPhaseType(EntrancePhaseHelper::ToPhaseType(ConsoleController::I()->GetCurrentConsoleSelectorPos()));
+		setCurrentPhaseType(EntrancePhaseHelper::ToPhaseType(ConsoleController::I()->QueryCurrentConsoleSelectorPos()));
 
 		PhaseBase* pNextPhase = EntrancePhaseHelper::CreateNextPhase(getCurrentPhaseType());
 		if (pNextPhase == nullptr)
@@ -176,10 +176,5 @@ EErrorType EntrancePhase::OnRender()
 	PRINTF(0, ++drawPosY, "曲收收收收收收收收收收收收收收收收朴收收收收收收收收收收收收收收收收旭");
 
 	ConsoleController::I()->DrawSelector();
-	return EErrorType::NONE;
-}
-
-EErrorType EntrancePhase::OnFinalize()
-{
 	return EErrorType::NONE;
 }
