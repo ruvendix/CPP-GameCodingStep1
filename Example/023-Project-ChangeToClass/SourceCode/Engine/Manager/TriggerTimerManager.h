@@ -7,8 +7,8 @@
 // 트리거 타이머를 관리합니다.
 // 트리거 타이머의 이름은 키값으로 사용되며 중복될 수 없습니다.
 // =====================================================================================
-#ifndef TRIGGER_TIMER_MANAGER_H
-#define TRIGGER_TIMER_MANAGER_H
+#ifndef TRIGGER_TIMER_MGR_H
+#define TRIGGER_TIMER_MGR_H
 
 #include "Common\CommonType.h"
 #include "Common\CommonNecessary.h"
@@ -69,7 +69,11 @@ public:
 		pTriggerTimer->setFunc(std::bind(elemMemberFunc, pElem));
 		pTriggerTimer->setRepeat(bRepeat);
 
-		m_mapTriggerTimer.insert(std::make_pair(strTriggerTimer, pTriggerTimer));
+		auto ret = m_mapTriggerTimer.insert(std::make_pair(strTriggerTimer, nullptr));
+		if (ret.second == true)
+		{
+			ret.first->second = pTriggerTimer;
+		}
 
 		return;
 	}

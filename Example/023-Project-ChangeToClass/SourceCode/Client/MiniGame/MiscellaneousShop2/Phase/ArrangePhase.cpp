@@ -47,7 +47,7 @@ void ArrangePhaseHelper::ArrangeInven(_Out_ ArrangePhase& targetHelper)
 
 void ArrangePhaseHelper::ResultArrangeInven()
 {
-	PRINTF(0, 17, "인벤토리가 정리되었습니다!");
+	PUT_STRING(0, 17, "인벤토리가 정리되었습니다!");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,9 +108,9 @@ EErrorType ArrangePhase::OnRender()
 	CHECK_NULLPTR(pInven);
 	pInven->Draw(0, 0);
 
-	PRINTF(0, 12, "인벤토리를 정리하시겠습니까?");
-	PRINTF(0, 14, "    예");
-	PRINTF(0, 15, "    아니오");
+	PUT_STRING(0, 12, "인벤토리를 정리하시겠습니까?");
+	PUT_STRING(0, 14, "    예");
+	PUT_STRING(0, 15, "    아니오");
 
 	ConsoleController::I()->DrawSelector();
 	return EErrorType::NONE;

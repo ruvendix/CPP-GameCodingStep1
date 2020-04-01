@@ -16,12 +16,15 @@
 #include "Manager\SceneManager.h"
 #include "Manager\TriggerTimerManager.h"
 #include "Manager\PerformanceProfileMgr.h"
+#include "Manager\ResourcePathMgr.h"
 #include "Controller\InputController.h"
 #include "Controller\FrameController.h"
 #include "Controller\ConsoleController.h"
-#include "DebugPanel.h"
+#include "Controller\DebugPanelController.h"
 #include "Element\Scene\IntroMenuScene.h"
 #include "Math\Random.h"
+
+#include "Element\World.h"
 
 class GameMainHelper final
 {
@@ -46,21 +49,23 @@ public:
 */
 void GameMainHelper::Initialize(_Out_ GameMain& targetHelper)
 {
-	DebugPanel::I()->Initialize();
+	DebugPanelController::I()->Initialize();
 	ConsoleController::I()->Initialize("Change To Class", SizeInfo{ 125, 30 });
 	//ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::BACKGROUND, EConsoleOutputColorType::GREEN);
 
 	GameCtx::I()->setCurrentGameState(EGameState::INIT);
 	
 	SceneMgr::I()->CreateScene<IntroMenuScene>(ESceneType::CURRENT);
-	if (SceneMgr::I()->getCurrentScene()->OnPostInitialize() == EErrorType::INIT_FAILED)
+	if (SceneMgr::I()->getCurrentScene()->OnPostInitialize() == EErrorType::INIT_FAIL)
 	{
-		DEFAULT_ERROR_HANDLER(EErrorType::INIT_FAILED);
+		DEFAULT_ERROR_HANDLER(EErrorType::INIT_FAIL);
 	}
 	
 	FrameController::I()->Initialize();
 	FrameController::I()->ChangeFrameRateType(EFrameRateType::CONSTANT);
 	//FrameController::I()->ModifyLimitedFrame(60);
+
+	ResourcePathMgr::I()->Initialize();
 
 	math::RandomUtil::Initialize();
 
@@ -103,9 +108,9 @@ void GameMainHelper::Finalize()
 		GameCtx::I()->setCurrentGameState(EGameState::FINAL);
 	}
 
-	if (SceneMgr::I()->getCurrentScene()->OnFinalize() == EErrorType::FINAL_FAILED)
+	if (SceneMgr::I()->getCurrentScene()->OnFinalize() == EErrorType::FINAL_FAIL)
 	{
-		DEFAULT_ERROR_HANDLER(EErrorType::FINAL_FAILED);
+		DEFAULT_ERROR_HANDLER(EErrorType::FINAL_FAIL);
 	}
 	
 	SceneMgr::I()->Finalize();
@@ -129,12 +134,12 @@ void GameMainHelper::Input()
 
 	InputController::I()->PollInput();
 
-	if (SceneMgr::I()->getCurrentScene()->OnInput() == EErrorType::INPUT_FAILED)
+	if (SceneMgr::I()->getCurrentScene()->OnInput() == EErrorType::INPUT_FAIL)
 	{
-		DEFAULT_ERROR_HANDLER(EErrorType::INPUT_FAILED);
+		DEFAULT_ERROR_HANDLER(EErrorType::INPUT_FAIL);
 	}
 
-	DebugPanel::I()->PollInput();
+	DebugPanelController::I()->PollInput();
 
 	//DEBUG_LOG_CATEGORY(Common, "콘솔창이 활성화된 상태!");
 }
@@ -161,9 +166,9 @@ void GameMainHelper::Update()
 	// 트리거 타이머를 업데이트해야 해요!
 	TriggerTimerMgr::I()->UpdateTriggerTimer();
 
-	if (SceneMgr::I()->getCurrentScene()->OnUpdate() == EErrorType::UPDATE_FAILED)
+	if (SceneMgr::I()->getCurrentScene()->OnUpdate() == EErrorType::UPDATE_FAIL)
 	{
-		DEFAULT_ERROR_HANDLER(EErrorType::UPDATE_FAILED);
+		DEFAULT_ERROR_HANDLER(EErrorType::UPDATE_FAIL);
 	}
 
 	PERFORMANCE_PROFILE_END();
@@ -183,14 +188,14 @@ void GameMainHelper::Render()
 	COORD backupPos = ConsoleController::I()->GetCurrentConsolePos();
 #endif
 
-	if (SceneMgr::I()->getCurrentScene()->OnRender() == EErrorType::RENDER_FAILED)
+	if (SceneMgr::I()->getCurrentScene()->OnRender() == EErrorType::RENDER_FAIL)
 	{
-		DEFAULT_ERROR_HANDLER(EErrorType::RENDER_FAILED);
+		DEFAULT_ERROR_HANDLER(EErrorType::RENDER_FAIL);
 	}
 	
 	TriggerTimerMgr::I()->CallTriggerTimerFuncForRender();
 
-	DebugPanel::I()->ShowContents(0, 0);
+	DebugPanelController::I()->ShowContents(0, 0);
 
 #ifdef ACTIVATION_CONSOLE_DBL_BUFFERING	
 	ConsoleController::I()->Flipping(); // 활성화시킬 버퍼를 변경할게요!

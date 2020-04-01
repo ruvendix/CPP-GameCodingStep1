@@ -15,8 +15,8 @@
 #include "Manager\SceneManager.h"
 #include "IntroMenuScene.h"
 #include "Math\Random.h"
-#include "MiniGame\BattleSimulator\MedievalKnight.h"
-#include "MiniGame\BattleSimulator\Viking.h"
+#include "MiniGame\BattleSimulator\GameObject\DynamicObject\MedievalKnight.h"
+#include "MiniGame\BattleSimulator\GameObject\DynamicObject\Viking.h"
 
 namespace
 {
@@ -44,9 +44,9 @@ void BattleSimulatorSceneHelper::DrawTitle()
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::LIGHT_AQUA);
 
 	Int32 drawPosY = -1;
-	PRINTF(12, ++drawPosY, "▲▲▲▲▲▲▲▲▲▲");
-	PRINTF(12, ++drawPosY, "<중세기사 VS 바이킹>");
-	PRINTF(12, ++drawPosY, "▼▼▼▼▼▼▼▼▼▼");
+	PUT_STRING(12, ++drawPosY, "▲▲▲▲▲▲▲▲▲▲");
+	PUT_STRING(12, ++drawPosY, "<중세기사 VS 바이킹>");
+	PUT_STRING(12, ++drawPosY, "▼▼▼▼▼▼▼▼▼▼");
 
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::WHITE);
 }
@@ -54,14 +54,14 @@ void BattleSimulatorSceneHelper::DrawTitle()
 void BattleSimulatorSceneHelper::DrawUnitStat()
 {
 	Int32 drawPosY = 3;
-	PRINTF(0, ++drawPosY, "-------------------------------------------");
-	PRINTF(0, ++drawPosY, "              중세기사    바이킹");
-	PRINTF(0, ++drawPosY, "-------------------------------------------");
-	PRINTF(0, ++drawPosY, "HP           : %7d   %7d", s_dummyMedievalKnight.getMaxHP(), s_dummyViking.getMaxHP());
-	PRINTF(0, ++drawPosY, "공격력       : %7d   %7d", s_dummyMedievalKnight.getAttackDamage(), s_dummyViking.getAttackDamage());
-	PRINTF(0, ++drawPosY, "공격 성공율  : %7d%%  %7d%%", static_cast<Int32>(s_dummyMedievalKnight.getAttackSuccessRate() * 100.0f),
+	PUT_STRING(0, ++drawPosY, "-------------------------------------------");
+	PUT_STRING(0, ++drawPosY, "              중세기사    바이킹");
+	PUT_STRING(0, ++drawPosY, "-------------------------------------------");
+	PUT_STRING(0, ++drawPosY, "HP           : %7d   %7d", s_dummyMedievalKnight.getMaxHP(), s_dummyViking.getMaxHP());
+	PUT_STRING(0, ++drawPosY, "공격력       : %7d   %7d", s_dummyMedievalKnight.getAttackDamage(), s_dummyViking.getAttackDamage());
+	PUT_STRING(0, ++drawPosY, "공격 성공율  : %7d%%  %7d%%", static_cast<Int32>(s_dummyMedievalKnight.getAttackSuccessRate() * 100.0f),
 		static_cast<Int32>(s_dummyViking.getAttackSuccessRate() * 100.0f));
-	PRINTF(0, ++drawPosY, "-------------------------------------------");
+	PUT_STRING(0, ++drawPosY, "-------------------------------------------");
 }
 
 void BattleSimulatorSceneHelper::DrawBattleReport(const BattleSimulatorScene& helperTarget)
@@ -71,14 +71,14 @@ void BattleSimulatorSceneHelper::DrawBattleReport(const BattleSimulatorScene& he
 
 	Int32 drawPosX = 50;
 	Int32 drawPosY = 3;
-	PRINTF(drawPosX, ++drawPosY, "-------------------------------------------");
-	PRINTF(drawPosX, ++drawPosY, "              중세기사    바이킹");
-	PRINTF(drawPosX, ++drawPosY, "-------------------------------------------");
-	PRINTF(drawPosX, ++drawPosY, "살아남은 수 : %7d   %7d", remainMedievalKnightCnt, remainVikingCnt);
+	PUT_STRING(drawPosX, ++drawPosY, "-------------------------------------------");
+	PUT_STRING(drawPosX, ++drawPosY, "              중세기사    바이킹");
+	PUT_STRING(drawPosX, ++drawPosY, "-------------------------------------------");
+	PUT_STRING(drawPosX, ++drawPosY, "살아남은 수 : %7d   %7d", remainMedievalKnightCnt, remainVikingCnt);
 
 	Int32 medievalKnightDeadCnt = MedievalKnight::GetTotalCnt() - remainMedievalKnightCnt;
 	Int32 vikingDeadCnt = Viking::GetTotalCnt() - remainVikingCnt;
-	PRINTF(drawPosX, ++drawPosY, "사망한 수   : %7d   %7d", medievalKnightDeadCnt, vikingDeadCnt);
+	PUT_STRING(drawPosX, ++drawPosY, "사망한 수   : %7d   %7d", medievalKnightDeadCnt, vikingDeadCnt);
 
 	// 중세기사 부대가 준 피해량
 	Int32 totalMedievalKnightAttackDamage = (s_dummyViking.getMaxHP() * vikingDeadCnt);
@@ -96,8 +96,8 @@ void BattleSimulatorSceneHelper::DrawBattleReport(const BattleSimulatorScene& he
 		totalVikingAttackDamage += (s_dummyMedievalKnight.getMaxHP() - spMedievalKnight->getHP());
 	}
 
-	PRINTF(drawPosX, ++drawPosY, "준 피해량   : %7d   %7d", totalMedievalKnightAttackDamage, totalVikingAttackDamage);
-	PRINTF(drawPosX, ++drawPosY, "-------------------------------------------");
+	PUT_STRING(drawPosX, ++drawPosY, "준 피해량   : %7d   %7d", totalMedievalKnightAttackDamage, totalVikingAttackDamage);
+	PUT_STRING(drawPosX, ++drawPosY, "-------------------------------------------");
 
 	// 어느 쪽이 이겼는지 점수를 계산해보죠~
 	// "준 피해량"은 공정하지 않으므로 점수에서 제외할게요.
@@ -105,13 +105,13 @@ void BattleSimulatorSceneHelper::DrawBattleReport(const BattleSimulatorScene& he
 	Int32 totalMedievalKnightScore = (remainMedievalKnightCnt * 5) + (vikingDeadCnt * 3);
 	Int32 totalVikingScore = (remainVikingCnt * 5) + (medievalKnightDeadCnt * 3);
 
-	PRINTF(drawPosX, ++drawPosY, "총점        : %7d   %7d", totalMedievalKnightScore, totalVikingScore);
-	PRINTF(drawPosX, ++drawPosY, "-------------------------------------------");
+	PUT_STRING(drawPosX, ++drawPosY, "총점        : %7d   %7d", totalMedievalKnightScore, totalVikingScore);
+	PUT_STRING(drawPosX, ++drawPosY, "-------------------------------------------");
 
-	PRINTF(drawPosX, ++drawPosY, "※ 승리한 부대는 ");
+	PUT_STRING(drawPosX, ++drawPosY, "※ 승리한 부대는 ");
 	if (totalMedievalKnightScore == totalVikingScore)
 	{
-		PRINTF(drawPosX, ++drawPosY, "없네요... 점수가 동일해요.");
+		PUT_STRING(drawPosX, ++drawPosY, "없네요... 점수가 동일해요.");
 	}
 	else
 	{
@@ -125,7 +125,7 @@ void BattleSimulatorSceneHelper::DrawBattleReport(const BattleSimulatorScene& he
 			strWinner = "바이킹";
 		}
 
-		PRINTF(drawPosX, ++drawPosY, "\"%s\" 부대네요~!", strWinner.c_str());
+		PUT_STRING(drawPosX, ++drawPosY, "\"%s\" 부대네요~!", strWinner.c_str());
 	}
 }
 
@@ -172,6 +172,39 @@ EErrorType BattleSimulatorScene::OnInitialize()
 	Viking::SetTotalCnt(30);
 	m_vecViking.resize(Viking::GetTotalCnt());
 	std::generate(m_vecViking.begin(), m_vecViking.end(), &BattleSimulatorSceneHelper::CloneViking);
+
+	m_world = std::make_unique<BattleSimulatorWorld>(SizeInfo{ 40, 30 });
+	
+	// 월드 파일이 있는지?
+	// 있다면 파일을 읽고, 아니면 새로 초기화해야 해요!
+	EErrorType errorType = m_world->LoadFile("BattleSimulatorWorld.world");
+	if (errorType == EErrorType::LOAD_FILE_FAIL)
+	{
+		m_world->setLastError(EErrorType::LOAD_FILE_FAIL);
+
+		if (m_world->OnInitialize() == EErrorType::INIT_FAIL)
+		{
+			return EErrorType::INIT_FAIL;
+		}		
+	}
+
+	return EErrorType::NONE;
+}
+
+EErrorType BattleSimulatorScene::OnPostInitialize()
+{
+	if (m_world->getLastError() == EErrorType::LOAD_FILE_FAIL)
+	{
+		if (m_world->OnPostInitialize() == EErrorType::INIT_FAIL)
+		{
+			return EErrorType::INIT_FAIL;
+		}
+
+		m_world->ResetError();
+	}
+
+	//// 세이브 테스트!
+	//m_world->OnSaveFile("BattleSimulatorWorld.world");
 
 	return EErrorType::NONE;
 }
@@ -232,27 +265,32 @@ EErrorType BattleSimulatorScene::OnUpdate()
 
 EErrorType BattleSimulatorScene::OnRender()
 {
-	BattleSimulatorSceneHelper::DrawTitle();
-	BattleSimulatorSceneHelper::DrawUnitStat();
-
-	Int32 drawPosY = 11;
-	PRINTF(0, ++drawPosY, "남은 중세기사의 수 : %d / %d", static_cast<Int32>(m_vecMedievalKnight.size()), MedievalKnight::GetTotalCnt());
-	PRINTF(0, ++drawPosY, "남은 바이킹의 수   : %d / %d", static_cast<Int32>(m_vecViking.size()), Viking::GetTotalCnt());
-
-	++drawPosY;
-	PRINTF(0, ++drawPosY, "∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼");
-	PRINTF(0, ++drawPosY, "모의 전투를 시작할게요~!");
-
-	if (m_bBattleEnd == false)
+	if (m_world->OnRender() == EErrorType::RENDER_FAIL)
 	{
-		return EErrorType::NONE;
+		return EErrorType::RENDER_FAIL;
 	}
 
-	PRINTF(0, ++drawPosY, "모의 전투가 끝났어요~!");
-	PRINTF(0, ++drawPosY, "전투 결과를 알아볼까요?");
-	PRINTF(0, ++drawPosY, "∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼");
+	//BattleSimulatorSceneHelper::DrawTitle();
+	//BattleSimulatorSceneHelper::DrawUnitStat();
 
-	BattleSimulatorSceneHelper::DrawBattleReport(*this);
+	//Int32 drawPosY = 11;
+	//PRINTF(0, ++drawPosY, "남은 중세기사의 수 : %d / %d", static_cast<Int32>(m_vecMedievalKnight.size()), MedievalKnight::GetTotalCnt());
+	//PRINTF(0, ++drawPosY, "남은 바이킹의 수   : %d / %d", static_cast<Int32>(m_vecViking.size()), Viking::GetTotalCnt());
+
+	//++drawPosY;
+	//PRINTF(0, ++drawPosY, "∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼");
+	//PRINTF(0, ++drawPosY, "모의 전투를 시작할게요~!");
+
+	//if (m_bBattleEnd == false)
+	//{
+	//	return EErrorType::NONE;
+	//}
+
+	//PRINTF(0, ++drawPosY, "모의 전투가 끝났어요~!");
+	//PRINTF(0, ++drawPosY, "전투 결과를 알아볼까요?");
+	//PRINTF(0, ++drawPosY, "∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼");
+
+	//BattleSimulatorSceneHelper::DrawBattleReport(*this);
 
 	return EErrorType::NONE;
 }

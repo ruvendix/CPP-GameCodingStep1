@@ -103,21 +103,21 @@ void Inven::Draw(Int32 x, Int32 y) const
 {
 	if (m_vecInvenItemInfo.empty() == true)
 	{
-		PRINTF(0, 0, "인벤토리에 아이템이 없어요!");
+		PUT_STRING(0, 0, "인벤토리에 아이템이 없어요!");
 		return;
 	}
 
 	Int32 drawPosY = y - 1;
-	PRINTF(x, ++drawPosY, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━┓");
-	PRINTF(x, ++drawPosY, "┃    이름                            ┃ 소지┃");
-	PRINTF(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━┫");
+	PUT_STRING(x, ++drawPosY, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━┓");
+	PUT_STRING(x, ++drawPosY, "┃    이름                            ┃ 소지┃");
+	PUT_STRING(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━┫");
 
 	for (const auto& iter : m_vecInvenItemInfo)
 	{
 		if ( (iter == nullptr) ||
 			 (iter->cnt <= 0) )
 		{
-			PRINTF(x, ++drawPosY, "┃    %-32s┃ %4d┃", "No Item", 0);
+			PUT_STRING(x, ++drawPosY, "┃    %-32s┃ %4d┃", "No Item", 0);
 			continue;
 		}
 
@@ -127,38 +127,38 @@ void Inven::Draw(Int32 x, Int32 y) const
 			continue;
 		}
 
-		PRINTF(x, ++drawPosY, "┃    %-32s┃ %4d┃", pItem->getNameTag().c_str(), iter->cnt);
+		PUT_STRING(x, ++drawPosY, "┃    %-32s┃ %4d┃", pItem->getNameTag().c_str(), iter->cnt);
 	}
 
-	PRINTF(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━┫");
-	PRINTF(x, ++drawPosY, "┃         %-12d                     ┃", PlayerCtx::I()->getGameMoney());
+	PUT_STRING(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━┫");
+	PUT_STRING(x, ++drawPosY, "┃         %-12d                     ┃", PlayerCtx::I()->getGameMoney());
 	
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::AQUA);
-	PRINTF(x + 2, drawPosY, "소지금:");
+	PUT_STRING(x + 2, drawPosY, "소지금:");
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::WHITE);
 
-	PRINTF(x, ++drawPosY, "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+	PUT_STRING(x, ++drawPosY, "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 }
 
 void Inven::DrawForSell(Int32 x, Int32 y) const
 {
 	if (m_vecInvenItemInfo.empty() == true)
 	{
-		PRINTF(0, 0, "인벤토리에 아이템이 없어요!");
+		PUT_STRING(0, 0, "인벤토리에 아이템이 없어요!");
 		return;
 	}
 
 	Int32 drawPosY = y - 1;
-	PRINTF(x, ++drawPosY, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━┓");
-	PRINTF(x, ++drawPosY, "┃    이름                            ┃     가격┃ 소지┃");
-	PRINTF(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━╋━━━━━┫");
+	PUT_STRING(x, ++drawPosY, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━┓");
+	PUT_STRING(x, ++drawPosY, "┃    이름                            ┃     가격┃ 소지┃");
+	PUT_STRING(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━╋━━━━━┫");
 
 	for (const auto& iter : m_vecInvenItemInfo)
 	{
 		if ( (iter == nullptr) ||
 			 (iter->cnt <= 0) )
 		{
-			PRINTF(x, ++drawPosY, "┃    %-32s┃ %8d┃ %4d┃", "No Item", 0, 0);
+			PUT_STRING(x, ++drawPosY, "┃    %-32s┃ %8d┃ %4d┃", "No Item", 0, 0);
 			continue;
 		}
 
@@ -166,17 +166,17 @@ void Inven::DrawForSell(Int32 x, Int32 y) const
 		CHECK_NULLPTR_CONTINUE(pItem);
 
 		Int32 itemPrice = static_cast<Int32>(pItem->getPrice() * 0.8f);
-		PRINTF(x, ++drawPosY, "┃    %-32s┃ %8d┃ %4d┃", pItem->getNameTag().c_str(), itemPrice, iter->cnt);
+		PUT_STRING(x, ++drawPosY, "┃    %-32s┃ %8d┃ %4d┃", pItem->getNameTag().c_str(), itemPrice, iter->cnt);
 	}
 
-	PRINTF(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━┻━━━━━┫");
-	PRINTF(x, ++drawPosY, "┃         %-12d                               ┃", PlayerCtx::I()->getGameMoney());
+	PUT_STRING(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━┻━━━━━┫");
+	PUT_STRING(x, ++drawPosY, "┃         %-12d                               ┃", PlayerCtx::I()->getGameMoney());
 
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::AQUA);
-	PRINTF(x + 2, drawPosY, "소지금:");
+	PUT_STRING(x + 2, drawPosY, "소지금:");
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::WHITE);
 
-	PRINTF(x, ++drawPosY, "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+	PUT_STRING(x, ++drawPosY, "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 }
 
 void Inven::Arrange()

@@ -13,6 +13,7 @@
 #define NECESSARY__H__
 
 #include <crtdbg.h>
+#include <strsafe.h>
 
 // windows.h에서 최소로 필요한 부분만 포함시켜주는 방법!
 #ifndef WIN32_LEAN_AND_MEAN

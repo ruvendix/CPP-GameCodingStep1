@@ -114,7 +114,7 @@ void ConsoleController::Finalize()
 콘솔창에 문자열을 출력합니다.
 더블 버퍼링인 경우, 활성화되지 않은 버퍼에 문자열을 출력합니다.
 */
-void ConsoleController::PrintString(Int32 x, Int32 y, const std::string_view& szOutput)
+void ConsoleController::PutString(Int32 x, Int32 y, const std::string_view& szOutput)
 {
 	DWORD dwWrittenCnt = 0;
 	COORD printPos = { static_cast<SHORT>(x), static_cast<SHORT>(y) };

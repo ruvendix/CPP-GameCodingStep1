@@ -26,11 +26,11 @@ void DialogNode::Draw(Int32 x, Int32 y) const
 
 	// 화자
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::YELLOW);
-	PRINTF(x + 4, y + 2, m_spInfo->strSpeaker.c_str());
+	PUT_STRING(x + 4, y + 2, m_spInfo->strSpeaker.c_str());
 
 	// 대사
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::AQUA);
-	PRINTF(x + 6, y + 4, m_spInfo->strScript.c_str());
+	PUT_STRING(x + 6, y + 4, m_spInfo->strScript.c_str());
 
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, currentConsoleOutputColor);
 }

@@ -15,5 +15,5 @@
 void DblConsoleSelector::OnDrawSelector() const
 {
 	ConsoleSelector::OnDrawSelector();
-	PRINTF(getSelectorPos().X + m_secondSelectorOffsetPos.X, getSelectorPos().Y + m_secondSelectorOffsetPos.Y, m_strSecondShape.c_str());
+	PUT_STRING(getSelectorPos().X + m_secondSelectorOffsetPos.X, getSelectorPos().Y + m_secondSelectorOffsetPos.Y, m_strSecondShape.c_str());
 }

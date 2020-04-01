@@ -28,5 +28,5 @@ void ConsoleSelector::AddSelectorPosY(Int32 y)
 
 void ConsoleSelector::OnDrawSelector() const
 {
-	PRINTF(m_selectorPos.X, m_selectorPos.Y, m_strShape.c_str());
+	PUT_STRING(m_selectorPos.X, m_selectorPos.Y, m_strShape.c_str());
 }

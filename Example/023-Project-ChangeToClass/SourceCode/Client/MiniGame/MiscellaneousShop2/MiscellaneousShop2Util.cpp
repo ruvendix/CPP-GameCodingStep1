@@ -21,14 +21,14 @@ void MiscellanouseShop2Util::DrawItemTable(Int32 x, Int32 y, EItemDBType itemDBT
 	ItemDB* pItemDB = ItemDBCtx::I()->QueryItemDB(itemDBType);	
 	if (pItemDB == nullptr)
 	{
-		PRINTF(0, 0, "알 수 없는 아이템 DB에요!");
+		PUT_STRING(0, 0, "알 수 없는 아이템 DB에요!");
 		return;
 	}
 
 	Int32 drawPosY = y - 1;
-	PRINTF(x, ++drawPosY, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓");
-	PRINTF(x, ++drawPosY, "┃    이름                            ┃     가격┃");
-	PRINTF(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━┫");
+	PUT_STRING(x, ++drawPosY, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓");
+	PUT_STRING(x, ++drawPosY, "┃    이름                            ┃     가격┃");
+	PUT_STRING(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━┫");
 
 	const ItemDB::MapItemDB& mapItemDB = pItemDB->getMapItemDB();
 	for (const auto& iter : mapItemDB)
@@ -39,8 +39,8 @@ void MiscellanouseShop2Util::DrawItemTable(Int32 x, Int32 y, EItemDBType itemDBT
 			continue;
 		}
 
-		PRINTF(x, ++drawPosY, "┃    %-32s┃ %8d┃", pItem->getNameTag().c_str(), pItem->getPrice());
+		PUT_STRING(x, ++drawPosY, "┃    %-32s┃ %8d┃", pItem->getNameTag().c_str(), pItem->getPrice());
 	}
 
-	PRINTF(x, ++drawPosY, "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━┛");
+	PUT_STRING(x, ++drawPosY, "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━┛");
 }

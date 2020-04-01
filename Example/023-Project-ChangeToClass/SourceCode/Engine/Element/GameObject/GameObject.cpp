@@ -1,0 +1,70 @@
+// =====================================================================================
+// Copyright(c) 2020, Ruvendix. All Rights Reserved.
+// 
+// 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
+// http://creativecommons.org/licenses/by/4.0/
+//
+// 모든 게임 오브젝트의 기반입니다.
+// =====================================================================================
+
+#include "PCH.h"
+#include "GameObject.h"
+
+#include "Controller\ConsoleController.h"
+
+EErrorType GameObj::OnRender()
+{
+	PUT_STRING(m_pos.X, m_pos.Y, m_strShape.c_str());
+	return EErrorType::NONE;
+}
+
+EErrorType GameObj::OnSaveFile(const std::string_view& szFileName)
+{
+	if (IsOpenFileStream() == false)
+	{
+		return EErrorType::NONE;
+	}
+
+	FILE* pFileStream = getFileStream();
+	CHECK_NULLPTR(pFileStream);
+
+	const COORD& pos = getPos();
+	fwrite(&pos, sizeof(pos), 1, pFileStream);
+
+	Uint8 shapeSize = static_cast<Uint8>(getShape().size());
+	fwrite(&shapeSize, sizeof(shapeSize), 1, pFileStream);
+
+	shapeSize = (sizeof(char) * shapeSize) + 1;
+	char* shapeBuffer = reinterpret_cast<char*>(std::malloc(shapeSize)); // 널문자 포함
+	StringCchCopy(shapeBuffer, shapeSize, getShape().c_str()); // 널문자를 대입해줌
+	fwrite(shapeBuffer, 1, shapeSize, pFileStream);
+	std::free(shapeBuffer);
+
+	return EErrorType::NONE;
+}
+
+EErrorType GameObj::OnLoadFile(const std::string_view& szFileName)
+{
+	if (IsOpenFileStream() == false)
+	{
+		return EErrorType::NONE;
+	}
+
+	FILE* pFileStream = getFileStream();
+	CHECK_NULLPTR(pFileStream);
+
+	COORD pos{ 0, 0 };
+	fread(&pos, sizeof(pos), 1, pFileStream);
+	setPos(pos);
+
+	Uint8 shapeSize = 0;
+	fread(&shapeSize, sizeof(shapeSize), 1, pFileStream);
+
+	shapeSize = (sizeof(char) * shapeSize) + 1;
+	char* shapeBuffer = reinterpret_cast<char*>(std::malloc(shapeSize));
+	fread(shapeBuffer, 1, shapeSize, pFileStream);
+	setShape(shapeBuffer);
+	std::free(shapeBuffer);
+
+	return EErrorType::NONE;
+}

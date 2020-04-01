@@ -22,7 +22,7 @@ void TriggerDialogNode::Draw(Int32 x, Int32 y) const
 	for (const auto& iter : m_vecTrigger)
 	{
 		const TupleTriggerDialogNode& tuple = *iter;
-		PRINTF(x + 4, ++drawPosY, std::get<0>(tuple).c_str());
+		PUT_STRING(x + 4, ++drawPosY, std::get<0>(tuple).c_str());
 	}
 
 	// 트리거가 존재할 때는 셀렉터를 보여줘야 해요!

@@ -8,8 +8,8 @@
 // 여러 함수의 수행 능력을 동시에 측정할 수 있습니다.
 // =====================================================================================
 
-#ifndef PERFORMANCE_PROFILE_MANAGER__H__
-#define PERFORMANCE_PROFILE_MANAGER__H__
+#ifndef PERFORMANCE_PROFILE_MGR__H__
+#define PERFORMANCE_PROFILE_MGR__H__
 
 #include "Element\NameTag.h"
 #include "Timer\StopwatchTimer.h"

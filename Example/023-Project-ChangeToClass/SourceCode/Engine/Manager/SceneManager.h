@@ -4,15 +4,15 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 씬 생성 및 전환 등을 처리해주는 매니저입니다.
+// 씬 생성 및 전환 등을 처리하고 관리합니다.
 // =====================================================================================
 
-#ifndef SCENE_MANAGER__H__
-#define SCENE_MANAGER__H__
+#ifndef SCENE_MGR__H__
+#define SCENE_MGR__H__
 
 #include "Common\CommonType.h"
+#include "Common\CommonMacro.h"
 #include "Element\Scene.h"
-#include "Controller\ConsoleController.h"
 
 DECLARE_LOG_CATEGORY(SceneMgr);
 
@@ -57,9 +57,9 @@ public:
 
 			m_pCurrentScene = trace_new TScene(szSceneName);
 
-			if (m_pCurrentScene->OnInitialize() == EErrorType::INIT_FAILED)
+			if (m_pCurrentScene->OnInitialize() == EErrorType::INIT_FAIL)
 			{
-				DEFAULT_ERROR_HANDLER(EErrorType::INIT_FAILED);
+				DEFAULT_ERROR_HANDLER(EErrorType::INIT_FAIL);
 			}
 		}
 		else
@@ -68,9 +68,9 @@ public:
 			m_pNextScene = trace_new TScene(szSceneName);
 
 			// 전환될 예정인 씬은 초기화가 완료된 상태로 전환되어야 해요!
-			if (m_pNextScene->OnInitialize() == EErrorType::INIT_FAILED)
+			if (m_pNextScene->OnInitialize() == EErrorType::INIT_FAIL)
 			{
-				DEFAULT_ERROR_HANDLER(EErrorType::INIT_FAILED);
+				DEFAULT_ERROR_HANDLER(EErrorType::INIT_FAIL);
 			}
 
 			if (m_pNextScene->OnPostInitialize() == EErrorType::NO_PREV_CONSOLE_SELECTOR)

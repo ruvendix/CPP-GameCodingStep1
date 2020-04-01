@@ -107,7 +107,7 @@ void BuyPhaseHelper::BuyItem(const BuyPhase& targetHelper)
 
 void BuyPhaseHelper::ResultBuyItem()
 {
-	PRINTF(0, 12, "아이템을 구매했습니다!");
+	PUT_STRING(0, 12, "아이템을 구매했습니다!");
 }
 
 void BuyPhaseHelper::OnInput_ProductFamily(_Inout_ BuyPhase& targetHelper)
@@ -265,13 +265,13 @@ EErrorType BuyPhase::OnRender()
 	if (m_bSelectedProductFamily == false)
 	{
 		Int32 drawPosY = -1;
-		PRINTF(0, ++drawPosY, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-		PRINTF(0, ++drawPosY, "┃ 어떤 아이템에 관심 있으세요?    ┃");
-		PRINTF(0, ++drawPosY, "┣━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┫");
-		PRINTF(0, ++drawPosY, "┃    물약        ┃    식료품      ┃");
-		PRINTF(0, ++drawPosY, "┣━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━┫");
-		PRINTF(0, ++drawPosY, "┃    야외용품    ┃    뒤로        ┃");
-		PRINTF(0, ++drawPosY, "┗━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━┛");
+		PUT_STRING(0, ++drawPosY, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+		PUT_STRING(0, ++drawPosY, "┃ 어떤 아이템에 관심 있으세요?    ┃");
+		PUT_STRING(0, ++drawPosY, "┣━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┫");
+		PUT_STRING(0, ++drawPosY, "┃    물약        ┃    식료품      ┃");
+		PUT_STRING(0, ++drawPosY, "┣━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━┫");
+		PUT_STRING(0, ++drawPosY, "┃    야외용품    ┃    뒤로        ┃");
+		PUT_STRING(0, ++drawPosY, "┗━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━┛");
 	}
 	else
 	{

@@ -12,7 +12,7 @@
 #include "IntroMenu_SceneLoader.h"
 
 #include "Manager\SceneManager.h"
-#include "Element\Scene\BattleSimulatorScene.h"
+#include "Element\Scene\BattleSimulatorEditorScene.h"
 #include "Element\Scene\MiscellaneousShop2Scene.h"
 #include "Element\Scene\DialogTreeScene.h"
 
@@ -30,7 +30,7 @@ EErrorType IntroMenu_SceneLoader::OnExcute()
 	{
 	case EIntroMenu_SceneLoaderType::BATTLE_SIMULATOR:
 	{
-		SceneMgr::I()->CreateScene<BattleSimulatorScene>(ESceneType::NEXT);
+		SceneMgr::I()->CreateScene<BattleSimulatorEditorScene>(ESceneType::NEXT);
 		break;
 	}
 

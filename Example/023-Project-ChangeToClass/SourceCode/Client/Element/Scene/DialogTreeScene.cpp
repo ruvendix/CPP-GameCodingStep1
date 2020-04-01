@@ -25,7 +25,7 @@ class DialogTreeSceneHelper final
 public:
 	using InputForDialogNodeCallback = std::function<void(_Inout_ DialogTreeScene&)>;
 
-	static void InitializeDialogTree(_Out_ std::unique_ptr<DialogTree>& spDialogTree);
+	static void InitDialogTree(_Out_ std::unique_ptr<DialogTree>& spDialogTree);
 	static void DrawDialogBox();
 	static void AdjustSelectorPosForTriggerDialogNode(std::shared_ptr<DialogNode> spDialogNode);
 
@@ -42,7 +42,7 @@ private:
 
 DialogTreeSceneHelper::InputForDialogNodeCallback DialogTreeSceneHelper::m_inputForDialogNodeCallback = OnCallback_InputForDialogNode;
 
-void DialogTreeSceneHelper::InitializeDialogTree(_Out_ std::unique_ptr<DialogTree>& spDialogTree)
+void DialogTreeSceneHelper::InitDialogTree(_Out_ std::unique_ptr<DialogTree>& spDialogTree)
 {
 	std::shared_ptr<TriggerDialogNode> spRootNode = spDialogTree->CreateNode<TriggerDialogNode>("마을 사람", "안녕하세요, 우리 마을에 오신 걸 환영합니다!");
 	spDialogTree->setRootNode(spRootNode);
@@ -112,14 +112,14 @@ void DialogTreeSceneHelper::DrawDialogBox()
 
 	for (Int32 i = 0; i < DIALOG_BOX_WIDTH; i += 2)
 	{
-		PRINTF(i, 0, "■");
-		PRINTF(i, DIALOG_BOX_HEIGHT, "■");
+		PUT_STRING(i, 0, "■");
+		PUT_STRING(i, DIALOG_BOX_HEIGHT, "■");
 	}
 
 	for (Int32 i = 1; i < DIALOG_BOX_HEIGHT; ++i)
 	{
-		PRINTF(0, i, "■");
-		PRINTF(DIALOG_BOX_WIDTH - 2, i, "■");
+		PUT_STRING(0, i, "■");
+		PUT_STRING(DIALOG_BOX_WIDTH - 2, i, "■");
 	}
 
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, currentConsoleOutputColor);
@@ -205,7 +205,7 @@ EErrorType DialogTreeScene::OnInitialize()
 	InputController::I()->InsertInputMappingInfo("Enter", VK_RETURN);
 
 	m_spDialogTree = std::make_unique<DialogTree>();
-	DialogTreeSceneHelper::InitializeDialogTree(m_spDialogTree);
+	DialogTreeSceneHelper::InitDialogTree(m_spDialogTree);
 
 	m_spCurrentDialogNode = m_spDialogTree->getRootNode();
 	if (DialogTreeSceneHelper::IsTriggerDialogNode(m_spCurrentDialogNode))

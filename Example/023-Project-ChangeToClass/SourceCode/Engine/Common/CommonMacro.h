@@ -250,8 +250,8 @@ private:\
 
 // ACTIVATION_CONSOLE_DBL_BUFFERING 활성화 여부에 따라 출력 함수가 변경됩니다.
 #ifdef ACTIVATION_CONSOLE_DBL_BUFFERING
-#define PRINTF(x, y, szFormat, ...)\
-	ConsoleController::I()->PrintString(x, y, CommonFunc::MakeFormatString(szFormat, __VA_ARGS__));
+#define PUT_STRING(x, y, szFormat, ...)\
+	ConsoleController::I()->PutString(x, y, CommonFunc::MakeFormatString(szFormat, __VA_ARGS__));
 #else
 #define PRINTF(x, y, szFormat, ...)\
 	ConsoleController::I()->MoveConsolePos(x, y);\
@@ -299,8 +299,21 @@ private:\
 #define CHECK_NULLPTR_CONTINUE(ptr)\
 	if (ptr == nullptr)\
 	{\
-		ERROR_HANDLER(false, EErrorType::NULLPTR, #ptr);\
 		continue;\
+	}
+
+#define CHECK_NULLPTR_RETURN(ptr, value)\
+	if (ptr == nullptr)\
+	{\
+		ERROR_HANDLER(false, EErrorType::NULLPTR, #ptr);\
+		return value;\
+	}
+
+#define CHECK_NULLPTR_RETURN_VOID(ptr)\
+	if (ptr == nullptr)\
+	{\
+		ERROR_HANDLER(false, EErrorType::NULLPTR, #ptr);\
+		return;\
 	}
 
 //#define CHECK_NULLPTR_RETURN(ptr, TNegativeness)\

@@ -50,7 +50,11 @@ void TriggerTimerMgr::AddTriggerTimer(const std::string& strTriggerTimer, Real32
 	pTriggerTimer->setRender(bRender);
 	pTriggerTimer->setRepeat(bRepeat);
 
-	m_mapTriggerTimer.insert(std::make_pair(strTriggerTimer, pTriggerTimer));
+	auto ret = m_mapTriggerTimer.insert(std::make_pair(strTriggerTimer, nullptr));
+	if (ret.second == true)
+	{
+		ret.first->second = pTriggerTimer;
+	}
 
 	return;
 }

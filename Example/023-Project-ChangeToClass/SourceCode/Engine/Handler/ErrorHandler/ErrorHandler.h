@@ -14,8 +14,6 @@
 #include "ErrorType.h"
 #include "Element\NameTag.h"
 
-//#pragma warning(disable: 6011)
-
 DECLARE_LOG_CATEGORY(ErrorHandler);
 
 class ErrorHandler final

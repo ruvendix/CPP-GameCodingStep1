@@ -29,7 +29,7 @@ public:
 	void Flipping();
 	void Finalize();
 
-	void PrintString(Int32 x, Int32 y, const std::string_view& szOutput);
+	void PutString(Int32 x, Int32 y, const std::string_view& szOutput);
     void AdjustConsoleArea(Uint32 width, Uint32 height);
     void AdjustConsoleArea(const SizeInfo& sizeInfo);
     void DefaultConsoleGameStyle();

@@ -39,7 +39,11 @@ void PerformanceProfileMgr::Start(const std::string_view& szFuncSig, Int32 ID, I
 	pPerformanceProfileInfo->stopwatchTimer.StartTime();
 	pPerformanceProfileInfo->callCnt = 1;
 
-	m_mapPerformanceProfileInfo.insert(std::make_pair(ID, pPerformanceProfileInfo));
+	auto ret = m_mapPerformanceProfileInfo.insert(std::make_pair(ID, nullptr));
+	if (ret.second == true)
+	{
+		ret.first->second = pPerformanceProfileInfo;
+	}
 }
 
 /*

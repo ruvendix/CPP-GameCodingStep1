@@ -7,13 +7,13 @@
 // 모든 게임 요소의 기반입니다.
 // =====================================================================================
 
-#ifndef GAME_ELEMENT__H__
-#define GAME_ELEMENT__H__
+#ifndef GAME_ELEM__H__
+#define GAME_ELEM__H__
 
-#include "Interface\IGameMechanism.h"
+#include "Interface\IGameElem.h"
 #include "NameTag.h"
 
-class GameElem : public IGameMechanism
+class GameElem : public IGameElem
 {
 	HAS_NAME_TAG();
 
@@ -35,8 +35,26 @@ public:
 	virtual EErrorType OnUpdate() override;
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnFinalize() override;
+	virtual EErrorType OnSaveFile(const std::string_view& szFileName) override;
+	virtual EErrorType OnLoadFile(const std::string_view& szFileName) override;
+
+	void ResetError()
+	{
+		m_errorType = EErrorType::NONE;
+	}
+
+	void setLastError(EErrorType errorType)
+	{
+		m_errorType = errorType;
+	}
+
+	EErrorType getLastError() const
+	{
+		return m_errorType;
+	}
 
 private:
+	EErrorType m_errorType = EErrorType::NONE;
 	bool m_bFirstInput = true; // 첫 입력 처리는 무시 (우연히 입력 조합이 겹칠 경우 중복 처리가 될 수 있음)
 };
 

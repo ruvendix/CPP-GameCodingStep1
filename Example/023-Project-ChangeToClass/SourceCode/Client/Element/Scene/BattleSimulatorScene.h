@@ -12,6 +12,7 @@
 
 #include "Element\Scene.h"
 #include "Controller\ConsoleControllerEnum.h"
+#include "MiniGame\BattleSimulator\BattleSimulatorWorld.h"
 
 class MedievalKnight;
 class Viking;
@@ -29,12 +30,14 @@ public:
 #pragma endregion
 
 	virtual EErrorType OnInitialize() override;
+	virtual EErrorType OnPostInitialize() override;
 	virtual EErrorType OnInput() override;
 	virtual EErrorType OnUpdate() override;
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnFinalize() override;
 
 private:
+	std::unique_ptr<BattleSimulatorWorld> m_world;
 	std::vector<std::shared_ptr<MedievalKnight>> m_vecMedievalKnight;
 	std::vector<std::shared_ptr<Viking>> m_vecViking;
 

@@ -15,8 +15,8 @@
 
 struct SizeInfo
 {
-	Uint32 width = 0;
-	Uint32 height = 0;
+	TSize width = 0;
+	TSize height = 0;
 };
 
 #endif

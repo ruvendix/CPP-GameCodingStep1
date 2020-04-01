@@ -13,7 +13,7 @@
 #define PHASE_BASE_H__
 
 #include "Element\GameElement.h"
-#include "PhaseEnum.h"
+#include "PhaseType.h"
 
 class PhaseBase : public GameElem
 {

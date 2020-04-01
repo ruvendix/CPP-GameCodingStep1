@@ -166,14 +166,14 @@ EErrorType EntrancePhase::OnInput()
 EErrorType EntrancePhase::OnRender()
 {
 	Int32 drawPosY = -1;
-	PRINTF(0, ++drawPosY, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-	PRINTF(0, ++drawPosY, "┃ 잡화 상점에 오신 걸 환영해요~!  ┃");
-	PRINTF(0, ++drawPosY, "┃ 무슨 일로 오셨나요?             ┃");
-	PRINTF(0, ++drawPosY, "┣━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┫");
-	PRINTF(0, ++drawPosY, "┃    구입        ┃    판매        ┃");
-	PRINTF(0, ++drawPosY, "┣━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━┫");
-	PRINTF(0, ++drawPosY, "┃    정리        ┃    나가기      ┃");
-	PRINTF(0, ++drawPosY, "┗━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━┛");
+	PUT_STRING(0, ++drawPosY, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+	PUT_STRING(0, ++drawPosY, "┃ 잡화 상점에 오신 걸 환영해요~!  ┃");
+	PUT_STRING(0, ++drawPosY, "┃ 무슨 일로 오셨나요?             ┃");
+	PUT_STRING(0, ++drawPosY, "┣━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┫");
+	PUT_STRING(0, ++drawPosY, "┃    구입        ┃    판매        ┃");
+	PUT_STRING(0, ++drawPosY, "┣━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━┫");
+	PUT_STRING(0, ++drawPosY, "┃    정리        ┃    나가기      ┃");
+	PUT_STRING(0, ++drawPosY, "┗━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━┛");
 
 	ConsoleController::I()->DrawSelector();
 	return EErrorType::NONE;

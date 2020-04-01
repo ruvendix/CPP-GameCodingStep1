@@ -64,7 +64,7 @@ void SellPhaseHelper::SellItem(const SellPhase& targetHelper)
 
 void SellPhaseHelper::ResultSellItem()
 {
-	PRINTF(0, 12, "아이템을 판매했습니다!");
+	PUT_STRING(0, 12, "아이템을 판매했습니다!");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

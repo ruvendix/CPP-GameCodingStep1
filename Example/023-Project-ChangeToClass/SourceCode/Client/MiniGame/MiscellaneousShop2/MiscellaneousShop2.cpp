@@ -20,14 +20,14 @@ EErrorType MiscellaneousShop2::OnInitialize()
 	SAFE_DELETE(m_pCurrentPhase);
 	m_pCurrentPhase = trace_new EntrancePhase;
 
-	if (m_pCurrentPhase->OnPostInitialize() == EErrorType::INIT_FAILED)
+	if (m_pCurrentPhase->OnPostInitialize() == EErrorType::INIT_FAIL)
 	{
-		return EErrorType::INIT_FAILED;
+		return EErrorType::INIT_FAIL;
 	}
 
-	if (m_pCurrentPhase->OnInitialize() == EErrorType::INIT_FAILED)
+	if (m_pCurrentPhase->OnInitialize() == EErrorType::INIT_FAIL)
 	{
-		return EErrorType::INIT_FAILED;
+		return EErrorType::INIT_FAIL;
 	}
 
 	return EErrorType::NONE;
@@ -35,9 +35,9 @@ EErrorType MiscellaneousShop2::OnInitialize()
 
 EErrorType MiscellaneousShop2::OnInput()
 {
-	if (m_pCurrentPhase->OnInput() == EErrorType::INPUT_FAILED)
+	if (m_pCurrentPhase->OnInput() == EErrorType::INPUT_FAIL)
 	{
-		return EErrorType::INPUT_FAILED;
+		return EErrorType::INPUT_FAIL;
 	}
 
 	return EErrorType::NONE;
@@ -45,26 +45,26 @@ EErrorType MiscellaneousShop2::OnInput()
 
 EErrorType MiscellaneousShop2::OnUpdate()
 {
-	if (m_pCurrentPhase->OnUpdate() == EErrorType::UPDATE_FAILED)
+	if (m_pCurrentPhase->OnUpdate() == EErrorType::UPDATE_FAIL)
 	{
-		return EErrorType::UPDATE_FAILED;
+		return EErrorType::UPDATE_FAIL;
 	}
 
 	if (m_pCurrentPhase->HasNextPhase())
 	{
 		TriggerTimerMgr::I()->DeleteTriggerTimer("RenderString");
 
-		if (m_pCurrentPhase->OnFinalize() == EErrorType::FINAL_FAILED)
+		if (m_pCurrentPhase->OnFinalize() == EErrorType::FINAL_FAIL)
 		{
-			return EErrorType::FINAL_FAILED;
+			return EErrorType::FINAL_FAIL;
 		}
 		
 		PhaseBase* pNextPhase = m_pCurrentPhase->getNextPhase();
 		CHECK_NULLPTR(pNextPhase);
 
-		if (pNextPhase->OnInitialize() == EErrorType::INIT_FAILED)
+		if (pNextPhase->OnInitialize() == EErrorType::INIT_FAIL)
 		{
-			return EErrorType::INIT_FAILED;
+			return EErrorType::INIT_FAIL;
 		}
 
 		if (m_pCurrentPhase->getLevel() < pNextPhase->getLevel())
@@ -87,9 +87,9 @@ EErrorType MiscellaneousShop2::OnRender()
 {
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::WHITE);
 
-	if (m_pCurrentPhase->OnRender() == EErrorType::RENDER_FAILED)
+	if (m_pCurrentPhase->OnRender() == EErrorType::RENDER_FAIL)
 	{
-		return EErrorType::RENDER_FAILED;
+		return EErrorType::RENDER_FAIL;
 	}
 
 	return EErrorType::NONE;
@@ -97,9 +97,9 @@ EErrorType MiscellaneousShop2::OnRender()
 
 EErrorType MiscellaneousShop2::OnFinalize()
 {
-	if (m_pCurrentPhase->OnFinalize() == EErrorType::FINAL_FAILED)
+	if (m_pCurrentPhase->OnFinalize() == EErrorType::FINAL_FAIL)
 	{
-		return EErrorType::FINAL_FAILED;
+		return EErrorType::FINAL_FAIL;
 	}
 
 	SAFE_DELETE(m_pCurrentPhase);

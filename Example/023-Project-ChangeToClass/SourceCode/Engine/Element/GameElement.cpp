@@ -51,3 +51,15 @@ EErrorType GameElem::OnFinalize()
 	//DEBUG_LOG("GameElem에서 이게 보이면 OnFinalize()를 재정의해주세요!");
 	return EErrorType::NONE;
 }
+
+EErrorType GameElem::OnSaveFile(const std::string_view& szFileName)
+{
+	//DEBUG_LOG("GameElem에서 이게 보이면 OnSaveFile()를 재정의해주세요!");
+	return EErrorType::NONE;
+}
+
+EErrorType GameElem::OnLoadFile(const std::string_view& szFileName)
+{
+	//DEBUG_LOG("GameElem에서 이게 보이면 OnLoadFile()를 재정의해주세요!");
+	return EErrorType::NONE;
+}
