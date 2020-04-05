@@ -143,15 +143,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\Client\Context\GameContext.cpp" />
-    <ClCompile Include="SourceCode\Client\Element\Scene\BattleSimulatorEditorScene.cpp" />
-    <ClCompile Include="SourceCode\Client\Element\Scene\BattleSimulatorScene.cpp" />
-    <ClCompile Include="SourceCode\Client\Element\Scene\DialogTreeScene.cpp" />
-    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene.cpp" />
-    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu.cpp" />
-    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_Quit.cpp" />
-    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_SceneLoader.cpp" />
-    <ClCompile Include="SourceCode\Client\Element\Scene\MiscellaneousShop2Scene.cpp" />
     <ClCompile Include="SourceCode\Client\GameMain.cpp" />
+    <ClCompile Include="SourceCode\Client\IntroMenu\IntroMenu_ComeBack.cpp" />
+    <ClCompile Include="SourceCode\Client\IntroMenu\IntroMenu_Quit.cpp" />
+    <ClCompile Include="SourceCode\Client\IntroMenu\IntroMenu_SceneLoader.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\BattleSimulatorWorld.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\GameObject\DynamicObject\MedievalKnight.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\GameObject\DynamicObject\Unit.cpp" />
@@ -167,12 +162,13 @@
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem_Camping.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem_Grocery.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem_Potion.cpp" />
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Menu\BuyPhaseMenu_ProductFamilySelection.cpp" />
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Menu\EntrancePhaseMenu_PhaseLoader.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\MiscellaneousShop2.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\MiscellaneousShop2Util.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\ArrangePhase.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\BuyPhase.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\EntrancePhase.cpp" />
-    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\PhaseBase.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\SellPhase.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\PlayerContext.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Inven.cpp" />
@@ -181,6 +177,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">PCH.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="SourceCode\Client\Scene\BattleSimulatorEditorScene.cpp" />
+    <ClCompile Include="SourceCode\Client\Scene\BattleSimulator2Scene.cpp" />
+    <ClCompile Include="SourceCode\Client\Scene\DialogTreeScene.cpp" />
+    <ClCompile Include="SourceCode\Client\Scene\IntroMenuScene.cpp" />
+    <ClCompile Include="SourceCode\Client\Scene\MiscellaneousShop2Scene.cpp" />
     <ClCompile Include="SourceCode\Engine\Common\CommonFunc.cpp" />
     <ClCompile Include="SourceCode\Engine\Common\CommonLog.cpp" />
     <ClCompile Include="SourceCode\Engine\Context\ConfigContext.cpp" />
@@ -194,14 +195,21 @@
     <ClCompile Include="SourceCode\Engine\Element\GameObject\GameObject.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\GameObject\StaticObject.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\LevelDesign.cpp" />
+    <ClCompile Include="SourceCode\Engine\Element\Menu\Menu.cpp" />
+    <ClCompile Include="SourceCode\Engine\Element\Menu\MenuTable.cpp" />
+    <ClCompile Include="SourceCode\Engine\Element\Menu\MenuTable_Col.cpp" />
+    <ClCompile Include="SourceCode\Engine\Element\Menu\MenuTable_Matrix.cpp" />
+    <ClCompile Include="SourceCode\Engine\Element\Menu\MenuTable_Row.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\NameTag.cpp" />
+    <ClCompile Include="SourceCode\Engine\Element\Phase.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\Scene.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\ConsoleSelector.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\World.cpp" />
     <ClCompile Include="SourceCode\Engine\Handler\ErrorHandler\ErrorHandler.cpp" />
-    <ClCompile Include="SourceCode\Engine\Manager\FileStreamMgr.cpp" />
-    <ClCompile Include="SourceCode\Engine\Manager\PerformanceProfileMgr.cpp" />
-    <ClCompile Include="SourceCode\Engine\Manager\ResourcePathMgr.cpp" />
+    <ClCompile Include="SourceCode\Engine\Manager\FileStreamManager.cpp" />
+    <ClCompile Include="SourceCode\Engine\Manager\PerformanceProfileManager.cpp" />
+    <ClCompile Include="SourceCode\Engine\Manager\PhaseManager.cpp" />
+    <ClCompile Include="SourceCode\Engine\Manager\ResourcePathManager.cpp" />
     <ClCompile Include="SourceCode\Engine\Manager\SceneManager.cpp" />
     <ClCompile Include="SourceCode\Engine\Manager\TriggerTimerManager.cpp" />
     <ClCompile Include="SourceCode\Engine\Math\Math.cpp" />
@@ -212,15 +220,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Client\Context\GameContext.h" />
-    <ClInclude Include="SourceCode\Client\Element\Scene\BattleSimulatorEditorScene.h" />
-    <ClInclude Include="SourceCode\Client\Element\Scene\BattleSimulatorScene.h" />
-    <ClInclude Include="SourceCode\Client\Element\Scene\DialogTreeScene.h" />
-    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene.h" />
-    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu.h" />
-    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_Quit.h" />
-    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_SceneLoader.h" />
-    <ClInclude Include="SourceCode\Client\Element\Scene\MiscellaneousShop2Scene.h" />
     <ClInclude Include="SourceCode\Client\GameMain.h" />
+    <ClInclude Include="SourceCode\Client\IntroMenu\IntroMenu_ComeBack.h" />
+    <ClInclude Include="SourceCode\Client\IntroMenu\IntroMenu_Quit.h" />
+    <ClInclude Include="SourceCode\Client\IntroMenu\IntroMenu_SceneLoader.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\BattleSimulatorWorld.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\GameObject\DynamicObject\MedievalKnight.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\GameObject\DynamicObject\Unit.h" />
@@ -238,17 +241,24 @@
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem_Camping.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem_Grocery.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem_Potion.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Menu\BuyPhaseMenu_ProductFamilySelection.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Menu\EntrancePhaseMenu_PhaseLoader.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\MiscellaneousShop2.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\MiscellaneousShop2Util.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\ArrangePhase.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\BuyPhase.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\EntrancePhase.h" />
-    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\PhaseBase.h" />
-    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\PhaseType.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\MiscellaneousShop2PhaseType.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\SellPhase.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\PlayerContext.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Inven.h" />
     <ClInclude Include="SourceCode\Client\PCH.h" />
+    <ClInclude Include="SourceCode\Client\Scene\BattleSimulatorEditorScene.h" />
+    <ClInclude Include="SourceCode\Client\Scene\BattleSimulator2Scene.h" />
+    <ClInclude Include="SourceCode\Client\Scene\DialogTreeScene.h" />
+    <ClInclude Include="SourceCode\Client\Scene\IntroMenuScene.h" />
+    <ClInclude Include="SourceCode\Client\Scene\MiscellaneousShop2Scene.h" />
+    <ClInclude Include="SourceCode\Engine\Common\CommonEnum.h" />
     <ClInclude Include="SourceCode\Engine\Common\CommonStruct.h" />
     <ClInclude Include="SourceCode\Engine\Common\CommonTemplate.h" />
     <ClInclude Include="SourceCode\Engine\Common\CommonType.h" />
@@ -269,16 +279,23 @@
     <ClInclude Include="SourceCode\Engine\Element\GameObject\GameObjectType.h" />
     <ClInclude Include="SourceCode\Engine\Element\GameObject\StaticObject.h" />
     <ClInclude Include="SourceCode\Engine\Element\LevelDesign.h" />
+    <ClInclude Include="SourceCode\Engine\Element\Menu\Menu.h" />
+    <ClInclude Include="SourceCode\Engine\Element\Menu\MenuTable.h" />
+    <ClInclude Include="SourceCode\Engine\Element\Menu\MenuTable_Col.h" />
+    <ClInclude Include="SourceCode\Engine\Element\Menu\MenuTable_Matrix.h" />
+    <ClInclude Include="SourceCode\Engine\Element\Menu\MenuTable_Row.h" />
     <ClInclude Include="SourceCode\Engine\Element\NameTag.h" />
+    <ClInclude Include="SourceCode\Engine\Element\Phase.h" />
     <ClInclude Include="SourceCode\Engine\Element\Scene.h" />
     <ClInclude Include="SourceCode\Engine\Element\ConsoleSelector.h" />
     <ClInclude Include="SourceCode\Engine\Element\World.h" />
     <ClInclude Include="SourceCode\Engine\Handler\ErrorHandler\ErrorHandler.h" />
     <ClInclude Include="SourceCode\Engine\Handler\ErrorHandler\ErrorType.h" />
     <ClInclude Include="SourceCode\Engine\Interface\IGameElem.h" />
-    <ClInclude Include="SourceCode\Engine\Manager\FileStreamMgr.h" />
-    <ClInclude Include="SourceCode\Engine\Manager\PerformanceProfileMgr.h" />
-    <ClInclude Include="SourceCode\Engine\Manager\ResourcePathMgr.h" />
+    <ClInclude Include="SourceCode\Engine\Manager\FileStreamManager.h" />
+    <ClInclude Include="SourceCode\Engine\Manager\PerformanceProfileManager.h" />
+    <ClInclude Include="SourceCode\Engine\Manager\PhaseManager.h" />
+    <ClInclude Include="SourceCode\Engine\Manager\ResourcePathManager.h" />
     <ClInclude Include="SourceCode\Engine\Manager\SceneManager.h" />
     <ClInclude Include="SourceCode\Engine\Manager\TriggerTimerManager.h" />
     <ClInclude Include="SourceCode\Engine\Math\Math.h" />

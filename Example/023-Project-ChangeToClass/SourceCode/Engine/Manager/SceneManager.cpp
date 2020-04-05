@@ -4,11 +4,13 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 씬 생성 및 전환 등을 처리해주는 매니저입니다.
+// 씬 생성 및 전환 등을 처리하고 관리합니다.
 // =====================================================================================
 
 #include "PCH.h"
 #include "SceneManager.h"
+
+#include "Manager\TriggerTimerManager.h"
 
 DEFINE_LOG_CATEGORY(SceneMgr);
 DEFINE_PHOENIX_SINGLETON(SceneMgr);
@@ -16,21 +18,20 @@ DEFINE_PHOENIX_SINGLETON(SceneMgr);
 /*
 현재 씬과 다음 씬을 전환합니다.
 */
-void SceneMgr::FlipCurrentScene()
+EErrorType SceneMgr::Flip()
 {
-	std::string strPrevSceneName = m_pCurrentScene->getNameTag();
+	DEBUG_LOG_CATEGORY(SceneMgr, "(%s) 씬에서 (%s) 씬으로 전환!",
+		m_spCurrentScene->getNameTag().c_str(), m_spNextScene->getNameTag().c_str());
 
-	m_pCurrentScene->OnFinalize();
-	SAFE_SWAP_DELETE(m_pCurrentScene, m_pNextScene);
+	TriggerTimerMgr::I()->DeleteTriggerTimer("RenderString");
 
-	DEBUG_LOG_CATEGORY(SceneMgr, "(%s) 씬에서 (%s) 씬으로 전환!", strPrevSceneName.data(), m_pCurrentScene->getNameTag().c_str());
-}
+	if (m_spCurrentScene->OnFinalize() == EErrorType::FINAL_FAIL)
+	{
+		return EErrorType::FINAL_FAIL;
+	}
 
-/*
-모든 씬을 제거합니다.
-*/
-void SceneMgr::Finalize()
-{
-	SAFE_DELETE(m_pCurrentScene);
-	SAFE_DELETE(m_pNextScene);
+	// 다음 페이즈의 소유권 이동
+	m_spCurrentScene = std::move(m_spNextScene);
+
+	return EErrorType::NONE;
 }

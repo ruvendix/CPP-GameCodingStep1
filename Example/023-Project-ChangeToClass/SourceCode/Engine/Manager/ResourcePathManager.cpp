@@ -10,7 +10,7 @@
 // =====================================================================================
 
 #include "PCH.h"
-#include "ResourcePathMgr.h"
+#include "ResourcePathManager.h"
 
 DEFINE_LOG_CATEGORY(ResourcePathMgr);
 DEFINE_PHOENIX_SINGLETON(ResourcePathMgr)

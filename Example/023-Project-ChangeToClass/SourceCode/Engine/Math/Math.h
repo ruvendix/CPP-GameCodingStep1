@@ -19,6 +19,7 @@ namespace math
 
 	Int32 Clamp(Int32 value, Int32 min, Int32 max);
 	Int32 ClampCycle(Int32 value, Int32 min, Int32 max);
+	Int32 CalcIdx(Int32 col, Int32 rowIdx, Int32 colIdx);
 	
 	bool IsValidRange(Int32 value, Int32 min, Int32 max);
 

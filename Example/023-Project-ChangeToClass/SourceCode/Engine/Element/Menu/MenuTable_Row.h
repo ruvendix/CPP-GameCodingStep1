@@ -4,26 +4,26 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 공용으로 사용되는 구조체 모음입니다.
-// POD(Plain Old Data, C언어 스타일의 구조체)만 정의합니다.
+// 세로로 늘어놓는 메뉴 테이블입니다.
 // =====================================================================================
 
-#ifndef COMMON_STRUCT__H__
-#define COMMON_STRUCT__H__
+#ifndef MENU_TABLE_ROW_H__
+#define MENU_TABLE_ROW_H__
 
-#include "CommonType.h"
+#include "MenuTable.h"
 
-struct SizeInfo
+class MenuTable_Row : public MenuTable
 {
-	TSize width = 0;
-	TSize height = 0;
-};
+	INPUT_FPS_LIMITED(8);
 
-struct UI_PosInfo
-{
-	COORD startPos = { 0, 0 };
-	COORD menuStartPos = { 0, 0 };
-	SizeInfo diffSize;
+public:
+	using MenuTable::MenuTable;
+
+#pragma region 생성자 및 소멸자
+	virtual ~MenuTable_Row() = default;
+#pragma endregion
+
+	virtual void OnInput() override;
 };
 
 #endif

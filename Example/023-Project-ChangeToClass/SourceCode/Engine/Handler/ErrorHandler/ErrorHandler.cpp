@@ -33,7 +33,8 @@ std::string_view ErrorHandler::ToString(EErrorType errorType)
 		CASE_RETURN_STRING(EErrorType::UNKNOWN_CONSOLE_SCREEN_BUFFER_TYPE, "알 수 없는 콘솔 스크린 버퍼!");
 		CASE_RETURN_STRING(EErrorType::UNKNOWN_CONSOLE_COLOR, "알 수 없는 콘솔 색상!");
 		CASE_RETURN_STRING(EErrorType::UNKNOWN_CONSOLE_OUTPUT_TYPE, "알 수 없는 콘솔 출력 타입!");
-		CASE_RETURN_STRING(EErrorType::UNKNOWN_INTRO_MENU_SCENE_LOADER_TYPE, "알 수 없는 인트로 메뉴 씬 로더 타입!");
+		CASE_RETURN_STRING(EErrorType::UNKNOWN_SCENE_TYPE, "알 수 없는 씬 타입!");
+		CASE_RETURN_STRING(EErrorType::UNKNOWN_PHASE_TYPE, "알 수 없는 페이즈 타입!");
 		CASE_RETURN_STRING(EErrorType::UNKNOWN_FRAME_RATE_TYPE, "알 수 없는 프레임 레이트 타입!");
 
 		CASE_RETURN_STRING(EErrorType::NO_FRAME_LIMITED_ON_UNLIMITED_FRAME_RATE, "무제한 프레임 레이트에서는 프레임 제한을 걸 수 없음!");
@@ -100,6 +101,7 @@ std::string_view ErrorHandler::ToFormatString(EErrorType errorType)
 		CASE_RETURN_STRING(EErrorType::NOT_ENOUGH_GAME_MONEY, "가진 돈 (%d)원보다 아이템 가격 (%d)원이 더 많음!");
 		CASE_RETURN_STRING(EErrorType::NOT_OPEN_FILE_STREAM, "(%s)의 파일 스트림은 오픈되지 않았음!");
 		CASE_RETURN_STRING(EErrorType::INVALID_RANGE, "현재값(%d)은 최솟값(%d) ~ 최댓값(%d)의 범위를 벗어남!");
+		CASE_RETURN_STRING(EErrorType::INVALID_MATRIX, "현재값(%d, %d)는 최솟값(%d, %d) ~ 최댓값(%d, %d)의 범위를 벗어남!");
 		CASE_RETURN_STRING(EErrorType::FILE_STREAM_OPEN_FAIL, "(%s)의 파일 스트림 열기 실패!");		
 		CASE_RETURN_STRING(EErrorType::SAVE_FILE_FAIL, "(%s) 저장 실패!");
 		CASE_RETURN_STRING(EErrorType::LOAD_FILE_FAIL, "(%s) 불러오기 실패!");		

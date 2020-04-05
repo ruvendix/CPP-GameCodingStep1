@@ -12,6 +12,7 @@
 #include "TriggerDialogNode.h"
 
 #include "Controller\ConsoleController.h"
+#include "Element\Menu\MenuTable.h"
 #include "DialogConstant.h"
 
 void TriggerDialogNode::Draw(Int32 x, Int32 y) const
@@ -22,7 +23,8 @@ void TriggerDialogNode::Draw(Int32 x, Int32 y) const
 	for (const auto& iter : m_vecTrigger)
 	{
 		const TupleTriggerDialogNode& tuple = *iter;
-		PUT_STRING(x + 4, ++drawPosY, std::get<0>(tuple).c_str());
+		PUT_STRING(x + ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_MENU - ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_BORDER,
+			++drawPosY, std::get<0>(tuple).c_str());
 	}
 
 	// 트리거가 존재할 때는 셀렉터를 보여줘야 해요!

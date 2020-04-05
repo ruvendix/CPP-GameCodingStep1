@@ -54,26 +54,14 @@
     <Filter Include="소스 파일\2. Client\Context">
       <UniqueIdentifier>{c3623ceb-63c2-4c31-bc14-7d49b4263f2a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\2. Client\Element">
-      <UniqueIdentifier>{94db105b-5d77-4a51-8ed2-e58ffb453bef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\2. Client\Element\Scene">
-      <UniqueIdentifier>{e35eb99c-f5a5-476a-aa35-85ad423a37ef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\1. Engine\Timer">
       <UniqueIdentifier>{2a3d2b9b-a6fa-4f90-b0d2-ac37eb39e29b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\2. Client\Element\Scene\IntroMenuScene">
-      <UniqueIdentifier>{6fda6ba4-f3df-446e-b865-44395c1cc445}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\1. Engine\Math">
       <UniqueIdentifier>{57f11e1d-a5a7-41c9-85f3-753e900bdf2f}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\1. Engine\Controller\Console">
       <UniqueIdentifier>{444bdb29-730a-44c9-bf72-8869e0965f55}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist">
-      <UniqueIdentifier>{d3164b5a-c506-4089-a642-95410849f075}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item">
       <UniqueIdentifier>{83df1686-30bf-4fbd-bfe4-f5baa021a8ef}</UniqueIdentifier>
@@ -95,6 +83,18 @@
     </Filter>
     <Filter Include="소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\DynamicObject">
       <UniqueIdentifier>{4fa0307d-8c63-400d-b640-7a82ea50b99a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\1. Engine\Element\Menu">
+      <UniqueIdentifier>{f2396fc9-f2da-4f02-9eff-d919029004f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\0. IntroMenu">
+      <UniqueIdentifier>{04887e1d-d702-4e5e-bea8-332d113d174c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\1. Scene">
+      <UniqueIdentifier>{ac9c1eec-67b6-4bda-be99-d4ccce62832f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\MiniGame\MiscellaneousShop2\Menu">
+      <UniqueIdentifier>{268745f9-103f-4c9d-b4b8-d7ff3bdbc189}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -146,9 +146,6 @@
     <ClCompile Include="SourceCode\Engine\Element\GameElement.cpp">
       <Filter>소스 파일\1. Engine\Element</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Engine\Manager\PerformanceProfileMgr.cpp">
-      <Filter>소스 파일\1. Engine\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Engine\Timer\StopwatchTimer.cpp">
       <Filter>소스 파일\1. Engine\Timer</Filter>
     </ClCompile>
@@ -157,21 +154,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Engine\Controller\ConsoleController.cpp">
       <Filter>소스 파일\1. Engine\Controller\Console</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuScene.cpp">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu.cpp">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_Quit.cpp">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_SceneLoader.cpp">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Client\Element\Scene\BattleSimulatorScene.cpp">
-      <Filter>소스 파일\2. Client\Element\Scene</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ItemBase.cpp">
       <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item</Filter>
@@ -191,9 +173,6 @@
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\MiscellaneousShop2.cpp">
       <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Client\Element\Scene\MiscellaneousShop2Scene.cpp">
-      <Filter>소스 파일\2. Client\Element\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\EntrancePhase.cpp">
       <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
     </ClCompile>
@@ -204,9 +183,6 @@
       <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\ArrangePhase.cpp">
-      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\PhaseBase.cpp">
       <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ItemDB.cpp">
@@ -233,9 +209,6 @@
     <ClCompile Include="SourceCode\Engine\Element\DoubleConsoleSelector.cpp">
       <Filter>소스 파일\1. Engine\Element</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Client\Element\Scene\DialogTreeScene.cpp">
-      <Filter>소스 파일\2. Client\Element\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\DialogTree\DialogNode.cpp">
       <Filter>소스 파일\2. Client\MiniGame\DialogueTree</Filter>
     </ClCompile>
@@ -244,9 +217,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\DialogTree\TriggerDialogNode.cpp">
       <Filter>소스 파일\2. Client\MiniGame\DialogueTree</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Engine\Manager\ResourcePathMgr.cpp">
-      <Filter>소스 파일\1. Engine\Manager</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Engine\Controller\DebugPanelController.cpp">
       <Filter>소스 파일\1. Engine\Controller</Filter>
@@ -266,9 +236,6 @@
     <ClCompile Include="SourceCode\Engine\Element\GameObject\StaticObject.cpp">
       <Filter>소스 파일\1. Engine\Element\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Engine\Manager\FileStreamMgr.cpp">
-      <Filter>소스 파일\1. Engine\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\BattleSimulatorWorld.cpp">
       <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
     </ClCompile>
@@ -284,8 +251,65 @@
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\GameObject\StaticObject\Wall.cpp">
       <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\StaticObject</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Client\Element\Scene\BattleSimulatorEditorScene.cpp">
-      <Filter>소스 파일\2. Client\Element\Scene</Filter>
+    <ClCompile Include="SourceCode\Client\IntroMenu\IntroMenu_Quit.cpp">
+      <Filter>소스 파일\2. Client\0. IntroMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\IntroMenu\IntroMenu_SceneLoader.cpp">
+      <Filter>소스 파일\2. Client\0. IntroMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Scene\BattleSimulatorEditorScene.cpp">
+      <Filter>소스 파일\2. Client\1. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Scene\DialogTreeScene.cpp">
+      <Filter>소스 파일\2. Client\1. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Scene\IntroMenuScene.cpp">
+      <Filter>소스 파일\2. Client\1. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Scene\MiscellaneousShop2Scene.cpp">
+      <Filter>소스 파일\2. Client\1. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Element\Phase.cpp">
+      <Filter>소스 파일\1. Engine\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Element\Menu\Menu.cpp">
+      <Filter>소스 파일\1. Engine\Element\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Manager\PhaseManager.cpp">
+      <Filter>소스 파일\1. Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Manager\FileStreamManager.cpp">
+      <Filter>소스 파일\1. Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Manager\PerformanceProfileManager.cpp">
+      <Filter>소스 파일\1. Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Manager\ResourcePathManager.cpp">
+      <Filter>소스 파일\1. Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Element\Menu\MenuTable.cpp">
+      <Filter>소스 파일\1. Engine\Element\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Element\Menu\MenuTable_Row.cpp">
+      <Filter>소스 파일\1. Engine\Element\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Element\Menu\MenuTable_Col.cpp">
+      <Filter>소스 파일\1. Engine\Element\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Element\Menu\MenuTable_Matrix.cpp">
+      <Filter>소스 파일\1. Engine\Element\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\Scene\BattleSimulator2Scene.cpp">
+      <Filter>소스 파일\2. Client\1. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Menu\EntrancePhaseMenu_PhaseLoader.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\IntroMenu\IntroMenu_ComeBack.cpp">
+      <Filter>소스 파일\2. Client\0. IntroMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Menu\BuyPhaseMenu_ProductFamilySelection.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -349,9 +373,6 @@
     <ClInclude Include="SourceCode\Engine\Element\GameElement.h">
       <Filter>소스 파일\1. Engine\Element</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Engine\Manager\PerformanceProfileMgr.h">
-      <Filter>소스 파일\1. Engine\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Engine\Timer\StopwatchTimer.h">
       <Filter>소스 파일\1. Engine\Timer</Filter>
     </ClInclude>
@@ -363,21 +384,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Engine\Controller\ConsoleControllerEnum.h">
       <Filter>소스 파일\1. Engine\Controller\Console</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuScene.h">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu.h">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_Quit.h">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Client\Element\Scene\IntroMenuSceneAssist\IntroMenu_SceneLoader.h">
-      <Filter>소스 파일\2. Client\Element\Scene\IntroMenuScene\IntroMenuAssist</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Client\Element\Scene\BattleSimulatorScene.h">
-      <Filter>소스 파일\2. Client\Element\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ItemBase.h">
       <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Item</Filter>
@@ -396,12 +402,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\MiscellaneousShop2.h">
       <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Client\Element\Scene\MiscellaneousShop2Scene.h">
-      <Filter>소스 파일\2. Client\Element\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\PhaseBase.h">
-      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\EntrancePhase.h">
       <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
@@ -445,9 +445,6 @@
     <ClInclude Include="SourceCode\Engine\Element\DoubleConsoleSelector.h">
       <Filter>소스 파일\1. Engine\Element</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Client\Element\Scene\DialogTreeScene.h">
-      <Filter>소스 파일\2. Client\Element\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\DialogTree\DialogNode.h">
       <Filter>소스 파일\2. Client\MiniGame\DialogueTree</Filter>
     </ClInclude>
@@ -462,12 +459,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Engine\Interface\IGameElem.h">
       <Filter>소스 파일\1. Engine\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Engine\Manager\ResourcePathMgr.h">
-      <Filter>소스 파일\1. Engine\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\PhaseType.h">
-      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Engine\Controller\DebugPanelController.h">
       <Filter>소스 파일\1. Engine\Controller</Filter>
@@ -490,9 +481,6 @@
     <ClInclude Include="SourceCode\Engine\Element\GameObject\GameObjectType.h">
       <Filter>소스 파일\1. Engine\Element\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Engine\Manager\FileStreamMgr.h">
-      <Filter>소스 파일\1. Engine\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\BattleSimulatorWorld.h">
       <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
     </ClInclude>
@@ -508,8 +496,71 @@
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\GameObject\StaticObject\Wall.h">
       <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\StaticObject</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Client\Element\Scene\BattleSimulatorEditorScene.h">
-      <Filter>소스 파일\2. Client\Element\Scene</Filter>
+    <ClInclude Include="SourceCode\Client\IntroMenu\IntroMenu_Quit.h">
+      <Filter>소스 파일\2. Client\0. IntroMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\IntroMenu\IntroMenu_SceneLoader.h">
+      <Filter>소스 파일\2. Client\0. IntroMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Scene\BattleSimulatorEditorScene.h">
+      <Filter>소스 파일\2. Client\1. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Scene\DialogTreeScene.h">
+      <Filter>소스 파일\2. Client\1. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Scene\IntroMenuScene.h">
+      <Filter>소스 파일\2. Client\1. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Scene\MiscellaneousShop2Scene.h">
+      <Filter>소스 파일\2. Client\1. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Element\Phase.h">
+      <Filter>소스 파일\1. Engine\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Element\Menu\Menu.h">
+      <Filter>소스 파일\1. Engine\Element\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Manager\PhaseManager.h">
+      <Filter>소스 파일\1. Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Manager\FileStreamManager.h">
+      <Filter>소스 파일\1. Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Manager\PerformanceProfileManager.h">
+      <Filter>소스 파일\1. Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Manager\ResourcePathManager.h">
+      <Filter>소스 파일\1. Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Common\CommonEnum.h">
+      <Filter>소스 파일\1. Engine\1. Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Element\Menu\MenuTable.h">
+      <Filter>소스 파일\1. Engine\Element\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Element\Menu\MenuTable_Row.h">
+      <Filter>소스 파일\1. Engine\Element\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Element\Menu\MenuTable_Col.h">
+      <Filter>소스 파일\1. Engine\Element\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Element\Menu\MenuTable_Matrix.h">
+      <Filter>소스 파일\1. Engine\Element\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Phase\MiscellaneousShop2PhaseType.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Phase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\Scene\BattleSimulator2Scene.h">
+      <Filter>소스 파일\2. Client\1. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Menu\EntrancePhaseMenu_PhaseLoader.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\IntroMenu\IntroMenu_ComeBack.h">
+      <Filter>소스 파일\2. Client\0. IntroMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Menu\BuyPhaseMenu_ProductFamilySelection.h">
+      <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2\Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

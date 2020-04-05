@@ -11,30 +11,34 @@
 #ifndef INTRO_MENU_SCENE_LOADER_H__
 #define INTRO_MENU_SCENE_LOADER_H__
 
-#include "./IntroMenu.h"
+#include "Element\Menu\Menu.h"
 
-enum class EIntroMenu_SceneLoaderType
+enum class EMiniGameSceneType
 {
 	UNKNOWN = 0,
-	BATTLE_SIMULATOR,
-	Dialog_TREE,
+	BATTLE_SIMULATOR2,
+	DIALOG_TREE,
 	MISCELLANEOUS_SHOP2
 };
 
-class IntroMenu_SceneLoader : public IntroMenu
+class IntroMenu_SceneLoader : public Menu
 {
 public:
+	using Menu::Menu;
+
 #pragma region 생성자 및 소멸자
 	IntroMenu_SceneLoader() = default;
 	virtual ~IntroMenu_SceneLoader() = default;
 
-	IntroMenu_SceneLoader(const std::string_view& szNameTag, const COORD& offsetCenterPos, EIntroMenu_SceneLoaderType sceneLoaderType);
+	IntroMenu_SceneLoader(const std::string_view& szNameTag,
+		const COORD& pos, const COORD& offsetCenterPos, EMiniGameSceneType miniGameSceneType);
 #pragma endregion
 
 	virtual EErrorType OnExcute() override;
+	virtual void OnTrigger_ExcuteMenu() override;
 
 private:
-	EIntroMenu_SceneLoaderType m_sceneLoaderType = EIntroMenu_SceneLoaderType::UNKNOWN;
+	EMiniGameSceneType m_selectedSceneType = EMiniGameSceneType::UNKNOWN;
 };
 
 #endif

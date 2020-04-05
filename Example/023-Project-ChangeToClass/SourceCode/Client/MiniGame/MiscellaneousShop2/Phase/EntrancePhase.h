@@ -11,13 +11,16 @@
 #ifndef ENTRANCE_PHASE_H__
 #define ENTRANCE_PHASE_H__
 
-#include "PhaseBase.h"
+#include "Element\Phase.h"
+#include "Element\Menu\MenuTable_Matrix.h"
 
-class EntrancePhase : public PhaseBase
+class EntrancePhase : public Phase
 {
+	FRIEND_WITH_HELPER(EntrancePhaseHelper);
+
 public:
 #pragma region 생성자 및 소멸자
-	using PhaseBase::PhaseBase;
+	using Phase::Phase;
 	virtual ~EntrancePhase() = default;
 #pragma endregion
 
@@ -25,6 +28,9 @@ public:
 	virtual EErrorType OnPostInitialize() override;
 	virtual EErrorType OnInput() override;
 	virtual EErrorType OnRender() override;
+
+private:
+	std::shared_ptr<MenuTable_Mat> m_spMenuTable;
 };
 
 #endif

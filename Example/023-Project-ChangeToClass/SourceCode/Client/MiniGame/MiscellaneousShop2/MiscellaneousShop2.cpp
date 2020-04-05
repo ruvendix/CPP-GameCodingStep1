@@ -13,29 +13,18 @@
 #include "Controller\InputController.h"
 #include "Controller\ConsoleController.h"
 #include "Manager\TriggerTimerManager.h"
+#include "Manager\PhaseManager.h"
 #include "Phase\EntrancePhase.h"
 
 EErrorType MiscellaneousShop2::OnInitialize()
 {
-	SAFE_DELETE(m_pCurrentPhase);
-	m_pCurrentPhase = trace_new EntrancePhase;
-
-	if (m_pCurrentPhase->OnPostInitialize() == EErrorType::INIT_FAIL)
-	{
-		return EErrorType::INIT_FAIL;
-	}
-
-	if (m_pCurrentPhase->OnInitialize() == EErrorType::INIT_FAIL)
-	{
-		return EErrorType::INIT_FAIL;
-	}
-
+	PhaseMgr::I()->CreatePhase<EntrancePhase>(ECreateType::CURRENT, 0);
 	return EErrorType::NONE;
 }
 
 EErrorType MiscellaneousShop2::OnInput()
 {
-	if (m_pCurrentPhase->OnInput() == EErrorType::INPUT_FAIL)
+	if (PhaseMgr::I()->getCurrentPhase()->OnInput() == EErrorType::INPUT_FAIL)
 	{
 		return EErrorType::INPUT_FAIL;
 	}
@@ -45,39 +34,14 @@ EErrorType MiscellaneousShop2::OnInput()
 
 EErrorType MiscellaneousShop2::OnUpdate()
 {
-	if (m_pCurrentPhase->OnUpdate() == EErrorType::UPDATE_FAIL)
+	if (PhaseMgr::I()->getCurrentPhase()->OnUpdate() == EErrorType::UPDATE_FAIL)
 	{
 		return EErrorType::UPDATE_FAIL;
 	}
 
-	if (m_pCurrentPhase->HasNextPhase())
+	if (PhaseMgr::I()->IsGotoNextPhase())
 	{
-		TriggerTimerMgr::I()->DeleteTriggerTimer("RenderString");
-
-		if (m_pCurrentPhase->OnFinalize() == EErrorType::FINAL_FAIL)
-		{
-			return EErrorType::FINAL_FAIL;
-		}
-		
-		PhaseBase* pNextPhase = m_pCurrentPhase->getNextPhase();
-		CHECK_NULLPTR(pNextPhase);
-
-		if (pNextPhase->OnInitialize() == EErrorType::INIT_FAIL)
-		{
-			return EErrorType::INIT_FAIL;
-		}
-
-		if (m_pCurrentPhase->getLevel() < pNextPhase->getLevel())
-		{
-			ConsoleController::I()->PushBackupConsoleSelector();
-			pNextPhase->OnPostInitialize();
-		}
-		else if (ConsoleController::I()->IsEmptySelector() == false)
-		{
-			ConsoleController::I()->RestoreConsoleSelector();
-		}
-		
-		SAFE_SWAP_DELETE(m_pCurrentPhase, pNextPhase);
+		PhaseMgr::I()->Flip();
 	}
 
 	return EErrorType::NONE;
@@ -85,9 +49,9 @@ EErrorType MiscellaneousShop2::OnUpdate()
 
 EErrorType MiscellaneousShop2::OnRender()
 {
-	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::WHITE);
+	//ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::WHITE);
 
-	if (m_pCurrentPhase->OnRender() == EErrorType::RENDER_FAIL)
+	if (PhaseMgr::I()->getCurrentPhase()->OnRender() == EErrorType::RENDER_FAIL)
 	{
 		return EErrorType::RENDER_FAIL;
 	}
@@ -97,12 +61,11 @@ EErrorType MiscellaneousShop2::OnRender()
 
 EErrorType MiscellaneousShop2::OnFinalize()
 {
-	if (m_pCurrentPhase->OnFinalize() == EErrorType::FINAL_FAIL)
+	if (PhaseMgr::I()->getCurrentPhase()->OnFinalize() == EErrorType::FINAL_FAIL)
 	{
 		return EErrorType::FINAL_FAIL;
 	}
 
-	SAFE_DELETE(m_pCurrentPhase);
-
+	PhaseMgr::I()->Reset();
 	return EErrorType::NONE;
 }

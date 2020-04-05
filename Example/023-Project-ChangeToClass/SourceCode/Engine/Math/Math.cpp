@@ -18,18 +18,18 @@ namespace math
 	*/
 	Int32 Clamp(Int32 value, Int32 min, Int32 max)
 	{
-		Int32 resultValue = value;
+		Int32 retValue = value;
 
-		if (resultValue < min)
+		if (retValue < min)
 		{
-			resultValue = min;
+			retValue = min;
 		}
-		else if (resultValue > max)
+		else if (retValue > max)
 		{
-			resultValue = max;
+			retValue = max;
 		}
 
-		return resultValue;
+		return retValue;
 	}
 
 	/*
@@ -38,18 +38,23 @@ namespace math
 	*/
 	Int32 ClampCycle(Int32 value, Int32 min, Int32 max)
 	{
-		Int32 resultValue = value;
+		Int32 retValue = value;
 
-		if (resultValue < min)
+		if (retValue < min)
 		{
-			resultValue = max;
+			retValue = max;
 		}
-		else if (resultValue > max)
+		else if (retValue > max)
 		{
-			resultValue = min;
+			retValue = min;
 		}
 
-		return resultValue;
+		return retValue;
+	}
+
+	Int32 CalcIdx(Int32 col, Int32 rowIdx, Int32 colIdx)
+	{
+		return ((rowIdx * col) + colIdx);
 	}
 
 	bool IsValidRange(Int32 value, Int32 min, Int32 max)

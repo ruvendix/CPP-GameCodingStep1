@@ -4,26 +4,25 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 공용으로 사용되는 구조체 모음입니다.
-// POD(Plain Old Data, C언어 스타일의 구조체)만 정의합니다.
+// 인트로 메뉴 씬으로 돌아오게 해줍니다.
+// 여러 게임에서 사용 가능합니다.
 // =====================================================================================
 
-#ifndef COMMON_STRUCT__H__
-#define COMMON_STRUCT__H__
+#ifndef INTRO_MENU_COME_BACK_H__
+#define INTRO_MENU_COME_BACK_H__
 
-#include "CommonType.h"
+#include "Element\Menu\Menu.h"
 
-struct SizeInfo
+class IntroMenu_ComeBack : public Menu
 {
-	TSize width = 0;
-	TSize height = 0;
-};
+public:
+	using Menu::Menu;
 
-struct UI_PosInfo
-{
-	COORD startPos = { 0, 0 };
-	COORD menuStartPos = { 0, 0 };
-	SizeInfo diffSize;
+#pragma region 생성자 및 소멸자
+	virtual ~IntroMenu_ComeBack() = default;
+#pragma endregion
+
+	virtual EErrorType OnExcute() override;
 };
 
 #endif

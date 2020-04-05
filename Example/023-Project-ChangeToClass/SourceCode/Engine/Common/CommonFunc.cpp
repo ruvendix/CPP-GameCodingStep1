@@ -82,11 +82,11 @@ bool CommonFunc::InputNumClamp(_Out_ Int32& num, Int32 minNum, Int32 maxNum)
 	DEBUG_LOG_CATEGORY(Common, "입력 범위를 벗어나면 자동 조절됩니다. (%d ~ %d)\n", minNum, maxNum);
 	printf("> ");
 
-	Int32 inputResult = scanf_s("%d", &num);
+	Int32 retInput = scanf_s("%d", &num);
 	printf("\n");
 	ConsoleController::I()->ClearStdInputBuffer();
 
-	if (inputResult == 0)
+	if (retInput == 0)
 	{
 		printf("정수만 입력 가능해요!\n\n");
 		return false;

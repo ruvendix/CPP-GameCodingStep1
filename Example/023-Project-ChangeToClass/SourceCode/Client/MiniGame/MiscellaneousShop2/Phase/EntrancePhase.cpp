@@ -15,80 +15,45 @@
 #include "Controller\InputController.h"
 #include "Manager\SceneManager.h"
 #include "Element\ConsoleSelector.h"
-#include "Element\Scene\IntroMenuScene.h"
+
+#include "Scene\IntroMenuScene.h"
+#include "MiscellaneousShop2PhaseType.h"
 #include "BuyPhase.h"
 #include "SellPhase.h"
 #include "ArrangePhase.h"
+#include "IntroMenu\IntroMenu_ComeBack.h"
+#include "..\Menu\EntrancePhaseMenu_PhaseLoader.h"
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+namespace
+{
+	std::unique_ptr<UI_PosInfo> s_spUI_posInfo;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class EntrancePhaseHelper final
 {
 	NON_COPYABLE_ONLY_PRIVATE_CLASS(EntrancePhaseHelper);
 
 public:
-	static EPhaseType ToPhaseType(const COORD& selectorPos);
-	static PhaseBase* CreateNextPhase(EPhaseType phaseType);
+	static void DrawMenu(const COORD& pos, std::shared_ptr<MenuTable_Mat> spMenuTable);
 };
 
-EPhaseType EntrancePhaseHelper::ToPhaseType(const COORD& selectorPos)
+void EntrancePhaseHelper::DrawMenu(const COORD& pos, std::shared_ptr<MenuTable_Mat> spMenuTable)
 {
-	if ( (selectorPos.X == 2) && 
-		 (selectorPos.Y == 4) )
-	{
-		return EPhaseType::BUY;
-	}
+	Int32 drawPosY = pos.Y;
+	PUT_STRING(pos.X,   drawPosY, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+	PUT_STRING(pos.X, ++drawPosY, "┃ 잡화 상점에 오신 걸 환영해요~!  ┃");
+	PUT_STRING(pos.X, ++drawPosY, "┃ 무슨 일로 오셨나요?             ┃");
+	PUT_STRING(pos.X, ++drawPosY, "┣━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┫");
+	PUT_STRING(pos.X, ++drawPosY, "┃                ┃                ┃");
+	PUT_STRING(pos.X, ++drawPosY, "┣━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━┫");
+	PUT_STRING(pos.X, ++drawPosY, "┃                ┃                ┃");
+	PUT_STRING(pos.X, ++drawPosY, "┗━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━┛");
 
-	if ( (selectorPos.X == 19) && 
-		 (selectorPos.Y == 4) )
-	{
-		return EPhaseType::SELL;
-	}
-
-	if ( (selectorPos.X == 2) && 
-		 (selectorPos.Y == 6) )
-	{
-		return EPhaseType::ARRANGE;
-	}
-
-	if ( (selectorPos.X == 19) && 
-		 (selectorPos.Y == 6) )
-	{
-		return EPhaseType::NONE;
-	}
-
-	return EPhaseType::NONE;
-}
-
-PhaseBase* EntrancePhaseHelper::CreateNextPhase(EPhaseType phaseType)
-{
-	switch (phaseType)
-	{
-	case EPhaseType::BUY:
-	{
-		return (trace_new BuyPhase);
-	}
-
-	case EPhaseType::SELL:
-	{
-		return (trace_new SellPhase);
-	}
-
-	case EPhaseType::ARRANGE:
-	{
-		return (trace_new ArrangePhase);
-	}
-
-	case EPhaseType::NONE:
-	{
-		break;
-	}
-
-	default:
-	{
-		break;
-	}
-	}
-
-	return nullptr;
+	spMenuTable->DrawMenu();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,68 +61,56 @@ PhaseBase* EntrancePhaseHelper::CreateNextPhase(EPhaseType phaseType)
 EErrorType EntrancePhase::OnInitialize()
 {	
 	InputController::I()->InsertInputMappingInfo("GotoIntro", VK_ESCAPE);
-	InputController::I()->InsertInputMappingInfo("SelectUp", VK_UP);
-	InputController::I()->InsertInputMappingInfo("SelectDown", VK_DOWN);
-	InputController::I()->InsertInputMappingInfo("SelectLeft", VK_LEFT);
-	InputController::I()->InsertInputMappingInfo("SelectRight", VK_RIGHT);
-	InputController::I()->InsertInputMappingInfo("SelectMenu", VK_RETURN);
+
+	s_spUI_posInfo = std::make_unique<UI_PosInfo>();
+	s_spUI_posInfo->startPos = COORD{ 0, 0 };
+	s_spUI_posInfo->menuStartPos = s_spUI_posInfo->startPos;
+	s_spUI_posInfo->menuStartPos.X += ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_MENU;
+	s_spUI_posInfo->menuStartPos.Y += 4;
+	s_spUI_posInfo->diffSize = SizeInfo{ 17, 2 };
+
+	m_spMenuTable = std::make_shared<MenuTable_Mat>(2, 2, false, false);
+	m_spMenuTable->AddForMat(std::make_shared<EntrancePhaseMenu_PhaseLoader>("구입", s_spUI_posInfo->menuStartPos,
+		EMiscellaneousShop2PhaseType::BUY), 0, 0);
+
+	m_spMenuTable->AddForMat(std::make_shared<EntrancePhaseMenu_PhaseLoader>("판매",
+		COORD{ s_spUI_posInfo->menuStartPos.X + static_cast<SHORT>(s_spUI_posInfo->diffSize.width),
+		s_spUI_posInfo->menuStartPos.Y }, EMiscellaneousShop2PhaseType::SELL), 0, 1);
+
+	m_spMenuTable->AddForMat(std::make_shared<EntrancePhaseMenu_PhaseLoader>("정리",
+		COORD{ s_spUI_posInfo->menuStartPos.X,
+		s_spUI_posInfo->menuStartPos.Y + static_cast<SHORT>(s_spUI_posInfo->diffSize.height) },
+		EMiscellaneousShop2PhaseType::ARRANGE), 1, 0);
+
+	m_spMenuTable->AddForMat(std::make_shared<IntroMenu_ComeBack>("나가기",
+		COORD{ s_spUI_posInfo->menuStartPos.X + static_cast<SHORT>(s_spUI_posInfo->diffSize.width),
+		s_spUI_posInfo->menuStartPos.Y + static_cast<SHORT>(s_spUI_posInfo->diffSize.height) }), 1, 1);
+
+	ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
+	consoleSelector.setSelectorPos(
+		s_spUI_posInfo->startPos.X + ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_BORDER, s_spUI_posInfo->menuStartPos.Y);
 
 	return EErrorType::NONE;
 }
 
 EErrorType EntrancePhase::OnPostInitialize()
 {
-	ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
-	consoleSelector.setSelectorPos(2, 4);
-	consoleSelector.setMinSelectorPos(2, 4);
-	consoleSelector.setMaxSelectorPos(19, 6);
+	COORD selectorPos = ConsoleController::I()->QueryCurrentConsoleSelectorPos();
+	selectorPos.X += (ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_MENU - ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_BORDER);
+
+	Int32 currentMenuIdx = m_spMenuTable->ToMenuIdx(selectorPos);
+	m_spMenuTable->setCurrentMenuIdx(currentMenuIdx);
 
 	return EErrorType::NONE;
 }
 
 EErrorType EntrancePhase::OnInput()
 {
+	m_spMenuTable->OnInput();
+
 	if (InputController::I()->CheckInputState("GotoIntro", EInputMappingState::DOWN) == true)
 	{
-		SceneMgr::I()->CreateScene<IntroMenuScene>(ESceneType::NEXT);
-	}
-
-	if (InputController::I()->CheckInputState("SelectLeft", EInputMappingState::DOWN) == true)
-	{
-		ConsoleController::I()->AddSelectorPosX(-17);
-		DEBUG_LOG("SelectLeft 눌렀다!");
-	}
-
-	if (InputController::I()->CheckInputState("SelectRight", EInputMappingState::DOWN) == true)
-	{
-		ConsoleController::I()->AddSelectorPosX(+17);
-		DEBUG_LOG("SelectRight 눌렀다!");
-	}
-
-	if (InputController::I()->CheckInputState("SelectUp", EInputMappingState::DOWN) == true)
-	{
-		ConsoleController::I()->AddSelectorPosY(-2);
-		DEBUG_LOG("SelectUp 눌렀다!");
-	}
-
-	if (InputController::I()->CheckInputState("SelectDown", EInputMappingState::DOWN) == true)
-	{
-		ConsoleController::I()->AddSelectorPosY(+2);
-		DEBUG_LOG("SelectDown 눌렀다!");
-	}
-
-	if (InputController::I()->CheckInputState("SelectMenu", EInputMappingState::DOWN) == true)
-	{
-		setCurrentPhaseType(EntrancePhaseHelper::ToPhaseType(ConsoleController::I()->QueryCurrentConsoleSelectorPos()));
-
-		PhaseBase* pNextPhase = EntrancePhaseHelper::CreateNextPhase(getCurrentPhaseType());
-		if (pNextPhase == nullptr)
-		{
-			SceneMgr::I()->CreateScene<IntroMenuScene>(ESceneType::NEXT);
-		}
-		
-		setNextPhase(pNextPhase);
-		DEBUG_LOG("SelectMenu 눌렀다!");
+		SceneMgr::I()->CreateScene<IntroMenuScene>(ECreateType::NEXT);
 	}
 
 	return EErrorType::NONE;
@@ -165,16 +118,8 @@ EErrorType EntrancePhase::OnInput()
 
 EErrorType EntrancePhase::OnRender()
 {
-	Int32 drawPosY = -1;
-	PUT_STRING(0, ++drawPosY, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-	PUT_STRING(0, ++drawPosY, "┃ 잡화 상점에 오신 걸 환영해요~!  ┃");
-	PUT_STRING(0, ++drawPosY, "┃ 무슨 일로 오셨나요?             ┃");
-	PUT_STRING(0, ++drawPosY, "┣━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┫");
-	PUT_STRING(0, ++drawPosY, "┃    구입        ┃    판매        ┃");
-	PUT_STRING(0, ++drawPosY, "┣━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━┫");
-	PUT_STRING(0, ++drawPosY, "┃    정리        ┃    나가기      ┃");
-	PUT_STRING(0, ++drawPosY, "┗━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━┛");
-
+	EntrancePhaseHelper::DrawMenu(s_spUI_posInfo->startPos, m_spMenuTable);
 	ConsoleController::I()->DrawSelector();
+
 	return EErrorType::NONE;
 }

@@ -16,6 +16,9 @@
 class ConsoleSelector
 {
 public:
+	static const Int32 SELECTOR_LEFT_MARGIN_ON_BORDER = 1;
+	static const Int32 SELECTOR_LEFT_MARGIN_ON_MENU = 4;
+
 	ConsoleSelector() = default;
 	virtual ~ConsoleSelector() = default;
 

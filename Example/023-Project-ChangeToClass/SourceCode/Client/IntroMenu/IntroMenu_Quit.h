@@ -8,15 +8,23 @@
 // 게임을 종료시킬 때 사용됩니다.
 // =====================================================================================
 
-#include "PCH.h"
-#include "IntroMenu_Quit.h"
+#ifndef INTRO_MENU_QUIT_H__
+#define INTRO_MENU_QUIT_H__
 
-#include "Context\GameContext.h"
-#include "Element\Scene\IntroMenuScene.h"
+#include "Element\Menu\Menu.h"
 
-EErrorType IntroMenu_Quit::OnExcute()
+class IntroMenu_Quit : public Menu
 {
-	DEBUG_LOG_CATEGORY(IntroMenuScene, "IntroMenu_Quit에서 게임 종료!");
-	GameCtx::I()->setCurrentGameState(EGameState::TERMINATION_SUCCESS);
-	return EErrorType::NONE;
-}
+public:
+	using Menu::Menu;
+
+#pragma region 생성자 및 소멸자
+	IntroMenu_Quit() = default;
+	virtual ~IntroMenu_Quit() = default;
+#pragma endregion
+
+	virtual EErrorType OnExcute() override;
+	virtual void OnTrigger_ExcuteMenu() override;
+};
+
+#endif

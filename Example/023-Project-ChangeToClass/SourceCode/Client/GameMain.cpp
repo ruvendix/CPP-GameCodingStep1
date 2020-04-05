@@ -15,16 +15,19 @@
 #include "Context\GameContext.h"
 #include "Manager\SceneManager.h"
 #include "Manager\TriggerTimerManager.h"
-#include "Manager\PerformanceProfileMgr.h"
-#include "Manager\ResourcePathMgr.h"
+#include "Manager\PerformanceProfileManager.h"
+#include "Manager\ResourcePathManager.h"
 #include "Controller\InputController.h"
 #include "Controller\FrameController.h"
 #include "Controller\ConsoleController.h"
 #include "Controller\DebugPanelController.h"
-#include "Element\Scene\IntroMenuScene.h"
+#include "Scene\IntroMenuScene.h"
 #include "Math\Random.h"
+#include "Element\Menu\MenuTable.h"
 
 #include "Element\World.h"
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class GameMainHelper final
 {
@@ -40,8 +43,6 @@ public:
 	static void Input();
 	static void Update();
 	static void Render();
-
-	static void DestorySingleton();
 };
 
 /*
@@ -55,7 +56,7 @@ void GameMainHelper::Initialize(_Out_ GameMain& targetHelper)
 
 	GameCtx::I()->setCurrentGameState(EGameState::INIT);
 	
-	SceneMgr::I()->CreateScene<IntroMenuScene>(ESceneType::CURRENT);
+	SceneMgr::I()->CreateScene<IntroMenuScene>(ECreateType::CURRENT);
 	if (SceneMgr::I()->getCurrentScene()->OnPostInitialize() == EErrorType::INIT_FAIL)
 	{
 		DEFAULT_ERROR_HANDLER(EErrorType::INIT_FAIL);
@@ -68,6 +69,8 @@ void GameMainHelper::Initialize(_Out_ GameMain& targetHelper)
 	ResourcePathMgr::I()->Initialize();
 
 	math::RandomUtil::Initialize();
+
+	MenuTable::Initialize();
 
 	DEBUG_LOG("게임 초기화 처리 완료!");
 }
@@ -93,7 +96,10 @@ void GameMainHelper::GameLoop(_Out_ GameMain& targetHelper)
 	while (GameCtx::I()->IsTerminateGame() == false)
 	{
 		BEGIN_INPUT_FPS_LIMITED_HELPER(targetHelper);
-		Input();
+		if (InputController::I()->IsEnableInput())
+		{
+			Input();
+		}
 		END_INPUT_FPS_LIMITED();
 
 		Update();
@@ -112,8 +118,7 @@ void GameMainHelper::Finalize()
 	{
 		DEFAULT_ERROR_HANDLER(EErrorType::FINAL_FAIL);
 	}
-	
-	SceneMgr::I()->Finalize();
+
 	TriggerTimerMgr::I()->Finalize();
 	InputController::I()->Finalize();
 	ConsoleController::I()->Finalize();
@@ -160,7 +165,7 @@ void GameMainHelper::Update()
 	// 전환될 씬은 초기화가 완료된 상태이므로 현재 씬과 바꿔주기만 하면 돼죠!
 	if (SceneMgr::I()->IsGotoNextScene())
 	{
-		SceneMgr::I()->FlipCurrentScene();
+		SceneMgr::I()->Flip();
 	}
 
 	// 트리거 타이머를 업데이트해야 해요!
@@ -204,20 +209,6 @@ void GameMainHelper::Render()
 #endif
 }
 
-void GameMainHelper::DestorySingleton()
-{
-	//DEBUG_LOG("==============================================================================================");
-	//GameCtx::Destroy();
-	//SceneMgr::Destroy();
-	//TriggerTimerMgr::Destroy();
-	//PerformanceProfileMgr::Destroy();
-	//InputController::Destroy();
-	//FrameController::Destroy();
-	//ConsoleController::Destroy();
-	//ConfigCtx::Destroy();
-	//DEBUG_LOG("==============================================================================================");
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEFINE_PHOENIX_SINGLETON(GameMain);
@@ -240,9 +231,6 @@ Int32 GameMain::Run()
 	{
 		ret = EXIT_FAILURE;
 	}
-
-	// 싱글톤은 가장 마지막에 제거되어야 해요!
-	GameMainHelper::DestorySingleton();
 
 	return ret;
 }

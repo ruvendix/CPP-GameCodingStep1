@@ -11,21 +11,20 @@
 #ifndef SELL_PHASE_H__
 #define SELL_PHASE_H__
 
-#include "PhaseBase.h"
+#include "Element\Phase.h"
 
-class SellPhase : public PhaseBase
+class SellPhase : public Phase
 {
 	FRIEND_WITH_HELPER(SellPhaseHelper);
 	INPUT_FPS_LIMITED(8);
 
 public:
 #pragma region 생성자 및 소멸자
-	using PhaseBase::PhaseBase;
+	using Phase::Phase;
 	virtual ~SellPhase() = default;
 #pragma endregion
 
 	virtual EErrorType OnInitialize() override;
-	virtual EErrorType OnPostInitialize() override;
 	virtual EErrorType OnInput() override;
 	virtual EErrorType OnRender() override;
 };

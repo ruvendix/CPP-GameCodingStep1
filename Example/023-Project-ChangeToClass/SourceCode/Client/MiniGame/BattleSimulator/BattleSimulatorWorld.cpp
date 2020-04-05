@@ -11,7 +11,7 @@
 #include "PCH.h"
 #include "BattleSimulatorWorld.h"
 
-#include "Manager\FileStreamMgr.h"
+#include "Manager\FileStreamManager.h"
 #include "GameObject\StaticObject\Wall.h"
 
 EErrorType BattleSimulatorWorld::OnPostInitialize()

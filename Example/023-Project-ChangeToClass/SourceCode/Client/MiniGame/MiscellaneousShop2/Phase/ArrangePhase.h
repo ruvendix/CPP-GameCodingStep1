@@ -11,18 +11,17 @@
 #ifndef ARRANGE_PHASE_H__
 #define ARRANGE_PHASE_H__
 
-#include "PhaseBase.h"
+#include "Element\Phase.h"
 
-class ArrangePhase : public PhaseBase
+class ArrangePhase : public Phase
 {
 public:
 #pragma region 생성자 및 소멸자
-	using PhaseBase::PhaseBase;
+	using Phase::Phase;
 	virtual ~ArrangePhase() = default;
 #pragma endregion
 
 	virtual EErrorType OnInitialize() override;
-	virtual EErrorType OnPostInitialize() override;
 	virtual EErrorType OnInput() override;
 	virtual EErrorType OnRender() override;
 };

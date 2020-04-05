@@ -51,6 +51,21 @@ public:
 	bool CheckInputState(const std::string_view& szInputMappingName, EInputMappingState inputState) const;
 	InputMappingInfo* FindInputMappingInfo(const std::string_view& szInputMappingName) const;
 
+	bool IsEnableInput() const
+	{
+		return (m_bEnableInput == true);
+	}
+
+	void EnableInput()
+	{
+		m_bEnableInput = true;
+	}
+
+	void DisableInput()
+	{
+		m_bEnableInput = false;
+	}
+
 	// 가변 인자 템플릿에서의 Base Case에요!
 	template <typename TInputValue>
 	void InsertInputMappingInfo(const TInputValue& inputValue)
@@ -129,6 +144,7 @@ private:
 	bool m_bInputMappingName = false; // 두 번째 인자부터 걸러내기 위한 것!
 	InputMappingInfo* m_pInputMappingInfo = nullptr; // 중복 할당을 막기 위한 것!
 	
+	bool m_bEnableInput = true;
 	MapInputMappingInfo m_mapInputMappingInfo;
 };
 

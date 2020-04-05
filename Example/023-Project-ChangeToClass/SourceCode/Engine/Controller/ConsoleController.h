@@ -38,7 +38,7 @@ public:
     void ClearStdInputBuffer();
     void MoveConsolePos(Int32 x, Int32 y);
     void MoveConsolePos(const COORD& pos);
-    void AlignCenter(const SizeInfo& sizeInfo, Uint32 length);
+    void AlignCenter(const SizeInfo& areaSizeInfo, const SizeInfo& targetSizeInfo);
     void ChangeTitle(const std::string_view& szTitle);
 	void ChangeConsoleOutputColor(EConsoleOutputType consoleOutputType, EConsoleOutputColorType consoleOutputColorType);
     void ShowConsoleCursor(bool bShow);
@@ -49,6 +49,7 @@ public:
 	void DrawSelector() const;
 
 	void ModifyCurrentConsoleSelectorPos(const COORD& pos);
+	void ModifyCurrentConsoleSelectorPosX(Int32 x);
 	void ModifyCurrentConsoleSelectorPosY(Int32 y);
 
 	const COORD& QueryCurrentConsoleSelectorPos() const;

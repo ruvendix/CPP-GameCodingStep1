@@ -9,7 +9,7 @@
 // =====================================================================================
 
 #include "PCH.h"
-#include "PerformanceProfileMgr.h"
+#include "PerformanceProfileManager.h"
 
 DEFINE_LOG_CATEGORY(PerformanceProfileMgr);
 DEFINE_PHOENIX_SINGLETON(PerformanceProfileMgr);
@@ -76,7 +76,7 @@ void PerformanceProfileMgr::Report()
 		PerformanceProfileInfo* pPerformanceProfileInfo = iter.second;
 		CHECK_NULLPTR(pPerformanceProfileInfo);
 
-		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "<%d - Performance profile result>", iter.first);
+		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "<%d - Performance profile ret>", iter.first);
 		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "%s", pPerformanceProfileInfo->strFuncSig.c_str());
 		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "Input data count : %d", pPerformanceProfileInfo->inputDataCnt);
 		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "Func call count  : %d", pPerformanceProfileInfo->callCnt);

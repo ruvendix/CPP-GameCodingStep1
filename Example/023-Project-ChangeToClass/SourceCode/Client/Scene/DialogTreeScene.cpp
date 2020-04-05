@@ -241,7 +241,7 @@ EErrorType DialogTreeScene::OnInput()
 
 	if (InputController::I()->CheckInputState("GotoIntro", EInputMappingState::DOWN) == true)
 	{
-		SceneMgr::I()->CreateScene<IntroMenuScene>(ESceneType::NEXT);
+		SceneMgr::I()->CreateScene<IntroMenuScene>(ECreateType::NEXT);
 	}
 
 	if (InputController::I()->CheckInputState("Enter", EInputMappingState::DOWN) == true)
@@ -253,7 +253,7 @@ EErrorType DialogTreeScene::OnInput()
 		}
 		else
 		{
-			SceneMgr::I()->CreateScene<IntroMenuScene>(ESceneType::NEXT);
+			SceneMgr::I()->CreateScene<IntroMenuScene>(ECreateType::NEXT);
 		}
 
 		if (DialogTreeSceneHelper::IsTriggerDialogNode(m_spCurrentDialogNode))

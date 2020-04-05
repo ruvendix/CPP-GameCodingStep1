@@ -4,11 +4,11 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 배틀 시뮬레이터 씬입니다.
+// 배틀 시뮬레이터2 씬입니다.
 // =====================================================================================
 
 #include "PCH.h"
-#include "BattleSimulatorScene.h"
+#include "BattleSimulator2Scene.h"
 
 #include "Controller\ConsoleController.h"
 #include "Controller\InputController.h"
@@ -26,20 +26,20 @@ namespace
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class BattleSimulatorSceneHelper final
+class BattleSimulator2SceneHelper final
 {
-	NON_COPYABLE_ONLY_PRIVATE_CLASS(BattleSimulatorSceneHelper);
+	NON_COPYABLE_ONLY_PRIVATE_CLASS(BattleSimulator2SceneHelper);
 
 public:
 	static void DrawTitle();
 	static void DrawUnitStat();
-	static void DrawBattleReport(const BattleSimulatorScene& helperTarget);
+	static void DrawBattleReport(const BattleSimulator2Scene& helperTarget);
 
 	static std::shared_ptr<MedievalKnight> CloneMedievalKnight();
 	static std::shared_ptr<Viking> CloneViking();
 };
 
-void BattleSimulatorSceneHelper::DrawTitle()
+void BattleSimulator2SceneHelper::DrawTitle()
 {
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::LIGHT_AQUA);
 
@@ -51,7 +51,7 @@ void BattleSimulatorSceneHelper::DrawTitle()
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::WHITE);
 }
 
-void BattleSimulatorSceneHelper::DrawUnitStat()
+void BattleSimulator2SceneHelper::DrawUnitStat()
 {
 	Int32 drawPosY = 3;
 	PUT_STRING(0, ++drawPosY, "-------------------------------------------");
@@ -64,7 +64,7 @@ void BattleSimulatorSceneHelper::DrawUnitStat()
 	PUT_STRING(0, ++drawPosY, "-------------------------------------------");
 }
 
-void BattleSimulatorSceneHelper::DrawBattleReport(const BattleSimulatorScene& helperTarget)
+void BattleSimulator2SceneHelper::DrawBattleReport(const BattleSimulator2Scene& helperTarget)
 {
 	Int32 remainMedievalKnightCnt = static_cast<Int32>(helperTarget.m_vecMedievalKnight.size());
 	Int32 remainVikingCnt = static_cast<Int32>(helperTarget.m_vecViking.size());
@@ -129,23 +129,23 @@ void BattleSimulatorSceneHelper::DrawBattleReport(const BattleSimulatorScene& he
 	}
 }
 
-std::shared_ptr<MedievalKnight> BattleSimulatorSceneHelper::CloneMedievalKnight()
+std::shared_ptr<MedievalKnight> BattleSimulator2SceneHelper::CloneMedievalKnight()
 {
 	return (std::make_shared<MedievalKnight>(s_dummyMedievalKnight));
 }
 
-std::shared_ptr<Viking> BattleSimulatorSceneHelper::CloneViking()
+std::shared_ptr<Viking> BattleSimulator2SceneHelper::CloneViking()
 {
 	return (std::make_shared<Viking>(s_dummyViking));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-DEFINE_LOG_CATEGORY(BattleSimulatorScene);
+DEFINE_LOG_CATEGORY(BattleSimulator2Scene);
 
-EErrorType BattleSimulatorScene::OnInitialize()
+EErrorType BattleSimulator2Scene::OnInitialize()
 {
-	DEBUG_LOG_CATEGORY(BattleSimulatorScene, "배틀 시뮬레이터 씬!");
+	DEBUG_LOG_CATEGORY(BattleSimulator2Scene, "배틀 시뮬레이터 씬!");
 	InputController::I()->InsertInputMappingInfo("GotoIntro", VK_ESCAPE);
 
 	// 더미 중세기사의 스탯을 정할게요.
@@ -166,12 +166,12 @@ EErrorType BattleSimulatorScene::OnInitialize()
 	// 설정된 중세기사의 수만큼 채워줄게요.
 	MedievalKnight::SetTotalCnt(30);
 	m_vecMedievalKnight.resize(MedievalKnight::GetTotalCnt());
-	std::generate(m_vecMedievalKnight.begin(), m_vecMedievalKnight.end(), &BattleSimulatorSceneHelper::CloneMedievalKnight);
+	std::generate(m_vecMedievalKnight.begin(), m_vecMedievalKnight.end(), &BattleSimulator2SceneHelper::CloneMedievalKnight);
 
 	// 설정된 바이킹의 수만큼 채워줄게요.
 	Viking::SetTotalCnt(30);
 	m_vecViking.resize(Viking::GetTotalCnt());
-	std::generate(m_vecViking.begin(), m_vecViking.end(), &BattleSimulatorSceneHelper::CloneViking);
+	std::generate(m_vecViking.begin(), m_vecViking.end(), &BattleSimulator2SceneHelper::CloneViking);
 
 	m_world = std::make_unique<BattleSimulatorWorld>(SizeInfo{ 40, 30 });
 	
@@ -191,7 +191,7 @@ EErrorType BattleSimulatorScene::OnInitialize()
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulatorScene::OnPostInitialize()
+EErrorType BattleSimulator2Scene::OnPostInitialize()
 {
 	if (m_world->getLastError() == EErrorType::LOAD_FILE_FAIL)
 	{
@@ -209,17 +209,17 @@ EErrorType BattleSimulatorScene::OnPostInitialize()
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulatorScene::OnInput()
+EErrorType BattleSimulator2Scene::OnInput()
 {
 	if (InputController::I()->CheckInputState("GotoIntro", EInputMappingState::DOWN) == true)
 	{
-		SceneMgr::I()->CreateScene<IntroMenuScene>(ESceneType::NEXT);
+		SceneMgr::I()->CreateScene<IntroMenuScene>(ECreateType::NEXT);
 	}
 
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulatorScene::OnUpdate()
+EErrorType BattleSimulator2Scene::OnUpdate()
 {
 	// 중세기사 또는 바이킹이 없으면 아무 처리도 하지 않을게요!
 	if ( (m_vecMedievalKnight.empty() == true) ||
@@ -263,7 +263,7 @@ EErrorType BattleSimulatorScene::OnUpdate()
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulatorScene::OnRender()
+EErrorType BattleSimulator2Scene::OnRender()
 {
 	if (m_world->OnRender() == EErrorType::RENDER_FAIL)
 	{
@@ -295,7 +295,7 @@ EErrorType BattleSimulatorScene::OnRender()
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulatorScene::OnFinalize()
+EErrorType BattleSimulator2Scene::OnFinalize()
 {
 	return EErrorType::NONE;
 }

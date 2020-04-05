@@ -4,40 +4,46 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 배틀 시뮬레이터 에디터 씬입니다.
-// 기본 월드에 다양한 레벨 디자인을 만들 수 있습니다.
+// 게임 인트로 화면의 메뉴 씬입니다.
 // =====================================================================================
 
-#ifndef BATTLE_SIMULATOR_EDITOR_SCENE_H__
-#define BATTLE_SIMULATOR_EDITOR_SCENE_H__
+#ifndef INTRO_MENU_SCENE_H__
+#define INTRO_MENU_SCENE_H__
 
 #include "Element\Scene.h"
 #include "Controller\ConsoleControllerEnum.h"
-#include "MiniGame\BattleSimulator\BattleSimulatorWorld.h"
+#include "Element\DoubleConsoleSelector.h"
+#include "Element\Menu\MenuTable_Row.h"
 
-DECLARE_LOG_CATEGORY(BattleSimulatorEditorScene);
+DECLARE_LOG_CATEGORY(IntroMenuScene);
 
-class BattleSimulatorEditorScene final : public Scene
+class IntroMenu;
+
+class IntroMenuScene final : public Scene
 {
-	FRIEND_WITH_HELPER(BattleSimulatorEditorSceneHelper);
+	NON_COPYABLE_CLASS(IntroMenuScene);
+	FRIEND_WITH_HELPER(IntroMenuSceneHelper);
 	INPUT_FPS_LIMITED(8);
 
 public:
-#pragma region 생성자 및 소멸자
 	using Scene::Scene;
-	virtual ~BattleSimulatorEditorScene() = default;
-#pragma endregion
+
+	IntroMenuScene() = default;
+	virtual ~IntroMenuScene() = default;
 
 	virtual EErrorType OnInitialize() override;
 	virtual EErrorType OnPostInitialize() override;
 	virtual EErrorType OnInput() override;
-	virtual EErrorType OnUpdate() override;
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnFinalize() override;
 
 private:
-	bool m_bMenuMode = true;
-	std::unique_ptr<BattleSimulatorWorld> m_spWorld;
+	void OnTrigger_ChangeRandomColorToTitle();
+
+	bool m_bTerminateGame = false;
+	std::unique_ptr<DblConsoleSelector> m_spDblConsoleSelector;
+	std::unique_ptr<MenuTable_Row> m_spIntroMenuTable;
+	EConsoleOutputColorType m_titleColorType = EConsoleOutputColorType::WHITE;
 };
 
 #endif

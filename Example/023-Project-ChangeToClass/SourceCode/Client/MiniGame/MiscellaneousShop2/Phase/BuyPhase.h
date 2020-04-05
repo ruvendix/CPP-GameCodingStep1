@@ -11,31 +11,53 @@
 #ifndef BUY_PHASE_H__
 #define BUY_PHASE_H__
 
-#include "PhaseBase.h"
+#include "Element\Phase.h"
+#include "Element\Menu\MenuTable_Matrix.h"
 #include "..\Item\ItemDBEnum.h"
 
 class ItemBase;
 
-class BuyPhase : public PhaseBase
+class BuyPhase : public Phase
 {
 	FRIEND_WITH_HELPER(BuyPhaseHelper);
 	INPUT_FPS_LIMITED(8);
 
 public:
 #pragma region 생성자 및 소멸자
-	using PhaseBase::PhaseBase;
+	using Phase::Phase;
 	virtual ~BuyPhase() = default;
 #pragma endregion
 
 	virtual EErrorType OnInitialize() override;
-	virtual EErrorType OnPostInitialize() override;
 	virtual EErrorType OnInput() override;
 	virtual EErrorType OnRender() override;
 
+	void ResetDisplayItem(TSize size)
+	{
+		m_vecDisplayItem.clear();
+		m_vecDisplayItem.reserve(size);
+	}
+
+	void SelectedProductFamily(bool bResult)
+	{
+		m_bSelectedProductFamily = bResult;
+	}
+
+	void setCurrentItemDBType(EItemDBType itemDBType)
+	{
+		m_currentItemDBType = itemDBType;
+	}
+
+	std::vector<ItemBase*>& getVecDisplayItem()
+	{
+		return m_vecDisplayItem;
+	}
+
 private:
-	EItemDBType m_itemDBType = EItemDBType::POTION;
+	EItemDBType m_currentItemDBType = EItemDBType::POTION;
 	std::vector<ItemBase*> m_vecDisplayItem;
 	bool m_bSelectedProductFamily = false;
+	std::shared_ptr<MenuTable_Mat> m_spMenuTable;
 };
 
 #endif

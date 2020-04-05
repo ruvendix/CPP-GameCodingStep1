@@ -296,7 +296,7 @@ void FrameController::OnTrigger_RefreshFPS()
 	m_FPS = m_frameCnt;
 
 	m_listFPS.push_back(m_FPS);
-	DEBUG_LOG_CATEGORY(FrameController, "현재 프레임 카운트(%d) FPS(%d)", m_frameCnt, m_FPS);
+	//DEBUG_LOG_CATEGORY(FrameController, "현재 프레임 카운트(%d) FPS(%d)", m_frameCnt, m_FPS);
 
 	m_accumulationFrameTime -= FPS_UPDATE_TIME; // 짜투리 시간도 누적할게요!
 	m_frameCnt = 0; // 프레임 카운트는 FPS 기준이므로 초기화해야 해요!

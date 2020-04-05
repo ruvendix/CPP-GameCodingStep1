@@ -10,9 +10,7 @@
 #ifndef MISCELLANEOUS_SHOP2_H__
 #define MISCELLANEOUS_SHOP2_H__
 
-#include "Element\GameElement.h"
-
-class PhaseBase;
+#include "Element\Phase.h"
 
 class MiscellaneousShop2 final : public GameElem
 {
@@ -29,9 +27,6 @@ public:
 	virtual EErrorType OnUpdate() override;
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnFinalize() override;
-
-private:
-	PhaseBase* m_pCurrentPhase = nullptr;
 };
 
 #endif

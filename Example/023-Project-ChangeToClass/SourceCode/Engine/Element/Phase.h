@@ -9,25 +9,28 @@
 // 즉석에서 전환하면 현재 페이즈에서 버그가 발생합니다.
 // =====================================================================================
 
-#include "PCH.h"
-#include "PhaseBase.h"
+#ifndef PHASE_H__
+#define PHASE_H__
 
-EErrorType PhaseBase::OnInitialize()
-{
-	return EErrorType::NONE;
-}
+#include "Element\GameElement.h"
 
-EErrorType PhaseBase::OnUpdate()
+class Phase : public GameElem
 {
-	return EErrorType::NONE;
-}
+public:
+#pragma region 생성자 및 소멸자
+	Phase() = default;
+	virtual ~Phase() = default;
 
-EErrorType PhaseBase::OnRender()
-{
-	return EErrorType::NONE;
-}
+	Phase(const std::string_view& szNameTag, Int32 level);
+#pragma endregion
 
-EErrorType PhaseBase::OnFinalize()
-{
-	return EErrorType::NONE;
-}
+	Int32 getLevel() const
+	{
+		return m_level;
+	}
+
+private:
+	Int32 m_level = 0;
+};
+
+#endif

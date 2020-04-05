@@ -4,26 +4,26 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 인트로 메뉴 씬에서 사용되는 보조 클래스입니다.
-// 게임을 종료시킬 때 사용됩니다.
+// 가로로 늘어놓는 메뉴 테이블입니다.
 // =====================================================================================
 
-#ifndef INTRO_MENU_QUIT_H__
-#define INTRO_MENU_QUIT_H__
+#ifndef MENU_TABLE_COL_H__
+#define MENU_TABLE_COL_H__
 
-#include "./IntroMenu.h"
+#include "MenuTable.h"
 
-class IntroMenu_Quit : public IntroMenu
+class MenuTable_Col : public MenuTable
 {
+	INPUT_FPS_LIMITED(8);
+
 public:
-	using IntroMenu::IntroMenu;
+	using MenuTable::MenuTable;
 
 #pragma region 생성자 및 소멸자
-	IntroMenu_Quit() = default;
-	virtual ~IntroMenu_Quit() = default;
+	virtual ~MenuTable_Col() = default;
 #pragma endregion
 
-	virtual EErrorType OnExcute() override;
+	virtual void OnInput() override;
 };
 
 #endif

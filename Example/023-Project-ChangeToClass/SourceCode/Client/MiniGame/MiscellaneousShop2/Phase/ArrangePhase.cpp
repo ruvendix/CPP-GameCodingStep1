@@ -14,6 +14,7 @@
 #include "Controller\InputController.h"
 #include "Controller\ConsoleController.h"
 #include "Manager\TriggerTimerManager.h"
+#include "Manager\PhaseManager.h"
 #include "EntrancePhase.h"
 
 #include "..\PlayerContext.h"
@@ -25,16 +26,16 @@ class ArrangePhaseHelper final
 
 public:
 	static void ArrangeInven(_Out_ ArrangePhase& targetHelper);
-	static void ResultArrangeInven();
+	static void retArrangeInven();
 };
 
 void ArrangePhaseHelper::ArrangeInven(_Out_ ArrangePhase& targetHelper)
 {
 	const ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
-	Int32 result = consoleSelector.getSelectorPos().Y - consoleSelector.getMinSelectorPos().Y;	
-	if (result == 1)
+	Int32 ret = consoleSelector.getSelectorPos().Y - consoleSelector.getMinSelectorPos().Y;	
+	if (ret == 1)
 	{
-		targetHelper.setNextPhase(trace_new EntrancePhase);
+		PhaseMgr::I()->CreatePhase<EntrancePhase>(ECreateType::NEXT, 0);
 		return;
 	}
 
@@ -42,10 +43,10 @@ void ArrangePhaseHelper::ArrangeInven(_Out_ ArrangePhase& targetHelper)
 	CHECK_NULLPTR(pInven);
 	pInven->Arrange();
 
-	RESERVE_RENDERING_STRING(3.0f, &ArrangePhaseHelper::ResultArrangeInven);
+	RESERVE_RENDERING_STRING(3.0f, &ArrangePhaseHelper::retArrangeInven);
 }
 
-void ArrangePhaseHelper::ResultArrangeInven()
+void ArrangePhaseHelper::retArrangeInven()
 {
 	PUT_STRING(0, 17, "인벤토리가 정리되었습니다!");
 }
@@ -59,13 +60,6 @@ EErrorType ArrangePhase::OnInitialize()
 	InputController::I()->InsertInputMappingInfo("SelectDown", VK_DOWN);
 	InputController::I()->InsertInputMappingInfo("SelectMenu", VK_RETURN);
 
-	setLevel(1);
-
-	return EErrorType::NONE;
-}
-
-EErrorType ArrangePhase::OnPostInitialize()
-{
 	ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
 	consoleSelector.setSelectorPos(0, 14);
 	consoleSelector.setMinSelectorPosY(14);
@@ -78,7 +72,7 @@ EErrorType ArrangePhase::OnInput()
 {
 	if (InputController::I()->CheckInputState("GotoEntrancPhase", EInputMappingState::DOWN) == true)
 	{
-		setNextPhase(trace_new EntrancePhase);
+		PhaseMgr::I()->CreatePhase<EntrancePhase>(ECreateType::NEXT, 0);
 	}
 
 	if (InputController::I()->CheckInputState("SelectUp", EInputMappingState::DOWN) == true)

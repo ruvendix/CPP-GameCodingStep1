@@ -11,8 +11,8 @@
 #include "World.h"
 
 #include "GameObject\StaticObject.h"
-#include "Manager\ResourcePathMgr.h"
-#include "Manager\FileStreamMgr.h"
+#include "Manager\ResourcePathManager.h"
+#include "Manager\FileStreamManager.h"
 
 namespace
 {

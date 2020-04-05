@@ -15,6 +15,7 @@
 #include "Controller\ConsoleController.h"
 #include "Controller\FrameController.h"
 #include "Manager\TriggerTimerManager.h"
+#include "Manager\PhaseManager.h"
 #include "Element\ConsoleSelector.h"
 #include "EntrancePhase.h"
 
@@ -22,13 +23,15 @@
 #include "..\Inven.h"
 #include "..\Item\ItemBase.h"
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 class SellPhaseHelper final
 {
 	NON_COPYABLE_ONLY_PRIVATE_CLASS(SellPhaseHelper);
 
 public:
 	static void SellItem(const SellPhase& targetHelper);
-	static void ResultSellItem();
+	static void SellItemComplete();
 };
 
 void SellPhaseHelper::SellItem(const SellPhase& targetHelper)
@@ -59,10 +62,10 @@ void SellPhaseHelper::SellItem(const SellPhase& targetHelper)
 		pInven->DeleteInvenItemInfo(selectedIdx);
 	}
 
-	RESERVE_RENDERING_STRING(3.0f, &SellPhaseHelper::ResultSellItem);
+	RESERVE_RENDERING_STRING(3.0f, &SellPhaseHelper::SellItemComplete);
 }
 
-void SellPhaseHelper::ResultSellItem()
+void SellPhaseHelper::SellItemComplete()
 {
 	PUT_STRING(0, 12, "아이템을 판매했습니다!");
 }
@@ -78,13 +81,6 @@ EErrorType SellPhase::OnInitialize()
 	InputController::I()->InsertInputMappingInfo("SelectRight", VK_RIGHT);
 	InputController::I()->InsertInputMappingInfo("SellItem", VK_RETURN);
 
-	setLevel(1);
-
-	return EErrorType::NONE;
-}
-
-EErrorType SellPhase::OnPostInitialize()
-{
 	ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
 	consoleSelector.setSelectorPos(2, 3);
 	consoleSelector.setMinSelectorPosY(3);
@@ -98,14 +94,14 @@ EErrorType SellPhase::OnPostInitialize()
 
 EErrorType SellPhase::OnInput()
 {
-	if (PhaseBase::OnInput() == EErrorType::FIRST_INPUT)
+	if (Phase::OnInput() == EErrorType::FIRST_INPUT)
 	{
 		return EErrorType::FIRST_INPUT;
 	}
 
 	if (InputController::I()->CheckInputState("GotoEntrancPhase", EInputMappingState::DOWN) == true)
 	{
-		setNextPhase(trace_new EntrancePhase);
+		PhaseMgr::I()->CreatePhase<EntrancePhase>(ECreateType::NEXT, 0);
 	}
 
 	if (InputController::I()->CheckInputState("SelectUp", EInputMappingState::DOWN) == true)

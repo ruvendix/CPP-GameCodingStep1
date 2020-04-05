@@ -11,71 +11,63 @@
 #define SCENE_MGR__H__
 
 #include "Common\CommonType.h"
+#include "Common\CommonEnum.h"
 #include "Common\CommonMacro.h"
+#include "Controller\ConsoleController.h"
 #include "Element\Scene.h"
 
 DECLARE_LOG_CATEGORY(SceneMgr);
-
-enum class ESceneType : Int32
-{
-	CURRENT = 0,
-	NEXT,
-};
 
 class SceneMgr final
 {
 	DECLARE_PHOENIX_SINGLETON(SceneMgr);
 
 public:
-	void Finalize();
-	void FlipCurrentScene();
+	EErrorType Flip();
 
 	bool IsGotoNextScene() const
 	{
-		return (m_pNextScene != nullptr);
+		return (m_spNextScene != nullptr);
 	}
 
-	Scene* getCurrentScene() const
+	std::shared_ptr<Scene> getCurrentScene() const
 	{
-		CHECK_NULLPTR(m_pCurrentScene);
-		return m_pCurrentScene;
+		return m_spCurrentScene;
 	}
 
 	/*
-	원하는 씬 타입으로 씬을 생성하고 등록합니다.
+	원하는 씬을 생성해서 등록합니다.
 	*/
 	template <typename TScene>
-	void CreateScene(const std::string_view& szSceneName, ESceneType sceneType)
+	void CreateScene(const std::string_view& szSceneName, ECreateType createType)
 	{
-		if (sceneType == ESceneType::CURRENT)
+		if (createType == ECreateType::CURRENT)
 		{
-			if (m_pCurrentScene != nullptr)
+			if (m_spCurrentScene != nullptr)
 			{
-				DEFAULT_ERROR_HANDLER(EErrorType::OVERLAPPED_SCENE, m_pCurrentScene->getNameTag());
+				DEFAULT_ERROR_HANDLER(EErrorType::OVERLAPPED_SCENE, m_spCurrentScene->getNameTag());
 				return;
 			}
 
-			m_pCurrentScene = trace_new TScene(szSceneName);
-
-			if (m_pCurrentScene->OnInitialize() == EErrorType::INIT_FAIL)
+			m_spCurrentScene = std::make_shared<TScene>(szSceneName);
+			if (m_spCurrentScene->OnInitialize() == EErrorType::INIT_FAIL)
 			{
 				DEFAULT_ERROR_HANDLER(EErrorType::INIT_FAIL);
 			}
 		}
 		else
 		{
-			SAFE_DELETE(m_pNextScene);
-			m_pNextScene = trace_new TScene(szSceneName);
+			m_spNextScene = std::make_unique<TScene>(szSceneName);
 
 			// 전환될 예정인 씬은 초기화가 완료된 상태로 전환되어야 해요!
-			if (m_pNextScene->OnInitialize() == EErrorType::INIT_FAIL)
+			if (m_spNextScene->OnInitialize() == EErrorType::INIT_FAIL)
 			{
 				DEFAULT_ERROR_HANDLER(EErrorType::INIT_FAIL);
 			}
 
-			if (m_pNextScene->OnPostInitialize() == EErrorType::NO_PREV_CONSOLE_SELECTOR)
+			if (m_spNextScene->OnPostInitialize() == EErrorType::INIT_FAIL)
 			{
-				ERROR_HANDLER(false, EErrorType::NO_PREV_CONSOLE_SELECTOR);
+				DEFAULT_ERROR_HANDLER(EErrorType::INIT_FAIL);
 			}
 		}
 	}
@@ -84,16 +76,16 @@ public:
 	씬의 이름을 씬 타입으로 설정해서 생성하고 등록합니다.
 	*/
 	template <typename TScene>
-	void CreateScene(ESceneType sceneType)
+	void CreateScene(ECreateType createType)
 	{
 		std::string strSceneName = typeid(TScene).name();
 		strSceneName = strSceneName.substr(5 + 1, _TRUNCATE); // 5 + 1은 "class" + " "
-		CreateScene<TScene>(strSceneName, sceneType);
+		CreateScene<TScene>(strSceneName, createType);
 	}
 
 private:
-	Scene* m_pCurrentScene = nullptr;
-	Scene* m_pNextScene = nullptr;
+	std::shared_ptr<Scene> m_spCurrentScene;
+	std::unique_ptr<Scene> m_spNextScene;
 };
 
 #endif

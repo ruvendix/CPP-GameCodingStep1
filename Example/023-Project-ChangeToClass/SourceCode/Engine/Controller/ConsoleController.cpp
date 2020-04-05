@@ -236,15 +236,17 @@ void ConsoleController::MoveConsolePos(const COORD& pos)
 /*
 sizeInfo를 이용해서 중앙 정렬합니다.
 */
-void ConsoleController::AlignCenter(const SizeInfo& sizeInfo, Uint32 length)
+void ConsoleController::AlignCenter(const SizeInfo& areaSizeInfo, const SizeInfo& targetSizeInfo)
 {
-	if (sizeInfo.width < length)
+	if ( (areaSizeInfo.width < targetSizeInfo.width) ||
+		 (areaSizeInfo.height < targetSizeInfo.height) )
 	{
 		DEBUG_LOG("기능은 작동하지만 정상적이지는 않음...");
 	}
 
-	Int32 resultPosX = (sizeInfo.width / 2) - static_cast<Int32>((length / 2));
-	MoveConsolePos(resultPosX, sizeInfo.height / 2);
+	Int32 retPosX = (areaSizeInfo.width / 2) - static_cast<Int32>(targetSizeInfo.width / 2);
+	Int32 retPosY = (areaSizeInfo.height / 2) - static_cast<Int32>(targetSizeInfo.height / 2);
+	MoveConsolePos(retPosX, retPosY);
 }
 
 /*
@@ -316,11 +318,16 @@ void ConsoleController::RestoreConsoleSelector()
 {
 	*m_pCurrentConsoleSelector = *(m_stackConsoleSelector.top());
 	m_stackConsoleSelector.pop();
+
+	DEBUG_LOG_CATEGORY(ConsoleController, "셀렉터 좌표 복구(%d, %d)",
+		m_pCurrentConsoleSelector->getSelectorPos().X, m_pCurrentConsoleSelector->getSelectorPos().Y);
 }
 
 void ConsoleController::PushBackupConsoleSelector()
 {
 	m_stackConsoleSelector.push(std::make_unique<ConsoleSelector>(*m_pCurrentConsoleSelector));
+	DEBUG_LOG_CATEGORY(ConsoleController, "셀렉터 좌표 백업(%d, %d)",
+		m_pCurrentConsoleSelector->getSelectorPos().X, m_pCurrentConsoleSelector->getSelectorPos().Y);
 }
 
 void ConsoleController::AddSelectorPosX(Int32 x)
@@ -346,6 +353,11 @@ const COORD& ConsoleController::QueryCurrentConsoleSelectorPos() const
 void ConsoleController::ModifyCurrentConsoleSelectorPos(const COORD& pos)
 {
 	m_pCurrentConsoleSelector->setSelectorPos(pos);
+}
+
+void ConsoleController::ModifyCurrentConsoleSelectorPosX(Int32 x)
+{
+	m_pCurrentConsoleSelector->setSelectorPosX(x);
 }
 
 void ConsoleController::ModifyCurrentConsoleSelectorPosY(Int32 y)
