@@ -9,7 +9,7 @@
 // =====================================================================================
 
 #include "PCH.h"
-#include "BattleSimulatorEditorScene.h"
+#include "BattleSimulator2_EditorScene.h"
 
 #include "Controller\FrameController.h"
 #include "Controller\ConsoleController.h"
@@ -26,18 +26,18 @@ namespace
 	std::unique_ptr<UI_PosInfo> s_spUI_posInfo;
 }
 
-class BattleSimulatorEditorSceneHelper final
+class BattleSimulator2_EditorSceneHelper final
 {
-	NON_COPYABLE_ONLY_PRIVATE_CLASS(BattleSimulatorEditorSceneHelper);
+	NON_COPYABLE_ONLY_PRIVATE_CLASS(BattleSimulator2_EditorSceneHelper);
 
 public:
 	static void DrawMenu(const COORD& pos, std::shared_ptr<MenuTable_Row> spMenuTable);
 
-	static void OnInput_MenuMode(_Inout_ BattleSimulatorEditorScene& targetHelper);
-	static void OnInput_EditorMode(_Inout_ BattleSimulatorEditorScene& targetHelper);
+	static void OnInput_MenuMode(_Inout_ BattleSimulator2_EditorScene& targetHelper);
+	static void OnInput_EditorMode(_Inout_ BattleSimulator2_EditorScene& targetHelper);
 };
 
-void BattleSimulatorEditorSceneHelper::DrawMenu(const COORD& pos, std::shared_ptr<MenuTable_Row> spMenuTable)
+void BattleSimulator2_EditorSceneHelper::DrawMenu(const COORD& pos, std::shared_ptr<MenuTable_Row> spMenuTable)
 {
 	Int32 drawPosX = pos.X;
 	Int32 drawPosY = spMenuTable->getFirstMenu()->getPos().Y - 1;
@@ -83,7 +83,7 @@ void BattleSimulatorEditorSceneHelper::DrawMenu(const COORD& pos, std::shared_pt
 	spMenuTable->DrawMenu();
 }
 
-void BattleSimulatorEditorSceneHelper::OnInput_MenuMode(_Inout_ BattleSimulatorEditorScene& targetHelper)
+void BattleSimulator2_EditorSceneHelper::OnInput_MenuMode(_Inout_ BattleSimulator2_EditorScene& targetHelper)
 {
 	targetHelper.m_spEditorMenuTable->OnInput();
 
@@ -93,18 +93,18 @@ void BattleSimulatorEditorSceneHelper::OnInput_MenuMode(_Inout_ BattleSimulatorE
 	}
 }
 
-void BattleSimulatorEditorSceneHelper::OnInput_EditorMode(_Inout_ BattleSimulatorEditorScene& targetHelper)
+void BattleSimulator2_EditorSceneHelper::OnInput_EditorMode(_Inout_ BattleSimulator2_EditorScene& targetHelper)
 {
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-DEFINE_LOG_CATEGORY(BattleSimulatorEditorScene);
+DEFINE_LOG_CATEGORY(BattleSimulator2_EditorScene);
 
-EErrorType BattleSimulatorEditorScene::OnInitialize()
+EErrorType BattleSimulator2_EditorScene::OnInitialize()
 {
-	DEBUG_LOG_CATEGORY(BattleSimulatorEditorScene, "배틀 시뮬레이터 에디터 씬!");
+	DEBUG_LOG_CATEGORY(BattleSimulator2_EditorScene, "배틀 시뮬레이터 에디터 씬!");
 	InputController::I()->InsertInputMappingInfo("GotoIntro", VK_ESCAPE);
 	InputController::I()->InsertInputMappingInfo("SelectUp", VK_UP);
 	InputController::I()->InsertInputMappingInfo("SelectDown", VK_DOWN);
@@ -116,7 +116,7 @@ EErrorType BattleSimulatorEditorScene::OnInitialize()
 
 	// 월드 파일이 있는지?
 	// 있다면 파일을 읽고, 아니면 새로 초기화해야 해요!
-	EErrorType errorType = m_spWorld->LoadFile("BattleSimulatorWorld.world");
+	EErrorType errorType = m_spWorld->LoadFile("BattleSimulatorWorld2.world");
 	if (errorType == EErrorType::LOAD_FILE_FAIL)
 	{
 		m_spWorld->setLastError(EErrorType::LOAD_FILE_FAIL);
@@ -158,7 +158,7 @@ EErrorType BattleSimulatorEditorScene::OnInitialize()
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulatorEditorScene::OnPostInitialize()
+EErrorType BattleSimulator2_EditorScene::OnPostInitialize()
 {
 	if (m_spWorld->getLastError() == EErrorType::LOAD_FILE_FAIL)
 	{
@@ -170,9 +170,6 @@ EErrorType BattleSimulatorEditorScene::OnPostInitialize()
 		m_spWorld->ResetError();
 	}
 
-	//// 세이브 테스트!
-	//m_world->OnSaveFile("BattleSimulatorWorld.world");
-
 	ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
 	consoleSelector.setSelectorPos(
 		s_spUI_posInfo->startPos.X + ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_BORDER, s_spUI_posInfo->menuStartPos.Y);
@@ -182,41 +179,41 @@ EErrorType BattleSimulatorEditorScene::OnPostInitialize()
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulatorEditorScene::OnInput()
+EErrorType BattleSimulator2_EditorScene::OnInput()
 {
 	if (m_bMenuMode == true)
 	{
-		BattleSimulatorEditorSceneHelper::OnInput_MenuMode(*this);
+		BattleSimulator2_EditorSceneHelper::OnInput_MenuMode(*this);
 	}
 	else
 	{
-		BattleSimulatorEditorSceneHelper::OnInput_EditorMode(*this);
+		BattleSimulator2_EditorSceneHelper::OnInput_EditorMode(*this);
 	}
 
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulatorEditorScene::OnUpdate()
+EErrorType BattleSimulator2_EditorScene::OnUpdate()
 {
 
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulatorEditorScene::OnRender()
+EErrorType BattleSimulator2_EditorScene::OnRender()
 {
 	if (m_spWorld->OnRender() == EErrorType::RENDER_FAIL)
 	{
 		return EErrorType::RENDER_FAIL;
 	}
 
-	BattleSimulatorEditorSceneHelper::DrawMenu(s_spUI_posInfo->startPos, m_spEditorMenuTable);
-
+	BattleSimulator2_EditorSceneHelper::DrawMenu(s_spUI_posInfo->startPos, m_spEditorMenuTable);
 	ConsoleController::I()->DrawSelector();
 
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulatorEditorScene::OnFinalize()
+EErrorType BattleSimulator2_EditorScene::OnFinalize()
 {
+	m_spWorld->SaveFile("BattleSimulatorWorld2.world"); // 월드는 오토 세이브!
 	return EErrorType::NONE;
 }

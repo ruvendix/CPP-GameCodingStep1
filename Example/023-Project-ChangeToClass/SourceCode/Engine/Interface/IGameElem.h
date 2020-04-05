@@ -21,8 +21,9 @@ public:
 	virtual EErrorType OnUpdate() = 0;
 	virtual EErrorType OnRender() = 0;
 	virtual EErrorType OnFinalize() = 0;
-	virtual EErrorType OnSaveFile(const std::string_view& szFileName) = 0;
-	virtual EErrorType OnLoadFile(const std::string_view& szFileName) = 0;
+	virtual EErrorType OnPreSaveFile(FILE* pFileStream) = 0;
+	virtual EErrorType OnSaveFile(FILE* pFileStream) = 0;
+	virtual EErrorType OnLoadFile(FILE* pFileStream) = 0;
 };
 
 #endif

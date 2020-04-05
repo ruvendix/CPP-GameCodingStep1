@@ -13,7 +13,7 @@
 #include "Common\CommonType.h"
 #include "Common\CommonMacro.h"
 #include "Common\CommonNecessary.h"
-#include "Item\ItemDBEnum.h"
+#include "Item\ItemDBType.h"
 
 class ItemBase;
 

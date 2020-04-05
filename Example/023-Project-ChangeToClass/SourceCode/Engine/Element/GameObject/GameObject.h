@@ -22,17 +22,12 @@ public:
 #pragma endregion
 
 	virtual EErrorType OnRender() override;
-	virtual EErrorType OnSaveFile(const std::string_view& szFileName) override;
-	virtual EErrorType OnLoadFile(const std::string_view& szFileName) override;
+	virtual EErrorType OnSaveFile(FILE* pFileStream) override;
+	virtual EErrorType OnLoadFile(FILE* pFileStream) override;
 
 	virtual EGameObjType getType() const
 	{
 		return EGameObjType::NONE;
-	}
-
-	bool IsOpenFileStream() const
-	{
-		return (m_pFileStream != nullptr);
 	}
 
 	const COORD& getPos() const
@@ -43,11 +38,6 @@ public:
 	const std::string& getShape() const
 	{
 		return m_strShape;
-	}
-
-	FILE* getFileStream() const
-	{
-		return m_pFileStream;
 	}
 
 	void setPos(const COORD& pos)
@@ -66,15 +56,9 @@ public:
 		m_strShape = szShape;
 	}
 
-	void setFileStream(FILE* pFileStream)
-	{
-		m_pFileStream = pFileStream;
-	}
-
 private:
 	COORD m_pos;
 	std::string m_strShape;
-	FILE* m_pFileStream = nullptr; // 호출자에 의해 처리될 경우 파일 스트림이 있는지 판단!
 };
 
 #endif

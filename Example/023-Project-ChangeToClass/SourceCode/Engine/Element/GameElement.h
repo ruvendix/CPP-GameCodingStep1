@@ -35,8 +35,9 @@ public:
 	virtual EErrorType OnUpdate() override;
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnFinalize() override;
-	virtual EErrorType OnSaveFile(const std::string_view& szFileName) override;
-	virtual EErrorType OnLoadFile(const std::string_view& szFileName) override;
+	virtual EErrorType OnPreSaveFile(FILE* pFileStream) override;
+	virtual EErrorType OnSaveFile(FILE* pFileStream) override;
+	virtual EErrorType OnLoadFile(FILE* pFileStream) override;
 
 	void ResetError()
 	{

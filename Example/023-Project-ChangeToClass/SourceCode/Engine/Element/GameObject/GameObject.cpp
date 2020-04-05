@@ -14,19 +14,14 @@
 
 EErrorType GameObj::OnRender()
 {
-	PUT_STRING(m_pos.X, m_pos.Y, m_strShape.c_str());
+	//PUT_STRING(m_pos.X, m_pos.Y, m_strShape.c_str());
+	ConsoleController::I()->PutString(m_pos.X, m_pos.Y, m_strShape.c_str());
 	return EErrorType::NONE;
 }
 
-EErrorType GameObj::OnSaveFile(const std::string_view& szFileName)
+EErrorType GameObj::OnSaveFile(FILE* pFileStream)
 {
-	if (IsOpenFileStream() == false)
-	{
-		return EErrorType::NONE;
-	}
-
-	FILE* pFileStream = getFileStream();
-	CHECK_NULLPTR(pFileStream);
+	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::SAVE_FILE_FAIL);
 
 	const COORD& pos = getPos();
 	fwrite(&pos, sizeof(pos), 1, pFileStream);
@@ -43,15 +38,9 @@ EErrorType GameObj::OnSaveFile(const std::string_view& szFileName)
 	return EErrorType::NONE;
 }
 
-EErrorType GameObj::OnLoadFile(const std::string_view& szFileName)
+EErrorType GameObj::OnLoadFile(FILE* pFileStream)
 {
-	if (IsOpenFileStream() == false)
-	{
-		return EErrorType::NONE;
-	}
-
-	FILE* pFileStream = getFileStream();
-	CHECK_NULLPTR(pFileStream);
+	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::LOAD_FILE_FAIL);
 
 	COORD pos{ 0, 0 };
 	fread(&pos, sizeof(pos), 1, pFileStream);

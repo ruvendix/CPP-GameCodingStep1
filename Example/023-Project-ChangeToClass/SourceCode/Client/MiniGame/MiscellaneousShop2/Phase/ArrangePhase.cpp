@@ -26,7 +26,7 @@ class ArrangePhaseHelper final
 
 public:
 	static void ArrangeInven(_Out_ ArrangePhase& targetHelper);
-	static void retArrangeInven();
+	static void ArrangeInvenComplete();
 };
 
 void ArrangePhaseHelper::ArrangeInven(_Out_ ArrangePhase& targetHelper)
@@ -43,10 +43,10 @@ void ArrangePhaseHelper::ArrangeInven(_Out_ ArrangePhase& targetHelper)
 	CHECK_NULLPTR(pInven);
 	pInven->Arrange();
 
-	RESERVE_RENDERING_STRING(3.0f, &ArrangePhaseHelper::retArrangeInven);
+	RESERVE_RENDERING_STRING(3.0f, &ArrangePhaseHelper::ArrangeInvenComplete);
 }
 
-void ArrangePhaseHelper::retArrangeInven()
+void ArrangePhaseHelper::ArrangeInvenComplete()
 {
 	PUT_STRING(0, 17, "인벤토리가 정리되었습니다!");
 }
@@ -70,6 +70,11 @@ EErrorType ArrangePhase::OnInitialize()
 
 EErrorType ArrangePhase::OnInput()
 {
+	if (GameElem::OnInput() == EErrorType::FIRST_INPUT)
+	{
+		return EErrorType::FIRST_INPUT;
+	}
+
 	if (InputController::I()->CheckInputState("GotoEntrancPhase", EInputMappingState::DOWN) == true)
 	{
 		PhaseMgr::I()->CreatePhase<EntrancePhase>(ECreateType::NEXT, 0);

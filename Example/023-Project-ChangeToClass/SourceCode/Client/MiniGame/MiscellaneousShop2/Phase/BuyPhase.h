@@ -13,7 +13,7 @@
 
 #include "Element\Phase.h"
 #include "Element\Menu\MenuTable_Matrix.h"
-#include "..\Item\ItemDBEnum.h"
+#include "..\Item\ItemDBType.h"
 
 class ItemBase;
 

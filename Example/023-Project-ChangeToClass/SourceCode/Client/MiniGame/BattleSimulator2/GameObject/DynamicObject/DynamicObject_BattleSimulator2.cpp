@@ -4,21 +4,14 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 페이즈 타입 모음입니다.
+// 배틀 시뮬레이터2에서 사용되는 기본 동적 오브젝트입니다.
 // =====================================================================================
 
-#ifndef	MISCELLANEOUS_SHOP2_PHASE_TYPE_H__
-#define MISCELLANEOUS_SHOP2_PHASE_TYPE_H__
+#include "PCH.h"
+#include "DynamicObject_BattleSimulator2.h"
 
-#include "Common\CommonType.h"
-
-enum class EMiscellaneousShop2PhaseType : Int32
+DynamicObj_BattleSimulator2::DynamicObj_BattleSimulator2(EDynamicObjID dynamicObjID) :
+	m_dynamicObjID(dynamicObjID)
 {
-	UNKNOWN = 0,
-	ENTRANCE,
-	BUY,
-	SELL,
-	ARRANGE,
-};
 
-#endif
+}

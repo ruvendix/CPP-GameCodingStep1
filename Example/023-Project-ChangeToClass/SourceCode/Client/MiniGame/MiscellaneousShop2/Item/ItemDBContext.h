@@ -12,7 +12,7 @@
 #define ITEM_DB_CONTEXT_H__
 
 #include "Common\CommonFunc.h"
-#include "ItemDBEnum.h"
+#include "ItemDBType.h"
 
 class ItemBase;
 class ItemDB;

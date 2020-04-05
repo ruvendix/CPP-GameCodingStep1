@@ -7,8 +7,8 @@
 // 아이템 DB 타입 모음입니다.
 // =====================================================================================
 
-#ifndef ITEM_DB_ENUM_H__
-#define ITEM_DB_ENUM_H__
+#ifndef ITEM_DB_TYPE_H__
+#define ITEM_DB_TYPE_H__
 
 #include "Common\CommonType.h"
 

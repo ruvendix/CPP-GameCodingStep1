@@ -16,7 +16,7 @@
 #include "Controller\ConsoleController.h"
 #include "Controller\InputController.h"
 
-#include "Scene\BattleSimulatorEditorScene.h"
+#include "Scene\BattleSimulator2_EditorScene.h"
 #include "Scene\MiscellaneousShop2Scene.h"
 #include "Scene\DialogTreeScene.h"
 
@@ -45,7 +45,7 @@ void IntroMenu_SceneLoader::OnTrigger_ExcuteMenu()
 	{
 	case EMiniGameSceneType::BATTLE_SIMULATOR2:
 	{
-		SceneMgr::I()->CreateScene<BattleSimulatorEditorScene>(ECreateType::NEXT);
+		SceneMgr::I()->CreateScene<BattleSimulator2_EditorScene>(ECreateType::NEXT);
 		break;
 	}
 

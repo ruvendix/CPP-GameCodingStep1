@@ -35,11 +35,14 @@ public:
 
 	virtual EErrorType OnInitialize() override;
 	virtual EErrorType OnRender() override;
-	virtual EErrorType OnSaveFile(const std::string_view& szFileName) override;
-	virtual EErrorType OnLoadFile(const std::string_view& szFileName) override;
+	virtual EErrorType OnSaveFile(FILE* pFileStream) override;
+	virtual EErrorType OnLoadFile(FILE* pFileStream) override;
 	virtual EErrorType OnFinalize() override;
 
-	EErrorType LoadFile(const std::string_view& szFileName); // 템플릿 메서드 패턴
+	// 템플릿 메서드 패턴을 이용할게요!
+	EErrorType SaveFile(const std::string_view& szFileName);
+	EErrorType LoadFile(const std::string_view& szFileName);
+
 	std::shared_ptr<GameObj> FindGameObj(Int32 x, Int32 y) const;
 
 	const SizeInfo& getSize() const
@@ -52,6 +55,11 @@ public:
 		return m_spWorldFileHeader;
 	}
 
+	std::vector<VecGameObjLine>& getVecGameObj()
+	{
+		return m_vecGameObj;
+	}
+
 protected:
 	// 월드에 게임 오브젝트를 배치하는 건 상속 관계와 LevelDesign에서만 가능해요!
 	void SpawnGameObj(std::shared_ptr<GameObj> spGameObj);
@@ -62,7 +70,6 @@ private:
 	Int32 m_staticObjCnt = 0;
 	SizeInfo m_sizeInfo;
 	std::shared_ptr<WorldFileHeader> m_spWorldFileHeader;
-	//WorldFileHeader m_worldFileHeader;
 	std::vector<VecGameObjLine> m_vecGameObj;
 };
 

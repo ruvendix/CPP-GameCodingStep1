@@ -4,23 +4,19 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 배틀 시뮬레이터의 월드에 사용되는 벽입니다.
+// 동적 오브젝트 ID 모음입니다.
 // =====================================================================================
 
-#ifndef SIDE_WALL__H__
-#define SIDE_WALL__H__
+#ifndef DYNAMIC_OBJECT_ID_H__
+#define DYNAMIC_OBJECT_ID_H__
 
-#include "Element\GameObject\StaticObject.h"
+#include "Common\CommonType.h"
 
-class Wall : public StaticObj
+enum class EDynamicObjID : Int32
 {
-public:
-#pragma region 생성자 및 소멸자
-	using StaticObj::StaticObj;
-	virtual ~Wall() = default;
-#pragma endregion
-
-	virtual EErrorType OnRender() override;
+	UNKNOWN = 0,
+	VIKING,
+	MEDIEVALKNIGHT,
 };
 
 #endif

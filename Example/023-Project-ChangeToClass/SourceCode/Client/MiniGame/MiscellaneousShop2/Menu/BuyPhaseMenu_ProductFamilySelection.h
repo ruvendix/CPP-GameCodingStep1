@@ -12,7 +12,7 @@
 #define BUY_PHASE_MENU_PRODUCT_FAMILY_SELECTION_H__
 
 #include "Element\Menu\Menu.h"
-#include "..\Item\ItemDBEnum.h"
+#include "..\Item\ItemDBType.h"
 
 class BuyPhase;
 

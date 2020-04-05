@@ -147,11 +147,13 @@
     <ClCompile Include="SourceCode\Client\IntroMenu\IntroMenu_ComeBack.cpp" />
     <ClCompile Include="SourceCode\Client\IntroMenu\IntroMenu_Quit.cpp" />
     <ClCompile Include="SourceCode\Client\IntroMenu\IntroMenu_SceneLoader.cpp" />
-    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\BattleSimulatorWorld.cpp" />
-    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\GameObject\DynamicObject\MedievalKnight.cpp" />
-    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\GameObject\DynamicObject\Unit.cpp" />
-    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\GameObject\DynamicObject\Viking.cpp" />
-    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator\GameObject\StaticObject\Wall.cpp" />
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2World.cpp" />
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\DynamicObject_BattleSimulator2.cpp" />
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\MedievalKnight.cpp" />
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\Unit.cpp" />
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\Viking.cpp" />
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\StaticObject_BattleSimulator2.cpp" />
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\Wall.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\DialogTree\DialogNode.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\DialogTree\DialogTree.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\DialogTree\TriggerDialogNode.cpp" />
@@ -177,8 +179,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">PCH.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="SourceCode\Client\Scene\BattleSimulatorEditorScene.cpp" />
-    <ClCompile Include="SourceCode\Client\Scene\BattleSimulator2Scene.cpp" />
+    <ClCompile Include="SourceCode\Client\Scene\BattleSimulator2_EditorScene.cpp" />
+    <ClCompile Include="SourceCode\Client\Scene\BattleSimulator2_GameScene.cpp" />
     <ClCompile Include="SourceCode\Client\Scene\DialogTreeScene.cpp" />
     <ClCompile Include="SourceCode\Client\Scene\IntroMenuScene.cpp" />
     <ClCompile Include="SourceCode\Client\Scene\MiscellaneousShop2Scene.cpp" />
@@ -224,11 +226,15 @@
     <ClInclude Include="SourceCode\Client\IntroMenu\IntroMenu_ComeBack.h" />
     <ClInclude Include="SourceCode\Client\IntroMenu\IntroMenu_Quit.h" />
     <ClInclude Include="SourceCode\Client\IntroMenu\IntroMenu_SceneLoader.h" />
-    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\BattleSimulatorWorld.h" />
-    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\GameObject\DynamicObject\MedievalKnight.h" />
-    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\GameObject\DynamicObject\Unit.h" />
-    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\GameObject\DynamicObject\Viking.h" />
-    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator\GameObject\StaticObject\Wall.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2World.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\DynamicObjectID.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\DynamicObject_BattleSimulator2.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\MedievalKnight.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\Unit.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\Viking.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\StaticObjectID.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\StaticObject_BattleSimulator2.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\Wall.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\DialogTree\DialogConstant.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\DialogTree\DialogNode.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\DialogTree\DialogTree.h" />
@@ -236,7 +242,7 @@
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ItemBase.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ItemDB.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ItemDBContext.h" />
-    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ItemDBEnum.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ItemDBType.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem_Camping.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Item\ShopItem\ShopItem_Grocery.h" />
@@ -253,8 +259,8 @@
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\PlayerContext.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Inven.h" />
     <ClInclude Include="SourceCode\Client\PCH.h" />
-    <ClInclude Include="SourceCode\Client\Scene\BattleSimulatorEditorScene.h" />
-    <ClInclude Include="SourceCode\Client\Scene\BattleSimulator2Scene.h" />
+    <ClInclude Include="SourceCode\Client\Scene\BattleSimulator2_EditorScene.h" />
+    <ClInclude Include="SourceCode\Client\Scene\BattleSimulator2_GameScene.h" />
     <ClInclude Include="SourceCode\Client\Scene\DialogTreeScene.h" />
     <ClInclude Include="SourceCode\Client\Scene\IntroMenuScene.h" />
     <ClInclude Include="SourceCode\Client\Scene\MiscellaneousShop2Scene.h" />

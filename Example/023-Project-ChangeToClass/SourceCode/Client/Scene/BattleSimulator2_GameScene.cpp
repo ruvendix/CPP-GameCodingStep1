@@ -8,15 +8,15 @@
 // =====================================================================================
 
 #include "PCH.h"
-#include "BattleSimulator2Scene.h"
+#include "BattleSimulator2_GameScene.h"
 
 #include "Controller\ConsoleController.h"
 #include "Controller\InputController.h"
 #include "Manager\SceneManager.h"
 #include "IntroMenuScene.h"
 #include "Math\Random.h"
-#include "MiniGame\BattleSimulator\GameObject\DynamicObject\MedievalKnight.h"
-#include "MiniGame\BattleSimulator\GameObject\DynamicObject\Viking.h"
+#include "MiniGame\BattleSimulator2\GameObject\DynamicObject\MedievalKnight.h"
+#include "MiniGame\BattleSimulator2\GameObject\DynamicObject\Viking.h"
 
 namespace
 {
@@ -33,7 +33,7 @@ class BattleSimulator2SceneHelper final
 public:
 	static void DrawTitle();
 	static void DrawUnitStat();
-	static void DrawBattleReport(const BattleSimulator2Scene& helperTarget);
+	static void DrawBattleReport(const BattleSimulator2_GameScene& helperTarget);
 
 	static std::shared_ptr<MedievalKnight> CloneMedievalKnight();
 	static std::shared_ptr<Viking> CloneViking();
@@ -64,7 +64,7 @@ void BattleSimulator2SceneHelper::DrawUnitStat()
 	PUT_STRING(0, ++drawPosY, "-------------------------------------------");
 }
 
-void BattleSimulator2SceneHelper::DrawBattleReport(const BattleSimulator2Scene& helperTarget)
+void BattleSimulator2SceneHelper::DrawBattleReport(const BattleSimulator2_GameScene& helperTarget)
 {
 	Int32 remainMedievalKnightCnt = static_cast<Int32>(helperTarget.m_vecMedievalKnight.size());
 	Int32 remainVikingCnt = static_cast<Int32>(helperTarget.m_vecViking.size());
@@ -141,11 +141,11 @@ std::shared_ptr<Viking> BattleSimulator2SceneHelper::CloneViking()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-DEFINE_LOG_CATEGORY(BattleSimulator2Scene);
+DEFINE_LOG_CATEGORY(BattleSimulator2_GameScene);
 
-EErrorType BattleSimulator2Scene::OnInitialize()
+EErrorType BattleSimulator2_GameScene::OnInitialize()
 {
-	DEBUG_LOG_CATEGORY(BattleSimulator2Scene, "배틀 시뮬레이터 씬!");
+	DEBUG_LOG_CATEGORY(BattleSimulator2_GameScene, "배틀 시뮬레이터 씬!");
 	InputController::I()->InsertInputMappingInfo("GotoIntro", VK_ESCAPE);
 
 	// 더미 중세기사의 스탯을 정할게요.
@@ -191,7 +191,7 @@ EErrorType BattleSimulator2Scene::OnInitialize()
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulator2Scene::OnPostInitialize()
+EErrorType BattleSimulator2_GameScene::OnPostInitialize()
 {
 	if (m_world->getLastError() == EErrorType::LOAD_FILE_FAIL)
 	{
@@ -209,7 +209,7 @@ EErrorType BattleSimulator2Scene::OnPostInitialize()
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulator2Scene::OnInput()
+EErrorType BattleSimulator2_GameScene::OnInput()
 {
 	if (InputController::I()->CheckInputState("GotoIntro", EInputMappingState::DOWN) == true)
 	{
@@ -219,7 +219,7 @@ EErrorType BattleSimulator2Scene::OnInput()
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulator2Scene::OnUpdate()
+EErrorType BattleSimulator2_GameScene::OnUpdate()
 {
 	// 중세기사 또는 바이킹이 없으면 아무 처리도 하지 않을게요!
 	if ( (m_vecMedievalKnight.empty() == true) ||
@@ -263,7 +263,7 @@ EErrorType BattleSimulator2Scene::OnUpdate()
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulator2Scene::OnRender()
+EErrorType BattleSimulator2_GameScene::OnRender()
 {
 	if (m_world->OnRender() == EErrorType::RENDER_FAIL)
 	{
@@ -295,7 +295,7 @@ EErrorType BattleSimulator2Scene::OnRender()
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulator2Scene::OnFinalize()
+EErrorType BattleSimulator2_GameScene::OnFinalize()
 {
 	return EErrorType::NONE;
 }
