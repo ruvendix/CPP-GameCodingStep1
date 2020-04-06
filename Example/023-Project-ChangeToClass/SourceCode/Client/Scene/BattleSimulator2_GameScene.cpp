@@ -13,8 +13,9 @@
 #include "Controller\ConsoleController.h"
 #include "Controller\InputController.h"
 #include "Manager\SceneManager.h"
-#include "IntroMenuScene.h"
 #include "Math\Random.h"
+
+#include "BattleSimulator2_EditorScene.h"
 #include "MiniGame\BattleSimulator2\GameObject\DynamicObject\MedievalKnight.h"
 #include "MiniGame\BattleSimulator2\GameObject\DynamicObject\Viking.h"
 
@@ -26,9 +27,9 @@ namespace
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class BattleSimulator2SceneHelper final
+class BattleSimulator2_GameSceneHelper final
 {
-	NON_COPYABLE_ONLY_PRIVATE_CLASS(BattleSimulator2SceneHelper);
+	NON_COPYABLE_ONLY_PRIVATE_CLASS(BattleSimulator2_GameSceneHelper);
 
 public:
 	static void DrawTitle();
@@ -39,7 +40,7 @@ public:
 	static std::shared_ptr<Viking> CloneViking();
 };
 
-void BattleSimulator2SceneHelper::DrawTitle()
+void BattleSimulator2_GameSceneHelper::DrawTitle()
 {
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::LIGHT_AQUA);
 
@@ -51,7 +52,7 @@ void BattleSimulator2SceneHelper::DrawTitle()
 	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::WHITE);
 }
 
-void BattleSimulator2SceneHelper::DrawUnitStat()
+void BattleSimulator2_GameSceneHelper::DrawUnitStat()
 {
 	Int32 drawPosY = 3;
 	PUT_STRING(0, ++drawPosY, "-------------------------------------------");
@@ -64,7 +65,7 @@ void BattleSimulator2SceneHelper::DrawUnitStat()
 	PUT_STRING(0, ++drawPosY, "-------------------------------------------");
 }
 
-void BattleSimulator2SceneHelper::DrawBattleReport(const BattleSimulator2_GameScene& helperTarget)
+void BattleSimulator2_GameSceneHelper::DrawBattleReport(const BattleSimulator2_GameScene& helperTarget)
 {
 	Int32 remainMedievalKnightCnt = static_cast<Int32>(helperTarget.m_vecMedievalKnight.size());
 	Int32 remainVikingCnt = static_cast<Int32>(helperTarget.m_vecViking.size());
@@ -129,12 +130,12 @@ void BattleSimulator2SceneHelper::DrawBattleReport(const BattleSimulator2_GameSc
 	}
 }
 
-std::shared_ptr<MedievalKnight> BattleSimulator2SceneHelper::CloneMedievalKnight()
+std::shared_ptr<MedievalKnight> BattleSimulator2_GameSceneHelper::CloneMedievalKnight()
 {
 	return (std::make_shared<MedievalKnight>(s_dummyMedievalKnight));
 }
 
-std::shared_ptr<Viking> BattleSimulator2SceneHelper::CloneViking()
+std::shared_ptr<Viking> BattleSimulator2_GameSceneHelper::CloneViking()
 {
 	return (std::make_shared<Viking>(s_dummyViking));
 }
@@ -166,45 +167,15 @@ EErrorType BattleSimulator2_GameScene::OnInitialize()
 	// 설정된 중세기사의 수만큼 채워줄게요.
 	MedievalKnight::SetTotalCnt(30);
 	m_vecMedievalKnight.resize(MedievalKnight::GetTotalCnt());
-	std::generate(m_vecMedievalKnight.begin(), m_vecMedievalKnight.end(), &BattleSimulator2SceneHelper::CloneMedievalKnight);
+	std::generate(m_vecMedievalKnight.begin(), m_vecMedievalKnight.end(), &BattleSimulator2_GameSceneHelper::CloneMedievalKnight);
 
 	// 설정된 바이킹의 수만큼 채워줄게요.
 	Viking::SetTotalCnt(30);
 	m_vecViking.resize(Viking::GetTotalCnt());
-	std::generate(m_vecViking.begin(), m_vecViking.end(), &BattleSimulator2SceneHelper::CloneViking);
+	std::generate(m_vecViking.begin(), m_vecViking.end(), &BattleSimulator2_GameSceneHelper::CloneViking);
 
-	m_world = std::make_unique<BattleSimulator2World>(SizeInfo{ 40, 30 });
-	
-	// 월드 파일이 있는지?
-	// 있다면 파일을 읽고, 아니면 새로 초기화해야 해요!
-	EErrorType errorType = m_world->LoadFile("BattleSimulator2World.world");
-	if (errorType == EErrorType::LOAD_FILE_FAIL)
-	{
-		m_world->setLastError(EErrorType::LOAD_FILE_FAIL);
-
-		if (m_world->OnInitialize() == EErrorType::INIT_FAIL)
-		{
-			return EErrorType::INIT_FAIL;
-		}		
-	}
-
-	return EErrorType::NONE;
-}
-
-EErrorType BattleSimulator2_GameScene::OnPostInitialize()
-{
-	if (m_world->getLastError() == EErrorType::LOAD_FILE_FAIL)
-	{
-		if (m_world->OnPostInitialize() == EErrorType::INIT_FAIL)
-		{
-			return EErrorType::INIT_FAIL;
-		}
-
-		m_world->ResetError();
-	}
-
-	//// 세이브 테스트!
-	//m_world->OnSaveFile("BattleSimulator2World.world");
+	// 레벨 디자인 씬에서 가져와야 함!
+	//m_spWorld = std::make_unique<BattleSimulator2World>(SizeInfo{ 40, 30 });
 
 	return EErrorType::NONE;
 }
@@ -213,7 +184,7 @@ EErrorType BattleSimulator2_GameScene::OnInput()
 {
 	if (InputController::I()->CheckInputState("GotoIntro", EInputMappingState::DOWN) == true)
 	{
-		SceneMgr::I()->CreateScene<IntroMenuScene>(ECreateType::NEXT);
+		SceneMgr::I()->CreateScene<BattleSimulator2_EditorScene>(ECreateType::NEXT);
 	}
 
 	return EErrorType::NONE;
@@ -265,33 +236,32 @@ EErrorType BattleSimulator2_GameScene::OnUpdate()
 
 EErrorType BattleSimulator2_GameScene::OnRender()
 {
-	if (m_world->OnRender() == EErrorType::RENDER_FAIL)
-	{
-		return EErrorType::RENDER_FAIL;
-	}
-
-	//BattleSimulatorSceneHelper::DrawTitle();
-	//BattleSimulatorSceneHelper::DrawUnitStat();
-
-	//Int32 drawPosY = 11;
-	//PRINTF(0, ++drawPosY, "남은 중세기사의 수 : %d / %d", static_cast<Int32>(m_vecMedievalKnight.size()), MedievalKnight::GetTotalCnt());
-	//PRINTF(0, ++drawPosY, "남은 바이킹의 수   : %d / %d", static_cast<Int32>(m_vecViking.size()), Viking::GetTotalCnt());
-
-	//++drawPosY;
-	//PRINTF(0, ++drawPosY, "∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼");
-	//PRINTF(0, ++drawPosY, "모의 전투를 시작할게요~!");
-
-	//if (m_bBattleEnd == false)
+	//if (m_spWorld->OnRender() == EErrorType::RENDER_FAIL)
 	//{
-	//	return EErrorType::NONE;
+	//	return EErrorType::RENDER_FAIL;
 	//}
 
-	//PRINTF(0, ++drawPosY, "모의 전투가 끝났어요~!");
-	//PRINTF(0, ++drawPosY, "전투 결과를 알아볼까요?");
-	//PRINTF(0, ++drawPosY, "∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼");
+	BattleSimulator2_GameSceneHelper::DrawTitle();
+	BattleSimulator2_GameSceneHelper::DrawUnitStat();
 
-	//BattleSimulatorSceneHelper::DrawBattleReport(*this);
+	Int32 drawPosY = 11;
+	PUT_STRING(0, ++drawPosY, "남은 중세기사의 수 : %d / %d", static_cast<Int32>(m_vecMedievalKnight.size()), MedievalKnight::GetTotalCnt());
+	PUT_STRING(0, ++drawPosY, "남은 바이킹의 수   : %d / %d", static_cast<Int32>(m_vecViking.size()), Viking::GetTotalCnt());
 
+	++drawPosY;
+	PUT_STRING(0, ++drawPosY, "∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼");
+	PUT_STRING(0, ++drawPosY, "모의 전투를 시작할게요~!");
+
+	if (m_bBattleEnd == false)
+	{
+		return EErrorType::NONE;
+	}
+
+	PUT_STRING(0, ++drawPosY, "모의 전투가 끝났어요~!");
+	PUT_STRING(0, ++drawPosY, "전투 결과를 알아볼까요?");
+	PUT_STRING(0, ++drawPosY, "∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼");
+
+	BattleSimulator2_GameSceneHelper::DrawBattleReport(*this);
 	return EErrorType::NONE;
 }
 

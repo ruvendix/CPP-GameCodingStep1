@@ -38,5 +38,5 @@ EErrorType Menu_LoadLevelDesign::OnExcute()
 
 void Menu_LoadLevelDesign::OnTrigger_Excute()
 {
-	PUT_STRING(86, 28, "레벨 디자인 불러옴!");
+	PUT_STRING(82, 28, "레벨 디자인 불러옴!");
 }

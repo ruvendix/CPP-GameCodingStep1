@@ -24,6 +24,10 @@ public:
 #pragma endregion
 
 	virtual EErrorType OnExcute() override;
+	virtual void OnTrigger_Excute() override;
+
+private:
+	void OnTrigger_GameStart();
 };
 
 #endif

@@ -21,7 +21,7 @@ DECLARE_LOG_CATEGORY(BattleSimulator2_GameScene);
 
 class BattleSimulator2_GameScene final : public Scene
 {
-	FRIEND_WITH_HELPER(BattleSimulator2SceneHelper);
+	FRIEND_WITH_HELPER(BattleSimulator2_GameSceneHelper);
 
 public:
 #pragma region 생성자 및 소멸자
@@ -30,14 +30,13 @@ public:
 #pragma endregion
 
 	virtual EErrorType OnInitialize() override;
-	virtual EErrorType OnPostInitialize() override;
 	virtual EErrorType OnInput() override;
 	virtual EErrorType OnUpdate() override;
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnFinalize() override;
 
 private:
-	std::unique_ptr<BattleSimulator2World> m_world;
+	std::shared_ptr<BattleSimulator2World> m_spWorld;
 	std::vector<std::shared_ptr<MedievalKnight>> m_vecMedievalKnight;
 	std::vector<std::shared_ptr<Viking>> m_vecViking;
 

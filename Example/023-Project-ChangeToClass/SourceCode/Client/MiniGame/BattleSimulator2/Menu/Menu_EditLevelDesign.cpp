@@ -57,5 +57,5 @@ EErrorType Menu_EditLevelDesign::OnExcute()
 
 void Menu_EditLevelDesign::OnTrigger_Excute()
 {
-	PUT_STRING(86, 28, "편집 모드로 변경!");
+	PUT_STRING(82, 28, "편집 모드로 변경!");
 }

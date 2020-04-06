@@ -36,5 +36,5 @@ EErrorType Menu_SaveLevelDesign::OnExcute()
 
 void Menu_SaveLevelDesign::OnTrigger_Excute()
 {
-	PUT_STRING(86, 28, "레벨 디자인 저장!");
+	PUT_STRING(82, 28, "레벨 디자인 저장!");
 }

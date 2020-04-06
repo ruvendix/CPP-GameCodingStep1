@@ -36,5 +36,5 @@ EErrorType Menu_ResetLevelDesign::OnExcute()
 
 void Menu_ResetLevelDesign::OnTrigger_Excute()
 {
-	PUT_STRING(86, 28, "레벨 디자인 초기화!");
+	PUT_STRING(82, 28, "레벨 디자인 초기화!");
 }

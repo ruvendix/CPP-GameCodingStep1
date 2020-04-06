@@ -10,3 +10,33 @@
 
 #include "PCH.h"
 #include "Menu_StartGame.h"
+
+#include "Controller\ConsoleController.h"
+#include "Controller\InputController.h"
+#include "Manager\SceneManager.h"
+#include "Manager\TriggerTimerManager.h"
+#include "Timer\TriggerTimer.h"
+
+#include "Scene\BattleSimulator2_GameScene.h"
+
+EErrorType Menu_StartGame::OnExcute()
+{
+	InputController::I()->DisableInput();
+
+	TriggerTimerMgr::I()->AddTriggerTimer("GameStart_Menu_StartGame",
+		1.0f, 0.0f, this, &Menu_StartGame::OnTrigger_GameStart, false, false);
+
+	RESERVE_RENDERING_STRING(1.0f, std::bind(&Menu_StartGame::OnTrigger_Excute, this));
+	return EErrorType::NONE;
+}
+
+void Menu_StartGame::OnTrigger_Excute()
+{
+	PUT_STRING(82, 28, "현재 레벨 디자인으로 게임을 시작할게요!");
+}
+
+void Menu_StartGame::OnTrigger_GameStart()
+{
+	InputController::I()->EnableInput();
+	SceneMgr::I()->CreateScene<BattleSimulator2_GameScene>(ECreateType::NEXT);
+}

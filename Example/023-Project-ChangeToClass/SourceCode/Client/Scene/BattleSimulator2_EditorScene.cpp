@@ -302,7 +302,7 @@ EErrorType BattleSimulator2_EditorScene::OnInitialize()
 		       s_spUI_posInfo->menuStartPos.Y +
 		       static_cast<SHORT>(s_spUI_posInfo->diffSize.height * (++diffMultipleFactor)) }, this));
 
-	m_spEditorMenuTable->AddMenu(std::make_shared<Menu>("게임 시작",
+	m_spEditorMenuTable->AddMenu(std::make_shared<Menu_StartGame>("게임 시작",
 		COORD{ s_spUI_posInfo->menuStartPos.X,
 		       s_spUI_posInfo->menuStartPos.Y +
 		       static_cast<SHORT>(s_spUI_posInfo->diffSize.height * (++diffMultipleFactor)) }));
