@@ -11,10 +11,40 @@
 #include "PCH.h"
 #include "BattleSimulator2World.h"
 
-#include "Manager\FileStreamManager.h"
 #include "GameObject\StaticObject\Wall.h"
 
-EErrorType BattleSimulatorWorld::OnPostInitialize()
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class BattleSimulator2WorldHelper final
+{
+	NON_COPYABLE_ONLY_PRIVATE_CLASS(BattleSimulator2WorldHelper);
+
+public:
+	static std::shared_ptr<BattleSimulator2_StaticObj> CreateStaticObj(EStaticObjID staticObjID);
+};
+
+std::shared_ptr<BattleSimulator2_StaticObj> BattleSimulator2WorldHelper::CreateStaticObj(EStaticObjID staticObjID)
+{
+	switch (staticObjID)
+	{
+	case EStaticObjID::WALL:
+	{
+		return std::make_shared<Wall>(staticObjID);
+	}
+
+	default:
+	{
+		DEFAULT_ERROR_HANDLER(EErrorType::UNKNOWN_DYNAMIC_OBJ);
+		return nullptr;
+	}
+	}
+
+	return nullptr;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+EErrorType BattleSimulator2World::OnPostInitialize()
 {
 	const SizeInfo& sizeInfo = getSize();
 	for (TSize i = 0; i < sizeInfo.width; ++i)
@@ -46,7 +76,7 @@ EErrorType BattleSimulatorWorld::OnPostInitialize()
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulatorWorld::OnSaveFile(FILE* pFileStream)
+EErrorType BattleSimulator2World::OnSaveFile(FILE* pFileStream)
 {
 	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::SAVE_FILE_FAIL);
 
@@ -78,7 +108,7 @@ EErrorType BattleSimulatorWorld::OnSaveFile(FILE* pFileStream)
 	return EErrorType::NONE;
 }
 
-EErrorType BattleSimulatorWorld::OnLoadFile(FILE* pFileStream)
+EErrorType BattleSimulator2World::OnLoadFile(FILE* pFileStream)
 {
 	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::LOAD_FILE_FAIL);
 
@@ -89,7 +119,9 @@ EErrorType BattleSimulatorWorld::OnLoadFile(FILE* pFileStream)
 		Int32 objID = 0;
 		fread(&objID, sizeof(Int32), 1, pFileStream);
 
-		std::shared_ptr<Wall> spStaticObj = nullptr;
+		std::shared_ptr<BattleSimulator2_StaticObj> spStaticObj =
+			BattleSimulator2WorldHelper::CreateStaticObj(static_cast<EStaticObjID>(objID));
+
 		if (objID == CommonFunc::ToUnderlyingType(EStaticObjID::WALL))
 		{
 			spStaticObj = std::make_shared<Wall>(EStaticObjID::WALL);

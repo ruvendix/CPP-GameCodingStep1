@@ -32,12 +32,12 @@ EErrorType IntroMenu_SceneLoader::OnExcute()
 {
 	InputController::I()->DisableInput();
 	TriggerTimerMgr::I()->AddTriggerTimer("Excute_IntroMenu_SceneLoader",
-		1.0f, 0.0f, this, &IntroMenu_SceneLoader::OnTrigger_ExcuteMenu, false, false);
+		1.0f, 0.0f, this, &IntroMenu_SceneLoader::OnTrigger_Excute, false, false);
 
 	return EErrorType::NONE;
 }
 
-void IntroMenu_SceneLoader::OnTrigger_ExcuteMenu()
+void IntroMenu_SceneLoader::OnTrigger_Excute()
 {
 	ConsoleController::I()->PushBackupConsoleSelector();
 

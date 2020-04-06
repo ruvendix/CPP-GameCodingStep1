@@ -25,6 +25,8 @@ class GameObj;
 
 class World : public GameElem
 {
+	friend class LevelDesign;
+
 public:
 	using VecGameObjLine = std::vector<std::shared_ptr<GameObj>>;
 
@@ -39,15 +41,22 @@ public:
 	virtual EErrorType OnLoadFile(FILE* pFileStream) override;
 	virtual EErrorType OnFinalize() override;
 
+	void Reset();
+
 	// 템플릿 메서드 패턴을 이용할게요!
 	EErrorType SaveFile(const std::string_view& szFileName);
 	EErrorType LoadFile(const std::string_view& szFileName);
 
 	std::shared_ptr<GameObj> FindGameObj(Int32 x, Int32 y) const;
 
+	COORD CalcCenterBySize()
+	{
+		return COORD{ static_cast<SHORT>(m_size.width / 2), static_cast<SHORT>(m_size.height / 2) };
+	}
+
 	const SizeInfo& getSize() const
 	{
-		return m_sizeInfo;
+		return m_size;
 	}
 
 	std::shared_ptr<WorldFileHeader> getWorldFileHeader() const
@@ -68,7 +77,8 @@ protected:
 
 private:
 	Int32 m_staticObjCnt = 0;
-	SizeInfo m_sizeInfo;
+	Int32 m_dynamicObjCnt = 0;
+	SizeInfo m_size;
 	std::shared_ptr<WorldFileHeader> m_spWorldFileHeader;
 	std::vector<VecGameObjLine> m_vecGameObj;
 };

@@ -26,14 +26,14 @@ public:
 	virtual ~BuyPhaseMenu_ProductFamilySelection() = default;
 
 	BuyPhaseMenu_ProductFamilySelection(const std::string_view& szNameTag, const COORD& pos,
-		EItemDBType itemDBType, BuyPhase*  pBuyPhase);
+		EItemDBType itemDBType, BuyPhase* pTargetPhase);
 #pragma endregion
 
 	virtual EErrorType OnExcute() override;
 
 private:
 	EItemDBType m_itemDBType = EItemDBType::NONE;
-	BuyPhase* m_pBuyPhase = nullptr;
+	BuyPhase* m_pTargetPhase = nullptr;
 };
 
 #endif

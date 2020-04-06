@@ -8,18 +8,18 @@
 // =====================================================================================
 
 #include "PCH.h"
-#include "StaticObject_BattleSimulator2.h"
+#include "BattleSimulator2_StaticObject.h"
 
-StaticObj_BattleSimulator2::StaticObj_BattleSimulator2(EStaticObjID staticObjID) :
-	m_staticObjID(staticObjID)
+BattleSimulator2_StaticObj::BattleSimulator2_StaticObj(EStaticObjID objID) :
+	m_objID(objID)
 {
 
 }
 
-EErrorType StaticObj_BattleSimulator2::OnPreSaveFile(FILE* pFileStream)
+EErrorType BattleSimulator2_StaticObj::OnPreSaveFile(FILE* pFileStream)
 {
 	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::SAVE_FILE_FAIL);
-	fwrite(&m_staticObjID, sizeof(m_staticObjID), 1, pFileStream);
+	fwrite(&m_objID, sizeof(m_objID), 1, pFileStream);
 
 	return EErrorType::NONE;
 }

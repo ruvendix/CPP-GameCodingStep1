@@ -20,12 +20,12 @@ EErrorType IntroMenu_Quit::OnExcute()
 {
 	InputController::I()->DisableInput();
 	TriggerTimerMgr::I()->AddTriggerTimer("Excute_IntroMenu_Quit",
-		1.0f, 0.0f, this, &IntroMenu_Quit::OnTrigger_ExcuteMenu, false, false);
+		1.0f, 0.0f, this, &IntroMenu_Quit::OnTrigger_Excute, false, false);
 
 	return EErrorType::NONE;
 }
 
-void IntroMenu_Quit::OnTrigger_ExcuteMenu()
+void IntroMenu_Quit::OnTrigger_Excute()
 {
 	GameCtx::I()->setCurrentGameState(EGameState::TERMINATION_SUCCESS);
 	DEBUG_LOG("IntroMenu_Quit에서 게임 종료!");

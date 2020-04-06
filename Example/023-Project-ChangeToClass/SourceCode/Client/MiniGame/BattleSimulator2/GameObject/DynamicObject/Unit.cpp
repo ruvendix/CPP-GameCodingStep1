@@ -12,6 +12,12 @@
 
 #include "Math\Random.h"
 
+Unit::Unit(EDynamicObjID objID, const std::string_view& szShape)
+{
+	setObjID(objID);
+	setShape(szShape);
+}
+
 void Unit::Attack(std::shared_ptr<Unit> spTargetUnit)
 {
 	if (m_attackSuccessRate > math::RandomUtil::GenerateUniformDistribution(0.0f, 1.0f))
@@ -23,4 +29,11 @@ void Unit::Attack(std::shared_ptr<Unit> spTargetUnit)
 void Unit::Damage(Int32 damage)
 {
 	m_HP -= damage;
+}
+
+void Unit::Copy(std::shared_ptr<Unit> spUnit)
+{
+	setObjID(spUnit->getObjID());
+	setShape(spUnit->getShape());
+	setPos(spUnit->getPos());
 }

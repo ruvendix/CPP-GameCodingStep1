@@ -16,21 +16,21 @@
 
 namespace
 {
-	const std::string_view& szExt = ".world";
+	const std::string_view& s_szWorldExt = ".world";
 }
 
 World::World(const SizeInfo& sizeInfo)
 {
-	m_sizeInfo = sizeInfo;
+	m_size = sizeInfo;
 }
 
 EErrorType World::OnInitialize()
 {
-	m_vecGameObj.resize(m_sizeInfo.height);
+	m_vecGameObj.resize(m_size.height);
 
 	for (auto& iter1 : m_vecGameObj)
 	{
-		iter1.resize(m_sizeInfo.width);
+		iter1.resize(m_size.width);
 
 		for (auto& iter2 : iter1)
 		{
@@ -114,13 +114,34 @@ EErrorType World::OnLoadFile(FILE* pFileStream)
 
 EErrorType World::OnFinalize()
 {
+	m_staticObjCnt = 0;
+	m_dynamicObjCnt = 0;
 	m_vecGameObj.clear();
+
 	return EErrorType::NONE;
+}
+
+void World::Reset()
+{
+	if (OnFinalize() == EErrorType::FINAL_FAIL)
+	{
+		return;
+	}
+
+	if (OnInitialize() == EErrorType::INIT_FAIL)
+	{
+		return;
+	}
+
+	if (OnPostInitialize() == EErrorType::INIT_FAIL)
+	{
+		return;
+	}
 }
 
 EErrorType World::SaveFile(const std::string_view& szFileName)
 {
-	if (FileStreamMgr::I()->CheckSameExt(szFileName, szExt) == false)
+	if (FileStreamMgr::I()->CheckSameExt(szFileName, s_szWorldExt) == false)
 	{
 		return EErrorType::SAVE_FILE_FAIL;
 	}
@@ -136,7 +157,7 @@ EErrorType World::SaveFile(const std::string_view& szFileName)
 
 	// 파일 헤더에 정보 넣기
 	m_spWorldFileHeader = std::make_shared<WorldFileHeader>();
-	m_spWorldFileHeader->sizeInfo = m_sizeInfo;
+	m_spWorldFileHeader->sizeInfo = m_size;
 	m_spWorldFileHeader->staticObjCnt = m_staticObjCnt;
 	fwrite(&*m_spWorldFileHeader, sizeof(WorldFileHeader), 1, pFileStream);
 
@@ -151,7 +172,7 @@ EErrorType World::SaveFile(const std::string_view& szFileName)
 
 EErrorType World::LoadFile(const std::string_view& szFileName)
 {
-	if (FileStreamMgr::I()->CheckSameExt(szFileName, szExt) == false)
+	if (FileStreamMgr::I()->CheckSameExt(szFileName, s_szWorldExt) == false)
 	{
 		return EErrorType::LOAD_FILE_FAIL;
 	}
@@ -173,7 +194,7 @@ EErrorType World::LoadFile(const std::string_view& szFileName)
 	// 파일 헤더 불러오기
 	m_spWorldFileHeader = std::make_shared<WorldFileHeader>();
 	fread(&*m_spWorldFileHeader, sizeof(WorldFileHeader), 1, pFileStream);
-	m_sizeInfo = m_spWorldFileHeader->sizeInfo;
+	m_size = m_spWorldFileHeader->sizeInfo;
 
 	if (OnInitialize() == EErrorType::INIT_FAIL)
 	{
@@ -191,8 +212,8 @@ EErrorType World::LoadFile(const std::string_view& szFileName)
 
 std::shared_ptr<GameObj> World::FindGameObj(Int32 x, Int32 y) const
 {
-	CHECK_RANGE(x, 0, m_sizeInfo.width - 1);
-	CHECK_RANGE(y, 0, m_sizeInfo.height - 1);
+	CHECK_RANGE(x, 0, m_size.width - 1);
+	CHECK_RANGE(y, 0, m_size.height - 1);
 
 	return m_vecGameObj.at(y).at(x);
 }
@@ -209,12 +230,17 @@ void World::SpawnGameObj(const COORD& pos, std::shared_ptr<GameObj> spGameObj)
 
 void World::SpawnGameObj(Int32 x, Int32 y, std::shared_ptr<GameObj> spGameObj)
 {
-	CHECK_RANGE(x, 0, m_sizeInfo.width - 1);
-	CHECK_RANGE(y, 0, m_sizeInfo.height - 1);
+	CHECK_RANGE(x, 0, m_size.width - 1);
+	CHECK_RANGE(y, 0, m_size.height - 1);
 
-	if (spGameObj->getType() == EGameObjType::STATIC)
+	EGameObjType gameObjType = spGameObj->getType();
+	if (gameObjType == EGameObjType::STATIC)
 	{
 		++m_staticObjCnt;
+	}
+	else if (gameObjType == EGameObjType::DYNAMIC)
+	{
+		++m_dynamicObjCnt;
 	}
 
 	m_vecGameObj.at(y).at(x) = spGameObj;

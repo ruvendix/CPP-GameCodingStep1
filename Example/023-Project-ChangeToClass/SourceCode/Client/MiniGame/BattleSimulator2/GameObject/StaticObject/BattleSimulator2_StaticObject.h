@@ -7,33 +7,33 @@
 // 배틀 시뮬레이터2에서 사용되는 기본 정적 오브젝트입니다.
 // =====================================================================================
 
-#ifndef STATIC_OBJ_BATTLE_SIMULATOR2__H__
-#define STATIC_OBJ_BATTLE_SIMULATOR2__H__
+#ifndef BATTLE_SIMULATOR2_STATIC_OBJ__H__
+#define BATTLE_SIMULATOR2_STATIC_OBJ__H__
 
 #include "Element\GameObject\StaticObject.h"
 #include "StaticObjectID.h"
 
-class StaticObj_BattleSimulator2 : public StaticObj
+class BattleSimulator2_StaticObj : public StaticObj
 {
 public:
 #pragma region 생성자 및 소멸자
 	using StaticObj::StaticObj;
 
-	StaticObj_BattleSimulator2() = default;
-	virtual ~StaticObj_BattleSimulator2() = default;
+	BattleSimulator2_StaticObj() = default;
+	virtual ~BattleSimulator2_StaticObj() = default;
 
-	StaticObj_BattleSimulator2(EStaticObjID staticObjID);
+	BattleSimulator2_StaticObj(EStaticObjID objID);
 #pragma endregion
 
 	virtual EErrorType OnPreSaveFile(FILE* pFileStream) override;
 
-	EStaticObjID getStaticObjID() const
+	EStaticObjID getObjID() const
 	{
-		return m_staticObjID;
+		return m_objID;
 	}
 
 private:
-	EStaticObjID m_staticObjID = EStaticObjID::UNKNOWN;
+	EStaticObjID m_objID = EStaticObjID::UNKNOWN;
 };
 
 #endif

@@ -7,31 +7,38 @@
 // 배틀 시뮬레이터2에서 사용되는 기본 동적 오브젝트입니다.
 // =====================================================================================
 
-#ifndef DYNAMIC_OBJ_BATTLE_SIMULATOR2__H__
-#define DYNAMIC_OBJ_BATTLE_SIMULATOR2__H__
+#ifndef BATTLE_SIMULATOR2_DYNAMIC_OBJ__H__
+#define BATTLE_SIMULATOR2_DYNAMIC_OBJ__H__
 
 #include "Element\GameObject\DynamicObject.h"
 #include "DynamicObjectID.h"
 
-class DynamicObj_BattleSimulator2 : public DynamicObj
+class BattleSimulator2_DynamicObj : public DynamicObj
 {
 public:
 #pragma region 생성자 및 소멸자
 	using DynamicObj::DynamicObj;
 
-	DynamicObj_BattleSimulator2() = default;
-	virtual ~DynamicObj_BattleSimulator2() = default;
+	BattleSimulator2_DynamicObj() = default;
+	virtual ~BattleSimulator2_DynamicObj() = default;
 
-	DynamicObj_BattleSimulator2(EDynamicObjID dynamicObjID);
+	BattleSimulator2_DynamicObj(EDynamicObjID objID);
 #pragma endregion
 
-	EDynamicObjID getStaticObjID() const
+	virtual EErrorType OnPreSaveFile(FILE* pFileStream) override;
+
+	EDynamicObjID getObjID() const
 	{
-		return m_dynamicObjID;
+		return m_objID;
+	}
+
+	void setObjID(EDynamicObjID objID)
+	{
+		m_objID = objID;
 	}
 
 private:
-	EDynamicObjID m_dynamicObjID = EDynamicObjID::UNKNOWN;
+	EDynamicObjID m_objID = EDynamicObjID::UNKNOWN;
 };
 
 #endif

@@ -47,6 +47,11 @@ public:
 		return m_maxSelectorPos;
 	}
 
+	TSize getShapeLength() const
+	{
+		return m_strShape.size();
+	}
+
 	void setSelectorPos(const COORD& pos)
 	{
 		m_selectorPos = pos;

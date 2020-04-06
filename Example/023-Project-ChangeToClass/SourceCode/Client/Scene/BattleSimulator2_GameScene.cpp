@@ -173,11 +173,11 @@ EErrorType BattleSimulator2_GameScene::OnInitialize()
 	m_vecViking.resize(Viking::GetTotalCnt());
 	std::generate(m_vecViking.begin(), m_vecViking.end(), &BattleSimulator2SceneHelper::CloneViking);
 
-	m_world = std::make_unique<BattleSimulatorWorld>(SizeInfo{ 40, 30 });
+	m_world = std::make_unique<BattleSimulator2World>(SizeInfo{ 40, 30 });
 	
 	// 월드 파일이 있는지?
 	// 있다면 파일을 읽고, 아니면 새로 초기화해야 해요!
-	EErrorType errorType = m_world->LoadFile("BattleSimulatorWorld.world");
+	EErrorType errorType = m_world->LoadFile("BattleSimulator2World.world");
 	if (errorType == EErrorType::LOAD_FILE_FAIL)
 	{
 		m_world->setLastError(EErrorType::LOAD_FILE_FAIL);
@@ -204,7 +204,7 @@ EErrorType BattleSimulator2_GameScene::OnPostInitialize()
 	}
 
 	//// 세이브 테스트!
-	//m_world->OnSaveFile("BattleSimulatorWorld.world");
+	//m_world->OnSaveFile("BattleSimulator2World.world");
 
 	return EErrorType::NONE;
 }

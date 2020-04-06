@@ -8,10 +8,18 @@
 // =====================================================================================
 
 #include "PCH.h"
-#include "DynamicObject_BattleSimulator2.h"
+#include "BattleSimulator2_DynamicObject.h"
 
-DynamicObj_BattleSimulator2::DynamicObj_BattleSimulator2(EDynamicObjID dynamicObjID) :
-	m_dynamicObjID(dynamicObjID)
+BattleSimulator2_DynamicObj::BattleSimulator2_DynamicObj(EDynamicObjID objID) :
+	m_objID(objID)
 {
 
+}
+
+EErrorType BattleSimulator2_DynamicObj::OnPreSaveFile(FILE* pFileStream)
+{
+	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::SAVE_FILE_FAIL);
+	fwrite(&m_objID, sizeof(m_objID), 1, pFileStream);
+
+	return EErrorType::NONE;
 }

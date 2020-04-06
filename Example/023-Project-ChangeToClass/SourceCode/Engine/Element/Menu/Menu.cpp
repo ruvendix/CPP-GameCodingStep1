@@ -38,7 +38,7 @@ EErrorType Menu::OnExcute()
 	return EErrorType::NONE;
 }
 
-void Menu::OnTrigger_ExcuteMenu()
+void Menu::OnTrigger_Excute()
 {
 
 }

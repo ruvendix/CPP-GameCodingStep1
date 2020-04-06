@@ -14,8 +14,8 @@
 
 EErrorType GameObj::OnRender()
 {
-	//PUT_STRING(m_pos.X, m_pos.Y, m_strShape.c_str());
-	ConsoleController::I()->PutString(m_pos.X, m_pos.Y, m_strShape.c_str());
+	const COORD& pos = getPos();
+	PUT_STRING(pos.X * getShape().size(), pos.Y, getShape().c_str());
 	return EErrorType::NONE;
 }
 

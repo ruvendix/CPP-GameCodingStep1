@@ -35,7 +35,7 @@ public:
 #pragma endregion
 
 	virtual EErrorType OnExcute() override;
-	virtual void OnTrigger_ExcuteMenu() override;
+	virtual void OnTrigger_Excute() override;
 
 private:
 	EMiniGameSceneType m_selectedSceneType = EMiniGameSceneType::UNKNOWN;

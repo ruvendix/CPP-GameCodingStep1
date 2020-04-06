@@ -37,7 +37,7 @@ public:
 	virtual EErrorType OnFinalize() override;
 
 private:
-	std::unique_ptr<BattleSimulatorWorld> m_world;
+	std::unique_ptr<BattleSimulator2World> m_world;
 	std::vector<std::shared_ptr<MedievalKnight>> m_vecMedievalKnight;
 	std::vector<std::shared_ptr<Viking>> m_vecViking;
 

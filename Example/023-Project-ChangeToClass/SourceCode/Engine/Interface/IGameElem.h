@@ -15,15 +15,15 @@
 class IGameElem
 {
 public:
-	virtual EErrorType OnInitialize() = 0;
-	virtual EErrorType OnPostInitialize() = 0;
-	virtual EErrorType OnInput() = 0;
-	virtual EErrorType OnUpdate() = 0;
-	virtual EErrorType OnRender() = 0;
-	virtual EErrorType OnFinalize() = 0;
-	virtual EErrorType OnPreSaveFile(FILE* pFileStream) = 0;
-	virtual EErrorType OnSaveFile(FILE* pFileStream) = 0;
-	virtual EErrorType OnLoadFile(FILE* pFileStream) = 0;
+	virtual EErrorType OnInitialize() abstract;
+	virtual EErrorType OnPostInitialize() abstract;
+	virtual EErrorType OnInput() abstract;
+	virtual EErrorType OnUpdate() abstract;
+	virtual EErrorType OnRender() abstract;
+	virtual EErrorType OnFinalize() abstract;
+	virtual EErrorType OnPreSaveFile(FILE* pFileStream) abstract;
+	virtual EErrorType OnSaveFile(FILE* pFileStream) abstract;
+	virtual EErrorType OnLoadFile(FILE* pFileStream) abstract;
 };
 
 #endif

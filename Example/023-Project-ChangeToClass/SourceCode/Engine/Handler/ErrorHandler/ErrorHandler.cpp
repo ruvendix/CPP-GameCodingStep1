@@ -36,6 +36,8 @@ std::string_view ErrorHandler::ToString(EErrorType errorType)
 		CASE_RETURN_STRING(EErrorType::UNKNOWN_SCENE_TYPE, "알 수 없는 씬 타입!");
 		CASE_RETURN_STRING(EErrorType::UNKNOWN_PHASE_TYPE, "알 수 없는 페이즈 타입!");
 		CASE_RETURN_STRING(EErrorType::UNKNOWN_FRAME_RATE_TYPE, "알 수 없는 프레임 레이트 타입!");
+		CASE_RETURN_STRING(EErrorType::UNKNOWN_STATIC_OBJ, "알 수 없는 정적 오브젝트 타입!");		
+		CASE_RETURN_STRING(EErrorType::UNKNOWN_DYNAMIC_OBJ, "알 수 없는 동적 오브젝트 타입!");
 
 		CASE_RETURN_STRING(EErrorType::NO_FRAME_LIMITED_ON_UNLIMITED_FRAME_RATE, "무제한 프레임 레이트에서는 프레임 제한을 걸 수 없음!");
 		CASE_RETURN_STRING(EErrorType::NO_PREV_CONSOLE_SELECTOR, "이전 콘솔 셀렉터가 없음!");

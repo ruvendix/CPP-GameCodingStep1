@@ -9,12 +9,3 @@
 
 #include "PCH.h"
 #include "Wall.h"
-
-#include "Controller\ConsoleController.h"
-
-EErrorType Wall::OnRender()
-{
-	const COORD& pos = getPos();
-	PUT_STRING(pos.X * getShape().size(), pos.Y, getShape().c_str());
-	return EErrorType::NONE;
-}

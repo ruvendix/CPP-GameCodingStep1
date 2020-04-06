@@ -30,7 +30,7 @@ public:
 #pragma endregion
 
 	virtual EErrorType OnExcute();
-	virtual void OnTrigger_ExcuteMenu(); // 트리거 타이머를 사용할 때!
+	virtual void OnTrigger_Excute(); // 트리거 타이머를 사용할 때!
 
 	void AddPos(const COORD& pos)
 	{

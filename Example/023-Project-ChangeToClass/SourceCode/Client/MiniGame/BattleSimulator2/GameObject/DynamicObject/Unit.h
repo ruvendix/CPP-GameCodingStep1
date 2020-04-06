@@ -11,17 +11,23 @@
 #define UNIT_H__
 
 #include "Common\CommonType.h"
+#include "BattleSimulator2_DynamicObject.h"
 
-class Unit
+class Unit : public BattleSimulator2_DynamicObj
 {
 public:
 #pragma region 생성자 및 소멸자
+	using BattleSimulator2_DynamicObj::BattleSimulator2_DynamicObj;
+
 	Unit() = default;
 	virtual ~Unit() = default;
+
+	Unit(EDynamicObjID objID, const std::string_view& szShape);
 #pragma endregion
 
 	void Attack(std::shared_ptr<Unit> spTargetUnit);
 	void Damage(Int32 damage);
+	void Copy(std::shared_ptr<Unit> spUnit);
 
 	bool IsDeath() const
 	{
