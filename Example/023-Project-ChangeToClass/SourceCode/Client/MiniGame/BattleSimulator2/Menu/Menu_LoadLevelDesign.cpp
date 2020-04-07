@@ -29,7 +29,6 @@ Menu_LoadLevelDesign::Menu_LoadLevelDesign(const std::string_view& szNameTag,
 EErrorType Menu_LoadLevelDesign::OnExcute()
 {
 	CHECK_NULLPTR(m_pTargetScene);
-	m_pTargetScene->getWorld()->Reset();
 	m_pTargetScene->getLevelDesign()->LoadFile("BattleSimulator2.level");
 
 	RESERVE_RENDERING_STRING(1.0f, std::bind(&Menu_LoadLevelDesign::OnTrigger_Excute, this));

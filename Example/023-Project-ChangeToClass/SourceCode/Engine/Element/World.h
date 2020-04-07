@@ -17,21 +17,21 @@ struct WorldFileHeader
 {
 	char ID[4] = { 'W', 'R', 'D', '1' }; // 4바이트
 	SizeInfo sizeInfo; // 8바이트
-	Int32 staticObjCnt = 0; // 4바이트
+	TSize worldObjCnt = 0; // 4바이트
 };
 #pragma pack(pop)
 
-class GameObj;
+class StaticObj;
 
 class World : public GameElem
 {
 	friend class LevelDesign;
 
 public:
-	using VecGameObjLine = std::vector<std::shared_ptr<GameObj>>;
+	using VecWorldObj = std::vector<std::shared_ptr<StaticObj>>;
 
 #pragma region 생성자 및 소멸자
-	World(const SizeInfo& sizeInfo);
+	World() = default;
 	virtual ~World() = default;
 #pragma endregion
 
@@ -41,13 +41,11 @@ public:
 	virtual EErrorType OnLoadFile(FILE* pFileStream) override;
 	virtual EErrorType OnFinalize() override;
 
-	void Reset();
+	void AddObj(std::shared_ptr<StaticObj> spWorldObj);
 
 	// 템플릿 메서드 패턴을 이용할게요!
 	EErrorType SaveFile(const std::string_view& szFileName);
 	EErrorType LoadFile(const std::string_view& szFileName);
-
-	std::shared_ptr<GameObj> FindGameObj(Int32 x, Int32 y) const;
 
 	COORD CalcCenterBySize()
 	{
@@ -59,28 +57,25 @@ public:
 		return m_size;
 	}
 
-	std::shared_ptr<WorldFileHeader> getWorldFileHeader() const
+	std::shared_ptr<WorldFileHeader> getFileHeader() const
 	{
-		return m_spWorldFileHeader;
+		return m_spFileHeader;
 	}
 
-	std::vector<VecGameObjLine>& getVecGameObj()
+	VecWorldObj& getVecObj()
 	{
-		return m_vecGameObj;
+		return m_vecObj;
 	}
 
-protected:
-	// 월드에 게임 오브젝트를 배치하는 건 상속 관계와 LevelDesign에서만 가능해요!
-	void SpawnGameObj(std::shared_ptr<GameObj> spGameObj);
-	void SpawnGameObj(const COORD& pos, std::shared_ptr<GameObj> spGameObj);
-	void SpawnGameObj(Int32 x, Int32 y, std::shared_ptr<GameObj> spGameObj);
+	void setSize(const SizeInfo& worldSize)
+	{
+		m_size = worldSize;
+	}
 
 private:
-	Int32 m_staticObjCnt = 0;
-	Int32 m_dynamicObjCnt = 0;
 	SizeInfo m_size;
-	std::shared_ptr<WorldFileHeader> m_spWorldFileHeader;
-	std::vector<VecGameObjLine> m_vecGameObj;
+	std::shared_ptr<WorldFileHeader> m_spFileHeader;
+	VecWorldObj m_vecObj;
 };
 
 #endif

@@ -47,30 +47,30 @@ std::shared_ptr<BattleSimulator2_StaticObj> BattleSimulator2WorldHelper::CreateS
 EErrorType BattleSimulator2World::OnPostInitialize()
 {
 	const SizeInfo& sizeInfo = getSize();
-	for (TSize i = 0; i < sizeInfo.width; ++i)
+	for (Int32 i = 0; i < static_cast<Int32>(sizeInfo.width); ++i)
 	{
 		std::shared_ptr<Wall> staticObj = std::make_shared<Wall>(EStaticObjID::WALL);
 		staticObj->setPos(i, 0);
 		staticObj->setShape("■");
-		SpawnGameObj(staticObj);
+		AddObj(staticObj);
 
 		staticObj = std::make_shared<Wall>(EStaticObjID::WALL);
 		staticObj->setPos(i, sizeInfo.height - 1);
 		staticObj->setShape("■");
-		SpawnGameObj(staticObj);
+		AddObj(staticObj);
 	}
 
-	for (TSize i = 1; i < (sizeInfo.height - 1); ++i)
+	for (Int32 i = 1; i < static_cast<Int32>(sizeInfo.height - 1); ++i)
 	{
 		std::shared_ptr<Wall> staticObj = std::make_shared<Wall>(EStaticObjID::WALL);
 		staticObj->setPos(0, i);
 		staticObj->setShape("■");
-		SpawnGameObj(staticObj);
+		AddObj(staticObj);
 
 		staticObj = std::make_shared<Wall>(EStaticObjID::WALL);
 		staticObj->setPos(sizeInfo.width - 1, i);
 		staticObj->setShape("■");
-		SpawnGameObj(staticObj);
+		AddObj(staticObj);
 	}
 
 	return EErrorType::NONE;
@@ -81,27 +81,19 @@ EErrorType BattleSimulator2World::OnSaveFile(FILE* pFileStream)
 	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::SAVE_FILE_FAIL);
 
 	// 파일 내용 넣기
-	std::vector<VecGameObjLine> vecGameObj = getVecGameObj();
-	for (const auto& iter1 : vecGameObj)
+	VecWorldObj& vecWorldObj = getVecObj();
+	for (const auto& iter : vecWorldObj)
 	{
-		for (const auto& iter2 : iter1)
+		CHECK_NULLPTR_CONTINUE(iter);
+
+		if (iter->OnPreSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
 		{
-			CHECK_NULLPTR_CONTINUE(iter2);
+			return EErrorType::SAVE_FILE_FAIL;
+		}
 
-			if (iter2->getType() != EGameObjType::STATIC)
-			{
-				continue;
-			}
-
-			if (iter2->OnPreSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
-			{
-				return EErrorType::SAVE_FILE_FAIL;
-			}
-
-			if (iter2->OnSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
-			{
-				return EErrorType::SAVE_FILE_FAIL;
-			}
+		if (iter->OnSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
+		{
+			return EErrorType::SAVE_FILE_FAIL;
 		}
 	}
 
@@ -112,28 +104,28 @@ EErrorType BattleSimulator2World::OnLoadFile(FILE* pFileStream)
 {
 	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::LOAD_FILE_FAIL);
 
-	std::shared_ptr<WorldFileHeader> spWorldFileHeader = getWorldFileHeader();
-	for (Int32 i = 0; i < spWorldFileHeader->staticObjCnt; ++i)
+	std::shared_ptr<WorldFileHeader> spWorldFileHeader = getFileHeader();
+	for (TSize i = 0; i < spWorldFileHeader->worldObjCnt; ++i)
 	{
 		// 아이디를 체크해서 만든다!
 		Int32 objID = 0;
 		fread(&objID, sizeof(Int32), 1, pFileStream);
 
-		std::shared_ptr<BattleSimulator2_StaticObj> spStaticObj =
+		std::shared_ptr<BattleSimulator2_StaticObj> spWorldObj =
 			BattleSimulator2WorldHelper::CreateStaticObj(static_cast<EStaticObjID>(objID));
 
 		if (objID == CommonFunc::ToUnderlyingType(EStaticObjID::WALL))
 		{
-			spStaticObj = std::make_shared<Wall>(EStaticObjID::WALL);
+			spWorldObj = std::make_shared<Wall>(EStaticObjID::WALL);
 		}
 
-		if (spStaticObj->OnLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
+		if (spWorldObj->OnLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
 		{
 			return EErrorType::LOAD_FILE_FAIL;
 		}
 
 		//DEBUG_LOG("(%d)번째 읽기 성공!", i);
-		SpawnGameObj(spStaticObj);
+		AddObj(spWorldObj);
 	}
 
 	return EErrorType::NONE;

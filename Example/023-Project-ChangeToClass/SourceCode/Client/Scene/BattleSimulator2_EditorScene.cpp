@@ -168,7 +168,7 @@ void BattleSimulator2_EditorSceneHelper::OnInput_EditorMode(_Inout_ BattleSimula
 			std::shared_ptr<Viking> spViking = std::make_shared<Viking>();
 			spViking->Copy(targetHelper.getCurrentSampleUnit());
 			spViking->setPos(mappingPos);
-			targetHelper.m_spCurrentLevelDesign->SpawnGameObj(spViking);
+			targetHelper.m_spCurrentLevelDesign->AddObj(spViking);
 
 			break;
 		}
@@ -178,7 +178,7 @@ void BattleSimulator2_EditorSceneHelper::OnInput_EditorMode(_Inout_ BattleSimula
 			std::shared_ptr<MedievalKnight> spMedievalKnight = std::make_shared<MedievalKnight>();
 			spMedievalKnight->Copy(targetHelper.getCurrentSampleUnit());
 			spMedievalKnight->setPos(mappingPos);
-			targetHelper.m_spCurrentLevelDesign->SpawnGameObj(spMedievalKnight);
+			targetHelper.m_spCurrentLevelDesign->AddObj(spMedievalKnight);
 
 			break;
 		}
@@ -260,13 +260,14 @@ EErrorType BattleSimulator2_EditorScene::OnInitialize()
 	InputController::I()->InsertInputMappingInfo("ChangeObj", 'A');
 	InputController::I()->InsertInputMappingInfo("SpawnObj", VK_RETURN);
 
-	m_spWorld = std::make_shared<BattleSimulator2World>(SizeInfo{ 40, 30 });
+	m_spWorld = std::make_shared<BattleSimulator2World>();
 
 	// 월드 파일이 있는지?
 	// 있다면 파일을 읽고, 아니면 새로 초기화해야 해요!
-	EErrorType errorType = m_spWorld->LoadFile("BattleSimulatorWorld2.world");
+	EErrorType errorType = m_spWorld->LoadFile("BattleSimulator2.world");
 	if (errorType == EErrorType::LOAD_FILE_FAIL)
 	{
+		m_spWorld->setSize(SizeInfo{ 40, 30 });
 		m_spWorld->setLastError(EErrorType::LOAD_FILE_FAIL);
 
 		if (m_spWorld->OnInitialize() == EErrorType::INIT_FAIL)
@@ -315,7 +316,7 @@ EErrorType BattleSimulator2_EditorScene::OnInitialize()
 	m_vecSampleUnit.push_back(std::make_shared<MedievalKnight>(EDynamicObjID::MEDIEVALKNIGHT, "Ω"));
 	m_vecSampleUnit.push_back(std::make_shared<Viking>(EDynamicObjID::VIKING, "♠"));
 
-	m_spCurrentLevelDesign = std::make_shared<BattleSimulator2_LevelDesign>(m_spWorld);
+	m_spCurrentLevelDesign = std::make_shared<BattleSimulator2_LevelDesign>();
 
 	return EErrorType::NONE;
 }
@@ -363,6 +364,11 @@ EErrorType BattleSimulator2_EditorScene::OnUpdate()
 EErrorType BattleSimulator2_EditorScene::OnRender()
 {
 	if (m_spWorld->OnRender() == EErrorType::RENDER_FAIL)
+	{
+		return EErrorType::RENDER_FAIL;
+	}
+
+	if (m_spCurrentLevelDesign->OnRender() == EErrorType::RENDER_FAIL)
 	{
 		return EErrorType::RENDER_FAIL;
 	}

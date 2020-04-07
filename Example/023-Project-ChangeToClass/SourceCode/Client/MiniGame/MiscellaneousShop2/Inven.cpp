@@ -20,7 +20,10 @@ class PredInvenItemInfo
 {
 public:
 	PredInvenItemInfo(const std::string& strItemNameTag)
-		: m_strItemNameTag(strItemNameTag) { }
+		: m_strItemNameTag(strItemNameTag)
+	{
+
+	}
 
 	~PredInvenItemInfo() = default;
 

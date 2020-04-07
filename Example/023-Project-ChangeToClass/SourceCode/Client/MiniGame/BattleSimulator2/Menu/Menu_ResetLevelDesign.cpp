@@ -15,7 +15,7 @@
 #include "Manager\TriggerTimerManager.h"
 
 #include "Scene\BattleSimulator2_EditorScene.h"
-#include "..\BattleSimulator2World.h"
+#include "..\BattleSimulator2_LevelDesign.h"
 
 Menu_ResetLevelDesign::Menu_ResetLevelDesign(const std::string_view& szNameTag,
 	const COORD& pos, BattleSimulator2_EditorScene* pTargetScene) :
@@ -28,7 +28,7 @@ Menu_ResetLevelDesign::Menu_ResetLevelDesign(const std::string_view& szNameTag,
 EErrorType Menu_ResetLevelDesign::OnExcute()
 {
 	CHECK_NULLPTR(m_pTargetScene);
-	m_pTargetScene->getWorld()->Reset();
+	m_pTargetScene->getLevelDesign()->Reset();
 
 	RESERVE_RENDERING_STRING(1.0f, std::bind(&Menu_ResetLevelDesign::OnTrigger_Excute, this));
 	return EErrorType::NONE;

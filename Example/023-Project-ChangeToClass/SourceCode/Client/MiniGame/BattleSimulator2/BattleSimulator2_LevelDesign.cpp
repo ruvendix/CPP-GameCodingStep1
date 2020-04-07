@@ -57,26 +57,24 @@ EErrorType BattleSimulator2_LevelDesign::OnSaveFile(FILE* pFileStream)
 	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::SAVE_FILE_FAIL);
 
 	// 파일 내용 넣기
-	for (const auto& iter1 : getWorld()->getVecGameObj())
+	VecLevelDesigndObj& vecLevelDesignObj = getVecObj();
+	for (const auto& iter : vecLevelDesignObj)
 	{
-		for (const auto& iter2 : iter1)
+		CHECK_NULLPTR_CONTINUE(iter);
+
+		if (iter->getType() != EGameObjType::DYNAMIC)
 		{
-			CHECK_NULLPTR_CONTINUE(iter2);
+			continue;
+		}
 
-			if (iter2->getType() != EGameObjType::DYNAMIC)
-			{
-				continue;
-			}
+		if (iter->OnPreSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
+		{
+			return EErrorType::SAVE_FILE_FAIL;
+		}
 
-			if (iter2->OnPreSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
-			{
-				return EErrorType::SAVE_FILE_FAIL;
-			}
-
-			if (iter2->OnSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
-			{
-				return EErrorType::SAVE_FILE_FAIL;
-			}
+		if (iter->OnSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
+		{
+			return EErrorType::SAVE_FILE_FAIL;
 		}
 	}
 
@@ -88,23 +86,23 @@ EErrorType BattleSimulator2_LevelDesign::OnLoadFile(FILE* pFileStream)
 	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::LOAD_FILE_FAIL);
 
 	// 파일 내용 불러오기
-	std::shared_ptr<LevelDesignFileHeader> spLevelDesignFileHeader = getLevelDesignFileHeader();
-	for (Int32 i = 0; i < spLevelDesignFileHeader->dynamicObjCnt; ++i)
+	std::shared_ptr<LevelDesignFileHeader> spLevelDesignFileHeader = getFileHeader();
+	for (TSize i = 0; i < spLevelDesignFileHeader->levelDesignObjCnt; ++i)
 	{
 		// 아이디를 체크해서 만든다!
 		Int32 objID = 0;
 		fread(&objID, sizeof(Int32), 1, pFileStream);
 
-		std::shared_ptr<DynamicObj> spDynamicObj =
+		std::shared_ptr<DynamicObj> spLevelDesignObj =
 			BattleSimulator2_LevelDesignHelper::CreateDynamicObj(static_cast<EDynamicObjID>(objID));
 
-		if (spDynamicObj->OnLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
+		if (spLevelDesignObj->OnLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
 		{
 			return EErrorType::LOAD_FILE_FAIL;
 		}
 
 		//DEBUG_LOG("(%d)번째 읽기 성공!", i);
-		SpawnGameObj(spDynamicObj);
+		AddObj(spLevelDesignObj);
 	}
 
 	return EErrorType::NONE;
