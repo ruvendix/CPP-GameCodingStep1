@@ -14,6 +14,7 @@
 
 class MiscellaneousShop2 final : public GameElem
 {
+	DECLARE_RTTI(MiscellaneousShop2, GameElem);
 	FRIEND_WITH_HELPER(MiscellaneousShop2Helper);
 
 public:

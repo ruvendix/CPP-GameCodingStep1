@@ -12,8 +12,10 @@
 
 #include "Unit.h"
 
-class Viking : public Unit
+class Viking final : public Unit
 {
+	DECLARE_RTTI(Viking, Unit);
+
 public:
 #pragma region 생성자 및 소멸자
 	using Unit::Unit;

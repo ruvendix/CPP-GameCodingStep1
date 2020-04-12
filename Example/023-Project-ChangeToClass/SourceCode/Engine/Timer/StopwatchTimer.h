@@ -17,6 +17,8 @@
 
 class StopwatchTimer
 {
+	DECLARE_ROOT_RTTI(StopwatchTimer);
+
 public:
 #pragma region 생성자 및 소멸자
 	StopwatchTimer() = default;

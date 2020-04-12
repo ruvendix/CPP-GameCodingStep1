@@ -99,6 +99,9 @@
     <Filter Include="소스 파일\2. Client\MiniGame\BattleSimulator\Menu">
       <UniqueIdentifier>{60f910a7-201a-4857-952b-fb435fa04810}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\1. Engine\2. Core">
+      <UniqueIdentifier>{fdf7ccdc-d5a2-4234-8396-36018c8d9698}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\Main.cpp">
@@ -332,11 +335,8 @@
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_LevelDesign.cpp">
       <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\BattleSimulator2_DynamicObject.cpp">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\DynamicObject</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\BattleSimulator2_StaticObject.cpp">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\StaticObject</Filter>
+    <ClCompile Include="SourceCode\Engine\Core\FastRTTI.cpp">
+      <Filter>소스 파일\1. Engine\2. Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -586,12 +586,6 @@
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\Wall.h">
       <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\StaticObject</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\DynamicObjectID.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\DynamicObject</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\StaticObjectID.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\StaticObject</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2World.h">
       <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
     </ClInclude>
@@ -613,11 +607,14 @@
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_LevelDesign.h">
       <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\BattleSimulator2_DynamicObject.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\DynamicObject</Filter>
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\ObjectID.h">
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\BattleSimulator2_StaticObject.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\StaticObject</Filter>
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\ObjectState.h">
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Core\FastRTTI.h">
+      <Filter>소스 파일\1. Engine\2. Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

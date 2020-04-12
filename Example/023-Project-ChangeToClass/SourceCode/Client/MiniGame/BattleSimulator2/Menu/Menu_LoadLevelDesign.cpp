@@ -29,10 +29,13 @@ Menu_LoadLevelDesign::Menu_LoadLevelDesign(const std::string_view& szNameTag,
 EErrorType Menu_LoadLevelDesign::OnExcute()
 {
 	CHECK_NULLPTR(m_pTargetScene);
-	m_pTargetScene->getLevelDesign()->LoadFile("BattleSimulator2.level");
+	if (m_pTargetScene->getLevelDesign()->LoadFile("BattleSimulator2.level") == EErrorType::LOAD_FILE_FAIL)
+	{
+		return EErrorType::LOAD_FILE_FAIL;
+	}
 
 	RESERVE_RENDERING_STRING(1.0f, std::bind(&Menu_LoadLevelDesign::OnTrigger_Excute, this));
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 void Menu_LoadLevelDesign::OnTrigger_Excute()

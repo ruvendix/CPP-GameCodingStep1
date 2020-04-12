@@ -17,6 +17,7 @@
 
 class Menu
 {
+	DECLARE_ROOT_RTTI(Menu);
 	HAS_NAME_TAG();
 
 public:

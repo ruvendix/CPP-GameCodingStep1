@@ -23,7 +23,7 @@ struct InvenItemInfo
 	Int32 cnt = 0;
 };
 
-class Inven
+class Inven final
 {
 public:
 #pragma region 생성자 및 소멸자

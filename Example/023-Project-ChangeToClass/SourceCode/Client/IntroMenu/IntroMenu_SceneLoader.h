@@ -21,8 +21,10 @@ enum class EMiniGameSceneType
 	MISCELLANEOUS_SHOP2
 };
 
-class IntroMenu_SceneLoader : public Menu
+class IntroMenu_SceneLoader final : public Menu
 {
+	DECLARE_RTTI(IntroMenu_SceneLoader, Menu);
+
 public:
 	using Menu::Menu;
 

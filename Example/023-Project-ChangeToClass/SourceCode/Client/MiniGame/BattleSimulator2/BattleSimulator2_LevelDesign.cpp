@@ -23,21 +23,21 @@ class BattleSimulator2_LevelDesignHelper final
 	NON_COPYABLE_ONLY_PRIVATE_CLASS(BattleSimulator2_LevelDesignHelper);
 
 public:
-	static std::shared_ptr<BattleSimulator2_DynamicObj> CreateDynamicObj(EDynamicObjID dynamicObjID);
+	static std::shared_ptr<DynamicObj> CreateDynamicObj(EDynamicObjID dynamicObjID);
 };
 
-std::shared_ptr<BattleSimulator2_DynamicObj> BattleSimulator2_LevelDesignHelper::CreateDynamicObj(EDynamicObjID dynamicObjID)
+std::shared_ptr<DynamicObj> BattleSimulator2_LevelDesignHelper::CreateDynamicObj(EDynamicObjID objID)
 {
-	switch (dynamicObjID)
+	switch (objID)
 	{
 	case EDynamicObjID::VIKING:
 	{
-		return std::make_shared<Viking>(dynamicObjID);
+		return std::make_shared<Viking>(CommonFunc::ToUnderlyingType(objID));
 	}
 
-	case EDynamicObjID::MEDIEVALKNIGHT:
+	case EDynamicObjID::MEDIEVAL_KNIGHT:
 	{
-		return std::make_shared<MedievalKnight>(dynamicObjID);
+		return std::make_shared<MedievalKnight>(CommonFunc::ToUnderlyingType(objID));
 	}
 
 	default:
@@ -51,35 +51,6 @@ std::shared_ptr<BattleSimulator2_DynamicObj> BattleSimulator2_LevelDesignHelper:
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-EErrorType BattleSimulator2_LevelDesign::OnSaveFile(FILE* pFileStream)
-{
-	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::SAVE_FILE_FAIL);
-
-	// 파일 내용 넣기
-	VecLevelDesigndObj& vecLevelDesignObj = getVecObj();
-	for (const auto& iter : vecLevelDesignObj)
-	{
-		CHECK_NULLPTR_CONTINUE(iter);
-
-		if (iter->getType() != EGameObjType::DYNAMIC)
-		{
-			continue;
-		}
-
-		if (iter->OnPreSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
-		{
-			return EErrorType::SAVE_FILE_FAIL;
-		}
-
-		if (iter->OnSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
-		{
-			return EErrorType::SAVE_FILE_FAIL;
-		}
-	}
-
-	return EErrorType::NONE;
-}
 
 EErrorType BattleSimulator2_LevelDesign::OnLoadFile(FILE* pFileStream)
 {
@@ -105,5 +76,5 @@ EErrorType BattleSimulator2_LevelDesign::OnLoadFile(FILE* pFileStream)
 		AddObj(spLevelDesignObj);
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }

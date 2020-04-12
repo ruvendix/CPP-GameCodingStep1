@@ -15,19 +15,47 @@
 
 class GameObj : public GameElem
 {
+	DECLARE_RTTI(GameObj, GameElem);
+
 public:
 #pragma region 생성자 및 소멸자
 	using GameElem::GameElem;
+
+	GameObj() = default;
 	virtual ~GameObj() = default;
+
+	GameObj(Int32 objID);
 #pragma endregion
 
 	virtual EErrorType OnRender() override;
+	virtual EErrorType OnPreSaveFile(FILE* pFileStream) override;
 	virtual EErrorType OnSaveFile(FILE* pFileStream) override;
+	virtual EErrorType OnPreLoadFile(FILE* pFileStream) override;
 	virtual EErrorType OnLoadFile(FILE* pFileStream) override;
 
-	virtual EGameObjType getType() const
+	virtual EGameObjType OnGetType() const
 	{
-		return EGameObjType::NONE;
+		return EGameObjType::UNKNOWN;
+	}
+
+	void AddPosX(Int32 x)
+	{
+		m_pos.X += x;
+	}
+
+	void AddPosY(Int32 y)
+	{
+		m_pos.Y += y;
+	}
+
+	Int32 getID() const
+	{
+		return m_ID;
+	}
+
+	Int32 getState() const
+	{
+		return m_state;
 	}
 
 	const COORD& getPos() const
@@ -38,6 +66,16 @@ public:
 	const std::string& getShape() const
 	{
 		return m_strShape;
+	}
+
+	void setID(Int32 ID)
+	{
+		m_ID = ID;
+	}
+
+	void setState(Int32 state)
+	{
+		m_state = state;
 	}
 
 	void setPos(const COORD& pos)
@@ -57,6 +95,11 @@ public:
 	}
 
 private:
+	// 사용하는 쪽에서는 enum class로 매핑시키는 게 좋아요!
+	// 0은 아무 의미가 없음을 의미해요.
+	Int32 m_ID = 0;
+	Int32 m_state = 0;
+
 	COORD m_pos;
 	std::string m_strShape;
 };

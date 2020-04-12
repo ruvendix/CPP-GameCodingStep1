@@ -13,8 +13,10 @@
 
 #include "Element\Menu\Menu.h"
 
-class Menu_StartGame : public Menu
+class Menu_StartGame final : public Menu
 {
+	DECLARE_RTTI(Menu_StartGame, Menu);
+
 public:
 	using Menu::Menu;
 

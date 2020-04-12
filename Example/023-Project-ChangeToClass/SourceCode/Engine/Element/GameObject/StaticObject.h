@@ -14,13 +14,15 @@
 
 class StaticObj : public GameObj
 {
+	DECLARE_RTTI(StaticObj, GameObj);
+
 public:
 #pragma region 생성자 및 소멸자
 	using GameObj::GameObj;
 	virtual ~StaticObj() = default;
 #pragma endregion
 
-	virtual EGameObjType getType() const override
+	virtual EGameObjType OnGetType() const override
 	{
 		return EGameObjType::STATIC;
 	}

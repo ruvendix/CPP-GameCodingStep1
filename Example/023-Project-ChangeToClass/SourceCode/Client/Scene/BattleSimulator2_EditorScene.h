@@ -13,7 +13,7 @@
 
 #include "Element\Scene.h"
 #include "Controller\ConsoleControllerEnum.h"
-#include "MiniGame\BattleSimulator2\GameObject\DynamicObject\DynamicObjectID.h"
+#include "MiniGame\BattleSimulator2\GameObject\ObjectID.h"
 
 enum class EMode : Int32
 {
@@ -30,6 +30,7 @@ DECLARE_LOG_CATEGORY(BattleSimulator2_EditorScene);
 
 class BattleSimulator2_EditorScene final : public Scene
 {
+	DECLARE_RTTI(BattleSimulator2_EditorScene, Scene);
 	FRIEND_WITH_HELPER(BattleSimulator2_EditorSceneHelper);
 	INPUT_FPS_LIMITED(18);
 
@@ -53,7 +54,7 @@ public:
 
 	std::shared_ptr<BattleSimulator2_LevelDesign> getLevelDesign()
 	{
-		return m_spCurrentLevelDesign;
+		return m_spLevelDesign;
 	}
 
 	std::shared_ptr<Unit> getSampleUnit(Int32 idx) const
@@ -74,12 +75,13 @@ public:
 
 private:
 	EMode m_mode = EMode::MENU;
-	std::vector<std::shared_ptr<Unit>> m_vecSampleUnit;
 	std::shared_ptr<MenuTable_Row> m_spEditorMenuTable = nullptr;;
-	std::shared_ptr<BattleSimulator2World> m_spWorld = nullptr;;
 
 	Int32 m_currentSampleUnitIdx = 0;
-	std::shared_ptr<BattleSimulator2_LevelDesign> m_spCurrentLevelDesign = nullptr;
+	std::vector<std::shared_ptr<Unit>> m_vecSampleUnit;
+
+	std::shared_ptr<BattleSimulator2World> m_spWorld = nullptr;;
+	std::shared_ptr<BattleSimulator2_LevelDesign> m_spLevelDesign = nullptr;
 };
 
 #endif

@@ -13,8 +13,9 @@
 
 #include "Element\Phase.h"
 
-class SellPhase : public Phase
+class SellPhase final : public Phase
 {
+	DECLARE_RTTI(SellPhase, Phase);
 	FRIEND_WITH_HELPER(SellPhaseHelper);
 	INPUT_FPS_LIMITED(8);
 

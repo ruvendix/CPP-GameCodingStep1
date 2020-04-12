@@ -22,7 +22,7 @@ EErrorType IntroMenu_Quit::OnExcute()
 	TriggerTimerMgr::I()->AddTriggerTimer("Excute_IntroMenu_Quit",
 		1.0f, 0.0f, this, &IntroMenu_Quit::OnTrigger_Excute, false, false);
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 void IntroMenu_Quit::OnTrigger_Excute()

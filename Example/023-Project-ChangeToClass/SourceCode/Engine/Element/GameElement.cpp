@@ -13,13 +13,13 @@
 EErrorType GameElem::OnInitialize()
 {
 	//DEBUG_LOG("GameElem에서 이게 보이면 OnInitialize()를 재정의해주세요!");
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType GameElem::OnPostInitialize()
 {
 	//DEBUG_LOG("GameElem에서 이게 보이면 OnPostInitialize()를 재정의해주세요!");
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType GameElem::OnInput()
@@ -31,41 +31,47 @@ EErrorType GameElem::OnInput()
 	}
 
 	//DEBUG_LOG("GameElem에서 이게 보이면 OnInput()를 재정의해주세요!");
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType GameElem::OnUpdate()
 {
 	//DEBUG_LOG("GameElem에서 이게 보이면 OnUpdate()를 재정의해주세요!");
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType GameElem::OnRender()
 {
 	//DEBUG_LOG("GameElem에서 이게 보이면 OnRender()를 재정의해주세요!");
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType GameElem::OnFinalize()
 {
 	//DEBUG_LOG("GameElem에서 이게 보이면 OnFinalize()를 재정의해주세요!");
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType GameElem::OnPreSaveFile(FILE* pFileStream)
 {
 	//DEBUG_LOG("GameElem에서 이게 보이면 OnPreSaveFile()를 재정의해주세요!");
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType GameElem::OnSaveFile(FILE* pFileStream)
 {
 	//DEBUG_LOG("GameElem에서 이게 보이면 OnSaveFile()를 재정의해주세요!");
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
+}
+
+EErrorType GameElem::OnPreLoadFile(FILE* pFileStream)
+{
+	//DEBUG_LOG("GameElem에서 이게 보이면 OnPreLoadFile()를 재정의해주세요!");
+	return EErrorType::NOTHING;
 }
 
 EErrorType GameElem::OnLoadFile(FILE* pFileStream)
 {
 	//DEBUG_LOG("GameElem에서 이게 보이면 OnLoadFile()를 재정의해주세요!");
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }

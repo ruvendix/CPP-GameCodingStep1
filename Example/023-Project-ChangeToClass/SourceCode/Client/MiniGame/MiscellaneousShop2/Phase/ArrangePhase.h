@@ -13,8 +13,10 @@
 
 #include "Element\Phase.h"
 
-class ArrangePhase : public Phase
+class ArrangePhase final : public Phase
 {
+	DECLARE_RTTI(ArrangePhase, Phase);
+
 public:
 #pragma region 생성자 및 소멸자
 	using Phase::Phase;

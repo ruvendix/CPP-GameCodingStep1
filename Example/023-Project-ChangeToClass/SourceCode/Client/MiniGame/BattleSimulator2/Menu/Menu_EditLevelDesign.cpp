@@ -52,7 +52,7 @@ EErrorType Menu_EditLevelDesign::OnExcute()
 	consoleSelector.setShape(spSampleUnit->getShape());
 
 	RESERVE_RENDERING_STRING(1.0f, std::bind(&Menu_EditLevelDesign::OnTrigger_Excute, this));
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 void Menu_EditLevelDesign::OnTrigger_Excute()

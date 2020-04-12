@@ -14,8 +14,9 @@
 #include "Element\Phase.h"
 #include "Element\Menu\MenuTable_Matrix.h"
 
-class EntrancePhase : public Phase
+class EntrancePhase final : public Phase
 {
+	DECLARE_RTTI(EntrancePhase, Phase);
 	FRIEND_WITH_HELPER(EntrancePhaseHelper);
 
 public:

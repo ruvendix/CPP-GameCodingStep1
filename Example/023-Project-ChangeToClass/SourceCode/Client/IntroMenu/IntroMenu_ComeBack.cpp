@@ -17,5 +17,5 @@
 EErrorType IntroMenu_ComeBack::OnExcute()
 {
 	SceneMgr::I()->CreateScene<IntroMenuScene>(ECreateType::NEXT);
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }

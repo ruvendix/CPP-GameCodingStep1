@@ -11,18 +11,22 @@
 #define UNIT_H__
 
 #include "Common\CommonType.h"
-#include "BattleSimulator2_DynamicObject.h"
+#include "Element\GameObject\DynamicObject.h"
+#include "..\ObjectID.h"
+#include "..\ObjectState.h"
 
-class Unit : public BattleSimulator2_DynamicObj
+class Unit : public DynamicObj
 {
+	DECLARE_RTTI(Unit, DynamicObj);
+
 public:
 #pragma region 생성자 및 소멸자
-	using BattleSimulator2_DynamicObj::BattleSimulator2_DynamicObj;
+	using DynamicObj::DynamicObj;
 
 	Unit() = default;
 	virtual ~Unit() = default;
-
-	Unit(EDynamicObjID objID, const std::string_view& szShape);
+	
+	Unit(const std::string_view& szName, EDynamicObjID objID, const std::string_view& szShape);
 #pragma endregion
 
 	void Attack(std::shared_ptr<Unit> spTargetUnit);
@@ -54,6 +58,11 @@ public:
 	{
 		return m_attackSuccessRate;
 	}
+
+	EUnitState getState() const
+	{
+		return m_state;
+	}
 #pragma endregion
 
 #pragma region 접근자 Setter
@@ -76,6 +85,11 @@ public:
 	{
 		m_attackSuccessRate = attackSuccessRate;
 	}
+
+	void setState(EUnitState state)
+	{
+		m_state = state;
+	}
 #pragma endregion
 
 private:
@@ -83,6 +97,7 @@ private:
 	Int32  m_maxHP = 0;
 	Int32  m_attackDamage = 0;
 	Real32 m_attackSuccessRate = 0.0f;
+	EUnitState m_state = EUnitState::IDLE;
 };
 
 #endif

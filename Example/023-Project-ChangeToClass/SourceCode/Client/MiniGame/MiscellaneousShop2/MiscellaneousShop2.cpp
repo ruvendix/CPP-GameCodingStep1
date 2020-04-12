@@ -19,7 +19,7 @@
 EErrorType MiscellaneousShop2::OnInitialize()
 {
 	PhaseMgr::I()->CreatePhase<EntrancePhase>(ECreateType::CURRENT, 0);
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType MiscellaneousShop2::OnInput()
@@ -29,7 +29,7 @@ EErrorType MiscellaneousShop2::OnInput()
 		return EErrorType::INPUT_FAIL;
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType MiscellaneousShop2::OnUpdate()
@@ -44,7 +44,7 @@ EErrorType MiscellaneousShop2::OnUpdate()
 		PhaseMgr::I()->Flip();
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType MiscellaneousShop2::OnRender()
@@ -56,7 +56,7 @@ EErrorType MiscellaneousShop2::OnRender()
 		return EErrorType::RENDER_FAIL;
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType MiscellaneousShop2::OnFinalize()
@@ -67,5 +67,5 @@ EErrorType MiscellaneousShop2::OnFinalize()
 	}
 
 	PhaseMgr::I()->Reset();
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }

@@ -31,7 +31,7 @@ EErrorType Menu_ResetLevelDesign::OnExcute()
 	m_pTargetScene->getLevelDesign()->Reset();
 
 	RESERVE_RENDERING_STRING(1.0f, std::bind(&Menu_ResetLevelDesign::OnTrigger_Excute, this));
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 void Menu_ResetLevelDesign::OnTrigger_Excute()

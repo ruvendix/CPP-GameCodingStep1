@@ -14,6 +14,8 @@
 
 class Scene : public GameElem
 {
+	DECLARE_RTTI(Scene, GameElem);
+
 public:
 	using GameElem::GameElem;
 

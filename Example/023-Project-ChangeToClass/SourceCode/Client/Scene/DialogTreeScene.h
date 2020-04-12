@@ -18,6 +18,7 @@ DECLARE_LOG_CATEGORY(DialogTreeScene);
 
 class DialogTreeScene final : public Scene
 {
+	DECLARE_RTTI(DialogTreeScene, Scene);
 	FRIEND_WITH_HELPER(DialogTreeSceneHelper);
 	INPUT_FPS_LIMITED(8);
 

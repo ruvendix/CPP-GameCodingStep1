@@ -25,10 +25,10 @@ namespace math
 	public:
 		static void Initialize();
 		
-		static Int32 GenerateUniformDistribution(Int32 begin, Int32 end);
-		static Int32 GenerateBinormalDistribution(Int32 eventCnt, Real32 probability);
+		static Int32 GenerateRandom(Int32 begin, Int32 end);
+		static Int32 GenerateBinormalRandom(Int32 eventCnt, Real32 probability);
 
-		static Real32 GenerateUniformDistribution(Real32 begin, Real32 end);
+		static Real32 GenerateRandom(Real32 begin, Real32 end);
 
 	private:
 		static std::default_random_engine m_defaultRandomEngine; // std::mt19937 (Mersenne Twister, 메르센 트위스터)

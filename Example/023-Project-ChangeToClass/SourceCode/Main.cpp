@@ -14,7 +14,5 @@
 // 프로그램이 시작되는 곳이에요.
 Int32 main()
 {
-	Int32 ret = GameMain::I()->Run();
-	//GameMain::I()->Destroy();
-	return ret;
+	return GameMain::I()->Run();
 }

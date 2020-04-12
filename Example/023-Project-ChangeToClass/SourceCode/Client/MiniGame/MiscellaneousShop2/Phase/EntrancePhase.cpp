@@ -90,7 +90,7 @@ EErrorType EntrancePhase::OnInitialize()
 	consoleSelector.setSelectorPos(
 		s_spUI_posInfo->startPos.X + ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_BORDER, s_spUI_posInfo->menuStartPos.Y);
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType EntrancePhase::OnPostInitialize()
@@ -101,7 +101,7 @@ EErrorType EntrancePhase::OnPostInitialize()
 	Int32 currentMenuIdx = m_spMenuTable->ToMenuIdx(selectorPos);
 	m_spMenuTable->setCurrentMenuIdx(currentMenuIdx);
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType EntrancePhase::OnInput()
@@ -113,7 +113,7 @@ EErrorType EntrancePhase::OnInput()
 		SceneMgr::I()->CreateScene<IntroMenuScene>(ECreateType::NEXT);
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType EntrancePhase::OnRender()
@@ -121,5 +121,5 @@ EErrorType EntrancePhase::OnRender()
 	EntrancePhaseHelper::DrawMenu(s_spUI_posInfo->startPos, m_spMenuTable);
 	ConsoleController::I()->DrawSelector();
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }

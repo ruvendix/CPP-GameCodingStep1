@@ -15,6 +15,8 @@
 
 class DblConsoleSelector : public ConsoleSelector
 {
+	DECLARE_RTTI(DblConsoleSelector, ConsoleSelector);
+
 public:
 	using ConsoleSelector::ConsoleSelector;
 	virtual ~DblConsoleSelector() = default;

@@ -15,8 +15,10 @@
 
 class BattleSimulator2_EditorScene;
 
-class Menu_LoadLevelDesign : public Menu
+class Menu_LoadLevelDesign final : public Menu
 {
+	DECLARE_RTTI(Menu_LoadLevelDesign, Menu);
+
 public:
 	using Menu::Menu;
 

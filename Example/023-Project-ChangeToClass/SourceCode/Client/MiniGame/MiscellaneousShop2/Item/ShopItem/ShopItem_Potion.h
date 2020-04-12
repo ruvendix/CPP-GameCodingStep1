@@ -12,8 +12,10 @@
 
 #include "ShopItem.h"
 
-class ShopItem_Potion : public ShopItem
+class ShopItem_Potion final : public ShopItem
 {
+	DECLARE_RTTI(ShopItem_Potion, ShopItem);
+
 public:
 #pragma region 생성자 및 소멸자
 	using ShopItem::ShopItem;

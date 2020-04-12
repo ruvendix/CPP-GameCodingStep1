@@ -16,8 +16,10 @@
 
 class BuyPhase;
 
-class BuyPhaseMenu_ProductFamilySelection : public Menu
+class BuyPhaseMenu_ProductFamilySelection final : public Menu
 {
+	DECLARE_RTTI(BuyPhaseMenu_ProductFamilySelection, Menu);
+
 public:
 	using Menu::Menu;
 
@@ -32,7 +34,7 @@ public:
 	virtual EErrorType OnExcute() override;
 
 private:
-	EItemDBType m_itemDBType = EItemDBType::NONE;
+	EItemDBType m_itemDBType = EItemDBType::UNKNOWN;
 	BuyPhase* m_pTargetPhase = nullptr;
 };
 

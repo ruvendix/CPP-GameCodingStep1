@@ -25,17 +25,22 @@ struct PerformanceProfileInfo
 	Uint32 inputDataCnt = 0; // 입력된 주요 데이터 개수
 };
 
-class PerformanceProfileMgr
+class PerformanceProfileMgr final
 {
 	DECLARE_PHOENIX_SINGLETON(PerformanceProfileMgr);
 
 public:
+	using PerformanceProfileInfoPtr = std::shared_ptr<PerformanceProfileInfo>;
+	using MapPerformanceProfilerInfo = std::unordered_map<Uint32, PerformanceProfileInfoPtr>;
+
 	void Start(const std::string_view& szFuncSig, Int32 ID, Int32 inputDataCnt = 0);
 	void End(Int32 ID); // 측정되는 함수의 식별을 위한 ID (__COUNTER__ 활용)
 	void Report();
 
+	PerformanceProfileInfoPtr FindInfo(Int32 ID) const;
+
 private:
-	std::unordered_map<Uint32, PerformanceProfileInfo*> m_mapPerformanceProfileInfo;
+	MapPerformanceProfilerInfo m_mapPerformanceProfileInfo;
 };
 
 #endif

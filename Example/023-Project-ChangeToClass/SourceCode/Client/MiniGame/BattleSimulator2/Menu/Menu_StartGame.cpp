@@ -27,7 +27,7 @@ EErrorType Menu_StartGame::OnExcute()
 		1.0f, 0.0f, this, &Menu_StartGame::OnTrigger_GameStart, false, false);
 
 	RESERVE_RENDERING_STRING(1.0f, std::bind(&Menu_StartGame::OnTrigger_Excute, this));
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 void Menu_StartGame::OnTrigger_Excute()

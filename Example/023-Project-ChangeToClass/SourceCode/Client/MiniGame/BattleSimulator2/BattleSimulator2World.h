@@ -13,8 +13,10 @@
 
 #include "Element\World.h"
 
-class BattleSimulator2World : public World
+class BattleSimulator2World final : public World
 {
+	DECLARE_RTTI(BattleSimulator2World, World);
+
 public:
 #pragma region 생성자 및 소멸자
 	using World::World;
@@ -22,7 +24,6 @@ public:
 #pragma endregion
 
 	virtual EErrorType OnPostInitialize() override;
-	virtual EErrorType OnSaveFile(FILE* pFileStream) override;
 	virtual EErrorType OnLoadFile(FILE* pFileStream) override;
 };
 

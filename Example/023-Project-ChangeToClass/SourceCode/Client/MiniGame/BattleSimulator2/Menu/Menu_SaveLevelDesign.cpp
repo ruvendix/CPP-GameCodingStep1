@@ -31,7 +31,7 @@ EErrorType Menu_SaveLevelDesign::OnExcute()
 	m_pTargetScene->getLevelDesign()->SaveFile("BattleSimulator2.level");
 
 	RESERVE_RENDERING_STRING(1.0f, std::bind(&Menu_SaveLevelDesign::OnTrigger_Excute, this));
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 void Menu_SaveLevelDesign::OnTrigger_Excute()

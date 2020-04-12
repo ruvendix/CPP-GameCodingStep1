@@ -12,15 +12,16 @@
 
 #include "Math\Random.h"
 
-Unit::Unit(EDynamicObjID objID, const std::string_view& szShape)
+Unit::Unit(const std::string_view& szName, EDynamicObjID objID, const std::string_view& szShape) :
+	DynamicObj(szName)
 {
-	setObjID(objID);
+	setID(CommonFunc::ToUnderlyingType(objID));
 	setShape(szShape);
 }
 
 void Unit::Attack(std::shared_ptr<Unit> spTargetUnit)
 {
-	if (m_attackSuccessRate > math::RandomUtil::GenerateUniformDistribution(0.0f, 1.0f))
+	if (m_attackSuccessRate > math::RandomUtil::GenerateRandom(0.0f, 1.0f))
 	{
 		spTargetUnit->Damage(m_attackDamage);
 	}
@@ -33,7 +34,7 @@ void Unit::Damage(Int32 damage)
 
 void Unit::Copy(std::shared_ptr<Unit> spUnit)
 {
-	setObjID(spUnit->getObjID());
+	setID(spUnit->getID());
 	setShape(spUnit->getShape());
 	setPos(spUnit->getPos());
 }

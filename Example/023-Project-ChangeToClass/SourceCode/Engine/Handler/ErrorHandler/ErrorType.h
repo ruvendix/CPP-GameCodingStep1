@@ -15,7 +15,7 @@
 
 enum class EErrorType : Int32
 {
-	NONE = 0,
+	NOTHING = 0,
 	INIT_FAIL,
 	INPUT_FAIL,
 	UPDATE_FAIL,

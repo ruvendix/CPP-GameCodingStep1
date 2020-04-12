@@ -25,6 +25,7 @@ class StaticObj;
 
 class World : public GameElem
 {
+	DECLARE_RTTI(World, GameElem);
 	friend class LevelDesign;
 
 public:

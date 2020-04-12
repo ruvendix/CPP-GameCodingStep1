@@ -86,7 +86,7 @@ void InputController::PollInput()
 				DEBUG_LOG_CATEGORY(InputController, "입력 매핑을 유지중!");
 			}
 		}
-		// 매핑된 정보를 만족하지 못한 상태! (NONE 아니면 UP)
+		// 매핑된 정보를 만족하지 못한 상태! (IDLE 아니면 UP)
 		else
 		{
 			//DEBUG_LOG_CATEGORY(InputController, "입력 매핑을 만족하지 않음!");
@@ -101,7 +101,7 @@ void InputController::PollInput()
 			// 해당 입력값이 눌리지 않은 상태에서 또 누르지 않았을 때 (누르지 않고 있다는 의미)
 			else if (inputMappingState == EInputMappingState::UP)
 			{
-				inputMappingState = EInputMappingState::NONE;
+				inputMappingState = EInputMappingState::IDLE;
 				DEBUG_LOG_CATEGORY(InputController, "입력 매핑을 계속 만족하지 않음!");
 			}
 		}
@@ -135,7 +135,7 @@ void InputController::ResetInputState()
 	for (auto& iter : m_mapInputMappingInfo)
 	{
 		CHECK_NULLPTR_CONTINUE(iter.second);
-		iter.second->state = EInputMappingState::NONE;
+		iter.second->state = EInputMappingState::IDLE;
 	}
 }
 

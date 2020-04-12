@@ -15,7 +15,7 @@
 
 enum class EGameState : Int32
 {
-	NONE = 0,
+	UNKNOWN = 0,
 	INIT,
 	UPDATE,
 	RENDER,
@@ -51,7 +51,7 @@ public:
 	}
 
 private:
-	EGameState m_currentGameState = EGameState::NONE;
+	EGameState m_currentGameState = EGameState::UNKNOWN;
 };
 
 #endif

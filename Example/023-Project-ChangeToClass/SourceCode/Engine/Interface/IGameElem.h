@@ -12,7 +12,7 @@
 
 #include "Handler\ErrorHandler\ErrorHandler.h"
 
-class IGameElem
+class IGameElem abstract
 {
 public:
 	virtual EErrorType OnInitialize() abstract;
@@ -23,6 +23,7 @@ public:
 	virtual EErrorType OnFinalize() abstract;
 	virtual EErrorType OnPreSaveFile(FILE* pFileStream) abstract;
 	virtual EErrorType OnSaveFile(FILE* pFileStream) abstract;
+	virtual EErrorType OnPreLoadFile(FILE* pFileStream) abstract;
 	virtual EErrorType OnLoadFile(FILE* pFileStream) abstract;
 };
 

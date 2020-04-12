@@ -24,6 +24,8 @@ class DynamicObj;
 
 class LevelDesign : public GameElem
 {
+	DECLARE_RTTI(LevelDesign, GameElem);
+
 public:
 	using VecLevelDesigndObj = std::vector<std::shared_ptr<DynamicObj>>;
 

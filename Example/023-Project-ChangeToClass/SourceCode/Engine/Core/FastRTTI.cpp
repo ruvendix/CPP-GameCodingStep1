@@ -4,19 +4,9 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 동적 오브젝트 ID 모음입니다.
+// dynamic_cast를 개선하기 위해 사용되는 RTTI입니다.
+// 디버그 모드에서는 dynamic_cast보다 느리지만, 릴리즈 모드에서는 빠릅니다.
 // =====================================================================================
 
-#ifndef DYNAMIC_OBJECT_ID_H__
-#define DYNAMIC_OBJECT_ID_H__
-
-#include "Common\CommonType.h"
-
-enum class EDynamicObjID : Int32
-{
-	UNKNOWN = 0,
-	VIKING,
-	MEDIEVALKNIGHT,
-};
-
-#endif
+#include "PCH.h"
+#include "FastRTTI.h"

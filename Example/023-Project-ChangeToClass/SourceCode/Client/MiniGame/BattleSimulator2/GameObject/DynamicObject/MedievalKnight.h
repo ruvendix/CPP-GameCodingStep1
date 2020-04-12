@@ -12,8 +12,10 @@
 
 #include "Unit.h"
 
-class MedievalKnight : public Unit
+class MedievalKnight final : public Unit
 {
+	DECLARE_RTTI(MedievalKnight, Unit);
+
 public:
 #pragma region 생성자 및 소멸자
 	using Unit::Unit;

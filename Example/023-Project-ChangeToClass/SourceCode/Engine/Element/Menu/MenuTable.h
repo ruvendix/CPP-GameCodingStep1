@@ -15,6 +15,8 @@ class Menu;
 
 class MenuTable
 {
+	DECLARE_ROOT_RTTI(MenuTable);
+
 public:
 #pragma region 생성자 및 소멸자
 	MenuTable() = default;

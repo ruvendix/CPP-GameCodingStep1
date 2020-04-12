@@ -26,7 +26,7 @@ EErrorType World::OnInitialize()
 		m_vecObj.reserve(m_spFileHeader->worldObjCnt);
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType World::OnRender()
@@ -47,7 +47,7 @@ EErrorType World::OnRender()
 		}
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType World::OnSaveFile(FILE* pFileStream)
@@ -59,13 +59,18 @@ EErrorType World::OnSaveFile(FILE* pFileStream)
 	{
 		CHECK_NULLPTR_CONTINUE(iter);
 
+		if (iter->OnPreSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
+		{
+			return EErrorType::SAVE_FILE_FAIL;
+		}
+
 		if (iter->OnSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
 		{
 			return EErrorType::SAVE_FILE_FAIL;
 		}
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType World::OnLoadFile(FILE* pFileStream)
@@ -76,6 +81,11 @@ EErrorType World::OnLoadFile(FILE* pFileStream)
 	for (TSize i = 0; i < m_spFileHeader->worldObjCnt; ++i)
 	{
 		std::shared_ptr<StaticObj> spWorldObj = std::make_shared<StaticObj>();
+		if (spWorldObj->OnPreLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
+		{
+			return EErrorType::LOAD_FILE_FAIL;
+		}
+
 		if (spWorldObj->OnLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
 		{
 			return EErrorType::LOAD_FILE_FAIL;
@@ -84,13 +94,13 @@ EErrorType World::OnLoadFile(FILE* pFileStream)
 		AddObj(spWorldObj);
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType World::OnFinalize()
 {
 	m_vecObj.clear();
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType World::SaveFile(const std::string_view& szFileName)

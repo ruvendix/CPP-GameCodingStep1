@@ -32,7 +32,7 @@ EErrorType MiscellaneousShop2Scene::OnInitialize()
 		return EErrorType::INIT_FAIL;
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType MiscellaneousShop2Scene::OnInput()
@@ -42,7 +42,7 @@ EErrorType MiscellaneousShop2Scene::OnInput()
 		return EErrorType::INPUT_FAIL;
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType MiscellaneousShop2Scene::OnUpdate()
@@ -52,7 +52,7 @@ EErrorType MiscellaneousShop2Scene::OnUpdate()
 		return EErrorType::UPDATE_FAIL;
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType MiscellaneousShop2Scene::OnRender()
@@ -62,7 +62,7 @@ EErrorType MiscellaneousShop2Scene::OnRender()
 		return EErrorType::RENDER_FAIL;
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType MiscellaneousShop2Scene::OnFinalize()
@@ -75,5 +75,5 @@ EErrorType MiscellaneousShop2Scene::OnFinalize()
 	PlayerCtx::I()->Finalize();
 	ItemDBCtx::I()->Finalize();
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }

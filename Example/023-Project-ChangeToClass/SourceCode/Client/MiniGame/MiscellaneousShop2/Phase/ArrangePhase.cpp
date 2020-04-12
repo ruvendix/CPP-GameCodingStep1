@@ -65,7 +65,7 @@ EErrorType ArrangePhase::OnInitialize()
 	consoleSelector.setMinSelectorPosY(14);
 	consoleSelector.setMaxSelectorPosY(15);
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType ArrangePhase::OnInput()
@@ -98,7 +98,7 @@ EErrorType ArrangePhase::OnInput()
 		DEBUG_LOG("SelectMenu 눌렀다!");
 	}	
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType ArrangePhase::OnRender()
@@ -112,5 +112,5 @@ EErrorType ArrangePhase::OnRender()
 	PUT_STRING(0, 15, "    아니오");
 
 	ConsoleController::I()->DrawSelector();
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }

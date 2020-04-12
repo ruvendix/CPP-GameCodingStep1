@@ -13,8 +13,10 @@
 
 #include "Element\Menu\Menu.h"
 
-class IntroMenu_ComeBack : public Menu
+class IntroMenu_ComeBack final : public Menu
 {
+	DECLARE_RTTI(IntroMenu_ComeBack, Menu);
+
 public:
 	using Menu::Menu;
 

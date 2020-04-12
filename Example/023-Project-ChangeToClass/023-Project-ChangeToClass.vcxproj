@@ -119,6 +119,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>ACTIVATION_CONSOLE_DBL_BUFFERING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,11 +150,9 @@
     <ClCompile Include="SourceCode\Client\IntroMenu\IntroMenu_SceneLoader.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2World.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_LevelDesign.cpp" />
-    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\BattleSimulator2_DynamicObject.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\MedievalKnight.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\Unit.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\Viking.cpp" />
-    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\BattleSimulator2_StaticObject.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\Wall.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\Menu\Menu_EditLevelDesign.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\Menu\Menu_LoadLevelDesign.cpp" />
@@ -197,6 +196,7 @@
     <ClCompile Include="SourceCode\Engine\Controller\DebugPanelController.cpp" />
     <ClCompile Include="SourceCode\Engine\Controller\FrameController.cpp" />
     <ClCompile Include="SourceCode\Engine\Controller\InputController.cpp" />
+    <ClCompile Include="SourceCode\Engine\Core\FastRTTI.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\DoubleConsoleSelector.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\GameElement.cpp" />
     <ClCompile Include="SourceCode\Engine\Element\GameObject\DynamicObject.cpp" />
@@ -234,13 +234,11 @@
     <ClInclude Include="SourceCode\Client\IntroMenu\IntroMenu_SceneLoader.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2World.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_LevelDesign.h" />
-    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\DynamicObjectID.h" />
-    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\BattleSimulator2_DynamicObject.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\MedievalKnight.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\Unit.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\Viking.h" />
-    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\StaticObjectID.h" />
-    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\BattleSimulator2_StaticObject.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\ObjectID.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\ObjectState.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\Wall.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\Menu\Menu_EditLevelDesign.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\Menu\Menu_LoadLevelDesign.h" />
@@ -290,6 +288,7 @@
     <ClInclude Include="SourceCode\Engine\Controller\DebugPanelController.h" />
     <ClInclude Include="SourceCode\Engine\Controller\FrameController.h" />
     <ClInclude Include="SourceCode\Engine\Controller\InputController.h" />
+    <ClInclude Include="SourceCode\Engine\Core\FastRTTI.h" />
     <ClInclude Include="SourceCode\Engine\Element\DoubleConsoleSelector.h" />
     <ClInclude Include="SourceCode\Engine\Element\GameElement.h" />
     <ClInclude Include="SourceCode\Engine\Element\GameObject\DynamicObject.h" />

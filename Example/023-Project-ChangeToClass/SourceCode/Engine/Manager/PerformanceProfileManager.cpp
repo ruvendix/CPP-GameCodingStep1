@@ -20,29 +20,25 @@ ID를 이용해서 기존에 있는 정보인지 찾아보고 없으면 새로 생성합니다. (ID는 __COUN
 */
 void PerformanceProfileMgr::Start(const std::string_view& szFuncSig, Int32 ID, Int32 inputDataCnt)
 {
-	auto iter = m_mapPerformanceProfileInfo.find(ID);
-	if (iter != m_mapPerformanceProfileInfo.cend())
+	PerformanceProfileInfoPtr spInfo = FindInfo(ID);
+	if (spInfo != nullptr)
 	{
-		PerformanceProfileInfo* pPerformanceProfileInfo = iter->second;
-		CHECK_NULLPTR(pPerformanceProfileInfo);
-
-		pPerformanceProfileInfo->stopwatchTimer.StartTime();
-		++pPerformanceProfileInfo->callCnt;
+		spInfo->stopwatchTimer.StartTime();
+		++spInfo->callCnt;
 
 		//DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "이미 등록된 프로파일이에요! (%d)", ID);
-		return;
 	}
 	
-	PerformanceProfileInfo* pPerformanceProfileInfo = trace_new PerformanceProfileInfo;
-	pPerformanceProfileInfo->strFuncSig = szFuncSig;
-	pPerformanceProfileInfo->inputDataCnt = inputDataCnt;
-	pPerformanceProfileInfo->stopwatchTimer.StartTime();
-	pPerformanceProfileInfo->callCnt = 1;
+	spInfo = std::make_shared<PerformanceProfileInfo>();
+	spInfo->strFuncSig = szFuncSig;
+	spInfo->inputDataCnt = inputDataCnt;
+	spInfo->stopwatchTimer.StartTime();
+	spInfo->callCnt = 1;
 
 	auto ret = m_mapPerformanceProfileInfo.insert(std::make_pair(ID, nullptr));
 	if (ret.second == true)
 	{
-		ret.first->second = pPerformanceProfileInfo;
+		ret.first->second = spInfo;
 	}
 }
 
@@ -58,10 +54,8 @@ void PerformanceProfileMgr::End(Int32 ID)
 		return;
 	}
 
-	PerformanceProfileInfo* pPerformanceProfileInfo = iter->second;
-	CHECK_NULLPTR(pPerformanceProfileInfo);
-
-	pPerformanceProfileInfo->totalPerformanceTime += pPerformanceProfileInfo->stopwatchTimer.EndTime();
+	PerformanceProfileInfo& info = *(iter->second);
+	info.totalPerformanceTime += info.stopwatchTimer.EndTime();
 }
 
 /*
@@ -69,25 +63,36 @@ void PerformanceProfileMgr::End(Int32 ID)
 */
 void PerformanceProfileMgr::Report()
 {
+	DEBUG_LOG("##############################################################################################");
+	DEBUG_LOG("PerformanceProfilerMgr Report");
 	DEBUG_LOG("==============================================================================================");
-	
+
 	for (auto& iter : m_mapPerformanceProfileInfo)
 	{
-		PerformanceProfileInfo* pPerformanceProfileInfo = iter.second;
-		CHECK_NULLPTR(pPerformanceProfileInfo);
+		PerformanceProfileInfoPtr spInfo = iter.second;
 
-		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "<%d - Performance profile ret>", iter.first);
-		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "%s", pPerformanceProfileInfo->strFuncSig.c_str());
-		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "Input data count : %d", pPerformanceProfileInfo->inputDataCnt);
-		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "Func call count  : %d", pPerformanceProfileInfo->callCnt);
-		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "Total performance time : %f sec", pPerformanceProfileInfo->totalPerformanceTime);
+		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "<%d - Performance profile report>", iter.first);
+		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "%s", spInfo->strFuncSig.c_str());
+		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "Input data count : %d", spInfo->inputDataCnt);
+		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "Function call count  : %d", spInfo->callCnt);
+		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "Total performance time : %f sec", spInfo->totalPerformanceTime);
 
 		// 평균 수행 시간(총 수행 시간 / 호출 횟수)
-		Real32 avgPerformanceTime = pPerformanceProfileInfo->totalPerformanceTime / pPerformanceProfileInfo->callCnt;
+		Real32 avgPerformanceTime = spInfo->totalPerformanceTime / spInfo->callCnt;
 		DEBUG_LOG_CATEGORY(PerformanceProfileMgr, "Average performance time : %f sec", avgPerformanceTime);
-
-		SAFE_DELETE(iter.second);
+		DEBUG_LOG("==============================================================================================");
 	}
 
-	DEBUG_LOG("==============================================================================================");
+	DEBUG_LOG("##############################################################################################");
+}
+
+PerformanceProfileMgr::PerformanceProfileInfoPtr PerformanceProfileMgr::FindInfo(Int32 ID) const
+{
+	auto iter = m_mapPerformanceProfileInfo.find(ID);
+	if (iter != m_mapPerformanceProfileInfo.cend())
+	{
+		return iter->second;
+	}
+
+	return nullptr;
 }

@@ -202,7 +202,7 @@ EErrorType BuyPhase::OnInitialize()
 	consoleSelector.setSelectorPos(
 		s_spUI_posInfo->startPos.X + ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_BORDER, s_spUI_posInfo->menuStartPos.Y);
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType BuyPhase::OnInput()
@@ -216,7 +216,7 @@ EErrorType BuyPhase::OnInput()
 		BuyPhaseHelper::OnInput_SelectedProductFamily(*this);
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType BuyPhase::OnRender()
@@ -236,5 +236,5 @@ EErrorType BuyPhase::OnRender()
 
 	ConsoleController::I()->DrawSelector();
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }

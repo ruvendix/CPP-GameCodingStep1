@@ -14,8 +14,10 @@
 #include "Element\Menu\Menu.h"
 #include "MiniGame\MiscellaneousShop2\Phase\MiscellaneousShop2PhaseType.h"
 
-class EntrancePhaseMenu_PhaseLoader : public Menu
+class EntrancePhaseMenu_PhaseLoader final : public Menu
 {
+	DECLARE_RTTI(EntrancePhaseMenu_PhaseLoader, Menu);
+
 public:
 	using Menu::Menu;
 

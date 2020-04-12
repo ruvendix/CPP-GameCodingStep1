@@ -18,7 +18,7 @@
 
 DECLARE_LOG_CATEGORY(ConsoleController);
 
-class ConsoleController
+class ConsoleController final
 {
 	DECLARE_PHOENIX_SINGLETON(ConsoleController);
 

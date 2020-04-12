@@ -168,8 +168,9 @@ private:\
 #define DEBUG_LOG_CATEGORY(logCategory, szFormat, ...)\
 	CommonFunc::ShowLog(g_logCategory##logCategory.getNameTag(), CommonFunc::MakeFormatString(szFormat, __VA_ARGS__))
 #else
-#define DEBUG_LOG(szFormat, ...) __noop
-#define DEBUG_LOG_CATEGORY(logCategory, szFormat, ...) __noop
+#define DEBUG_LOG(szFormat, ...) CommonFunc::ShowLog("", CommonFunc::MakeFormatString(szFormat, __VA_ARGS__))
+#define DEBUG_LOG_CATEGORY(logCategory, szFormat, ...)\
+	CommonFunc::ShowLog(g_logCategory##logCategory.getNameTag(), CommonFunc::MakeFormatString(szFormat, __VA_ARGS__))
 #endif
 
 #define RESERVE_RENDERING_STRING(keepTime, func) TriggerTimerMgr::I()->AddTriggerTimer("RenderString", 0.0f, keepTime, func, true, false)
@@ -253,7 +254,7 @@ private:\
 #define PUT_STRING(x, y, szFormat, ...)\
 	ConsoleController::I()->PutString(x, y, CommonFunc::MakeFormatString(szFormat, __VA_ARGS__));
 #else
-#define PRINTF(x, y, szFormat, ...)\
+#define PUT_STRING(x, y, szFormat, ...)\
 	ConsoleController::I()->MoveConsolePos(x, y);\
 	printf(szFormat, __VA_ARGS__)
 #endif
@@ -340,5 +341,31 @@ private:\
 		{\
 			DEFAULT_ERROR_HANDLER(EErrorType::INVALID_RANGE, value, min, max);\
 		}
+
+#define DECLARE_ROOT_RTTI(TClass)\
+public:\
+	static const FastRTTI* GetRTTI()\
+	{\
+		static const FastRTTI s_RTTI = FastRTTI(#TClass, nullptr);\
+		return &s_RTTI;\
+	}\
+\
+	virtual const FastRTTI* OnGetRTTI() const\
+	{\
+		return GetRTTI();\
+	}
+
+#define DECLARE_RTTI(TChild, TParent)\
+public:\
+	static const FastRTTI* GetRTTI()\
+	{\
+		static const FastRTTI s_RTTI = FastRTTI(#TChild, TParent::GetRTTI());\
+		return &s_RTTI;\
+	}\
+\
+	virtual const FastRTTI* OnGetRTTI() const override\
+	{\
+		return GetRTTI();\
+	}
 
 #endif

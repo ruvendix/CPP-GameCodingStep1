@@ -15,8 +15,10 @@
 
 class BattleSimulator2_EditorScene;
 
-class Menu_ResetLevelDesign : public Menu
+class Menu_ResetLevelDesign final : public Menu
 {
+	DECLARE_RTTI(Menu_ResetLevelDesign, Menu);
+
 public:
 #pragma region 생성자 및 소멸자
 	using Menu::Menu;

@@ -34,7 +34,7 @@ EErrorType IntroMenu_SceneLoader::OnExcute()
 	TriggerTimerMgr::I()->AddTriggerTimer("Excute_IntroMenu_SceneLoader", 
 		1.0f, 0.0f, this, &IntroMenu_SceneLoader::OnTrigger_Excute, false, false);
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 void IntroMenu_SceneLoader::OnTrigger_Excute()

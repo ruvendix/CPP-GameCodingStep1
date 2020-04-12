@@ -14,7 +14,7 @@
 
 enum class EItemDBType : Int32
 {
-	NONE = -1,
+	UNKNOWN = -1,
 	POTION,
 	GROCERY,
 	CAMPING,

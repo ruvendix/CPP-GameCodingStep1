@@ -44,5 +44,5 @@ EErrorType PhaseMgr::Flip()
 	// 다음 페이즈의 소유권 이동
 	m_spCurrentPhase = std::move(m_spNextPhase);
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }

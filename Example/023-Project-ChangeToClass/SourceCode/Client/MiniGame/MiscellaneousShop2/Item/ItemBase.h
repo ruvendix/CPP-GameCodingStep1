@@ -17,6 +17,7 @@
 
 class ItemBase
 {
+	DECLARE_ROOT_RTTI(ItemBase);
 	HAS_NAME_TAG();
 
 public:

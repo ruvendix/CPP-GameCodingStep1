@@ -12,8 +12,9 @@
 
 #include "Element\Scene.h"
 #include "Controller\ConsoleControllerEnum.h"
-#include "MiniGame\BattleSimulator2\BattleSimulator2World.h"
 
+class BattleSimulator2World;
+class BattleSimulator2_LevelDesign;
 class MedievalKnight;
 class Viking;
 
@@ -21,6 +22,7 @@ DECLARE_LOG_CATEGORY(BattleSimulator2_GameScene);
 
 class BattleSimulator2_GameScene final : public Scene
 {
+	DECLARE_RTTI(BattleSimulator2_GameScene, Scene);
 	FRIEND_WITH_HELPER(BattleSimulator2_GameSceneHelper);
 
 public:
@@ -36,7 +38,9 @@ public:
 	virtual EErrorType OnFinalize() override;
 
 private:
-	std::shared_ptr<BattleSimulator2World> m_spWorld;
+	std::shared_ptr<BattleSimulator2World> m_spWorld = nullptr;
+	std::shared_ptr<BattleSimulator2_LevelDesign> m_spLevelDesign = nullptr;
+
 	std::vector<std::shared_ptr<MedievalKnight>> m_vecMedievalKnight;
 	std::vector<std::shared_ptr<Viking>> m_vecViking;
 

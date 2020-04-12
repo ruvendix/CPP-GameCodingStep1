@@ -14,6 +14,7 @@
 
 class MenuTable_Col : public MenuTable
 {
+	DECLARE_RTTI(MenuTable_Col, MenuTable);
 	INPUT_FPS_LIMITED(8);
 
 public:

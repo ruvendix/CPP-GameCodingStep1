@@ -15,6 +15,7 @@
 
 class GameElem : public IGameElem
 {
+	DECLARE_ROOT_RTTI(GameElem);
 	HAS_NAME_TAG();
 
 public:
@@ -37,11 +38,12 @@ public:
 	virtual EErrorType OnFinalize() override;
 	virtual EErrorType OnPreSaveFile(FILE* pFileStream) override;
 	virtual EErrorType OnSaveFile(FILE* pFileStream) override;
+	virtual EErrorType OnPreLoadFile(FILE* pFileStream) override;
 	virtual EErrorType OnLoadFile(FILE* pFileStream) override;
 
 	void ResetError()
 	{
-		m_errorType = EErrorType::NONE;
+		m_errorType = EErrorType::NOTHING;
 	}
 
 	void setLastError(EErrorType errorType)
@@ -55,7 +57,7 @@ public:
 	}
 
 private:
-	EErrorType m_errorType = EErrorType::NONE;
+	EErrorType m_errorType = EErrorType::NOTHING;
 	bool m_bFirstInput = true; // 첫 입력 처리는 무시 (우연히 입력 조합이 겹칠 경우 중복 처리가 될 수 있음)
 };
 

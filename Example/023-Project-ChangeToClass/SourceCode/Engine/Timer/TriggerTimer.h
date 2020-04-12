@@ -17,6 +17,8 @@
 
 class TriggerTimer final : public StopwatchTimer
 {
+	DECLARE_RTTI(TriggerTimer, StopwatchTimer);
+
 public:
 	using TCallback = std::function<void()>;
 

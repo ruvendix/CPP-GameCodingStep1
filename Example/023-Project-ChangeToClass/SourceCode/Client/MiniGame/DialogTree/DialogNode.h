@@ -22,6 +22,8 @@ struct DialogInfo
 
 class DialogNode
 {
+	DECLARE_ROOT_RTTI(DialogNode);
+
 public:
 #pragma region 생성자 및 소멸자
 	DialogNode() = default;

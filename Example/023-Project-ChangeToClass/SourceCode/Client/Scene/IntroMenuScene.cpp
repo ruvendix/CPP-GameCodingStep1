@@ -120,7 +120,7 @@ EErrorType IntroMenuScene::OnInitialize()
 	TriggerTimerMgr::I()->AddTriggerTimer("ChangeIntroTitle",
 		0.3f, 0.0f, this, &IntroMenuScene::OnTrigger_ChangeRandomColorToTitle, false, true);
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType IntroMenuScene::OnPostInitialize()
@@ -139,14 +139,14 @@ EErrorType IntroMenuScene::OnPostInitialize()
 	Int32 currentMenuIdx = m_spIntroMenuTable->ToMenuIdx(selectorPos, true);
 	m_spIntroMenuTable->setCurrentMenuIdx(currentMenuIdx);
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType IntroMenuScene::OnInput()
 {
 	if (m_bTerminateGame == true)
 	{
-		return EErrorType::NONE;
+		return EErrorType::NOTHING;
 	}
 
 	m_spIntroMenuTable->OnInput();
@@ -162,13 +162,13 @@ EErrorType IntroMenuScene::OnInput()
 		DEBUG_LOG_CATEGORY(IntroMenuScene, "Exit ´­·¶´Ù!");
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType IntroMenuScene::OnRender()
 {
 	IntroMenuSceneHelper::DrawScene(*this);
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType IntroMenuScene::OnFinalize()
@@ -176,12 +176,12 @@ EErrorType IntroMenuScene::OnFinalize()
 	TriggerTimerMgr::I()->DeleteTriggerTimer("ChangeIntroTitle");
 	InputController::I()->EnableInput();
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 void IntroMenuScene::OnTrigger_ChangeRandomColorToTitle()
 {
 	m_titleColorType = static_cast<EConsoleOutputColorType>(
-		math::RandomUtil::GenerateUniformDistribution(CommonFunc::ToUnderlyingType(EConsoleOutputColorType::BLUE),
+		math::RandomUtil::GenerateRandom(CommonFunc::ToUnderlyingType(EConsoleOutputColorType::BLUE),
 			CommonFunc::ToUnderlyingType(EConsoleOutputColorType::BRIGHT_WHITE)));
 }

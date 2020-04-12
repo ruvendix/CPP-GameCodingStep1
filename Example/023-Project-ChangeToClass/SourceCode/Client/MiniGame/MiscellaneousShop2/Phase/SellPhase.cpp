@@ -89,7 +89,7 @@ EErrorType SellPhase::OnInitialize()
 	CHECK_NULLPTR(pInven);
 	consoleSelector.setMaxSelectorPosY(3 + pInven->getMaxInvenSize() - 1);
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType SellPhase::OnInput()
@@ -138,7 +138,7 @@ EErrorType SellPhase::OnInput()
 		DEBUG_LOG("SellItem ´­·¶´Ù!");
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType SellPhase::OnRender()
@@ -148,5 +148,5 @@ EErrorType SellPhase::OnRender()
 	pInven->DrawForSell(0, 0);
 
 	ConsoleController::I()->DrawSelector();
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }

@@ -12,7 +12,7 @@
 
 #include "Common\CommonNecessary.h"
 
-class NameTag
+class NameTag final
 {
 public:
 #pragma region 생성자 및 소멸자

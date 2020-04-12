@@ -19,7 +19,7 @@ DECLARE_LOG_CATEGORY(InputController);
 // 입력값 하나에 대한 상태가 아니라 입력 조합에 대한 상태에요!
 enum class EInputMappingState : Int32
 {
-	NONE = 0, // 입력 조합을 누르지 않은 상태
+	IDLE = 0, // 입력 조합을 누르지 않은 상태
 	UP,       // 입력 조합을 뗀 상태
 	PRESSING, // 입력 조합을 누르고 있는 상태
 	DOWN,     // 입력 조합을 누른 상태
@@ -30,7 +30,7 @@ struct InputMappingInfo
 {
 	std::vector<TInput> vecInputTable; // 입력 매핑 테이블 (가상키는 0 ~ 255)
 	std::list<TInput> listInputChecker; // 입력 매핑을 만족하는지 확인하기 위한 것 (이전 프레임도 확인해야 하므로...)
-	EInputMappingState state = EInputMappingState::NONE; // 입력 매핑의 상태 (4가지)
+	EInputMappingState state = EInputMappingState::IDLE; // 입력 매핑의 상태 (4가지)
 };
 
 class InputController final

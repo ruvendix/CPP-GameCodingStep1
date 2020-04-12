@@ -13,15 +13,16 @@
 
 #include "Element\LevelDesign.h"
 
-class BattleSimulator2_LevelDesign : public LevelDesign
+class BattleSimulator2_LevelDesign final : public LevelDesign
 {
+	DECLARE_RTTI(BattleSimulator2_LevelDesign, LevelDesign);
+
 public:
 #pragma region 생성자 및 소멸자
 	using LevelDesign::LevelDesign;
 	virtual ~BattleSimulator2_LevelDesign() = default;
 #pragma endregion
 
-	virtual EErrorType OnSaveFile(FILE* pFileStream) override;
 	virtual EErrorType OnLoadFile(FILE* pFileStream) override;
 };
 

@@ -35,7 +35,7 @@ Menu::Menu(const std::string_view& szNameTag, const COORD& pos, const COORD& off
 EErrorType Menu::OnExcute()
 {
 	//DEBUG_LOG("Menu에서 이게 보이면 OnExcute()를 재정의해주세요!");
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 void Menu::OnTrigger_Excute()

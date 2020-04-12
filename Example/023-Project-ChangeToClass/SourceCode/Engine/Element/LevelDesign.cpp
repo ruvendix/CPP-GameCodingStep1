@@ -88,7 +88,7 @@ EErrorType LevelDesign::OnRender()
 		}
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType LevelDesign::OnSaveFile(FILE* pFileStream)
@@ -100,13 +100,18 @@ EErrorType LevelDesign::OnSaveFile(FILE* pFileStream)
 	{
 		CHECK_NULLPTR_CONTINUE(iter);
 
+		if (iter->OnPreSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
+		{
+			return EErrorType::SAVE_FILE_FAIL;
+		}
+
 		if (iter->OnSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
 		{
 			return EErrorType::SAVE_FILE_FAIL;
 		}
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType LevelDesign::OnLoadFile(FILE* pFileStream)
@@ -117,6 +122,11 @@ EErrorType LevelDesign::OnLoadFile(FILE* pFileStream)
 	for (TSize i = 0; i < m_spFileHeader->levelDesignObjCnt; ++i)
 	{
 		std::shared_ptr<DynamicObj> spLevelDesignObj = std::make_shared<DynamicObj>();
+		if (spLevelDesignObj->OnPreLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
+		{
+			return EErrorType::LOAD_FILE_FAIL;
+		}
+
 		if (spLevelDesignObj->OnLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
 		{
 			return EErrorType::LOAD_FILE_FAIL;
@@ -125,13 +135,13 @@ EErrorType LevelDesign::OnLoadFile(FILE* pFileStream)
 		AddObj(spLevelDesignObj);
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType LevelDesign::OnFinalize()
 {
 	m_vecObj.clear();
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType LevelDesign::SaveFile(const std::string_view& szFileName)

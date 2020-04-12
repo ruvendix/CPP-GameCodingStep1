@@ -161,24 +161,25 @@ void BattleSimulator2_EditorSceneHelper::OnInput_EditorMode(_Inout_ BattleSimula
 		mappingPos.X = mappingPos.X / consoleSelector.getShapeLength();
 
 		// 현재 선택된 아이디
-		switch (targetHelper.getCurrentSampleUnit()->getObjID())
+		EDynamicObjID objID = static_cast<EDynamicObjID>(targetHelper.getCurrentSampleUnit()->getID());
+		switch (objID)
 		{
 		case EDynamicObjID::VIKING:
 		{
 			std::shared_ptr<Viking> spViking = std::make_shared<Viking>();
 			spViking->Copy(targetHelper.getCurrentSampleUnit());
 			spViking->setPos(mappingPos);
-			targetHelper.m_spCurrentLevelDesign->AddObj(spViking);
+			targetHelper.m_spLevelDesign->AddObj(spViking);
 
 			break;
 		}
 
-		case EDynamicObjID::MEDIEVALKNIGHT:
+		case EDynamicObjID::MEDIEVAL_KNIGHT:
 		{
 			std::shared_ptr<MedievalKnight> spMedievalKnight = std::make_shared<MedievalKnight>();
 			spMedievalKnight->Copy(targetHelper.getCurrentSampleUnit());
 			spMedievalKnight->setPos(mappingPos);
-			targetHelper.m_spCurrentLevelDesign->AddObj(spMedievalKnight);
+			targetHelper.m_spLevelDesign->AddObj(spMedievalKnight);
 
 			break;
 		}
@@ -276,6 +277,10 @@ EErrorType BattleSimulator2_EditorScene::OnInitialize()
 		}
 	}
 
+	// 레벨 디자인 파일은 있을 때만 적용할게요.
+	m_spLevelDesign = std::make_shared<BattleSimulator2_LevelDesign>();
+	m_spLevelDesign->LoadFile("BattleSimulator2.level");
+
 	s_spUI_posInfo = std::make_unique<UI_PosInfo>();
 	s_spUI_posInfo->startPos = COORD{ 85, 10 };
 	s_spUI_posInfo->menuStartPos = s_spUI_posInfo->startPos;
@@ -313,12 +318,10 @@ EErrorType BattleSimulator2_EditorScene::OnInitialize()
 		       s_spUI_posInfo->menuStartPos.Y +
 		       static_cast<SHORT>(s_spUI_posInfo->diffSize.height * (++diffMultipleFactor)) }));
 
-	m_vecSampleUnit.push_back(std::make_shared<MedievalKnight>(EDynamicObjID::MEDIEVALKNIGHT, "Ω"));
-	m_vecSampleUnit.push_back(std::make_shared<Viking>(EDynamicObjID::VIKING, "♠"));
+	m_vecSampleUnit.push_back(std::make_shared<MedievalKnight>("MedievalKnight", EDynamicObjID::MEDIEVAL_KNIGHT, "Ω"));
+	m_vecSampleUnit.push_back(std::make_shared<Viking>("Viking", EDynamicObjID::VIKING, "♠"));
 
-	m_spCurrentLevelDesign = std::make_shared<BattleSimulator2_LevelDesign>();
-
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType BattleSimulator2_EditorScene::OnPostInitialize()
@@ -339,7 +342,7 @@ EErrorType BattleSimulator2_EditorScene::OnPostInitialize()
 	consoleSelector.setMinSelectorPosY(s_spUI_posInfo->startPos.Y);
 	consoleSelector.setMaxSelectorPosY(s_spUI_posInfo->startPos.Y + m_spEditorMenuTable->getLastIdx());
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType BattleSimulator2_EditorScene::OnInput()
@@ -353,12 +356,12 @@ EErrorType BattleSimulator2_EditorScene::OnInput()
 		BattleSimulator2_EditorSceneHelper::OnInput_EditorMode(*this);
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType BattleSimulator2_EditorScene::OnUpdate()
 {
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType BattleSimulator2_EditorScene::OnRender()
@@ -368,7 +371,7 @@ EErrorType BattleSimulator2_EditorScene::OnRender()
 		return EErrorType::RENDER_FAIL;
 	}
 
-	if (m_spCurrentLevelDesign->OnRender() == EErrorType::RENDER_FAIL)
+	if (m_spLevelDesign->OnRender() == EErrorType::RENDER_FAIL)
 	{
 		return EErrorType::RENDER_FAIL;
 	}
@@ -376,11 +379,11 @@ EErrorType BattleSimulator2_EditorScene::OnRender()
 	BattleSimulator2_EditorSceneHelper::DrawMenu(s_spUI_posInfo->startPos, m_spEditorMenuTable);
 	ConsoleController::I()->DrawSelector();
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType BattleSimulator2_EditorScene::OnFinalize()
 {
 	m_spWorld->SaveFile("BattleSimulator2.world"); // 월드는 오토 세이브!
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }

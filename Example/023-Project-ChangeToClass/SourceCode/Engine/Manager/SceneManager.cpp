@@ -33,5 +33,5 @@ EErrorType SceneMgr::Flip()
 	// 다음 페이즈의 소유권 이동
 	m_spCurrentScene = std::move(m_spNextScene);
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }

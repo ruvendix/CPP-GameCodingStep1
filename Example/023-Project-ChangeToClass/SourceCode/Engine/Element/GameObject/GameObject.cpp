@@ -12,11 +12,28 @@
 
 #include "Controller\ConsoleController.h"
 
+GameObj::GameObj(Int32 objID) :
+	m_ID(objID)
+{
+
+}
+
 EErrorType GameObj::OnRender()
 {
 	const COORD& pos = getPos();
 	PUT_STRING(pos.X * getShape().size(), pos.Y, getShape().c_str());
-	return EErrorType::NONE;
+
+	return EErrorType::NOTHING;
+}
+
+EErrorType GameObj::OnPreSaveFile(FILE* pFileStream)
+{
+	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::SAVE_FILE_FAIL);
+	
+	Int32 ID = getID();
+	fwrite(&ID, sizeof(ID), 1, pFileStream);
+
+	return EErrorType::NOTHING;
 }
 
 EErrorType GameObj::OnSaveFile(FILE* pFileStream)
@@ -35,7 +52,18 @@ EErrorType GameObj::OnSaveFile(FILE* pFileStream)
 	fwrite(shapeBuffer, 1, shapeSize, pFileStream);
 	std::free(shapeBuffer);
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
+}
+
+EErrorType GameObj::OnPreLoadFile(FILE* pFileStream)
+{
+	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::LOAD_FILE_FAIL);
+
+	Int32 ID = 0;
+	fread(&ID, sizeof(ID), 1, pFileStream);
+	setID(ID);
+
+	return EErrorType::NOTHING;
 }
 
 EErrorType GameObj::OnLoadFile(FILE* pFileStream)
@@ -55,5 +83,5 @@ EErrorType GameObj::OnLoadFile(FILE* pFileStream)
 	setShape(shapeBuffer);
 	std::free(shapeBuffer);
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }

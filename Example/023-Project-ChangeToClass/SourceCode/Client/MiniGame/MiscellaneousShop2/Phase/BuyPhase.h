@@ -17,8 +17,9 @@
 
 class ItemBase;
 
-class BuyPhase : public Phase
+class BuyPhase final : public Phase
 {
+	DECLARE_RTTI(BuyPhase, Phase);
 	FRIEND_WITH_HELPER(BuyPhaseHelper);
 	INPUT_FPS_LIMITED(8);
 

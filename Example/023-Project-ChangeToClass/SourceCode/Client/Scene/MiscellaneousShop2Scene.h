@@ -18,6 +18,8 @@ DECLARE_LOG_CATEGORY(MiscellaneousShop2Scene);
 
 class MiscellaneousShop2Scene final : public Scene
 {
+	DECLARE_RTTI(MiscellaneousShop2Scene, Scene);
+
 public:
 #pragma region 생성자 및 소멸자
 	using Scene::Scene;

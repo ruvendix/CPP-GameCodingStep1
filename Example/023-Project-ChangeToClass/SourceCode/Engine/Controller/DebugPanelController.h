@@ -14,7 +14,7 @@
 #include "Common\CommonType.h"
 #include "Common\CommonMacro.h"
 
-class DebugPanelController
+class DebugPanelController final
 {
 	DECLARE_PHOENIX_SINGLETON(DebugPanelController);
 

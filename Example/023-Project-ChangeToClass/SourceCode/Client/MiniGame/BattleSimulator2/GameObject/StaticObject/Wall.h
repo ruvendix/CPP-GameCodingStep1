@@ -10,13 +10,16 @@
 #ifndef WALL__H__
 #define WALL__H__
 
-#include "BattleSimulator2_StaticObject.h"
+#include "Element\GameObject\StaticObject.h"
+#include "..\ObjectID.h"
 
-class Wall : public BattleSimulator2_StaticObj
+class Wall final : public StaticObj
 {
+	DECLARE_RTTI(Wall, StaticObj);
+
 public:
 #pragma region 생성자 및 소멸자
-	using BattleSimulator2_StaticObj::BattleSimulator2_StaticObj;
+	using StaticObj::StaticObj;
 	virtual ~Wall() = default;
 #pragma endregion
 };

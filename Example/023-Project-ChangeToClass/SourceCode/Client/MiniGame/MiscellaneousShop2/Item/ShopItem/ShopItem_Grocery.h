@@ -12,8 +12,10 @@
 
 #include "ShopItem.h"
 
-class ShopItem_Grocery : public ShopItem
+class ShopItem_Grocery final : public ShopItem
 {
+	DECLARE_RTTI(ShopItem_Grocery, ShopItem);
+
 public:
 #pragma region 생성자 및 소멸자
 	using ShopItem::ShopItem;

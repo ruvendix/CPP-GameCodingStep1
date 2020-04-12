@@ -21,6 +21,7 @@ class IntroMenu;
 
 class IntroMenuScene final : public Scene
 {
+	DECLARE_RTTI(IntroMenuScene, Scene);
 	NON_COPYABLE_CLASS(IntroMenuScene);
 	FRIEND_WITH_HELPER(IntroMenuSceneHelper);
 	INPUT_FPS_LIMITED(8);

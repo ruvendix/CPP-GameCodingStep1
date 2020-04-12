@@ -13,8 +13,10 @@
 
 #include "DialogNode.h"
 
-class TriggerDialogNode : public DialogNode
+class TriggerDialogNode final : public DialogNode
 {
+	DECLARE_RTTI(TriggerDialogNode, DialogNode);
+
 public:
 	using TupleTriggerDialogNode = std::tuple<std::string, std::shared_ptr<DialogNode>>;
 

@@ -12,10 +12,13 @@
 
 #include "Controller\ConsoleController.h"
 #include "Controller\InputController.h"
+#include "Controller\FrameController.h"
 #include "Manager\SceneManager.h"
 #include "Math\Random.h"
 
 #include "BattleSimulator2_EditorScene.h"
+#include "MiniGame\BattleSimulator2\BattleSimulator2World.h"
+#include "MiniGame\BattleSimulator2\BattleSimulator2_LevelDesign.h"
 #include "MiniGame\BattleSimulator2\GameObject\DynamicObject\MedievalKnight.h"
 #include "MiniGame\BattleSimulator2\GameObject\DynamicObject\Viking.h"
 
@@ -174,10 +177,21 @@ EErrorType BattleSimulator2_GameScene::OnInitialize()
 	m_vecViking.resize(Viking::GetTotalCnt());
 	std::generate(m_vecViking.begin(), m_vecViking.end(), &BattleSimulator2_GameSceneHelper::CloneViking);
 
-	// 레벨 디자인 씬에서 가져와야 함!
-	//m_spWorld = std::make_unique<BattleSimulator2World>(SizeInfo{ 40, 30 });
+	// 월드와 레벨 디자인을 불러옵니다.
+	// 이미 에디터 씬에서 불러온 상태지만 일반적인 상황에 맞추기 위해 다시 불러옵니다.
+	m_spWorld = std::make_shared<BattleSimulator2World>();
+	if (m_spWorld->LoadFile("BattleSimulator2.world") == EErrorType::LOAD_FILE_FAIL)
+	{
+		return EErrorType::LOAD_FILE_FAIL;
+	}
 
-	return EErrorType::NONE;
+	m_spLevelDesign = std::make_shared<BattleSimulator2_LevelDesign>();
+	if (m_spLevelDesign->LoadFile("BattleSimulator2.level") == EErrorType::LOAD_FILE_FAIL)
+	{
+		return EErrorType::LOAD_FILE_FAIL;
+	}
+
+	return EErrorType::NOTHING;
 }
 
 EErrorType BattleSimulator2_GameScene::OnInput()
@@ -187,85 +201,161 @@ EErrorType BattleSimulator2_GameScene::OnInput()
 		SceneMgr::I()->CreateScene<BattleSimulator2_EditorScene>(ECreateType::NEXT);
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType BattleSimulator2_GameScene::OnUpdate()
 {
-	// 중세기사 또는 바이킹이 없으면 아무 처리도 하지 않을게요!
-	if ( (m_vecMedievalKnight.empty() == true) ||
-		 (m_vecViking.empty() == true) )
-	{
-		m_bBattleEnd = true;
-		return EErrorType::NONE;
-	}
-
-	// 턴제로 한번씩 공격
-	std::shared_ptr<MedievalKnight> spMedievalKnight = m_vecMedievalKnight[0];
-	std::shared_ptr<Viking> spViking = m_vecViking[0];
-
-#pragma region 중세기사 -> 바이킹
-	spMedievalKnight->Attack(spViking);
-
-	if (spViking->IsDeath())
-	{
-		m_vecViking.erase(m_vecViking.begin());
-		if (m_vecViking.empty() == true)
-		{
-			return EErrorType::NONE;
-		}
-
-		spViking = m_vecViking[0];
-	}
-#pragma endregion
-
-#pragma region 바이킹 -> 중세기사
-	spViking->Attack(spMedievalKnight);
-
-	if (spMedievalKnight->IsDeath())
-	{
-		m_vecMedievalKnight.erase(m_vecMedievalKnight.begin());
-	}
-#pragma endregion
+//	// 중세기사 또는 바이킹이 없으면 아무 처리도 하지 않을게요!
+//	if ( (m_vecMedievalKnight.empty() == true) ||
+//		 (m_vecViking.empty() == true) )
+//	{
+//		m_bBattleEnd = true;
+//		return EErrorType::NOTHING;
+//	}
+//
+//	// 턴제로 한번씩 공격
+//	std::shared_ptr<MedievalKnight> spMedievalKnight = m_vecMedievalKnight[0];
+//	std::shared_ptr<Viking> spViking = m_vecViking[0];
+//
+//#pragma region 중세기사 -> 바이킹
+//	spMedievalKnight->Attack(spViking);
+//
+//	if (spViking->IsDeath())
+//	{
+//		m_vecViking.erase(m_vecViking.begin());
+//		if (m_vecViking.empty() == true)
+//		{
+//			return EErrorType::NOTHING;
+//		}
+//
+//		spViking = m_vecViking[0];
+//	}
+//#pragma endregion
+//
+//#pragma region 바이킹 -> 중세기사
+//	spViking->Attack(spMedievalKnight);
+//
+//	if (spMedievalKnight->IsDeath())
+//	{
+//		m_vecMedievalKnight.erase(m_vecMedievalKnight.begin());
+//	}
+//#pragma endregion
 
 	// 원래는 죽은 유닛들의 대한 정보도 저장해야 하지만
 	// 배틀 시뮬레이터는 간단한 게임이니까 따로 저장하지는 않을게요.
 
-	return EErrorType::NONE;
+	// 시야만큼 꾸준히 검사!
+	auto& me = m_spLevelDesign->getVecObj().at(0);
+	auto& you = m_spLevelDesign->getVecObj().at(1);
+
+	for (Int32 y = me->getPos().Y - 2; y < (me->getPos().Y + 2) + 1; ++y)
+	{
+		if (y < 0)
+		{
+			continue;
+		}
+
+		for (Int32 x = me->getPos().X - 2; x < (me->getPos().X + 2) + 1; ++x)
+		{
+			if (x < 0)
+			{
+				continue;
+			}
+
+			for (auto& iter : m_spLevelDesign->getVecObj())
+			{
+				CHECK_NULLPTR_CONTINUE(iter);
+
+				if (iter == me)
+				{
+					DEBUG_LOG("난 패스!");
+					continue;
+				}
+
+				// 시야에서 가다가 뭔가를 만난다면?
+
+				if ((you->getPos().X == x) && (you->getPos().Y == y))
+				{
+					DEBUG_LOG("시야에서 찾은 첫번째 오브젝트!");
+
+					if (me->getID() != you->getID())
+					{
+						// 그리고 간격이 쫍아야 함! => 상태로 판단
+
+
+						EPreferMoveAxis preferMoveAxis = static_cast<EPreferMoveAxis>(math::RandomUtil::GenerateRandom(0, 1));
+						me->setPreferMoveAxis(preferMoveAxis);
+						me->setMoveSpeed(2.0f);
+						me->MoveToTarget(you);
+					}
+
+					break;
+				}
+			}
+		}
+	}
+
+	//EPreferMoveAxis preferMoveAxis = static_cast<EPreferMoveAxis>(math::RandomUtil::GenerateRandom(0, 1));
+	//me->setPreferMoveAxis(preferMoveAxis);
+	//me->setMoveSpeed(8.0f);
+	//me->MoveToTarget(you);
+
+	//preferMoveAxis = static_cast<EPreferMoveAxis>(math::RandomUtil::GenerateRandom(0, 1));
+	//you->setPreferMoveAxis(preferMoveAxis);
+	//you->setMoveSpeed(4.0f);
+	//you->MoveToTarget(me);
+
+	//for (auto& iter : m_spLevelDesign->getVecObj())
+	//{
+	//	CHECK_NULLPTR_CONTINUE(iter);
+
+	//	// 주위 검색해서 첫 번째로 걸리는 놈 찾기
+
+	//	const COORD& pos = iter->getPos();
+	//	iter->setPos(pos.X + 1, pos.Y);
+	//}
+
+	return EErrorType::NOTHING;
 }
 
 EErrorType BattleSimulator2_GameScene::OnRender()
 {
-	//if (m_spWorld->OnRender() == EErrorType::RENDER_FAIL)
-	//{
-	//	return EErrorType::RENDER_FAIL;
-	//}
-
-	BattleSimulator2_GameSceneHelper::DrawTitle();
-	BattleSimulator2_GameSceneHelper::DrawUnitStat();
-
-	Int32 drawPosY = 11;
-	PUT_STRING(0, ++drawPosY, "남은 중세기사의 수 : %d / %d", static_cast<Int32>(m_vecMedievalKnight.size()), MedievalKnight::GetTotalCnt());
-	PUT_STRING(0, ++drawPosY, "남은 바이킹의 수   : %d / %d", static_cast<Int32>(m_vecViking.size()), Viking::GetTotalCnt());
-
-	++drawPosY;
-	PUT_STRING(0, ++drawPosY, "∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼");
-	PUT_STRING(0, ++drawPosY, "모의 전투를 시작할게요~!");
-
-	if (m_bBattleEnd == false)
+	if (m_spWorld->OnRender() == EErrorType::RENDER_FAIL)
 	{
-		return EErrorType::NONE;
+		return EErrorType::RENDER_FAIL;
 	}
 
-	PUT_STRING(0, ++drawPosY, "모의 전투가 끝났어요~!");
-	PUT_STRING(0, ++drawPosY, "전투 결과를 알아볼까요?");
-	PUT_STRING(0, ++drawPosY, "∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼");
+	if (m_spLevelDesign->OnRender() == EErrorType::RENDER_FAIL)
+	{
+		return EErrorType::RENDER_FAIL;
+	}
 
-	BattleSimulator2_GameSceneHelper::DrawBattleReport(*this);
-	return EErrorType::NONE;
+	//BattleSimulator2_GameSceneHelper::DrawTitle();
+	//BattleSimulator2_GameSceneHelper::DrawUnitStat();
+
+	//Int32 drawPosY = 11;
+	//PUT_STRING(0, ++drawPosY, "남은 중세기사의 수 : %d / %d", static_cast<Int32>(m_vecMedievalKnight.size()), MedievalKnight::GetTotalCnt());
+	//PUT_STRING(0, ++drawPosY, "남은 바이킹의 수   : %d / %d", static_cast<Int32>(m_vecViking.size()), Viking::GetTotalCnt());
+
+	//++drawPosY;
+	//PUT_STRING(0, ++drawPosY, "∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼");
+	//PUT_STRING(0, ++drawPosY, "모의 전투를 시작할게요~!");
+
+	//if (m_bBattleEnd == false)
+	//{
+	//	return EErrorType::NOTHING;
+	//}
+
+	//PUT_STRING(0, ++drawPosY, "모의 전투가 끝났어요~!");
+	//PUT_STRING(0, ++drawPosY, "전투 결과를 알아볼까요?");
+	//PUT_STRING(0, ++drawPosY, "∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼");
+
+	//BattleSimulator2_GameSceneHelper::DrawBattleReport(*this);
+	return EErrorType::NOTHING;
 }
 
 EErrorType BattleSimulator2_GameScene::OnFinalize()
 {
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }

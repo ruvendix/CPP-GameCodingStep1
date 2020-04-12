@@ -15,7 +15,7 @@
 #pragma warning(disable : 6011) // 널포인터 역참조
 #pragma warning(disable : 26495) // 멤버변수 초기화 필수
 
-// 엔진의 공용 헤더 파일부터 포함해야 해요!
+// Common 헤더 파일은 0순위!
 #include "Common\CommonNecessary.h"
 #include "Common\CommonType.h"
 #include "Common\CommonStruct.h"
@@ -24,10 +24,7 @@
 #include "Common\CommonLog.h"
 #include "Common\CommonTemplate.h"
 
-// 엔진 헤더파일은 여기부터!
-#include "Handler\ErrorHandler\ErrorHandler.h"
+// 그 다음 중요도가 높은 헤더 파일을 포함!
 #include "Math\Math.h"
-
-// 이제 프로젝트의 공용 헤더 파일을 포함해야 해요!
 
 #endif

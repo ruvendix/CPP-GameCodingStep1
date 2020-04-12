@@ -213,25 +213,25 @@ EErrorType DialogTreeScene::OnInitialize()
 		DialogTreeSceneHelper::ChangeCallback(&DialogTreeSceneHelper::OnCallback_InputForTriggerDialogNode);
 	}
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType DialogTreeScene::OnPostInitialize()
 {
 	if (DialogTreeSceneHelper::IsTriggerDialogNode(m_spCurrentDialogNode) == false)
 	{
-		return EErrorType::NONE;
+		return EErrorType::NOTHING;
 	}
 
 	DialogTreeSceneHelper::AdjustSelectorPosForTriggerDialogNode(m_spCurrentDialogNode);
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType DialogTreeScene::OnInput()
 {
 	if (m_spCurrentDialogNode == nullptr)
 	{
-		return EErrorType::NONE;
+		return EErrorType::NOTHING;
 	}
 
 	if (Scene::OnInput() == EErrorType::FIRST_INPUT)
@@ -267,7 +267,7 @@ EErrorType DialogTreeScene::OnInput()
 
 	DialogTreeSceneHelper::RunCallback(*this);
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
 
 EErrorType DialogTreeScene::OnRender()
@@ -275,5 +275,5 @@ EErrorType DialogTreeScene::OnRender()
 	m_spCurrentDialogNode->Draw(0, 0);
 	DialogTreeSceneHelper::DrawDialogBox();
 
-	return EErrorType::NONE;
+	return EErrorType::NOTHING;
 }
