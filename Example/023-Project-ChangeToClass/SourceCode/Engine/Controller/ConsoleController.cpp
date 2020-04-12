@@ -36,7 +36,7 @@ void ConsoleController::Initialize(const std::string_view& szTitle, const SizeIn
 	::ZeroMemory(&consoleCursorInfo, sizeof(consoleCursorInfo));
 	::GetConsoleCursorInfo(::GetStdHandle(STD_OUTPUT_HANDLE), &consoleCursorInfo);
 
-	for (Int32 i = 0; i < CommonFunc::ToUnderlyingType(EConsoleScreenBufferTypeIdx::MAX); ++i)
+	for (Int32 i = 0; i < common_func::ToUnderlyingType(EConsoleScreenBufferTypeIdx::MAX); ++i)
 	{
 		// 읽기와 쓰기가 가능한 콘솔창의 버퍼를 생성하는 부분이에요!
 		// 더블 버퍼링에서는 콘솔창의 버퍼가 2개 필요합니다!
@@ -55,7 +55,7 @@ void ConsoleController::Initialize(const std::string_view& szTitle, const SizeIn
 
 	m_currentConsoleScreenBufferType = EConsoleScreenBufferTypeIdx::BACK;
 #else
-	m_hConsoleScreenBuffers[CommonFunc::ToUnderlyingType(EConsoleScreenBufferType::FRONT)] = ::GetStdHandle(STD_OUTPUT_HANDLE);
+	m_hConsoleScreenBuffers[common_func::ToUnderlyingType(EConsoleScreenBufferType::FRONT)] = ::GetStdHandle(STD_OUTPUT_HANDLE);
 #endif
 
 	// 표준 입력 콘솔창에 "Ctrl + C" 무효와 "마우스 입력 가능"을 추가할게요!
@@ -99,12 +99,12 @@ void ConsoleController::Flipping()
 void ConsoleController::Finalize()
 {
 #ifdef ACTIVATION_CONSOLE_DBL_BUFFERING
-	for (Int32 i = 0; i < CommonFunc::ToUnderlyingType(EConsoleScreenBufferTypeIdx::MAX); ++i)
+	for (Int32 i = 0; i < common_func::ToUnderlyingType(EConsoleScreenBufferTypeIdx::MAX); ++i)
 	{
 		::CloseHandle(m_hConsoleScreenBuffers[i]);
 	}
 #else
-	::CloseHandle(m_hConsoleScreenBuffers[CommonFunc::ToUnderlyingType(EConsoleScreenBufferType::FRONT)]);
+	::CloseHandle(m_hConsoleScreenBuffers[common_func::ToUnderlyingType(EConsoleScreenBufferType::FRONT)]);
 #endif
 
 	SAFE_DELETE(m_pCurrentConsoleSelector);
@@ -129,7 +129,7 @@ void ConsoleController::PutString(Int32 x, Int32 y, const std::string_view& szOu
 */
 void ConsoleController::AdjustConsoleArea(Uint32 width, Uint32 height)
 {
-	std::string strConsoleProperty = CommonFunc::MakeFormatString("mode con cols=%d lines=%d", width, height);
+	std::string strConsoleProperty = common_func::MakeFormatString("mode con cols=%d lines=%d", width, height);
 	system(strConsoleProperty.c_str());
 
 	ConfigCtx::I()->setResoultion(SizeInfo{ width, height });

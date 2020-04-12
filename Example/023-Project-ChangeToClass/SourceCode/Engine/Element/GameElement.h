@@ -38,7 +38,6 @@ public:
 	virtual EErrorType OnFinalize() override;
 	virtual EErrorType OnPreSaveFile(FILE* pFileStream) override;
 	virtual EErrorType OnSaveFile(FILE* pFileStream) override;
-	virtual EErrorType OnPreLoadFile(FILE* pFileStream) override;
 	virtual EErrorType OnLoadFile(FILE* pFileStream) override;
 
 	void ResetError()

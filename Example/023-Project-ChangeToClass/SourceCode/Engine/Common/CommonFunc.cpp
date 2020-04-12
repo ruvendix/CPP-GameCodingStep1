@@ -16,7 +16,7 @@
 /*
 로그를 출력합니다.
 */
-void CommonFunc::ShowLog(const std::string_view& szLogCategory, const std::string_view& szLog)
+void common_func::ShowLog(const std::string_view& szLogCategory, const std::string_view& szLog)
 {
 	std::string strLog;
 
@@ -38,7 +38,7 @@ Create은 생성 데이터를 이용해서 처음부터 만들 때 사용하고
 Make는 전달된 데이터들을 조합해서 만들 때 사용합니다. (사실 별로 차이는 없음...)
 printf()처럼 서식 문자열을 사용하면 std::string 자료형으로 문자열을 만듭니다.
 */
-std::string CommonFunc::MakeFormatString(const char* szFormat, ...)
+std::string common_func::MakeFormatString(const char* szFormat, ...)
 {
 	va_list va = nullptr;
 	va_start(va, szFormat);
@@ -71,7 +71,7 @@ std::string CommonFunc::MakeFormatString(const char* szFormat, ...)
 /*
 숫자를 입력 받음과 동시에 입력 범위를 벗어나면 범위 안으로 자동 조절합니다.
 */
-bool CommonFunc::InputNumClamp(_Out_ Int32& num, Int32 minNum, Int32 maxNum)
+bool common_func::InputNumClamp(_Out_ Int32& num, Int32 minNum, Int32 maxNum)
 {
 	// 최솟값이 최댓값보다 크다면 둘을 바꿔야 해요! (swap)
 	if (minNum > maxNum)

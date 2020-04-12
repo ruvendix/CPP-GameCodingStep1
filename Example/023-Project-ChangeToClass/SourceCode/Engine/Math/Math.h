@@ -22,6 +22,9 @@ namespace math
 	Int32 CalcIdx(Int32 col, Int32 rowIdx, Int32 colIdx);
 	
 	bool IsValidRange(Int32 value, Int32 min, Int32 max);
+	bool IsSamePos(const COORD& srcPos, const COORD& destPos);
+	bool IsSamePos(const COORD& srcPos, Int32 destX, Int32 destY);
+	bool IsPointInRect(const COORD& targetPos, const COORD& leftTopPos, const COORD& rightBottomPos);
 
 } // namespace math end
 

@@ -164,32 +164,32 @@ private:\
 
 // 출력창에서 로그를 확인할 수 있습니다. (디버그 모드 전용)
 #if defined(DEBUG) || defined(_DEBUG)
-#define DEBUG_LOG(szFormat, ...) CommonFunc::ShowLog("", CommonFunc::MakeFormatString(szFormat, __VA_ARGS__))
+#define DEBUG_LOG(szFormat, ...) common_func::ShowLog("", common_func::MakeFormatString(szFormat, __VA_ARGS__))
 #define DEBUG_LOG_CATEGORY(logCategory, szFormat, ...)\
-	CommonFunc::ShowLog(g_logCategory##logCategory.getNameTag(), CommonFunc::MakeFormatString(szFormat, __VA_ARGS__))
+	common_func::ShowLog(g_logCategory##logCategory.getNameTag(), common_func::MakeFormatString(szFormat, __VA_ARGS__))
 #else
-#define DEBUG_LOG(szFormat, ...) CommonFunc::ShowLog("", CommonFunc::MakeFormatString(szFormat, __VA_ARGS__))
+#define DEBUG_LOG(szFormat, ...) common_func::ShowLog("", common_func::MakeFormatString(szFormat, __VA_ARGS__))
 #define DEBUG_LOG_CATEGORY(logCategory, szFormat, ...)\
-	CommonFunc::ShowLog(g_logCategory##logCategory.getNameTag(), CommonFunc::MakeFormatString(szFormat, __VA_ARGS__))
+	common_func::ShowLog(g_logCategory##logCategory.getNameTag(), common_func::MakeFormatString(szFormat, __VA_ARGS__))
 #endif
 
 #define RESERVE_RENDERING_STRING(keepTime, func) TriggerTimerMgr::I()->AddTriggerTimer("RenderString", 0.0f, keepTime, func, true, false)
 
 // 에러 핸들러에도 서식 문자열을 지원합니다.
 #define DEFAULT_ERROR_HANDLER(errorType, ...)\
-	ErrorHandler::m_strError = CommonFunc::MakeFormatString(ErrorHandler::ToString(errorType).data(), __VA_ARGS__);\
+	ErrorHandler::m_strError = common_func::MakeFormatString(ErrorHandler::ToString(errorType).data(), __VA_ARGS__);\
 	ErrorHandler::OuputDebugString(true);\
 	ErrorHandler::DebugBreak(true)
 
 #define ERROR_HANDLER(bDebugBreak, errorType, ...)\
-	ErrorHandler::m_strError = CommonFunc::MakeFormatString(ErrorHandler::ToString(errorType).data(), __VA_ARGS__);\
+	ErrorHandler::m_strError = common_func::MakeFormatString(ErrorHandler::ToString(errorType).data(), __VA_ARGS__);\
 	ErrorHandler::OuputDebugString(true);\
 	ErrorHandler::DebugBreak(bDebugBreak)
 
 #define ERROR_HANDLER_RENDERING(x, y, keepTime, bOutputDebug, bDebugBreak, errorType, ...)\
 	RESERVE_RENDERING_STRING(keepTime, &ErrorHandler::RenderString);\
 	ErrorHandler::m_renderPos = COORD{ x, y };\
-	ErrorHandler::m_strError = CommonFunc::MakeFormatString(ErrorHandler::ToString(errorType).data(), __VA_ARGS__);\
+	ErrorHandler::m_strError = common_func::MakeFormatString(ErrorHandler::ToString(errorType).data(), __VA_ARGS__);\
 	ErrorHandler::OuputDebugString(bOutputDebug);\
 	ErrorHandler::DebugBreak(bDebugBreak)
 
@@ -227,10 +227,10 @@ extern LogCategory##Tag g_logCategory##Tag;
 #define ALL_BITSET(bitest)          bitset.all()
 
 // 열거형 클래스도 지원되는 매크로입니다.
-#define ON_BITSET_ENUM(bitset, bitIdx)   bitset.set(CommonFunc::ToUnderlyingType(bitIdx), true)
-#define OFF_BITSET_ENUM(bitset, bitIdx)  bitset.set(CommonFunc::ToUnderlyingType(bitIdx), false)
-#define IS_BITSET_ENUM(bitset, bitIdx)   bitset.test(CommonFunc::ToUnderlyingType(bitIdx))
-#define FLIP_BITSET_ENUM(bitset, bitIdx) bitset.flip(CommonFunc::ToUnderlyingType(bitIdx))
+#define ON_BITSET_ENUM(bitset, bitIdx)   bitset.set(common_func::ToUnderlyingType(bitIdx), true)
+#define OFF_BITSET_ENUM(bitset, bitIdx)  bitset.set(common_func::ToUnderlyingType(bitIdx), false)
+#define IS_BITSET_ENUM(bitset, bitIdx)   bitset.test(common_func::ToUnderlyingType(bitIdx))
+#define FLIP_BITSET_ENUM(bitset, bitIdx) bitset.flip(common_func::ToUnderlyingType(bitIdx))
 #define ALL_BITSET_ENUM(bitest)          bitset.all()
 
 // NameTag는 자주 사용되어서... 매크로로 분리합니다.
@@ -252,7 +252,7 @@ private:\
 // ACTIVATION_CONSOLE_DBL_BUFFERING 활성화 여부에 따라 출력 함수가 변경됩니다.
 #ifdef ACTIVATION_CONSOLE_DBL_BUFFERING
 #define PUT_STRING(x, y, szFormat, ...)\
-	ConsoleController::I()->PutString(x, y, CommonFunc::MakeFormatString(szFormat, __VA_ARGS__));
+	ConsoleController::I()->PutString(x, y, common_func::MakeFormatString(szFormat, __VA_ARGS__));
 #else
 #define PUT_STRING(x, y, szFormat, ...)\
 	ConsoleController::I()->MoveConsolePos(x, y);\

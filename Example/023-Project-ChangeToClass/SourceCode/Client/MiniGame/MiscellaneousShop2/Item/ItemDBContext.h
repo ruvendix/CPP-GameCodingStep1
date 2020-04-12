@@ -22,7 +22,7 @@ class ItemDBCtx final
 	DECLARE_PHOENIX_SINGLETON(ItemDBCtx);
 
 public:
-	using ItemDBTable = std::array<ItemDB*, CommonFunc::ToUnderlyingType(EItemDBType::END)>;
+	using ItemDBTable = std::array<ItemDB*, common_func::ToUnderlyingType(EItemDBType::END)>;
 
 	void Initialize();
 	void Finalize();

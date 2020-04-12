@@ -29,9 +29,7 @@ EErrorType GameObj::OnRender()
 EErrorType GameObj::OnPreSaveFile(FILE* pFileStream)
 {
 	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::SAVE_FILE_FAIL);
-	
-	Int32 ID = getID();
-	fwrite(&ID, sizeof(ID), 1, pFileStream);
+	fwrite(&m_ID, sizeof(m_ID), 1, pFileStream);
 
 	return EErrorType::NOTHING;
 }
@@ -40,8 +38,7 @@ EErrorType GameObj::OnSaveFile(FILE* pFileStream)
 {
 	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::SAVE_FILE_FAIL);
 
-	const COORD& pos = getPos();
-	fwrite(&pos, sizeof(pos), 1, pFileStream);
+	fwrite(&m_pos, sizeof(m_pos), 1, pFileStream);
 
 	Uint8 shapeSize = static_cast<Uint8>(getShape().size());
 	fwrite(&shapeSize, sizeof(shapeSize), 1, pFileStream);
@@ -55,24 +52,11 @@ EErrorType GameObj::OnSaveFile(FILE* pFileStream)
 	return EErrorType::NOTHING;
 }
 
-EErrorType GameObj::OnPreLoadFile(FILE* pFileStream)
-{
-	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::LOAD_FILE_FAIL);
-
-	Int32 ID = 0;
-	fread(&ID, sizeof(ID), 1, pFileStream);
-	setID(ID);
-
-	return EErrorType::NOTHING;
-}
-
 EErrorType GameObj::OnLoadFile(FILE* pFileStream)
 {
 	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::LOAD_FILE_FAIL);
 
-	COORD pos{ 0, 0 };
-	fread(&pos, sizeof(pos), 1, pFileStream);
-	setPos(pos);
+	fread(&m_pos, sizeof(m_pos), 1, pFileStream);
 
 	Uint8 shapeSize = 0;
 	fread(&shapeSize, sizeof(shapeSize), 1, pFileStream);

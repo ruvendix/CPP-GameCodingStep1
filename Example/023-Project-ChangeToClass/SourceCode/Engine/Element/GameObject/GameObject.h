@@ -30,7 +30,6 @@ public:
 	virtual EErrorType OnRender() override;
 	virtual EErrorType OnPreSaveFile(FILE* pFileStream) override;
 	virtual EErrorType OnSaveFile(FILE* pFileStream) override;
-	virtual EErrorType OnPreLoadFile(FILE* pFileStream) override;
 	virtual EErrorType OnLoadFile(FILE* pFileStream) override;
 
 	virtual EGameObjType OnGetType() const

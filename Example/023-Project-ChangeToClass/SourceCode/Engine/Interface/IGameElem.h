@@ -21,9 +21,8 @@ public:
 	virtual EErrorType OnUpdate() abstract;
 	virtual EErrorType OnRender() abstract;
 	virtual EErrorType OnFinalize() abstract;
-	virtual EErrorType OnPreSaveFile(FILE* pFileStream) abstract;
+	virtual EErrorType OnPreSaveFile(FILE* pFileStream) abstract; // 파일을 불러올 때 객체 생성 이전에 필요한 값을 저장할 때 사용!
 	virtual EErrorType OnSaveFile(FILE* pFileStream) abstract;
-	virtual EErrorType OnPreLoadFile(FILE* pFileStream) abstract;
 	virtual EErrorType OnLoadFile(FILE* pFileStream) abstract;
 };
 

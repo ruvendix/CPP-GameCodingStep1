@@ -19,10 +19,12 @@ class DynamicObjHelper final
 	NON_COPYABLE_ONLY_PRIVATE_CLASS(DynamicObjHelper);
 
 public:
-	static Int32 CalcMoveToTargetAxis(Int32 myAxis, Int32 targetAxis, Int32 interval, _Out_ Real32& accumulationMove);
+	static SHORT CalcMoveToTargetAxis(EMoveAxisDir moveAxisDir, Int32 myAxis, Int32 targetAxis,
+		Int32 interval, _Out_ Real32& accumulationMove);
 };
 
-Int32 DynamicObjHelper::CalcMoveToTargetAxis(Int32 myAxis, Int32 targetAxis, Int32 interval, _Out_ Real32& accumulationMove)
+SHORT DynamicObjHelper::CalcMoveToTargetAxis(EMoveAxisDir moveAxisDir, Int32 myAxis, Int32 targetAxis,
+	Int32 interval, _Out_ Real32& accumulationMove)
 {
 	if (interval == 0)
 	{
@@ -30,11 +32,11 @@ Int32 DynamicObjHelper::CalcMoveToTargetAxis(Int32 myAxis, Int32 targetAxis, Int
 	}
 
 	Real32 dir = 0.0f;
-	if (myAxis < targetAxis)
+	if (moveAxisDir == EMoveAxisDir::POSITIVENESS)
 	{
 		dir = 1.0f;
 	}
-	else if (myAxis > targetAxis)
+	else if (moveAxisDir == EMoveAxisDir::NEGATIVENESS)
 	{
 		dir = -1.0f;
 	}
@@ -44,7 +46,7 @@ Int32 DynamicObjHelper::CalcMoveToTargetAxis(Int32 myAxis, Int32 targetAxis, Int
 	if (accumulationMove >= 1.0f)
 	{
 		accumulationMove -= 1.0f;
-		return static_cast<Int32>(1.0f * dir);
+		return static_cast<SHORT>(1.0f * dir);
 	}
 
 	return 0;
@@ -52,7 +54,29 @@ Int32 DynamicObjHelper::CalcMoveToTargetAxis(Int32 myAxis, Int32 targetAxis, Int
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool DynamicObj::MoveToTarget(std::shared_ptr<DynamicObj> spTargetObj)
+EErrorType DynamicObj::OnSaveFile(FILE* pFileStream)
+{
+	if (GameObj::OnSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
+	{
+		return EErrorType::SAVE_FILE_FAIL;
+	}
+
+	fwrite(&m_moveSpeed, sizeof(m_moveSpeed), 1, pFileStream);
+	return EErrorType();
+}
+
+EErrorType DynamicObj::OnLoadFile(FILE* pFileStream)
+{
+	if (GameObj::OnLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
+	{
+		return EErrorType::LOAD_FILE_FAIL;
+	}
+
+	fread(&m_moveSpeed, sizeof(m_moveSpeed), 1, pFileStream);
+	return EErrorType();
+}
+
+bool DynamicObj::MoveToTarget(DynamicObjPtr spTargetObj)
 {
 	// 좌표 복사
 	const COORD& pos = getPos();
@@ -65,7 +89,7 @@ bool DynamicObj::MoveToTarget(std::shared_ptr<DynamicObj> spTargetObj)
 
 	if (intervalX + intervalY == 1)
 	{
-		DEBUG_LOG("둘의 차이는 한칸!");
+		//DEBUG_LOG("둘의 차이는 한칸!");
 		return false;
 	}
 
@@ -79,24 +103,19 @@ bool DynamicObj::MoveToTarget(std::shared_ptr<DynamicObj> spTargetObj)
 	COORD movePos{ 0, 0 };
 	if (m_preferMoveAxis == EPreferMoveAxis::X)
 	{		
-		movePos.X = static_cast<SHORT>(DynamicObjHelper::CalcMoveToTargetAxis(pos.X, targetPos.X, intervalX, m_accumulationMove));
+		movePos.X = DynamicObjHelper::CalcMoveToTargetAxis(getMoveAxisDir(0), pos.X, targetPos.X, intervalX, m_accumulationMove);
 		AddPosX(movePos.X);
 		
-		movePos.Y = static_cast<SHORT>(DynamicObjHelper::CalcMoveToTargetAxis(pos.Y, targetPos.Y, intervalY, m_accumulationMove));
+		movePos.Y = DynamicObjHelper::CalcMoveToTargetAxis(getMoveAxisDir(1), pos.Y, targetPos.Y, intervalY, m_accumulationMove);
 		AddPosY(movePos.Y);
 	}
 	else
 	{
-		movePos.Y = static_cast<SHORT>(DynamicObjHelper::CalcMoveToTargetAxis(pos.Y, targetPos.Y, intervalY, m_accumulationMove));
+		movePos.Y = DynamicObjHelper::CalcMoveToTargetAxis(getMoveAxisDir(1), pos.Y, targetPos.Y, intervalY, m_accumulationMove);
 		AddPosY(movePos.Y);
 
-		movePos.X = static_cast<SHORT>(DynamicObjHelper::CalcMoveToTargetAxis(pos.X, targetPos.X, intervalX, m_accumulationMove));
+		movePos.X = DynamicObjHelper::CalcMoveToTargetAxis(getMoveAxisDir(0), pos.X, targetPos.X, intervalX, m_accumulationMove);
 		AddPosX(movePos.X);
-	}
-
-	if (intervalX + intervalY == 1)
-	{
-		DEBUG_LOG("최초로 만남!");
 	}
 
 	return true;

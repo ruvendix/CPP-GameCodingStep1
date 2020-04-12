@@ -20,6 +20,8 @@ class Unit : public DynamicObj
 	DECLARE_RTTI(Unit, DynamicObj);
 
 public:
+	using UnitPtr = std::shared_ptr<Unit>;
+
 #pragma region 생성자 및 소멸자
 	using DynamicObj::DynamicObj;
 
@@ -29,13 +31,23 @@ public:
 	Unit(const std::string_view& szName, EDynamicObjID objID, const std::string_view& szShape);
 #pragma endregion
 
-	void Attack(std::shared_ptr<Unit> spTargetUnit);
+	virtual EErrorType OnSaveFile(FILE* pFileStream) override;
+	virtual EErrorType OnLoadFile(FILE* pFileStream) override;
+	virtual EErrorType OnFinalize() override;
+
+	void Attack(UnitPtr spTargetUnit);
 	void Damage(Int32 damage);
-	void Copy(std::shared_ptr<Unit> spUnit);
+	void Copy(UnitPtr spUnit);
+	
+	void FilterUnitInRange(const std::vector<UnitPtr>& vecUnit, const SizeInfo& worldSize);
+	void ClearUnitInRange();
+	void AdjustMoveAxisDir(UnitPtr spUnit);
+
+	UnitPtr SearchShortestPathEnemyInRange() const;
 
 	bool IsDeath() const
 	{
-		return (m_HP < 0);
+		return (m_HP <= 0);
 	}
 
 #pragma region 접근자 Getter
@@ -62,6 +74,11 @@ public:
 	EUnitState getState() const
 	{
 		return m_state;
+	}
+
+	Int32 getRange() const
+	{
+		return m_range;
 	}
 #pragma endregion
 
@@ -90,14 +107,21 @@ public:
 	{
 		m_state = state;
 	}
+
+	void setRange(Int32 range)
+	{
+		m_range = range;
+	}
 #pragma endregion
 
 private:
 	Int32  m_HP = 0;
 	Int32  m_maxHP = 0;
+	Int32  m_range = 0;
 	Int32  m_attackDamage = 0;
 	Real32 m_attackSuccessRate = 0.0f;
 	EUnitState m_state = EUnitState::IDLE;
+	std::list<UnitPtr> m_listUnitInRange; // 시야 범위 안에 들어온 유닛들 (자기 자신 제외)
 };
 
 #endif

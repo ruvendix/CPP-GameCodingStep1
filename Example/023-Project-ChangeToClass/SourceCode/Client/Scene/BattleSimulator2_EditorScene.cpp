@@ -169,8 +169,15 @@ void BattleSimulator2_EditorSceneHelper::OnInput_EditorMode(_Inout_ BattleSimula
 			std::shared_ptr<Viking> spViking = std::make_shared<Viking>();
 			spViking->Copy(targetHelper.getCurrentSampleUnit());
 			spViking->setPos(mappingPos);
-			targetHelper.m_spLevelDesign->AddObj(spViking);
+			spViking->setRange(12);
 
+			spViking->setHP(1980);
+			spViking->setMaxHP(1980);
+			spViking->setMoveSpeed(1.6f);
+			spViking->setAttackDamage(18);
+			spViking->setAttackSuccessRate(0.58f);
+
+			targetHelper.m_spLevelDesign->AddObj(spViking);
 			break;
 		}
 
@@ -179,8 +186,15 @@ void BattleSimulator2_EditorSceneHelper::OnInput_EditorMode(_Inout_ BattleSimula
 			std::shared_ptr<MedievalKnight> spMedievalKnight = std::make_shared<MedievalKnight>();
 			spMedievalKnight->Copy(targetHelper.getCurrentSampleUnit());
 			spMedievalKnight->setPos(mappingPos);
-			targetHelper.m_spLevelDesign->AddObj(spMedievalKnight);
+			spMedievalKnight->setRange(12);
 
+			spMedievalKnight->setHP(1800);
+			spMedievalKnight->setMaxHP(1800);
+			spMedievalKnight->setMoveSpeed(1.2f);
+			spMedievalKnight->setAttackDamage(14);
+			spMedievalKnight->setAttackSuccessRate(0.78f);
+
+			targetHelper.m_spLevelDesign->AddObj(spMedievalKnight);
 			break;
 		}
 

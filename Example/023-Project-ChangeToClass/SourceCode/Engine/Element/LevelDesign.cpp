@@ -122,11 +122,6 @@ EErrorType LevelDesign::OnLoadFile(FILE* pFileStream)
 	for (TSize i = 0; i < m_spFileHeader->levelDesignObjCnt; ++i)
 	{
 		std::shared_ptr<DynamicObj> spLevelDesignObj = std::make_shared<DynamicObj>();
-		if (spLevelDesignObj->OnPreLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
-		{
-			return EErrorType::LOAD_FILE_FAIL;
-		}
-
 		if (spLevelDesignObj->OnLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
 		{
 			return EErrorType::LOAD_FILE_FAIL;
@@ -164,7 +159,7 @@ EErrorType LevelDesign::SaveFile(const std::string_view& szFileName)
 	m_spFileHeader = std::make_shared<LevelDesignFileHeader>();
 	m_spFileHeader->levelDesignObjCnt = m_vecObj.size();
 	fwrite(&*m_spFileHeader, sizeof(LevelDesignFileHeader), 1, pFileStream);
-
+	
 	if (OnSaveFile(pFileStream) == EErrorType::SAVE_FILE_FAIL)
 	{
 		return EErrorType::SAVE_FILE_FAIL;

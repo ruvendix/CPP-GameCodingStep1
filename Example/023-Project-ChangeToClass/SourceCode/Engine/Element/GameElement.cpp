@@ -64,12 +64,6 @@ EErrorType GameElem::OnSaveFile(FILE* pFileStream)
 	return EErrorType::NOTHING;
 }
 
-EErrorType GameElem::OnPreLoadFile(FILE* pFileStream)
-{
-	//DEBUG_LOG("GameElem에서 이게 보이면 OnPreLoadFile()를 재정의해주세요!");
-	return EErrorType::NOTHING;
-}
-
 EErrorType GameElem::OnLoadFile(FILE* pFileStream)
 {
 	//DEBUG_LOG("GameElem에서 이게 보이면 OnLoadFile()를 재정의해주세요!");

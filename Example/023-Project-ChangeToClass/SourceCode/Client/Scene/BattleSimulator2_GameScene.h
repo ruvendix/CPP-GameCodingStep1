@@ -15,8 +15,7 @@
 
 class BattleSimulator2World;
 class BattleSimulator2_LevelDesign;
-class MedievalKnight;
-class Viking;
+class Unit;
 
 DECLARE_LOG_CATEGORY(BattleSimulator2_GameScene);
 
@@ -38,11 +37,13 @@ public:
 	virtual EErrorType OnFinalize() override;
 
 private:
+	void OnTrigger_DieUnit();
+	void OnTrigger_PostDieUnit();
+	void OnTrigger_BattleEnd() const;
+
 	std::shared_ptr<BattleSimulator2World> m_spWorld = nullptr;
 	std::shared_ptr<BattleSimulator2_LevelDesign> m_spLevelDesign = nullptr;
-
-	std::vector<std::shared_ptr<MedievalKnight>> m_vecMedievalKnight;
-	std::vector<std::shared_ptr<Viking>> m_vecViking;
+	std::vector<std::shared_ptr<Unit>> m_vecUnit;
 
 	bool m_bBattleEnd = false;
 };

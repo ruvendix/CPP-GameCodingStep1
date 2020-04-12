@@ -21,19 +21,6 @@ public:
 	using Unit::Unit;
 	virtual ~MedievalKnight() = default;
 #pragma endregion
-
-	static Int32 GetTotalCnt()
-	{
-		return m_totalCnt;
-	}
-
-	static void SetTotalCnt(Int32 totalCnt)
-	{
-		m_totalCnt = totalCnt;
-	}
-
-private:
-	static Int32 m_totalCnt;
 };
 
 #endif

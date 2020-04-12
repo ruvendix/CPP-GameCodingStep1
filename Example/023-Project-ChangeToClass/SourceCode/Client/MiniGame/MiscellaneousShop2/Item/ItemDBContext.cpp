@@ -26,7 +26,7 @@ void ItemDBCtx::Initialize()
 	pPotionDB->InsertItem<ShopItem_Potion>("쓸만한 회복약", 0x00001001, 50);
 	pPotionDB->InsertItem<ShopItem_Potion>("특제 회복약", 0x00001002, 100);
 	pPotionDB->InsertItem<ShopItem_Potion>("만병통치약", 0x00001003, 200);
-	m_itemDBTable[CommonFunc::ToUnderlyingType(EItemDBType::POTION)] = pPotionDB;
+	m_itemDBTable[common_func::ToUnderlyingType(EItemDBType::POTION)] = pPotionDB;
 
 	// 식료품 DB 초기화
 	ItemDB* pGroceryDB = new ItemDB;
@@ -35,7 +35,7 @@ void ItemDBCtx::Initialize()
 	pGroceryDB->InsertItem<ShopItem_Grocery>("소고기", 0x00002002, 20);
 	pGroceryDB->InsertItem<ShopItem_Grocery>("소금", 0x00002003, 5);
 	pGroceryDB->InsertItem<ShopItem_Grocery>("후추", 0x00002004, 5);
-	m_itemDBTable[CommonFunc::ToUnderlyingType(EItemDBType::GROCERY)] = pGroceryDB;
+	m_itemDBTable[common_func::ToUnderlyingType(EItemDBType::GROCERY)] = pGroceryDB;
 
 	// 캠핑용품
 	ItemDB* pCampingDB = new ItemDB;
@@ -43,7 +43,7 @@ void ItemDBCtx::Initialize()
 	pCampingDB->InsertItem<ShopItem_Camping>("가스 토치", 0x00003001, 100);
 	pCampingDB->InsertItem<ShopItem_Camping>("손전등", 0x00003002, 50);
 	pCampingDB->InsertItem<ShopItem_Camping>("침낭", 0x00003003, 150);
-	m_itemDBTable[CommonFunc::ToUnderlyingType(EItemDBType::CAMPING)] = pCampingDB;
+	m_itemDBTable[common_func::ToUnderlyingType(EItemDBType::CAMPING)] = pCampingDB;
 }
 
 void ItemDBCtx::Finalize()
@@ -67,7 +67,7 @@ ItemBase* ItemDBCtx::QueryItem(const std::string& strItemNameTag) const
 
 ItemDB* ItemDBCtx::QueryItemDB(EItemDBType itemDBType) const
 {
-	return m_itemDBTable.at(CommonFunc::ToUnderlyingType(itemDBType));
+	return m_itemDBTable.at(common_func::ToUnderlyingType(itemDBType));
 }
 
 TSize ItemDBCtx::QueryItemCntOfItemDB(EItemDBType itemDBType) const

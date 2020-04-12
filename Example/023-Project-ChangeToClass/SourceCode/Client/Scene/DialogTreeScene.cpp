@@ -132,9 +132,8 @@ void DialogTreeSceneHelper::AdjustSelectorPosForTriggerDialogNode(std::shared_pt
 	consoleSelector.setSelectorPos(0, startPosY);
 	consoleSelector.setMinSelectorPosY(startPosY);
 
-	const TriggerDialogNode* pTriggerDialogNode = dynamic_cast<TriggerDialogNode*>(&*spDialogNode);
-	CHECK_NULLPTR(pTriggerDialogNode);
-	consoleSelector.setMaxSelectorPosY(startPosY + pTriggerDialogNode->getTriggerCnt() - 1);
+	std::shared_ptr<TriggerDialogNode> spTriggerDialogNode = std::dynamic_pointer_cast<TriggerDialogNode>(spDialogNode);
+	consoleSelector.setMaxSelectorPosY(startPosY + spTriggerDialogNode->getTriggerCnt() - 1);
 }
 
 bool DialogTreeSceneHelper::IsTriggerDialogNode(std::shared_ptr<DialogNode> spDialogNode)

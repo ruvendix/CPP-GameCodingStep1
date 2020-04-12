@@ -29,7 +29,7 @@ std::shared_ptr<StaticObj> BattleSimulator2WorldHelper::CreateStaticObj(EStaticO
 	{
 	case EStaticObjID::WALL:
 	{
-		return std::make_shared<Wall>(CommonFunc::ToUnderlyingType(staticObjID));
+		return std::make_shared<Wall>(common_func::ToUnderlyingType(staticObjID));
 	}
 
 	default:
@@ -49,12 +49,12 @@ EErrorType BattleSimulator2World::OnPostInitialize()
 	const SizeInfo& sizeInfo = getSize();
 	for (Int32 i = 0; i < static_cast<Int32>(sizeInfo.width); ++i)
 	{
-		std::shared_ptr<Wall> staticObj = std::make_shared<Wall>(CommonFunc::ToUnderlyingType(EStaticObjID::WALL));
+		std::shared_ptr<Wall> staticObj = std::make_shared<Wall>(common_func::ToUnderlyingType(EStaticObjID::WALL));
 		staticObj->setPos(i, 0);
 		staticObj->setShape("бс");
 		AddObj(staticObj);
 
-		staticObj = std::make_shared<Wall>(CommonFunc::ToUnderlyingType(EStaticObjID::WALL));
+		staticObj = std::make_shared<Wall>(common_func::ToUnderlyingType(EStaticObjID::WALL));
 		staticObj->setPos(i, sizeInfo.height - 1);
 		staticObj->setShape("бс");
 		AddObj(staticObj);
@@ -62,12 +62,12 @@ EErrorType BattleSimulator2World::OnPostInitialize()
 
 	for (Int32 i = 1; i < static_cast<Int32>(sizeInfo.height - 1); ++i)
 	{
-		std::shared_ptr<Wall> staticObj = std::make_shared<Wall>(CommonFunc::ToUnderlyingType(EStaticObjID::WALL));
+		std::shared_ptr<Wall> staticObj = std::make_shared<Wall>(common_func::ToUnderlyingType(EStaticObjID::WALL));
 		staticObj->setPos(0, i);
 		staticObj->setShape("бс");
 		AddObj(staticObj);
 
-		staticObj = std::make_shared<Wall>(CommonFunc::ToUnderlyingType(EStaticObjID::WALL));
+		staticObj = std::make_shared<Wall>(common_func::ToUnderlyingType(EStaticObjID::WALL));
 		staticObj->setPos(sizeInfo.width - 1, i);
 		staticObj->setShape("бс");
 		AddObj(staticObj);
@@ -90,9 +90,9 @@ EErrorType BattleSimulator2World::OnLoadFile(FILE* pFileStream)
 		std::shared_ptr<StaticObj> spWorldObj =
 			BattleSimulator2WorldHelper::CreateStaticObj(static_cast<EStaticObjID>(objID));
 
-		if (objID == CommonFunc::ToUnderlyingType(EStaticObjID::WALL))
+		if (objID == common_func::ToUnderlyingType(EStaticObjID::WALL))
 		{
-			spWorldObj = std::make_shared<Wall>(CommonFunc::ToUnderlyingType(EStaticObjID::WALL));
+			spWorldObj = std::make_shared<Wall>(common_func::ToUnderlyingType(EStaticObjID::WALL));
 		}
 
 		if (spWorldObj->OnLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)

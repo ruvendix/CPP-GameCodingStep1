@@ -68,4 +68,33 @@ namespace math
 		return true;
 	}
 
+	bool IsSamePos(const COORD& srcPos, const COORD& destPos)
+	{
+		if ( (srcPos.X == destPos.X) &&
+			 (srcPos.Y == destPos.Y) )
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	bool IsSamePos(const COORD& srcPos, Int32 destX, Int32 destY)
+	{
+		return IsSamePos(srcPos, COORD{ static_cast<SHORT>(destX), static_cast<SHORT>(destY) });
+	}
+
+	bool IsPointInRect(const COORD& targetPos, const COORD& leftTopPos, const COORD& rightBottomPos)
+	{
+		if ( (leftTopPos.X <= targetPos.X) &&
+			 (targetPos.X <= rightBottomPos.X) &&
+			 (leftTopPos.Y <= targetPos.Y) &&
+			 (targetPos.Y <= rightBottomPos.Y))
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 } // namespace math end

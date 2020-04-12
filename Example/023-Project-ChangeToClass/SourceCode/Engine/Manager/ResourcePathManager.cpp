@@ -45,7 +45,7 @@ void ResourcePathMgr::AddPath(const std::string_view& szAdditionPath)
 
 const std::string& ResourcePathMgr::FindPath(EResourcePathTypeIdx resourcePathTypeIdx)
 {
-	Int32 resourcePathIdx = CommonFunc::ToUnderlyingType(resourcePathTypeIdx);
+	Int32 resourcePathIdx = common_func::ToUnderlyingType(resourcePathTypeIdx);
 	CHECK_RANGE(resourcePathIdx, 0, static_cast<Int32>(m_vecResourcePath.size()));
 
 	const std::string& strResourcePath = m_vecResourcePath.at(resourcePathIdx);

@@ -41,7 +41,7 @@ void InputController::PollInput()
 			TInput inputValue = vecInputTable[i];
 
 			// 리스트에 없는 값만 넣어야 함!
-			if (CommonFunc::IsOverlapValue(listInputChecker, inputValue) == false)
+			if (common_func::IsOverlapValue(listInputChecker, inputValue) == false)
 			{
 				// 리스트에 없는 값에서만 입력값 추가!
 				if (::GetAsyncKeyState(inputValue) & INPUT_DOWN_FLAG)

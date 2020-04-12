@@ -32,12 +32,12 @@ std::shared_ptr<DynamicObj> BattleSimulator2_LevelDesignHelper::CreateDynamicObj
 	{
 	case EDynamicObjID::VIKING:
 	{
-		return std::make_shared<Viking>(CommonFunc::ToUnderlyingType(objID));
+		return std::make_shared<Viking>(common_func::ToUnderlyingType(objID));
 	}
 
 	case EDynamicObjID::MEDIEVAL_KNIGHT:
 	{
-		return std::make_shared<MedievalKnight>(CommonFunc::ToUnderlyingType(objID));
+		return std::make_shared<MedievalKnight>(common_func::ToUnderlyingType(objID));
 	}
 
 	default:

@@ -34,5 +34,5 @@ ItemBase* ItemDB::FindItem(const std::string& strNameTag) const
 
 void ItemDB::CopyToVector(std::vector<ItemBase*>& vecItem) const
 {
-	std::transform(m_mapItem.cbegin(), m_mapItem.cend(), std::back_inserter(vecItem), GetSecond(m_mapItem));
+	std::transform(m_mapItem.cbegin(), m_mapItem.cend(), std::back_inserter(vecItem), common_func::GetSecond(m_mapItem));
 }

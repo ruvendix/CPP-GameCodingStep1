@@ -23,7 +23,7 @@ class ConsoleController final
 	DECLARE_PHOENIX_SINGLETON(ConsoleController);
 
 public:
-	using ConsoleDblBufferingHandle = std::array<HANDLE, CommonFunc::ToUnderlyingType(EConsoleScreenBufferTypeIdx::MAX)>;
+	using ConsoleDblBufferingHandle = std::array<HANDLE, common_func::ToUnderlyingType(EConsoleScreenBufferTypeIdx::MAX)>;
 
 	void Initialize(const std::string_view& szTitle, const SizeInfo& sizeInfo);
 	void Flipping();
@@ -63,7 +63,7 @@ public:
 
     HANDLE getConsoleScreenBufferHandle(EConsoleScreenBufferTypeIdx consoleScreenBufferType) const
     {
-		return m_hConsoleScreenBuffers.at(CommonFunc::ToUnderlyingType(consoleScreenBufferType));
+		return m_hConsoleScreenBuffers.at(common_func::ToUnderlyingType(consoleScreenBufferType));
     }
 
 	HANDLE getCurrentConsoleScreenBufferHandle() const

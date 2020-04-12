@@ -81,11 +81,6 @@ EErrorType World::OnLoadFile(FILE* pFileStream)
 	for (TSize i = 0; i < m_spFileHeader->worldObjCnt; ++i)
 	{
 		std::shared_ptr<StaticObj> spWorldObj = std::make_shared<StaticObj>();
-		if (spWorldObj->OnPreLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
-		{
-			return EErrorType::LOAD_FILE_FAIL;
-		}
-
 		if (spWorldObj->OnLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
 		{
 			return EErrorType::LOAD_FILE_FAIL;

@@ -9,5 +9,3 @@
 
 #include "PCH.h"
 #include "MedievalKnight.h"
-
-Int32 MedievalKnight::m_totalCnt = 0;

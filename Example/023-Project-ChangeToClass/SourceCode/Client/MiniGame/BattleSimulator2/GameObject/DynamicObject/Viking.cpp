@@ -9,5 +9,3 @@
 
 #include "PCH.h"
 #include "Viking.h"
-
-Int32 Viking::m_totalCnt = 0;
