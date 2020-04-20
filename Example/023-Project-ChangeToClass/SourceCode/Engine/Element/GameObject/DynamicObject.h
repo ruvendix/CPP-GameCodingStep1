@@ -11,6 +11,7 @@
 #define DYNAMIC_OBJ__H__
 
 #include "GameObject.h"
+#include "Common\CommonEnum.h"
 
 enum class EPreferMoveAxis : Int32
 {
@@ -19,19 +20,14 @@ enum class EPreferMoveAxis : Int32
 	Y,
 };
 
-enum class EMoveAxisDir : Int32
-{
-	NEGATIVENESS = 0,
-	POSITIVENESS,
-};
+class DynamicObj;
+using DynamicObjPtr = std::shared_ptr<DynamicObj>;
 
 class DynamicObj : public GameObj
 {
 	DECLARE_RTTI(DynamicObj, GameObj);
 
 public:
-	using DynamicObjPtr = std::shared_ptr<DynamicObj>;
-
 #pragma region 생성자 및 소멸자
 	using GameObj::GameObj;
 	virtual ~DynamicObj() = default;
@@ -40,17 +36,20 @@ public:
 	virtual EErrorType OnSaveFile(FILE* pFileStream) override;
 	virtual EErrorType OnLoadFile(FILE* pFileStream) override;
 
-	bool MoveToTarget(DynamicObjPtr spTargetObj);
+	void MoveToTarget(const SizeInfo& distance, DynamicObjPtr spTargetObj);
+	void MoveToTarget(DynamicObjPtr spTargetObj);
+
+	EErrorType Copy(const DynamicObj& src);
 
 	virtual EGameObjType OnGetType() const override
 	{
 		return EGameObjType::DYNAMIC;
 	}
 
-	EMoveAxisDir getMoveAxisDir(Int32 idx) const
+	EDataProgressDir getMoveAxisDir(Int32 idx) const
 	{
-		CHECK_RANGE(idx, 0, m_moveAxisDirs.size());
-		return m_moveAxisDirs[idx];
+		CHECK_RANGE(idx, 0, m_arrMoveAxisDir.size());
+		return m_arrMoveAxisDir[idx];
 	}
 
 	void setMoveSpeed(Real32 moveSpeed)
@@ -63,10 +62,15 @@ public:
 		m_preferMoveAxis = axis;
 	}
 
-	void setMoveAxisDir(Int32 idx, EMoveAxisDir moveAxisDir)
+	void setMoveAxisDir(Int32 idx, EDataProgressDir moveAxisDir)
 	{
-		CHECK_RANGE(idx, 0, m_moveAxisDirs.size());
-		m_moveAxisDirs[idx] = moveAxisDir;
+		CHECK_RANGE(idx, 0, m_arrMoveAxisDir.size());
+		m_arrMoveAxisDir[idx] = moveAxisDir;
+	}
+
+	Real32 getMoveSpeed() const
+	{
+		return m_moveSpeed;
 	}
 
 private:
@@ -74,7 +78,7 @@ private:
 	Real32 m_accumulationMove = 0.0f;
 
 	EPreferMoveAxis m_preferMoveAxis = EPreferMoveAxis::UNKNOWN;
-	std::array<EMoveAxisDir, 2> m_moveAxisDirs;
+	std::array<EDataProgressDir, 2> m_arrMoveAxisDir;
 };
 
 #endif

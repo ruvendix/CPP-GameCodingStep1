@@ -14,7 +14,6 @@
 #include "CommonStruct.h"
 #include "CommonMacro.h"
 #include "Handler\ErrorHandler\ErrorHandler.h"
-#include "Core\FastRTTI.h"
 
 namespace common_func
 {

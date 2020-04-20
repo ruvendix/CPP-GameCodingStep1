@@ -17,9 +17,9 @@ class Scene : public GameElem
 	DECLARE_RTTI(Scene, GameElem);
 
 public:
+#pragma region 생성자 및 소멸자
 	using GameElem::GameElem;
 
-#pragma region 생성자 및 소멸자
 	Scene() = default;
 	virtual ~Scene() = default;
 #pragma endregion

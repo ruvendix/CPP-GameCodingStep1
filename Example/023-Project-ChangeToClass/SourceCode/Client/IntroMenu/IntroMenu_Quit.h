@@ -18,9 +18,9 @@ class IntroMenu_Quit final : public Menu
 	DECLARE_RTTI(IntroMenu_Quit, Menu);
 
 public:
+#pragma region 생성자 및 소멸자
 	using Menu::Menu;
 
-#pragma region 생성자 및 소멸자
 	IntroMenu_Quit() = default;
 	virtual ~IntroMenu_Quit() = default;
 #pragma endregion

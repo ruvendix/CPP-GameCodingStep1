@@ -15,16 +15,20 @@
 #include "Controller\ConsoleControllerEnum.h"
 #include "MiniGame\BattleSimulator2\GameObject\ObjectID.h"
 
-enum class EMode : Int32
+enum class EBattleSimulator2Mode : Int32
 {
 	MENU = 0,
 	EDIT,
 };
 
+class Viking;
+class MedievalKnight;
 class MenuTable_Row;
 class BattleSimulator2World;
 class BattleSimulator2_LevelDesign;
-class Unit;
+
+using VikingPtr = std::shared_ptr<Viking>;
+using MedievalKnightPtr = std::shared_ptr<MedievalKnight>;
 
 DECLARE_LOG_CATEGORY(BattleSimulator2_EditorScene);
 
@@ -57,30 +61,27 @@ public:
 		return m_spLevelDesign;
 	}
 
-	std::shared_ptr<Unit> getSampleUnit(Int32 idx) const
+	EDynamicObjID getCurrentPrototypeUnitID() const
 	{
-		CHECK_RANGE(idx, 0, m_vecSampleUnit.size() - 1);
-		return m_vecSampleUnit.at(idx);
+		return m_currentPrototypeUnitID;
 	}
 
-	std::shared_ptr<Unit> getCurrentSampleUnit() const
-	{
-		return getSampleUnit(m_currentSampleUnitIdx);
-	}
-
-	void setMode(EMode mode)
+	void setMode(EBattleSimulator2Mode mode)
 	{
 		m_mode = mode;
 	}
 
+	void setCurrentPrototypeUnitID(EDynamicObjID unitID)
+	{
+		m_currentPrototypeUnitID = unitID;
+	}
+
 private:
-	EMode m_mode = EMode::MENU;
+	EBattleSimulator2Mode m_mode = EBattleSimulator2Mode::MENU;
 	std::shared_ptr<MenuTable_Row> m_spEditorMenuTable = nullptr;;
 
-	Int32 m_currentSampleUnitIdx = 0;
-	std::vector<std::shared_ptr<Unit>> m_vecSampleUnit;
-
-	std::shared_ptr<BattleSimulator2World> m_spWorld = nullptr;;
+	EDynamicObjID m_currentPrototypeUnitID = EDynamicObjID::UNKNOWN;
+	std::shared_ptr<BattleSimulator2World> m_spWorld = nullptr;
 	std::shared_ptr<BattleSimulator2_LevelDesign> m_spLevelDesign = nullptr;
 };
 

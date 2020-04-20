@@ -19,7 +19,7 @@
 EErrorType IntroMenu_Quit::OnExcute()
 {
 	InputController::I()->DisableInput();
-	TriggerTimerMgr::I()->AddTriggerTimer("Excute_IntroMenu_Quit",
+	TriggerTimerMgr::I()->AddTriggerTimer("Trigger_IntroMenu_Quit",
 		1.0f, 0.0f, this, &IntroMenu_Quit::OnTrigger_Excute, false, false);
 
 	return EErrorType::NOTHING;

@@ -21,9 +21,9 @@ class BuyPhaseMenu_ProductFamilySelection final : public Menu
 	DECLARE_RTTI(BuyPhaseMenu_ProductFamilySelection, Menu);
 
 public:
+#pragma region 생성자 및 소멸자
 	using Menu::Menu;
 
-#pragma region 생성자 및 소멸자
 	BuyPhaseMenu_ProductFamilySelection() = default;
 	virtual ~BuyPhaseMenu_ProductFamilySelection() = default;
 

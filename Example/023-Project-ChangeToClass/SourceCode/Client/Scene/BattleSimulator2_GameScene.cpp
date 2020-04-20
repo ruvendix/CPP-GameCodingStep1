@@ -18,6 +18,7 @@
 #include "Math\Random.h"
 
 #include "BattleSimulator2_EditorScene.h"
+#include "MiniGame\BattleSimulator2\BattleSimulator2_DataCollector.h"
 #include "MiniGame\BattleSimulator2\BattleSimulator2World.h"
 #include "MiniGame\BattleSimulator2\BattleSimulator2_LevelDesign.h"
 #include "MiniGame\BattleSimulator2\GameObject\DynamicObject\MedievalKnight.h"
@@ -25,27 +26,35 @@
 
 namespace
 {
-	MedievalKnight s_dummyMedievalKnight;
-	Viking s_dummyViking;
-
-	Uint32 s_triggerDieUnitID = 0;
-	Uint32 s_triggerPostDieUnitID = 0;
+	Uint32 s_triggerTimerID_deathUnit = 0;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class PredUnit
+{
+public:
+	PredUnit(UnitPtr spUnit)
+		: m_spUnit(spUnit)
+	{
 
-//class BattleSimulator2_GameSceneHelper final
-//{
-//	NON_COPYABLE_ONLY_PRIVATE_CLASS(BattleSimulator2_GameSceneHelper);
-//
-//public:
-//	static void DrawTitle();
-//	static void DrawUnitStat();
-//	static void DrawBattleReport(const BattleSimulator2_GameScene& helperTarget);
-//
-//	static std::shared_ptr<MedievalKnight> CloneMedievalKnight();
-//	static std::shared_ptr<Viking> CloneViking();
-//};
+	}
+
+	~PredUnit() = default;
+
+	bool operator()(UnitPtr spUnit)
+	{
+		if (spUnit == nullptr)
+		{
+			return false;
+		}
+
+		CHECK_NULLPTR(spUnit);
+		return (m_spUnit == spUnit);
+	}
+
+private:
+	UnitPtr m_spUnit = nullptr;
+};
+
 //
 //void BattleSimulator2_GameSceneHelper::DrawTitle()
 //{
@@ -154,17 +163,34 @@ EErrorType BattleSimulator2_GameScene::OnInitialize()
 		return EErrorType::LOAD_FILE_FAIL;
 	}
 
+	// 월드를 불러왔으면 데이터 콜렉터를 초기화해야 해요.
+	BattleSimulator2_DataCollector::I()->Initialize();
+
 	m_spLevelDesign = std::make_shared<BattleSimulator2_LevelDesign>();
 	if (m_spLevelDesign->LoadFile("BattleSimulator2.level") == EErrorType::LOAD_FILE_FAIL)
 	{
 		return EErrorType::LOAD_FILE_FAIL;
 	}
 
-	// 타입, 첫번째 컨테, 두번째 컨테
+	// 게임 씬에서는 남은 유닛수를 초기화해야 해요!
+	Int32 vikingCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::VIKING, EBattleDataType::TOTAL_UNIT_CNT);
+	BattleSimulator2_DataCollector::I()->ModifyBattleData(EDynamicObjID::VIKING, EBattleDataType::REMAIN_UNIT_CNT, vikingCnt);
 
-	const LevelDesign::VecLevelDesigndObj& vecObj = m_spLevelDesign->getVecObj();
+	Int32 medievalKnightCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::MEDIEVAL_KNIGHT, EBattleDataType::TOTAL_UNIT_CNT);
+	BattleSimulator2_DataCollector::I()->ModifyBattleData(EDynamicObjID::MEDIEVAL_KNIGHT, EBattleDataType::REMAIN_UNIT_CNT, medievalKnightCnt);
+
+	const VecLevelDesigndObj& vecObj = m_spLevelDesign->getVecObj();
 	m_vecUnit.reserve(vecObj.size());
 	common_func::CopySharedPtrContainer(vecObj, m_vecUnit);
+
+	m_mapUnitStateCallback.Subscribe(EUnitState::IDLE,
+		std::bind(&BattleSimulator2_GameScene::OnCallback_UpdateIdleState, this, std::placeholders::_1));
+	m_mapUnitStateCallback.Subscribe(EUnitState::MOVE,
+		std::bind(&BattleSimulator2_GameScene::OnCallback_UpdateMoveState, this, std::placeholders::_1));
+	m_mapUnitStateCallback.Subscribe(EUnitState::ATTACK,
+		std::bind(&BattleSimulator2_GameScene::OnCallback_UpdateAttackState, this, std::placeholders::_1));
+	m_mapUnitStateCallback.Subscribe(EUnitState::DEATH,
+		std::bind(&BattleSimulator2_GameScene::OnCallback_UpdateDeathState, this, std::placeholders::_1));
 
 	return EErrorType::NOTHING;
 }
@@ -173,6 +199,7 @@ EErrorType BattleSimulator2_GameScene::OnInput()
 {
 	if (InputController::I()->CheckInputState("GotoIntro", EInputMappingState::DOWN) == true)
 	{
+		BattleSimulator2_DataCollector::I()->Finalize();
 		SceneMgr::I()->CreateScene<BattleSimulator2_EditorScene>(ECreateType::NEXT);
 	}
 
@@ -190,66 +217,13 @@ EErrorType BattleSimulator2_GameScene::OnUpdate()
 	// 배틀 시뮬레이터는 간단한 게임이니까 따로 저장하지는 않을게요.
 	for (auto& iter : m_vecUnit)
 	{
-		Unit::UnitPtr spUnit = common_func::KindCastSP<Unit>(iter);
+		UnitPtr spUnit = common_func::KindCastSP<Unit>(iter);
 		CHECK_NULLPTR_CONTINUE(spUnit);
 
-		if (spUnit->IsDeath())
+		MapUnitStateCallback::ElemType pCallback = m_mapUnitStateCallback.Find(spUnit->getState());
+		if (pCallback != nullptr)
 		{
-			// 렌더링에서도 제외
-			continue;
-		}
-
-		// 시야 범위만큼 먼저 유닛을 리스트에 추가!
-		spUnit->ClearUnitInRange();
-		spUnit->FilterUnitInRange(m_vecUnit, m_spWorld->getSize());
-
-		// 추가된 리스트에서 가장 최단 거리는?
-		Unit::UnitPtr targetUnit = spUnit->SearchShortestPathEnemyInRange();
-		if ( (targetUnit == nullptr) ||
-			 (targetUnit->IsDeath()) )
-		{
-			continue; // 승리한 거 아님? 그건 아님!
-		}
-
-		// X와 Y축은 어느 방향으로 이동해야 함?
-		spUnit->AdjustMoveAxisDir(targetUnit);
-		
-		EPreferMoveAxis preferMoveAxis = static_cast<EPreferMoveAxis>(math::RandomUtil::GenerateRandom(0, 1));
-		spUnit->setPreferMoveAxis(preferMoveAxis);
-
-		const COORD prevPos = spUnit->getPos();
-		if (spUnit->MoveToTarget(targetUnit) == false)
-		{
-			// 공격 개시!
-			spUnit->Attack(targetUnit);
-
-			if (targetUnit->IsDeath())
-			{
-				// 죽으면 이펙트 남기기
-				targetUnit->setShape("★"); // 시체 길막?
-
-				std::string strTrigger = common_func::MakeFormatString("%s_%d", "Excute_DieUnit", s_triggerDieUnitID++);
-				TriggerTimerMgr::I()->AddTriggerTimer(strTrigger, 0.8f, 0.0f,
-					this, &BattleSimulator2_GameScene::OnTrigger_DieUnit, false, false);
-			}
-		}
-
-		// 유닛의 위치가 겹치는지 확인!
-		for (const auto& iter2 : m_vecUnit)
-		{
-			CHECK_NULLPTR_CONTINUE(iter2);
-
-			if (iter == iter2)
-			{
-				continue;
-			}
-
-			// 위치가 겹치면 길을 새로 조정해야 하는데 길찾기 알고리즘이 필요하므로 생략...
-			if (math::IsSamePos(spUnit->getPos(), iter2->getPos()))
-			{
-				spUnit->setPos(prevPos);
-				break;
-			}
+			pCallback(spUnit);
 		}
 	}
 
@@ -309,76 +283,154 @@ EErrorType BattleSimulator2_GameScene::OnFinalize()
 		}
 	}
 
-	s_triggerDieUnitID = 0;
-	s_triggerPostDieUnitID = 0;
-
+	s_triggerTimerID_deathUnit = 0;
 	return EErrorType::NOTHING;
 }
 
-void BattleSimulator2_GameScene::OnTrigger_DieUnit()
+void BattleSimulator2_GameScene::OnCallback_UpdateIdleState(UnitPtr spUnit)
 {
-	if (m_vecUnit.empty() == true)
+	// 시야 범위만큼 먼저 유닛을 리스트에 추가!
+	spUnit->ClearUnitInRange();
+	spUnit->FilterUnitInRange(m_vecUnit, m_spWorld->getSize());
+
+	// 추가된 리스트에서 가장 최단 거리는?
+	SizeInfo distance{ 0, 0 };
+	UnitPtr spTargetUnit = spUnit->SearchShortestPathEnemyInRange(distance);
+	if (spTargetUnit == nullptr)
 	{
-		return;
+		return; // 시야 안에 이동할 타겟이 없음
 	}
 
-	for (auto& iter : m_vecUnit)
+	// 적 유닛이 1칸 기준 상하좌우에 있는 경우
+	if (distance.width + distance.height == 1)
 	{
-		CHECK_NULLPTR_CONTINUE(iter);
-
-		if (iter->IsDeath())
-		{
-			iter->setShape("　");
-		}
+		spUnit->ChangeLockOnTargetUnit(spTargetUnit);
+		spUnit->setState(EUnitState::ATTACK);
+		//DEBUG_LOG("둘의 차이는 한칸!");
 	}
-
-	std::string strTrigger = common_func::MakeFormatString("%s_%d", "Excute_PostDieUnit", s_triggerPostDieUnitID++);
-	TriggerTimerMgr::I()->AddTriggerTimer(strTrigger, 0.9f, 0.0f,
-		this, &BattleSimulator2_GameScene::OnTrigger_PostDieUnit, false, false);
+	else
+	{
+		spUnit->setState(EUnitState::MOVE);
+	}
 }
 
-void BattleSimulator2_GameScene::OnTrigger_PostDieUnit()
+void BattleSimulator2_GameScene::OnCallback_UpdateMoveState(UnitPtr spUnit)
+{
+	// 시야 범위만큼 먼저 유닛을 리스트에 추가!
+	spUnit->ClearUnitInRange();
+	spUnit->FilterUnitInRange(m_vecUnit, m_spWorld->getSize());
+
+	// 추가된 리스트에서 가장 최단 거리는?
+	SizeInfo distance{ 0, 0 };
+	UnitPtr spTargetUnit = spUnit->SearchShortestPathEnemyInRange(distance);
+	if (spTargetUnit == nullptr)
+	{
+		spUnit->setState(EUnitState::IDLE);
+		return; // 시야 안에 이동할 타겟이 없음
+	}
+
+	// 적 유닛이 1칸 기준 상하좌우에 있는 경우
+	if (distance.width + distance.height == 1)
+	{
+		spUnit->ChangeLockOnTargetUnit(spTargetUnit);
+		spUnit->setState(EUnitState::ATTACK);
+		//DEBUG_LOG("둘의 차이는 한칸!");
+	}
+
+	// X와 Y축은 어느 방향으로 이동해야 함?
+	spUnit->AdjustMoveAxisDir(spTargetUnit);
+
+	EPreferMoveAxis preferMoveAxis = static_cast<EPreferMoveAxis>(math::RandomUtil::GenerateRandom(0, 1));
+	spUnit->setPreferMoveAxis(preferMoveAxis);
+
+	const COORD prevPos = spUnit->getPos();
+	spUnit->MoveToTarget(spTargetUnit);
+
+	// 유닛의 위치가 겹치는지 확인!
+	for (const auto& iter : spUnit->getListUnitInRange())
+	{
+		CHECK_NULLPTR_CONTINUE(iter);
+
+		// 위치가 겹치면 길을 새로 조정해야 하는데 길찾기 알고리즘이 필요하므로 생략...
+		if (math::IsSamePos(spUnit->getPos(), iter->getPos()))
+		{
+			spUnit->setPos(prevPos);
+			break;
+		}
+	}
+}
+
+void BattleSimulator2_GameScene::OnCallback_UpdateAttackState(UnitPtr spUnit)
+{
+	UnitPtr spLockOnTargetUnit = spUnit->getLockOnTargetUnit();
+	if (spLockOnTargetUnit == nullptr)
+	{
+		spUnit->setState(EUnitState::IDLE);
+		return;
+	}
+
+	// 공격 개시!
+	spUnit->Attack(spLockOnTargetUnit);
+
+	if ( (spLockOnTargetUnit->getHP() < 0) &&
+		 (spLockOnTargetUnit->IsSameState(EUnitState::ERASE) == false) ) // 제거 예정은 상태 유지!
+	{
+		spUnit->setState(EUnitState::IDLE);
+		spUnit->ChangeLockOnTargetUnit(nullptr); // 옵저버로 nullptr 만들면 딱임
+
+		spLockOnTargetUnit->setState(EUnitState::DEATH);
+	}
+}
+
+void BattleSimulator2_GameScene::OnCallback_UpdateDeathState(UnitPtr spUnit)
+{
+	// 죽으면 이펙트 남기기
+	spUnit->setShape("★"); // 시체 길막?
+
+	std::string strTrigger = common_func::MakeFormatString("%s_%d", "Trigger_DeathUnit", s_triggerTimerID_deathUnit++);
+	TriggerTimerMgr::I()->AddTriggerTimer(strTrigger, 1.2f, 0.0f,
+		this, &BattleSimulator2_GameScene::OnTrigger_DeathUnit, false, false);
+
+	spUnit->setState(EUnitState::ERASE);
+
+	// 죽은 유닛은 큐에 넣고 트리거 타이머가 발동될 때 front로 가져와서 제거할게요!
+	m_queueDeathUnit.push(spUnit);
+	//DEBUG_LOG("(%s) 유닛 넣었다!", spUnit->getNameTag().c_str());
+}
+
+void BattleSimulator2_GameScene::OnTrigger_DeathUnit()
 {
 	if (m_vecUnit.empty() == true)
 	{
 		return;
 	}
 
-	for (auto iter = m_vecUnit.cbegin(); iter < m_vecUnit.cend(); )
+	// 트리거에 등록된 순서대로 지워야 함!
+	// 이건 중구난방으로 지워짐...
+	const auto& iter = std::find_if(m_vecUnit.cbegin(), m_vecUnit.cend(), PredUnit(m_queueDeathUnit.front()));
+	if (iter == m_vecUnit.cend())
 	{
-		Unit::UnitPtr spUnit = *iter;
-		CHECK_NULLPTR_CONTINUE(spUnit);
-
-		if (spUnit->IsDeath())
-		{
-			spUnit->ClearUnitInRange();
-			iter = m_vecUnit.erase(iter);
-		}
-		else
-		{
-			++iter;
-		}
+		return;
 	}
+
+	UnitPtr spUnit = *iter;
+	CHECK_NULLPTR(spUnit);
+
+	spUnit->ChangeLockOnTargetUnit(nullptr);
+	spUnit->ClearUnitInRange();
+
+	BattleSimulator2_DataCollector::I()->ModifyBattleData(static_cast<EDynamicObjID>(spUnit->getID()),
+		EBattleDataType::REMAIN_UNIT_CNT, EDataProgressDir::NEGATIVENESS, 1);
+
+	BattleSimulator2_DataCollector::I()->ModifyBattleData(static_cast<EDynamicObjID>(spUnit->getID()),
+		EBattleDataType::DEATH_UNIT_CNT, EDataProgressDir::POSITIVENESS, 1);
+
+	//DEBUG_LOG("(%s) 유닛 제거!", spUnit->getNameTag().c_str());
+	m_vecUnit.erase(iter);
+	m_queueDeathUnit.pop();
 
 	// 배틀이 끝났는지 여기서 확인!
-	Int32 vikingDeathCnt = 0;
-	Int32 medievalKnightDeathCnt = 0;
-	for (const auto& iter : m_vecUnit)
-	{
-		CHECK_NULLPTR_CONTINUE(iter);
-
-		if (iter->getID() == common_func::ToUnderlyingType(EDynamicObjID::MEDIEVAL_KNIGHT))
-		{
-			++medievalKnightDeathCnt;
-		}
-		else if (iter->getID() == common_func::ToUnderlyingType(EDynamicObjID::VIKING))
-		{
-			++vikingDeathCnt;
-		}
-	}
-
-	if ( (medievalKnightDeathCnt == 0) ||
-		 (vikingDeathCnt == 0) )
+	if (BattleSimulator2_DataCollector::I()->IsBattleEnd())
 	{
 		m_bBattleEnd = true;
 		RESERVE_RENDERING_STRING(3.0f, std::bind(&BattleSimulator2_GameScene::OnTrigger_BattleEnd, this));

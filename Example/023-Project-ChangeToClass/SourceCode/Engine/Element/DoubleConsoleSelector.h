@@ -18,8 +18,10 @@ class DblConsoleSelector : public ConsoleSelector
 	DECLARE_RTTI(DblConsoleSelector, ConsoleSelector);
 
 public:
+#pragma region 생성자 및 소멸자
 	using ConsoleSelector::ConsoleSelector;
 	virtual ~DblConsoleSelector() = default;
+#pragma endregion
 
 	virtual void OnDrawSelector() const override;
 

@@ -12,6 +12,9 @@
 
 #include "Unit.h"
 
+class MedievalKnight;
+using MedievalKnightPtr = std::shared_ptr<MedievalKnight>;
+
 class MedievalKnight final : public Unit
 {
 	DECLARE_RTTI(MedievalKnight, Unit);
@@ -21,6 +24,8 @@ public:
 	using Unit::Unit;
 	virtual ~MedievalKnight() = default;
 #pragma endregion
+
+	MedievalKnightPtr Clone();
 };
 
 #endif

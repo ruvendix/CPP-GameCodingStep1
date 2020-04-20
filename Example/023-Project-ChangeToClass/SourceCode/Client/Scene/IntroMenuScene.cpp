@@ -35,13 +35,13 @@ namespace
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+using CompMenuInfoCallback = std::function<void(_Inout_ IntroMenuScene&, _Inout_ IntroMenu&)>;
+
 class IntroMenuSceneHelper final
 {
 	NON_COPYABLE_ONLY_PRIVATE_CLASS(IntroMenuSceneHelper);
 
 public:
-	using CompMenuInfoCallback = std::function<void(_Inout_ IntroMenuScene&, _Inout_ IntroMenu&)>;
-
 	static void DrawScene(_Inout_ IntroMenuScene& helperTarget);
 	static void DrawTitle(const IntroMenuScene& helperTarget);
 	static void DrawSelector(const IntroMenuScene& helperTarget);

@@ -31,7 +31,7 @@ IntroMenu_SceneLoader::IntroMenu_SceneLoader(const std::string_view& szNameTag, 
 EErrorType IntroMenu_SceneLoader::OnExcute()
 {
 	InputController::I()->DisableInput();
-	TriggerTimerMgr::I()->AddTriggerTimer("Excute_IntroMenu_SceneLoader", 
+	TriggerTimerMgr::I()->AddTriggerTimer("Trigger_IntroMenu_SceneLoader", 
 		1.0f, 0.0f, this, &IntroMenu_SceneLoader::OnTrigger_Excute, false, false);
 
 	return EErrorType::NOTHING;

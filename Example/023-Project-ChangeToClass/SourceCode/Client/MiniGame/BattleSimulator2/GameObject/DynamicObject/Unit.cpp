@@ -12,6 +12,11 @@
 
 #include "Math\Random.h"
 
+Unit::Unit(const Unit& src)
+{
+	Copy(src);
+}
+
 Unit::Unit(const std::string_view& szName, EDynamicObjID objID, const std::string_view& szShape) :
 	DynamicObj(szName)
 {
@@ -53,12 +58,14 @@ EErrorType Unit::OnLoadFile(FILE* pFileStream)
 
 EErrorType Unit::OnFinalize()
 {
-	m_listUnitInRange.clear();
+	ClearUnitInRange();
 	return EErrorType::NOTHING;
 }
 
 void Unit::Attack(UnitPtr spTargetUnit)
 {
+	CHECK_NULLPTR_RETURN_VOID(spTargetUnit);
+
 	if (m_attackSuccessRate > math::RandomUtil::GenerateRandom(0.0f, 1.0f))
 	{
 		spTargetUnit->Damage(m_attackDamage);
@@ -68,13 +75,6 @@ void Unit::Attack(UnitPtr spTargetUnit)
 void Unit::Damage(Int32 damage)
 {
 	m_HP -= damage;
-}
-
-void Unit::Copy(UnitPtr spUnit)
-{
-	setID(spUnit->getID());
-	setShape(spUnit->getShape());
-	setPos(spUnit->getPos());
 }
 
 void Unit::FilterUnitInRange(const std::vector<UnitPtr>& vecUnit, const SizeInfo& worldSize)
@@ -101,12 +101,8 @@ void Unit::FilterUnitInRange(const std::vector<UnitPtr>& vecUnit, const SizeInfo
 			continue;
 		}
 
-		if (iter->IsDeath())
-		{
-			continue;
-		}
-
 		// 시야에 들어온 유닛은 리스트에 추가!
+		// 죽거나 제거 예정 유닛도 포함!
 		if (math::IsPointInRect(iter->getPos(), rangeStartPos, rangeEndPos))
 		{
 			m_listUnitInRange.push_back(iter);
@@ -125,26 +121,68 @@ void Unit::AdjustMoveAxisDir(UnitPtr spUnit)
 
 	if (getPos().X < targetPos.X)
 	{
-		setMoveAxisDir(0, EMoveAxisDir::POSITIVENESS);
+		setMoveAxisDir(0, EDataProgressDir::POSITIVENESS);
 	}
 	else if (getPos().X > targetPos.X)
 	{
-		setMoveAxisDir(0, EMoveAxisDir::NEGATIVENESS);
+		setMoveAxisDir(0, EDataProgressDir::NEGATIVENESS);
 	}
 
 	if (getPos().Y < targetPos.Y)
 	{
-		setMoveAxisDir(1, EMoveAxisDir::POSITIVENESS);
+		setMoveAxisDir(1, EDataProgressDir::POSITIVENESS);
 	}
 	else if (getPos().Y > targetPos.Y)
 	{
-		setMoveAxisDir(1, EMoveAxisDir::NEGATIVENESS);
+		setMoveAxisDir(1, EDataProgressDir::NEGATIVENESS);
 	}
 }
 
-Unit::UnitPtr Unit::SearchShortestPathEnemyInRange() const
+void Unit::ChangeLockOnTargetUnit(UnitPtr spTarget)
 {
-	UnitPtr spUnit = nullptr;
+	if (spTarget == nullptr)
+	{
+		m_spLockOnTargetUnit = nullptr;
+		return;
+	}
+
+	if ( (spTarget->IsSameState(EUnitState::DEATH)) ||
+		 (spTarget->IsSameState(EUnitState::ERASE)) )
+	{
+		m_spLockOnTargetUnit = nullptr;
+		return;
+	}
+	
+	m_spLockOnTargetUnit = spTarget;
+}
+
+EErrorType Unit::Copy(const Unit& src)
+{
+	if (DynamicObj::Copy(src) == EErrorType::COPY_FAIL)
+	{
+		return EErrorType::COPY_FAIL;
+	}
+
+	m_spLockOnTargetUnit = nullptr;
+	ClearUnitInRange();
+
+	setHP(src.getHP());
+	setMaxHP(src.getMaxHP());
+	setRange(src.getRange());
+	setAttackDamage(src.getAttackDamage());
+	setAttackSuccessRate(src.getAttackSuccessRate());
+
+	return EErrorType::NOTHING;
+}
+
+UnitPtr Unit::Clone()
+{
+	return std::make_shared<Unit>(*this);
+}
+
+UnitPtr Unit::SearchShortestPathEnemyInRange(_Out_ SizeInfo& distance) const
+{
+	UnitPtr spEnemyUnit = nullptr;
 	Uint32 absSum = UINT_MAX;
 
 	for (const auto& iter : m_listUnitInRange)
@@ -155,20 +193,36 @@ Unit::UnitPtr Unit::SearchShortestPathEnemyInRange() const
 		{
 			continue;
 		}
-		
-		// 나와 절댓값 차의 합이 가장 작은 게 최단거리
-		const COORD& targetPos = iter->getPos();
-		Uint32 intervalX = std::abs(getPos().X - targetPos.X);
-		Uint32 intervalY = std::abs(getPos().Y - targetPos.Y);
 
-		Uint32 retAbsSum = intervalX + intervalY;
+		// 좌표 복사
+		const COORD& pos = getPos();
+		const COORD& targetPos = iter->getPos();
+
+		// 나와 절댓값 차의 합이 가장 작은 게 최단거리
+		distance.width = std::abs(pos.X - targetPos.X);
+		distance.height = std::abs(pos.Y - targetPos.Y);
+
+		Uint32 retAbsSum = distance.width + distance.height;
 		if (retAbsSum < absSum)
 		{
-			spUnit = iter;
+			spEnemyUnit = iter;
 			absSum = retAbsSum;
 		}
 	}
 
+	if (spEnemyUnit == nullptr)
+	{
+		return nullptr;
+	}
+
+	// 좌표 복사
+	const COORD& pos = getPos();
+	const COORD& targetPos = spEnemyUnit->getPos();
+
+	// 선별된 유닛과의 거리를 다시 계산!
+	distance.width = std::abs(pos.X - targetPos.X);
+	distance.height = std::abs(pos.Y - targetPos.Y);
+
 	//DEBUG_LOG("가장 짧은 거리 (%d, %d)", spUnit->getPos().X, spUnit->getPos().Y);
-	return spUnit;
+	return spEnemyUnit;
 }

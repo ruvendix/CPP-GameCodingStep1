@@ -18,6 +18,7 @@
 #include "Timer\TriggerTimer.h"
 
 #include "Scene\BattleSimulator2_GameScene.h"
+#include "..\BattleSimulator2_DataCollector.h"
 
 EErrorType Menu_StartGame::OnExcute()
 {
@@ -38,5 +39,6 @@ void Menu_StartGame::OnTrigger_Excute()
 void Menu_StartGame::OnTrigger_GameStart()
 {
 	InputController::I()->EnableInput();
+	BattleSimulator2_DataCollector::I()->Finalize();
 	SceneMgr::I()->CreateScene<BattleSimulator2_GameScene>(ECreateType::NEXT);
 }

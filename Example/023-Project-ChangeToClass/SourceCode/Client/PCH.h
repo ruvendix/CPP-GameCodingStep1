@@ -14,8 +14,13 @@
 // 자주 출력되는 경고는 무효시킵니다.
 #pragma warning(disable : 6011) // 널포인터 역참조
 #pragma warning(disable : 26495) // 멤버변수 초기화 필수
+#pragma warning(disable : 26498) // constexpr로 연산되면 constexpr로 받아야 함
 
-// Common 헤더 파일은 0순위!
+// Core 헤더 파일은 0순위!
+#include "Core\FastRTTI.h"
+#include "Core\MapCustom.h"
+
+// Common 헤더 파일은 1순위!
 #include "Common\CommonNecessary.h"
 #include "Common\CommonType.h"
 #include "Common\CommonStruct.h"

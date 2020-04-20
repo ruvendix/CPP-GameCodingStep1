@@ -20,9 +20,9 @@ class Menu_LoadLevelDesign final : public Menu
 	DECLARE_RTTI(Menu_LoadLevelDesign, Menu);
 
 public:
+#pragma region 생성자 및 소멸자
 	using Menu::Menu;
 
-#pragma region 생성자 및 소멸자
 	Menu_LoadLevelDesign() = default;
 	virtual ~Menu_LoadLevelDesign() = default;
 

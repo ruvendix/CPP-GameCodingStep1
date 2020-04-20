@@ -15,7 +15,7 @@ DEFINE_LOG_CATEGORY(TriggerTimerMgr);
 DEFINE_PHOENIX_SINGLETON(TriggerTimerMgr);
 
 void TriggerTimerMgr::AddTriggerTimer(const std::string& strTriggerTimer, Real32 triggerTime, Real32 keepTime,
-	const TriggerTimer::TCallback& func, bool bRender, bool bRepeat)
+	const TriggerTimerCallback& callback, bool bRender, bool bRepeat)
 {
 	if ( (bRepeat == true) && 
 		 (triggerTime < keepTime) )
@@ -34,10 +34,10 @@ void TriggerTimerMgr::AddTriggerTimer(const std::string& strTriggerTimer, Real32
 		pTriggerTimer->StartTime();
 		pTriggerTimer->setTime(triggerTime);
 		pTriggerTimer->setKeepTime(keepTime);
-		pTriggerTimer->setFunc(func);
+		pTriggerTimer->setCallback(callback);
 		pTriggerTimer->setRender(bRender);
 		pTriggerTimer->setRepeat(bRepeat);
-		DEBUG_LOG_CATEGORY(TriggerTimerMgr, "타이머가 이미 존재하므로 이름(%s)을 제외한 모든 데이터를 갱신!", strTriggerTimer.c_str());
+		DEBUG_LOG_CATEGORY(TriggerTimerMgr, "(%s) 트리거 타이머는 이미 존재하므로 이름 제외 모든 데이터 갱신!", strTriggerTimer.c_str());
 
 		return;
 	}
@@ -46,7 +46,7 @@ void TriggerTimerMgr::AddTriggerTimer(const std::string& strTriggerTimer, Real32
 	pTriggerTimer->StartTime();
 	pTriggerTimer->setTime(triggerTime);
 	pTriggerTimer->setKeepTime(keepTime);
-	pTriggerTimer->setFunc(func);
+	pTriggerTimer->setCallback(callback);
 	pTriggerTimer->setRender(bRender);
 	pTriggerTimer->setRepeat(bRepeat);
 
@@ -54,6 +54,7 @@ void TriggerTimerMgr::AddTriggerTimer(const std::string& strTriggerTimer, Real32
 	if (ret.second == true)
 	{
 		ret.first->second = pTriggerTimer;
+		DEBUG_LOG_CATEGORY(TriggerTimerMgr, "(%s) 트리거 타이머 등록!", strTriggerTimer.c_str());
 	}
 
 	return;
@@ -75,6 +76,8 @@ void TriggerTimerMgr::UpdateTriggerTimer()
 		// 트리거 타임만큼 지나면 리셋하고, 반복 설정이 되어있지 않으면 트리거 타이머를 제거해야 해요!
 		if (pTriggerTimer->IsTriggerTime())
 		{
+			//DEBUG_LOG_CATEGORY(TriggerTimerMgr, "(%s) 트리거 타임 달성!", iter->first.c_str());
+
 			if (pTriggerTimer->IsRender() == false)
 			{
 				pTriggerTimer->CallTriggerTimerFunc();
@@ -96,7 +99,7 @@ void TriggerTimerMgr::UpdateTriggerTimer()
 				const std::string strTriggerTimer = iter->first;
 				SAFE_DELETE(iter->second);
 				iter = m_mapTriggerTimer.erase(iter);
-				DEBUG_LOG_CATEGORY(TriggerTimerMgr, "트리거 타이머가 제거되었어요! (%s)", strTriggerTimer.data());
+				DEBUG_LOG_CATEGORY(TriggerTimerMgr, "(%s) 트리거 타이머 제거!", strTriggerTimer.data());
 			}
 			else
 			{

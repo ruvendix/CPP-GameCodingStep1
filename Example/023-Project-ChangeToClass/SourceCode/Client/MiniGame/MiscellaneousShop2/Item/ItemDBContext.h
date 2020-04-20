@@ -17,13 +17,13 @@
 class ItemBase;
 class ItemDB;
 
+using ArrItemDB = std::array<ItemDB*, common_func::ToUnderlyingType(EItemDBType::END)>;
+
 class ItemDBCtx final
 {
 	DECLARE_PHOENIX_SINGLETON(ItemDBCtx);
 
 public:
-	using ItemDBTable = std::array<ItemDB*, common_func::ToUnderlyingType(EItemDBType::END)>;
-
 	void Initialize();
 	void Finalize();
 
@@ -32,7 +32,7 @@ public:
 	TSize QueryItemCntOfItemDB(EItemDBType itemDBType) const;
 
 private:
-	ItemDBTable m_itemDBTable;
+	ArrItemDB m_itemDBTable;
 };
 
 #endif

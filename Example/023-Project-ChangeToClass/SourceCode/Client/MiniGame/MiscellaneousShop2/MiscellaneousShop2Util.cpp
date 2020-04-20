@@ -30,7 +30,7 @@ void MiscellanouseShop2Util::DrawItemTable(Int32 x, Int32 y, EItemDBType itemDBT
 	PUT_STRING(x, ++drawPosY, "┃    이름                            ┃     가격┃");
 	PUT_STRING(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━┫");
 
-	const ItemDB::MapItemDB& mapItemDB = pItemDB->getMapItemDB();
+	const MapItemDB& mapItemDB = pItemDB->getMapItemDB();
 	for (const auto& iter : mapItemDB)
 	{
 		ItemBase* pItem = iter.second;

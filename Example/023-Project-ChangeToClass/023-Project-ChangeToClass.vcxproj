@@ -149,6 +149,7 @@
     <ClCompile Include="SourceCode\Client\IntroMenu\IntroMenu_Quit.cpp" />
     <ClCompile Include="SourceCode\Client\IntroMenu\IntroMenu_SceneLoader.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2World.cpp" />
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_DataCollector.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_LevelDesign.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\MedievalKnight.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\Unit.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="SourceCode\Client\IntroMenu\IntroMenu_Quit.h" />
     <ClInclude Include="SourceCode\Client\IntroMenu\IntroMenu_SceneLoader.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2World.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_DataCollector.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_LevelDesign.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\MedievalKnight.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\Unit.h" />
@@ -289,6 +291,7 @@
     <ClInclude Include="SourceCode\Engine\Controller\FrameController.h" />
     <ClInclude Include="SourceCode\Engine\Controller\InputController.h" />
     <ClInclude Include="SourceCode\Engine\Core\FastRTTI.h" />
+    <ClInclude Include="SourceCode\Engine\Core\MapCustom.h" />
     <ClInclude Include="SourceCode\Engine\Element\DoubleConsoleSelector.h" />
     <ClInclude Include="SourceCode\Engine\Element\GameElement.h" />
     <ClInclude Include="SourceCode\Engine\Element\GameObject\DynamicObject.h" />

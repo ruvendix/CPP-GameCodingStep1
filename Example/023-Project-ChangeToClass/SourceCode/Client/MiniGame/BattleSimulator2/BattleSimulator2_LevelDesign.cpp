@@ -4,8 +4,8 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 배틀 시뮬레이터에서 사용하는 레벨 디자인입니다.
-// 에디터로 편집한 결과를 저장하거나 불러올 수 있습니다.
+// 배틀 시뮬레이터2에서 사용하는 레벨 디자인입니다.
+// 에디터로 에디터한 결과를 저장하거나 불러올 수 있습니다.
 // =====================================================================================
 
 #include "PCH.h"
@@ -13,6 +13,7 @@
 
 #include "Element\World.h"
 
+#include "BattleSimulator2_DataCollector.h"
 #include "GameObject\DynamicObject\Viking.h"
 #include "GameObject\DynamicObject\MedievalKnight.h"
 
@@ -32,11 +33,15 @@ std::shared_ptr<DynamicObj> BattleSimulator2_LevelDesignHelper::CreateDynamicObj
 	{
 	case EDynamicObjID::VIKING:
 	{
+		BattleSimulator2_DataCollector::I()->ModifyBattleData(EDynamicObjID::VIKING,
+			EBattleDataType::TOTAL_UNIT_CNT, EDataProgressDir::POSITIVENESS, 1);
 		return std::make_shared<Viking>(common_func::ToUnderlyingType(objID));
 	}
 
 	case EDynamicObjID::MEDIEVAL_KNIGHT:
 	{
+		BattleSimulator2_DataCollector::I()->ModifyBattleData(EDynamicObjID::MEDIEVAL_KNIGHT,
+			EBattleDataType::TOTAL_UNIT_CNT, EDataProgressDir::POSITIVENESS, 1);
 		return std::make_shared<MedievalKnight>(common_func::ToUnderlyingType(objID));
 	}
 

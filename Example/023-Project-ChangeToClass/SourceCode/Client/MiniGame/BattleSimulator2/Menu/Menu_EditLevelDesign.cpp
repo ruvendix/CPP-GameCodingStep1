@@ -5,7 +5,7 @@
 // http://creativecommons.org/licenses/by/4.0/
 //
 // 배틀 시뮬레이터2에서 사용되는 메뉴입니다.
-// 레벨 디자인을 편집합니다.
+// 레벨 디자인을 에디터합니다.
 // =====================================================================================
 
 #include "PCH.h"
@@ -16,6 +16,7 @@
 
 #include "Scene\BattleSimulator2_EditorScene.h"
 #include "..\BattleSimulator2World.h"
+#include "..\BattleSimulator2_DataCollector.h"
 #include "..\GameObject\DynamicObject\Unit.h"
 
 Menu_EditLevelDesign::Menu_EditLevelDesign(const std::string_view& szNameTag,
@@ -29,7 +30,7 @@ Menu_EditLevelDesign::Menu_EditLevelDesign(const std::string_view& szNameTag,
 EErrorType Menu_EditLevelDesign::OnExcute()
 {
 	CHECK_NULLPTR(m_pTargetScene);
-	m_pTargetScene->setMode(EMode::EDIT);
+	m_pTargetScene->setMode(EBattleSimulator2Mode::EDIT);
 
 	ConsoleController::I()->PushBackupConsoleSelector();
 
@@ -48,8 +49,10 @@ EErrorType Menu_EditLevelDesign::OnExcute()
 	consoleSelector.setMaxSelectorPos((worldSize.width - 2) * consoleSelector.getShapeLength(), worldSize.height - 2);
 
 	// 리스트에서 첫번째꺼
-	std::shared_ptr<Unit> spSampleUnit = m_pTargetScene->getSampleUnit(0);
-	consoleSelector.setShape(spSampleUnit->getShape());
+	Int32 defaultPrototypeUnitID = common_func::ToUnderlyingType(EDynamicObjID::UNKNOWN) + 1;
+	m_pTargetScene->setCurrentPrototypeUnitID(static_cast<EDynamicObjID>(defaultPrototypeUnitID));
+	consoleSelector.setShape(
+		BattleSimulator2_DataCollector::I()->FindPrototypeUnit(m_pTargetScene->getCurrentPrototypeUnitID())->getShape());
 
 	RESERVE_RENDERING_STRING(1.0f, std::bind(&Menu_EditLevelDesign::OnTrigger_Excute, this));
 	return EErrorType::NOTHING;
@@ -57,5 +60,5 @@ EErrorType Menu_EditLevelDesign::OnExcute()
 
 void Menu_EditLevelDesign::OnTrigger_Excute()
 {
-	PUT_STRING(82, 28, "편집 모드로 변경!");
+	PUT_STRING(82, 28, "에디터 모드로 변경!");
 }

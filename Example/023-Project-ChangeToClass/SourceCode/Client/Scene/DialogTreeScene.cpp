@@ -18,13 +18,13 @@
 #include "MiniGame\DialogTree\DialogConstant.h"
 #include "MiniGame\DialogTree\TriggerDialogNode.h"
 
+using InputForDialogNodeCallback = std::function<void(_Inout_ DialogTreeScene&)>;
+
 class DialogTreeSceneHelper final
 {
 	NON_COPYABLE_ONLY_PRIVATE_CLASS(DialogTreeSceneHelper);
 
 public:
-	using InputForDialogNodeCallback = std::function<void(_Inout_ DialogTreeScene&)>;
-
 	static void InitDialogTree(_Out_ std::unique_ptr<DialogTree>& spDialogTree);
 	static void DrawDialogBox();
 	static void AdjustSelectorPosForTriggerDialogNode(std::shared_ptr<DialogNode> spDialogNode);
@@ -40,7 +40,7 @@ private:
 	static InputForDialogNodeCallback m_inputForDialogNodeCallback; // 전략 패턴
 };
 
-DialogTreeSceneHelper::InputForDialogNodeCallback DialogTreeSceneHelper::m_inputForDialogNodeCallback = OnCallback_InputForDialogNode;
+InputForDialogNodeCallback DialogTreeSceneHelper::m_inputForDialogNodeCallback = OnCallback_InputForDialogNode;
 
 void DialogTreeSceneHelper::InitDialogTree(_Out_ std::unique_ptr<DialogTree>& spDialogTree)
 {

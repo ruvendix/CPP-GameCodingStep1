@@ -35,7 +35,6 @@ public:
 		}
 
 		CHECK_NULLPTR(pInvenItemInfo->pItem);
-
 		return (m_strItemNameTag == pInvenItemInfo->pItem->getNameTag());
 	}
 

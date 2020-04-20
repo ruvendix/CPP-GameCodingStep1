@@ -23,14 +23,14 @@ struct WorldFileHeader
 
 class StaticObj;
 
+using VecWorldObj = std::vector<std::shared_ptr<StaticObj>>;
+
 class World : public GameElem
 {
 	DECLARE_RTTI(World, GameElem);
 	friend class LevelDesign;
 
 public:
-	using VecWorldObj = std::vector<std::shared_ptr<StaticObj>>;
-
 #pragma region 생성자 및 소멸자
 	World() = default;
 	virtual ~World() = default;

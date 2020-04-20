@@ -39,15 +39,17 @@ EErrorType GameObj::OnSaveFile(FILE* pFileStream)
 	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::SAVE_FILE_FAIL);
 
 	fwrite(&m_pos, sizeof(m_pos), 1, pFileStream);
+	fprintf(pFileStream, "%s\n", getNameTag().c_str());
+	fprintf(pFileStream, "%s\n", getShape().c_str());
 
-	Uint8 shapeSize = static_cast<Uint8>(getShape().size());
-	fwrite(&shapeSize, sizeof(shapeSize), 1, pFileStream);
+	//Uint8 shapeSize = static_cast<Uint8>(getShape().size());
+	//fwrite(&shapeSize, sizeof(shapeSize), 1, pFileStream);
 
-	shapeSize = (sizeof(char) * shapeSize) + 1;
-	char* shapeBuffer = reinterpret_cast<char*>(std::malloc(shapeSize)); // 널문자 포함
-	StringCchCopy(shapeBuffer, shapeSize, getShape().c_str()); // 널문자를 대입해줌
-	fwrite(shapeBuffer, 1, shapeSize, pFileStream);
-	std::free(shapeBuffer);
+	//shapeSize = (sizeof(char) * shapeSize) + 1;
+	//char* shapeBuffer = reinterpret_cast<char*>(std::malloc(shapeSize)); // 널문자 포함
+	//StringCchCopy(shapeBuffer, shapeSize, getShape().c_str()); // 널문자를 대입해줌
+	//fwrite(shapeBuffer, 1, shapeSize, pFileStream);
+	//std::free(shapeBuffer);
 
 	return EErrorType::NOTHING;
 }
@@ -57,15 +59,33 @@ EErrorType GameObj::OnLoadFile(FILE* pFileStream)
 	CHECK_NULLPTR_RETURN(pFileStream, EErrorType::LOAD_FILE_FAIL);
 
 	fread(&m_pos, sizeof(m_pos), 1, pFileStream);
+	
+	char buffer[256];
+	::ZeroMemory(buffer, sizeof(buffer));
+	fscanf_s(pFileStream, "%s\n", buffer, sizeof(buffer));
+	setNameTag(buffer);
 
-	Uint8 shapeSize = 0;
-	fread(&shapeSize, sizeof(shapeSize), 1, pFileStream);
+	fscanf_s(pFileStream, "%s\n", buffer, sizeof(buffer));
+	setShape(buffer);
 
-	shapeSize = (sizeof(char) * shapeSize) + 1;
-	char* shapeBuffer = reinterpret_cast<char*>(std::malloc(shapeSize));
-	fread(shapeBuffer, 1, shapeSize, pFileStream);
-	setShape(shapeBuffer);
-	std::free(shapeBuffer);
+	//Uint8 shapeSize = 0;
+	//fread(&shapeSize, sizeof(shapeSize), 1, pFileStream);
+
+	//shapeSize = (sizeof(char) * shapeSize) + 1;
+	//char* shapeBuffer = reinterpret_cast<char*>(std::malloc(shapeSize));
+	//fread(shapeBuffer, 1, shapeSize, pFileStream);
+	//setShape(shapeBuffer);
+	//std::free(shapeBuffer);
+
+	return EErrorType::NOTHING;
+}
+
+EErrorType GameObj::Copy(const GameObj& src)
+{
+	setID(src.getID());
+	setNameTag(src.getNameTag());
+	setPos(src.getPos());
+	setShape(src.getShape());
 
 	return EErrorType::NOTHING;
 }

@@ -24,13 +24,13 @@ namespace
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+using UpdateDeltaTimeCallback = std::function<void()>;
+
 class FrameControllerHelper final
 {
 	NON_COPYABLE_ONLY_PRIVATE_CLASS(FrameControllerHelper);
 
 public:
-	using UpdateDeltaTimeCallback = std::function<void()>;
-
 	static void UpdateDeltaTime();
 	static void RefreshLimitedDeltaTime();
 	static void ChangeUpdateDeltaTimeCallback(EFrameRateType frameRateType);
@@ -45,7 +45,7 @@ private:
 };
 
 Real32 FrameControllerHelper::m_limitedDeltaTime = FPS_UPDATE_TIME / 60.0f;
-FrameControllerHelper::UpdateDeltaTimeCallback FrameControllerHelper::m_updateDeltaTimeCalllback = OnCallback_UpdateDeltaTime_ConstantFrameRate;
+UpdateDeltaTimeCallback FrameControllerHelper::m_updateDeltaTimeCalllback = OnCallback_UpdateDeltaTime_ConstantFrameRate;
 
 /*
 고해상도 타이머를 이용해서 델타타임을 갱신합니다.

@@ -22,13 +22,13 @@ struct LevelDesignFileHeader
 
 class DynamicObj;
 
+using VecLevelDesigndObj = std::vector<std::shared_ptr<DynamicObj>>;
+
 class LevelDesign : public GameElem
 {
 	DECLARE_RTTI(LevelDesign, GameElem);
 
 public:
-	using VecLevelDesigndObj = std::vector<std::shared_ptr<DynamicObj>>;
-
 #pragma region 생성자 및 소멸자
 	using GameElem::GameElem;
 

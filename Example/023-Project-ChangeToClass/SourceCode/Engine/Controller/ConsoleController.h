@@ -16,15 +16,14 @@
 #include "Element\ConsoleSelector.h"
 #include "ConsoleControllerEnum.h"
 
-DECLARE_LOG_CATEGORY(ConsoleController);
+using ArrConsoleDblBufferingHandle = std::array<HANDLE, common_func::ToUnderlyingType(EConsoleScreenBufferTypeIdx::MAX)>;
 
+DECLARE_LOG_CATEGORY(ConsoleController);
 class ConsoleController final
 {
 	DECLARE_PHOENIX_SINGLETON(ConsoleController);
 
 public:
-	using ConsoleDblBufferingHandle = std::array<HANDLE, common_func::ToUnderlyingType(EConsoleScreenBufferTypeIdx::MAX)>;
-
 	void Initialize(const std::string_view& szTitle, const SizeInfo& sizeInfo);
 	void Flipping();
 	void Finalize();
@@ -77,7 +76,7 @@ public:
 	}
 
 private:
-	ConsoleDblBufferingHandle m_hConsoleScreenBuffers;
+	ArrConsoleDblBufferingHandle m_hConsoleScreenBuffers;
 	CONSOLE_SCREEN_BUFFER_INFO m_consoleScreenBufferInfo;
 	EConsoleScreenBufferTypeIdx m_currentConsoleScreenBufferType = EConsoleScreenBufferTypeIdx::FRONT;
 

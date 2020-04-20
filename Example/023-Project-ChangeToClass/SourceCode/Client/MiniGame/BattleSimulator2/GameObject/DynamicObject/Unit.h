@@ -15,19 +15,21 @@
 #include "..\ObjectID.h"
 #include "..\ObjectState.h"
 
+class Unit;
+using UnitPtr = std::shared_ptr<Unit>;
+
 class Unit : public DynamicObj
 {
 	DECLARE_RTTI(Unit, DynamicObj);
 
 public:
-	using UnitPtr = std::shared_ptr<Unit>;
-
 #pragma region 생성자 및 소멸자
 	using DynamicObj::DynamicObj;
 
 	Unit() = default;
 	virtual ~Unit() = default;
 	
+	Unit(const Unit& src);
 	Unit(const std::string_view& szName, EDynamicObjID objID, const std::string_view& szShape);
 #pragma endregion
 
@@ -37,17 +39,19 @@ public:
 
 	void Attack(UnitPtr spTargetUnit);
 	void Damage(Int32 damage);
-	void Copy(UnitPtr spUnit);
-	
 	void FilterUnitInRange(const std::vector<UnitPtr>& vecUnit, const SizeInfo& worldSize);
 	void ClearUnitInRange();
 	void AdjustMoveAxisDir(UnitPtr spUnit);
+	void ChangeLockOnTargetUnit(UnitPtr spTarget);
 
-	UnitPtr SearchShortestPathEnemyInRange() const;
+	EErrorType Copy(const Unit& src);
 
-	bool IsDeath() const
+	UnitPtr Clone();
+	UnitPtr SearchShortestPathEnemyInRange(_Out_ SizeInfo& distance) const;
+
+	bool IsSameState(EUnitState state) const
 	{
-		return (m_HP <= 0);
+		return (m_state == state);
 	}
 
 #pragma region 접근자 Getter
@@ -80,6 +84,16 @@ public:
 	{
 		return m_range;
 	}
+
+	UnitPtr getLockOnTargetUnit() const
+	{
+		return m_spLockOnTargetUnit;
+	}
+
+	const std::list<UnitPtr>& getListUnitInRange() const
+	{
+		return m_listUnitInRange;
+	}
 #pragma endregion
 
 #pragma region 접근자 Setter
@@ -105,6 +119,8 @@ public:
 
 	void setState(EUnitState state)
 	{
+		//DEBUG_LOG("이전 상태(%d) -> 현재 상태(%d)",
+		//	common_func::ToUnderlyingType(m_state), common_func::ToUnderlyingType(state));
 		m_state = state;
 	}
 
@@ -115,12 +131,14 @@ public:
 #pragma endregion
 
 private:
-	Int32  m_HP = 0;
-	Int32  m_maxHP = 0;
-	Int32  m_range = 0;
-	Int32  m_attackDamage = 0;
+	Int32 m_HP = 0;
+	Int32 m_maxHP = 0;
+	Int32 m_range = 0;
+	Int32 m_attackDamage = 0;
 	Real32 m_attackSuccessRate = 0.0f;
 	EUnitState m_state = EUnitState::IDLE;
+
+	UnitPtr m_spLockOnTargetUnit = nullptr; // 공격할 타겟 유닛
 	std::list<UnitPtr> m_listUnitInRange; // 시야 범위 안에 들어온 유닛들 (자기 자신 제외)
 };
 

@@ -18,9 +18,8 @@ class MenuTable_Row : public MenuTable
 	INPUT_FPS_LIMITED(8);
 
 public:
-	using MenuTable::MenuTable;
-
 #pragma region 생성자 및 소멸자
+	using MenuTable::MenuTable;
 	virtual ~MenuTable_Row() = default;
 #pragma endregion
 

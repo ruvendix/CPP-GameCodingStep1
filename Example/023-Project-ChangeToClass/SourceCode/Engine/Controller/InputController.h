@@ -33,13 +33,13 @@ struct InputMappingInfo
 	EInputMappingState state = EInputMappingState::IDLE; // 입력 매핑의 상태 (4가지)
 };
 
+using MapInputMappingInfo = std::unordered_map<std::string, InputMappingInfo*>;
+
 class InputController final
 {
 	DECLARE_PHOENIX_SINGLETON(InputController);
 
 public:
-	using MapInputMappingInfo = std::unordered_map<std::string, InputMappingInfo*>;
-
 	static const Int32 INPUT_DOWN_FLAG = 0x8000; // 입력값이 눌렸거나 눌려있는지 확인하는 용도
 	static const Uint8 MAX_INPUT_RANGE = UINT8_MAX;
 

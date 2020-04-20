@@ -86,7 +86,7 @@ void PerformanceProfileMgr::Report()
 	DEBUG_LOG("##############################################################################################");
 }
 
-PerformanceProfileMgr::PerformanceProfileInfoPtr PerformanceProfileMgr::FindInfo(Int32 ID) const
+PerformanceProfileInfoPtr PerformanceProfileMgr::FindInfo(Int32 ID) const
 {
 	auto iter = m_mapPerformanceProfileInfo.find(ID);
 	if (iter != m_mapPerformanceProfileInfo.cend())

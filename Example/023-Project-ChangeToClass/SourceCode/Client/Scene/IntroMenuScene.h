@@ -27,10 +27,12 @@ class IntroMenuScene final : public Scene
 	INPUT_FPS_LIMITED(8);
 
 public:
+#pragma region 생성자 및 소멸자
 	using Scene::Scene;
 
 	IntroMenuScene() = default;
 	virtual ~IntroMenuScene() = default;
+#pragma endregion
 
 	virtual EErrorType OnInitialize() override;
 	virtual EErrorType OnPostInitialize() override;

@@ -24,7 +24,8 @@ enum class EDynamicObjID : Int32
 {
 	UNKNOWN = static_cast<Int32>(EStaticObjID::END),
 	VIKING,
-	MEDIEVAL_KNIGHT
+	MEDIEVAL_KNIGHT,
+	END,
 };
 
 #endif

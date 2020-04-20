@@ -12,6 +12,8 @@
 
 #include "Handler\ErrorHandler\ErrorHandler.h"
 
+class GameElem;
+
 class IGameElem abstract
 {
 public:

@@ -15,9 +15,12 @@
 // 상태 패턴 비슷...
 enum class EUnitState : Int32
 {
-	IDLE = 0,
+	UNKNOWN = 0,
+	IDLE,
 	MOVE,
 	ATTACK,
+	DEATH,
+	ERASE, // 삭제는 예약해서 이용!
 };
 
 #endif

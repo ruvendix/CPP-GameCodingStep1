@@ -19,24 +19,24 @@ class DynamicObjHelper final
 	NON_COPYABLE_ONLY_PRIVATE_CLASS(DynamicObjHelper);
 
 public:
-	static SHORT CalcMoveToTargetAxis(EMoveAxisDir moveAxisDir, Int32 myAxis, Int32 targetAxis,
+	static SHORT CalcMoveToTargetAxis(EDataProgressDir moveAxisDir, Int32 myAxis, Int32 targetAxis,
 		Int32 interval, _Out_ Real32& accumulationMove);
 };
 
-SHORT DynamicObjHelper::CalcMoveToTargetAxis(EMoveAxisDir moveAxisDir, Int32 myAxis, Int32 targetAxis,
-	Int32 interval, _Out_ Real32& accumulationMove)
+SHORT DynamicObjHelper::CalcMoveToTargetAxis(EDataProgressDir moveAxisDir, Int32 myAxis, Int32 targetAxis,
+	Int32 distance, _Out_ Real32& accumulationMove)
 {
-	if (interval == 0)
+	if (distance == 0)
 	{
 		return 0;
 	}
 
 	Real32 dir = 0.0f;
-	if (moveAxisDir == EMoveAxisDir::POSITIVENESS)
+	if (moveAxisDir == EDataProgressDir::POSITIVENESS)
 	{
 		dir = 1.0f;
 	}
-	else if (moveAxisDir == EMoveAxisDir::NEGATIVENESS)
+	else if (moveAxisDir == EDataProgressDir::NEGATIVENESS)
 	{
 		dir = -1.0f;
 	}
@@ -76,47 +76,72 @@ EErrorType DynamicObj::OnLoadFile(FILE* pFileStream)
 	return EErrorType();
 }
 
-bool DynamicObj::MoveToTarget(DynamicObjPtr spTargetObj)
+void DynamicObj::MoveToTarget(const SizeInfo& distance, DynamicObjPtr spTargetObj)
 {
-	// 좌표 복사
-	const COORD& pos = getPos();
-	const COORD& targetPos = spTargetObj->getPos();
-	
-	// 다음 이동할 위치와 겹치는지 체크!
-	// 절댓값 1인지만 확인하면 됨
-	Uint32 intervalX = std::abs(pos.X - targetPos.X);
-	Uint32 intervalY = std::abs(pos.Y - targetPos.Y);
-
-	if (intervalX + intervalY == 1)
-	{
-		//DEBUG_LOG("둘의 차이는 한칸!");
-		return false;
-	}
-
 	// 미리 복사
 	Real32 deltaTime = FrameController::I()->getDeltaTime();
 	Real32 timeScale = FrameController::I()->getTimeScale();
 
 	// 이동량 누적
 	m_accumulationMove += (m_moveSpeed * deltaTime * timeScale);
-	
+
+	// 좌표 복사
+	const COORD& pos = getPos();
+	const COORD& targetPos = spTargetObj->getPos();
+
 	COORD movePos{ 0, 0 };
+
 	if (m_preferMoveAxis == EPreferMoveAxis::X)
-	{		
-		movePos.X = DynamicObjHelper::CalcMoveToTargetAxis(getMoveAxisDir(0), pos.X, targetPos.X, intervalX, m_accumulationMove);
+	{
+		movePos.X = DynamicObjHelper::CalcMoveToTargetAxis(getMoveAxisDir(0),
+			pos.X, targetPos.X, distance.width, m_accumulationMove);
 		AddPosX(movePos.X);
-		
-		movePos.Y = DynamicObjHelper::CalcMoveToTargetAxis(getMoveAxisDir(1), pos.Y, targetPos.Y, intervalY, m_accumulationMove);
+
+		movePos.Y = DynamicObjHelper::CalcMoveToTargetAxis(getMoveAxisDir(1),
+			pos.Y, targetPos.Y, distance.height, m_accumulationMove);
 		AddPosY(movePos.Y);
 	}
 	else
 	{
-		movePos.Y = DynamicObjHelper::CalcMoveToTargetAxis(getMoveAxisDir(1), pos.Y, targetPos.Y, intervalY, m_accumulationMove);
+		movePos.Y = DynamicObjHelper::CalcMoveToTargetAxis(getMoveAxisDir(1),
+			pos.Y, targetPos.Y, distance.height, m_accumulationMove);
 		AddPosY(movePos.Y);
 
-		movePos.X = DynamicObjHelper::CalcMoveToTargetAxis(getMoveAxisDir(0), pos.X, targetPos.X, intervalX, m_accumulationMove);
+		movePos.X = DynamicObjHelper::CalcMoveToTargetAxis(getMoveAxisDir(0),
+			pos.X, targetPos.X, distance.width, m_accumulationMove);
 		AddPosX(movePos.X);
 	}
 
-	return true;
+	return;
+}
+
+void DynamicObj::MoveToTarget(DynamicObjPtr spTargetObj)
+{
+	// 좌표 복사
+	const COORD& pos = getPos();
+	const COORD& targetPos = spTargetObj->getPos();
+
+	// 나와 절댓값 차의 합이 가장 작은 게 최단거리
+	SizeInfo distance{ 0, 0 };
+	distance.width = std::abs(pos.X - targetPos.X);
+	distance.height = std::abs(pos.Y - targetPos.Y);
+
+	if (distance.width + distance.height == 1)
+	{
+		//DEBUG_LOG("둘의 차이는 한칸!");
+		return;
+	}
+
+	MoveToTarget(distance, spTargetObj);
+}
+
+EErrorType DynamicObj::Copy(const DynamicObj& src)
+{
+	if (GameObj::Copy(src) == EErrorType::COPY_FAIL)
+	{
+		return EErrorType::COPY_FAIL;
+	}
+
+	setMoveSpeed(src.getMoveSpeed());
+	return EErrorType::NOTHING;
 }

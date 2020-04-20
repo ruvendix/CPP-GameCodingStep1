@@ -17,11 +17,11 @@
 
 class ItemBase;
 
+using MapItemDB = std::unordered_map<std::string, ItemBase*>;
+
 class ItemDB final
 {
 public:
-	using MapItemDB = std::unordered_map<std::string, ItemBase*>;
-
 #pragma region 생성자 및 소멸자
 	ItemDB() = default;
 	~ItemDB();

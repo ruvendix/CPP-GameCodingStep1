@@ -15,6 +15,8 @@
 #include "Common\CommonMacro.h"
 #include "Common\CommonNecessary.h"
 
+using TimePoint = std::chrono::steady_clock::time_point;
+
 class StopwatchTimer
 {
 	DECLARE_ROOT_RTTI(StopwatchTimer);
@@ -33,9 +35,19 @@ public:
 		m_startTime = m_endTime;
 	}
 
+	TimePoint getStartTime() const
+	{
+		return m_startTime;
+	}
+
+	TimePoint getEndTime() const
+	{
+		return m_endTime;
+	}
+
 private:
-	std::chrono::steady_clock::time_point m_startTime;
-	std::chrono::steady_clock::time_point m_endTime;
+	TimePoint m_startTime;
+	TimePoint m_endTime;
 };
 
 #endif

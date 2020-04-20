@@ -19,4 +19,10 @@ enum class ECreateType : Int32
 	NEXT,
 };
 
+enum class EDataProgressDir : Int32
+{
+	NEGATIVENESS = 0,
+	POSITIVENESS,
+};
+
 #endif

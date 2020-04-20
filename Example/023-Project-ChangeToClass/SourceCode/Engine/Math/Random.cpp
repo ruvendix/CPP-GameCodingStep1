@@ -21,9 +21,9 @@ namespace math
 	*/
 	void RandomUtil::Initialize()
 	{
-		std::array<Int32, std::default_random_engine::state_size> seeds; // 시드값은 624개
-		std::generate_n(seeds.begin(), seeds.size(), std::ref(m_defaultRandomEngine)); // 624개의 랜덤 시드값 생성
-		std::seed_seq seedSeq(std::begin(seeds), std::end(seeds)); // 생성된 624개의 랜덤 시드값을 전용 객체로 복사
+		std::array<Int32, std::default_random_engine::state_size> arrRandomSeed; // 시드값은 624개
+		std::generate_n(arrRandomSeed.begin(), arrRandomSeed.size(), std::ref(m_defaultRandomEngine)); // 624개의 랜덤 시드값 생성
+		std::seed_seq seedSeq(std::begin(arrRandomSeed), std::end(arrRandomSeed)); // 생성된 624개의 랜덤 시드값을 전용 객체로 복사
 		m_defaultRandomEngine = std::default_random_engine(seedSeq); // 메르센 트위스터에 시드값 적용
 	}
 

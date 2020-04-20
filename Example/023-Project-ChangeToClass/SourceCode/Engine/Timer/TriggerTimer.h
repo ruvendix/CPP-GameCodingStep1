@@ -15,13 +15,13 @@
 #include "Element\NameTag.h"
 #include "StopwatchTimer.h"
 
+using TriggerTimerCallback = std::function<void()>;
+
 class TriggerTimer final : public StopwatchTimer
 {
 	DECLARE_RTTI(TriggerTimer, StopwatchTimer);
 
 public:
-	using TCallback = std::function<void()>;
-
 #pragma region 생성자 및 소멸자
 	TriggerTimer() = default;
 	~TriggerTimer() = default;
@@ -37,7 +37,7 @@ public:
 
 	void CallTriggerTimerFunc()
 	{
-		m_triggerTimerCallback();
+		m_callback();
 	}
 
 	bool IsRepeat() const
@@ -75,9 +75,9 @@ public:
 		m_keepTime = keepTime;
 	}
 
-	void setFunc(TCallback triggerTimerCallback)
+	void setCallback(TriggerTimerCallback callback)
 	{
-		m_triggerTimerCallback = triggerTimerCallback;
+		m_callback = callback;
 	}
 
 	void setRepeat(bool bRepeat)
@@ -94,9 +94,11 @@ private:
 	Real32 m_elapsedTime = 0.0f; // 경과 시간
 	Real32 m_triggerTime = 0.0f; // 트리거 발동 시간
 	Real32 m_keepTime = 0.0f; // 지속 시간
+
 	bool m_bRepeat = false;
 	bool m_bRender = false; // 렌더링 여부
-	TCallback m_triggerTimerCallback = nullptr;
+
+	TriggerTimerCallback m_callback = nullptr;
 };
 
 #endif

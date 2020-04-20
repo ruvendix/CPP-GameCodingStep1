@@ -9,3 +9,8 @@
 
 #include "PCH.h"
 #include "MedievalKnight.h"
+
+MedievalKnightPtr MedievalKnight::Clone()
+{
+	return std::make_shared<MedievalKnight>(*this);
+}

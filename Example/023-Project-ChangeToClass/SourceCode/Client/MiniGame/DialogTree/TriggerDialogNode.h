@@ -13,13 +13,13 @@
 
 #include "DialogNode.h"
 
+using TupleTriggerDialogNode = std::tuple<std::string, std::shared_ptr<DialogNode>>;
+
 class TriggerDialogNode final : public DialogNode
 {
 	DECLARE_RTTI(TriggerDialogNode, DialogNode);
 
 public:
-	using TupleTriggerDialogNode = std::tuple<std::string, std::shared_ptr<DialogNode>>;
-
 #pragma region 생성자 및 소멸자
 	using DialogNode::DialogNode;
 	virtual ~TriggerDialogNode() = default;

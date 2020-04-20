@@ -4,7 +4,7 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 배틀 시뮬레이터에서 사용하는 월드입니다.
+// 배틀 시뮬레이터2에서 사용하는 월드입니다.
 // 월드 에디터는 지원하지 않고 레벨 디자인 에디터만 지원합니다.
 // =====================================================================================
 
@@ -12,6 +12,13 @@
 #include "BattleSimulator2World.h"
 
 #include "GameObject\StaticObject\Wall.h"
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+namespace
+{
+	static Int32 s_wallNum = 0;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -46,16 +53,20 @@ std::shared_ptr<StaticObj> BattleSimulator2WorldHelper::CreateStaticObj(EStaticO
 
 EErrorType BattleSimulator2World::OnPostInitialize()
 {
+	s_wallNum = 0;
+
 	const SizeInfo& sizeInfo = getSize();
 	for (Int32 i = 0; i < static_cast<Int32>(sizeInfo.width); ++i)
 	{
 		std::shared_ptr<Wall> staticObj = std::make_shared<Wall>(common_func::ToUnderlyingType(EStaticObjID::WALL));
 		staticObj->setPos(i, 0);
+		staticObj->setNameTag(common_func::MakeFormatString("Wall_%d", s_wallNum++));
 		staticObj->setShape("■");
 		AddObj(staticObj);
 
 		staticObj = std::make_shared<Wall>(common_func::ToUnderlyingType(EStaticObjID::WALL));
 		staticObj->setPos(i, sizeInfo.height - 1);
+		staticObj->setNameTag(common_func::MakeFormatString("Wall_%d", s_wallNum++));
 		staticObj->setShape("■");
 		AddObj(staticObj);
 	}
@@ -64,11 +75,13 @@ EErrorType BattleSimulator2World::OnPostInitialize()
 	{
 		std::shared_ptr<Wall> staticObj = std::make_shared<Wall>(common_func::ToUnderlyingType(EStaticObjID::WALL));
 		staticObj->setPos(0, i);
+		staticObj->setNameTag(common_func::MakeFormatString("Wall_%d", s_wallNum++));
 		staticObj->setShape("■");
 		AddObj(staticObj);
 
 		staticObj = std::make_shared<Wall>(common_func::ToUnderlyingType(EStaticObjID::WALL));
 		staticObj->setPos(sizeInfo.width - 1, i);
+		staticObj->setNameTag(common_func::MakeFormatString("Wall_%d", s_wallNum++));
 		staticObj->setShape("■");
 		AddObj(staticObj);
 	}

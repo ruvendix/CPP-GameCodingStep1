@@ -26,9 +26,9 @@ class IntroMenu_SceneLoader final : public Menu
 	DECLARE_RTTI(IntroMenu_SceneLoader, Menu);
 
 public:
+#pragma region 생성자 및 소멸자
 	using Menu::Menu;
 
-#pragma region 생성자 및 소멸자
 	IntroMenu_SceneLoader() = default;
 	virtual ~IntroMenu_SceneLoader() = default;
 

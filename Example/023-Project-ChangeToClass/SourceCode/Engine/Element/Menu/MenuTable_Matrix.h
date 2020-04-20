@@ -18,9 +18,9 @@ class MenuTable_Mat : public MenuTable
 	INPUT_FPS_LIMITED(8);
 
 public:
+#pragma region 생성자 및 소멸자
 	using MenuTable::MenuTable;
 
-#pragma region 생성자 및 소멸자
 	MenuTable_Mat() = default;
 	virtual ~MenuTable_Mat() = default;
 

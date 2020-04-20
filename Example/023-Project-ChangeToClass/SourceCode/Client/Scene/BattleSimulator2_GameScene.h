@@ -12,17 +12,19 @@
 
 #include "Element\Scene.h"
 #include "Controller\ConsoleControllerEnum.h"
+#include "MiniGame\BattleSimulator2\GameObject\ObjectState.h"
 
+class Unit;
 class BattleSimulator2World;
 class BattleSimulator2_LevelDesign;
-class Unit;
+
+using UnitPtr = std::shared_ptr<Unit>;
+using MapUnitStateCallback = MapCustom<EUnitState, std::function<void(UnitPtr)>>;
 
 DECLARE_LOG_CATEGORY(BattleSimulator2_GameScene);
-
 class BattleSimulator2_GameScene final : public Scene
 {
 	DECLARE_RTTI(BattleSimulator2_GameScene, Scene);
-	FRIEND_WITH_HELPER(BattleSimulator2_GameSceneHelper);
 
 public:
 #pragma region 생성자 및 소멸자
@@ -37,13 +39,19 @@ public:
 	virtual EErrorType OnFinalize() override;
 
 private:
-	void OnTrigger_DieUnit();
-	void OnTrigger_PostDieUnit();
+	void OnCallback_UpdateIdleState(UnitPtr spUnit);
+	void OnCallback_UpdateMoveState(UnitPtr spUnit);
+	void OnCallback_UpdateAttackState(UnitPtr spUnit);
+	void OnCallback_UpdateDeathState(UnitPtr spUnit);
+
+	void OnTrigger_DeathUnit();
 	void OnTrigger_BattleEnd() const;
 
 	std::shared_ptr<BattleSimulator2World> m_spWorld = nullptr;
 	std::shared_ptr<BattleSimulator2_LevelDesign> m_spLevelDesign = nullptr;
-	std::vector<std::shared_ptr<Unit>> m_vecUnit;
+	std::vector<UnitPtr> m_vecUnit;
+	std::queue<UnitPtr> m_queueDeathUnit;
+	MapUnitStateCallback m_mapUnitStateCallback;
 
 	bool m_bBattleEnd = false;
 };

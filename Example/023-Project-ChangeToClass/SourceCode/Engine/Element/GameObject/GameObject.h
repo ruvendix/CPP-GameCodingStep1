@@ -32,6 +32,8 @@ public:
 	virtual EErrorType OnSaveFile(FILE* pFileStream) override;
 	virtual EErrorType OnLoadFile(FILE* pFileStream) override;
 
+	EErrorType Copy(const GameObj& src);
+
 	virtual EGameObjType OnGetType() const
 	{
 		return EGameObjType::UNKNOWN;
@@ -52,11 +54,6 @@ public:
 		return m_ID;
 	}
 
-	Int32 getState() const
-	{
-		return m_state;
-	}
-
 	const COORD& getPos() const
 	{
 		return m_pos;
@@ -70,11 +67,6 @@ public:
 	void setID(Int32 ID)
 	{
 		m_ID = ID;
-	}
-
-	void setState(Int32 state)
-	{
-		m_state = state;
 	}
 
 	void setPos(const COORD& pos)
@@ -97,7 +89,6 @@ private:
 	// 사용하는 쪽에서는 enum class로 매핑시키는 게 좋아요!
 	// 0은 아무 의미가 없음을 의미해요.
 	Int32 m_ID = 0;
-	Int32 m_state = 0;
 
 	COORD m_pos;
 	std::string m_strShape;

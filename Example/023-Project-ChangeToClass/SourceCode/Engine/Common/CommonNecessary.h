@@ -38,6 +38,7 @@
 #include <random>
 #include <chrono>
 #include <stack>
+#include <queue>
 
 #pragma comment(lib, "winmm.lib") // 윈도우 멀티미디어 링크
 

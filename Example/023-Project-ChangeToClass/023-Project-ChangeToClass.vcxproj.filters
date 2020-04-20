@@ -338,6 +338,9 @@
     <ClCompile Include="SourceCode\Engine\Core\FastRTTI.cpp">
       <Filter>소스 파일\1. Engine\2. Core</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_DataCollector.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Client\GameMain.h">
@@ -614,6 +617,12 @@
       <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Engine\Core\FastRTTI.h">
+      <Filter>소스 파일\1. Engine\2. Core</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_DataCollector.h">
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Core\MapCustom.h">
       <Filter>소스 파일\1. Engine\2. Core</Filter>
     </ClInclude>
   </ItemGroup>

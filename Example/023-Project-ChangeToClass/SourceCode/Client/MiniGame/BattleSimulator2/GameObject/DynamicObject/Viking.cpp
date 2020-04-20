@@ -9,3 +9,8 @@
 
 #include "PCH.h"
 #include "Viking.h"
+
+VikingPtr Viking::Clone()
+{
+	return std::make_shared<Viking>(*this);
+}

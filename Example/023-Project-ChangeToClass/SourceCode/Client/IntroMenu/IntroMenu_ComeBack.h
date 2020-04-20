@@ -18,9 +18,8 @@ class IntroMenu_ComeBack final : public Menu
 	DECLARE_RTTI(IntroMenu_ComeBack, Menu);
 
 public:
-	using Menu::Menu;
-
 #pragma region 생성자 및 소멸자
+	using Menu::Menu;
 	virtual ~IntroMenu_ComeBack() = default;
 #pragma endregion
 

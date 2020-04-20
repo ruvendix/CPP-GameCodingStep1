@@ -12,6 +12,9 @@
 
 #include "Unit.h"
 
+class Viking;
+using VikingPtr = std::shared_ptr<Viking>;
+
 class Viking final : public Unit
 {
 	DECLARE_RTTI(Viking, Unit);
@@ -21,6 +24,8 @@ public:
 	using Unit::Unit;
 	virtual ~Viking() = default;
 #pragma endregion
+
+	VikingPtr Clone();
 };
 
 #endif

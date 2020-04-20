@@ -29,7 +29,7 @@ public:
 	using ElemMemberFunc = void(TElem::*)(); // TriggerTimer에서 사용하는 콜백 형식과 동일해야 해요!
 
 	void AddTriggerTimer(const std::string& strTriggerTimer, Real32 triggerTime, Real32 keepTime,
-		const TriggerTimer::TCallback& func, bool bRender, bool bRepeat);
+		const TriggerTimerCallback& callback, bool bRender, bool bRepeat);
 	void UpdateTriggerTimer();
 	void CallTriggerTimerFuncForRender();
 	void DeleteTriggerTimer(const std::string_view& szTriggerTimer);
@@ -55,7 +55,7 @@ public:
 			pTriggerTimer->StartTime();
 			pTriggerTimer->setTime(triggerTime);
 			pTriggerTimer->setKeepTime(keepTime);
-			pTriggerTimer->setFunc(std::bind(elemMemberFunc, pElem));
+			pTriggerTimer->setCallback(std::bind(elemMemberFunc, pElem));
 			pTriggerTimer->setRender(bRender);
 			pTriggerTimer->setRepeat(bRepeat);
 			DEBUG_LOG_CATEGORY(TriggerTimerMgr, "타이머가 이미 존재하므로 이름(%s)을 제외한 모든 데이터를 갱신!", strTriggerTimer.c_str());
@@ -66,13 +66,14 @@ public:
 		TriggerTimer* pTriggerTimer = trace_new TriggerTimer;
 		pTriggerTimer->StartTime();
 		pTriggerTimer->setTime(triggerTime);
-		pTriggerTimer->setFunc(std::bind(elemMemberFunc, pElem));
+		pTriggerTimer->setCallback(std::bind(elemMemberFunc, pElem));
 		pTriggerTimer->setRepeat(bRepeat);
 
 		auto ret = m_mapTriggerTimer.insert(std::make_pair(strTriggerTimer, nullptr));
 		if (ret.second == true)
 		{
 			ret.first->second = pTriggerTimer;
+			DEBUG_LOG_CATEGORY(TriggerTimerMgr, "(%s) 타이머 등록!", strTriggerTimer.c_str());
 		}
 
 		return;
