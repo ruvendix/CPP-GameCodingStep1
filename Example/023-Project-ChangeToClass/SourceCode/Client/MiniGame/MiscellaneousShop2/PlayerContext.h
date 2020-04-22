@@ -30,7 +30,7 @@ public:
 	void AddGameMoney(Int32 gameMoney)
 	{
 		m_gameMoney += gameMoney;
-		math::Clamp(m_gameMoney, 0, MAX_GAME_MONEY);
+		rx_math::Clamp(m_gameMoney, 0, MAX_GAME_MONEY);
 	}
 
 	Inven* getInven() const

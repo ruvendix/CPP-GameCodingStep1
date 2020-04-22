@@ -85,7 +85,7 @@ void Inven::AddInvenItemInfo(const ItemBase* pItem)
 
 		CHECK_RANGE(m_currentIdx, 0, m_maxInvenSize);
 		m_vecInvenItemInfo[m_currentIdx] = pInvenItemInfo;
-		math::Clamp(m_currentIdx, 0, m_maxInvenSize);
+		rx_math::Clamp(m_currentIdx, 0, m_maxInvenSize);
 	}	
 }
 

@@ -68,7 +68,7 @@ void GameMainHelper::Initialize(_Out_ GameMain& targetHelper)
 
 	ResourcePathMgr::I()->Initialize();
 
-	math::RandomUtil::Initialize();
+	rx_math::Random::Initialize();
 
 	MenuTable::Initialize();
 

@@ -7,14 +7,14 @@
 // 수학 관련 함수 모음입니다.
 // =====================================================================================
 
-#ifndef MATH__H__
-#define MATH__H__
+#ifndef MATH_UTIL__H__
+#define MATH_UTIL__H__
 
 #include "Common\CommonType.h"
 #include "Common\CommonMacro.h"
 #include "Common\CommonNecessary.h"
 
-namespace math
+namespace rx_math
 {
 
 	Int32 Clamp(Int32 value, Int32 min, Int32 max);
@@ -26,6 +26,6 @@ namespace math
 	bool IsSamePos(const COORD& srcPos, Int32 destX, Int32 destY);
 	bool IsPointInRect(const COORD& targetPos, const COORD& leftTopPos, const COORD& rightBottomPos);
 
-} // namespace math end
+} // namespace rx_math end
 
 #endif

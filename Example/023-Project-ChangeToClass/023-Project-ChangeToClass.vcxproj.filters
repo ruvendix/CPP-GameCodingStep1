@@ -39,9 +39,6 @@
     <Filter Include="소스 파일\2. Client\MiniGame">
       <UniqueIdentifier>{c66ae29a-0030-4c38-90ed-e3b3a287a104}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\2. Client\MiniGame\BattleSimulator">
-      <UniqueIdentifier>{1cda9048-cdb4-4d43-8892-853dd3e8b2fc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\2. Client\MiniGame\DialogueTree">
       <UniqueIdentifier>{c915d02e-523f-4eee-86e8-bfa4211d407f}</UniqueIdentifier>
     </Filter>
@@ -75,15 +72,6 @@
     <Filter Include="소스 파일\1. Engine\Element\GameObject">
       <UniqueIdentifier>{dc4c2586-c764-47d7-ae52-67a9975677da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\2. Client\MiniGame\BattleSimulator\GameObject">
-      <UniqueIdentifier>{f59f8131-d448-4cdb-916d-452e0689c146}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\StaticObject">
-      <UniqueIdentifier>{9d07c17d-0581-4471-880b-0b3a38391131}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\DynamicObject">
-      <UniqueIdentifier>{4fa0307d-8c63-400d-b640-7a82ea50b99a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\1. Engine\Element\Menu">
       <UniqueIdentifier>{f2396fc9-f2da-4f02-9eff-d919029004f0}</UniqueIdentifier>
     </Filter>
@@ -96,11 +84,26 @@
     <Filter Include="소스 파일\2. Client\MiniGame\MiscellaneousShop2\Menu">
       <UniqueIdentifier>{268745f9-103f-4c9d-b4b8-d7ff3bdbc189}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\2. Client\MiniGame\BattleSimulator\Menu">
-      <UniqueIdentifier>{60f910a7-201a-4857-952b-fb435fa04810}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\1. Engine\2. Core">
       <UniqueIdentifier>{fdf7ccdc-d5a2-4234-8396-36018c8d9698}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\MiniGame\BattleSimulator2">
+      <UniqueIdentifier>{1cda9048-cdb4-4d43-8892-853dd3e8b2fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\MiniGame\BattleSimulator2\GameObject">
+      <UniqueIdentifier>{f59f8131-d448-4cdb-916d-452e0689c146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\MiniGame\BattleSimulator2\GameObject\StaticObject">
+      <UniqueIdentifier>{9d07c17d-0581-4471-880b-0b3a38391131}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\MiniGame\BattleSimulator2\GameObject\DynamicObject">
+      <UniqueIdentifier>{4fa0307d-8c63-400d-b640-7a82ea50b99a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\2. Client\MiniGame\BattleSimulator2\Menu">
+      <UniqueIdentifier>{60f910a7-201a-4857-952b-fb435fa04810}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\1. Engine\Util">
+      <UniqueIdentifier>{95844cb1-90d2-4c6e-b8e4-b51885ad42ee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -203,9 +206,6 @@
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\PlayerContext.cpp">
       <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Engine\Math\Math.cpp">
-      <Filter>소스 파일\1. Engine\Math</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Inven.cpp">
       <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2</Filter>
     </ClCompile>
@@ -303,43 +303,52 @@
       <Filter>소스 파일\2. Client\1. Scene</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\MedievalKnight.cpp">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\DynamicObject</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\GameObject\DynamicObject</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\Unit.cpp">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\DynamicObject</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\GameObject\DynamicObject</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\Viking.cpp">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\DynamicObject</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\GameObject\DynamicObject</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\Wall.cpp">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\StaticObject</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\GameObject\StaticObject</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2World.cpp">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\Menu\Menu_StartGame.cpp">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\Menu</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\Menu</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\Menu\Menu_EditLevelDesign.cpp">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\Menu</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\Menu</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\Menu\Menu_LoadLevelDesign.cpp">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\Menu</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\Menu</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\Menu\Menu_SaveLevelDesign.cpp">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\Menu</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\Menu</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\Menu\Menu_ResetLevelDesign.cpp">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\Menu</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\Menu</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_LevelDesign.cpp">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Engine\Core\FastRTTI.cpp">
       <Filter>소스 파일\1. Engine\2. Core</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_DataCollector.cpp">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_BattleReporter.cpp">
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Util\TimeUtil.cpp">
+      <Filter>소스 파일\1. Engine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Engine\Util\MathUtil.cpp">
+      <Filter>소스 파일\1. Engine\Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -456,9 +465,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\PlayerContext.h">
       <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Engine\Math\Math.h">
-      <Filter>소스 파일\1. Engine\Math</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\MiscellaneousShop2\Inven.h">
       <Filter>소스 파일\2. Client\MiniGame\MiscellaneousShop2</Filter>
@@ -578,52 +584,61 @@
       <Filter>소스 파일\2. Client\1. Scene</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\MedievalKnight.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\DynamicObject</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\GameObject\DynamicObject</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\Unit.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\DynamicObject</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\GameObject\DynamicObject</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\Viking.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\DynamicObject</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\GameObject\DynamicObject</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\StaticObject\Wall.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject\StaticObject</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\GameObject\StaticObject</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2World.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\Menu\Menu_StartGame.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\Menu</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\Menu</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\Menu\Menu_EditLevelDesign.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\Menu</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\Menu</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\Menu\Menu_LoadLevelDesign.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\Menu</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\Menu</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\Menu\Menu_SaveLevelDesign.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\Menu</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\Menu</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\Menu\Menu_ResetLevelDesign.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\Menu</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\Menu</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_LevelDesign.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\ObjectID.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\ObjectState.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator\GameObject</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Engine\Core\FastRTTI.h">
       <Filter>소스 파일\1. Engine\2. Core</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_DataCollector.h">
-      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator</Filter>
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Engine\Core\MapCustom.h">
       <Filter>소스 파일\1. Engine\2. Core</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_BattleReporter.h">
+      <Filter>소스 파일\2. Client\MiniGame\BattleSimulator2</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Util\TimeUtil.h">
+      <Filter>소스 파일\1. Engine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Engine\Util\MathUtil.h">
+      <Filter>소스 파일\1. Engine\Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

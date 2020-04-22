@@ -182,6 +182,6 @@ EErrorType IntroMenuScene::OnFinalize()
 void IntroMenuScene::OnTrigger_ChangeRandomColorToTitle()
 {
 	m_titleColorType = static_cast<EConsoleOutputColorType>(
-		math::RandomUtil::GenerateRandom(common_func::ToUnderlyingType(EConsoleOutputColorType::BLUE),
+		rx_math::Random::GenerateRandom(common_func::ToUnderlyingType(EConsoleOutputColorType::BLUE),
 			common_func::ToUnderlyingType(EConsoleOutputColorType::BRIGHT_WHITE)));
 }

@@ -34,6 +34,49 @@ void common_func::ShowLog(const std::string_view& szLogCategory, const std::stri
 }
 
 /*
+특수문자를 이용해서 경계선을 그립니다.
+*/
+void common_func::DrawBorder(const COORD& pos, const SizeInfo& size)
+{
+	COORD drawPos = pos;
+
+#pragma region 위쪽 경계선
+	PUT_STRING(drawPos.X, drawPos.Y, "┏");
+	for (TSize i = 0; i < size.width; ++i)
+	{
+		drawPos.X += 2;
+		PUT_STRING(drawPos.X, drawPos.Y, "━");
+	}
+
+	drawPos.X += 2;
+	PUT_STRING(drawPos.X, drawPos.Y, "┓");
+#pragma endregion
+
+#pragma region 양쪽 경계선
+	drawPos.X = pos.X;
+	for (TSize i = 0; i < size.height; ++i)
+	{
+		PUT_STRING(drawPos.X, ++drawPos.Y, "┃");
+		PUT_STRING(drawPos.X + (size.width * 2) + (ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_MENU / 2), drawPos.Y, "┃");
+	}
+#pragma endregion
+
+#pragma region 아래쪽 경계선
+	drawPos.X = pos.X;
+	PUT_STRING(drawPos.X, ++drawPos.Y, "┗");
+
+	for (TSize i = 0; i < size.width; ++i)
+	{
+		drawPos.X += 2;
+		PUT_STRING(drawPos.X, drawPos.Y, "━");
+	}
+
+	drawPos.X += 2;
+	PUT_STRING(drawPos.X, drawPos.Y, "┛");
+#pragma endregion
+}
+
+/*
 Create은 생성 데이터를 이용해서 처음부터 만들 때 사용하고
 Make는 전달된 데이터들을 조합해서 만들 때 사용합니다. (사실 별로 차이는 없음...)
 printf()처럼 서식 문자열을 사용하면 std::string 자료형으로 문자열을 만듭니다.
@@ -92,6 +135,6 @@ bool common_func::InputNumClamp(_Out_ Int32& num, Int32 minNum, Int32 maxNum)
 		return false;
 	}
 
-	num = math::Clamp(num, minNum, maxNum);
+	num = rx_math::Clamp(num, minNum, maxNum);
 	return true;
 }

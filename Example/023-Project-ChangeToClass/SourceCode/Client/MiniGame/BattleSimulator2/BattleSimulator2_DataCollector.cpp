@@ -11,6 +11,8 @@
 #include "PCH.h"
 #include "BattleSimulator2_DataCollector.h"
 
+#include "Timer\StopwatchTimer.h"
+
 #include "GameObject\DynamicObject\Viking.h"
 #include "GameObject\DynamicObject\MedievalKnight.h"
 
@@ -63,6 +65,8 @@ void BattleSimulator2_DataCollector::Initialize()
 
 	m_mapBattleData.Subscribe(EDynamicObjID::VIKING, std::make_shared<BattleData>());
 	m_mapBattleData.Subscribe(EDynamicObjID::MEDIEVAL_KNIGHT, std::make_shared<BattleData>());
+
+	m_spBattleTimer = std::make_shared<StopwatchTimer>();
 }
 
 void BattleSimulator2_DataCollector::Finalize()
@@ -74,6 +78,18 @@ void BattleSimulator2_DataCollector::Finalize()
 UnitPtr BattleSimulator2_DataCollector::FindPrototypeUnit(EDynamicObjID ID) const
 {
 	return m_mapPrototypeUnit.Find(ID);
+}
+
+void BattleSimulator2_DataCollector::StartBattleTime()
+{
+	CHECK_NULLPTR(m_spBattleTimer);
+	m_spBattleTimer->StartTime();
+}
+
+void BattleSimulator2_DataCollector::EndBattleTime()
+{
+	CHECK_NULLPTR(m_spBattleTimer);
+	m_spBattleTimer->EndTime();
 }
 
 void BattleSimulator2_DataCollector::ModifyBattleData(EDynamicObjID unitID, EBattleDataType dataType, Int32 data)

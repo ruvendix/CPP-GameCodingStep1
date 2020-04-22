@@ -16,18 +16,18 @@
 */
 void StopwatchTimer::StartTime()
 {
-	m_startTime = std::chrono::steady_clock::now();
+	m_startTime = std::chrono::system_clock::now();
 }
 
 /*
-종료 시간을 측정하고 시간 간격을 계산합니다.
+종료 시간을 측정합니다.
+경과 시간을 계산해서 저장합니다.
 */
-Real32 StopwatchTimer::EndTime()
+void StopwatchTimer::EndTime()
 {
-	m_endTime = std::chrono::steady_clock::now();
+	m_endTime = std::chrono::system_clock::now();
 
-	std::chrono::duration<Real32> timeIntervalue = m_endTime - m_startTime; // 기본 단위는 초!
+	std::chrono::duration<Real32> elaspedTime = m_endTime - m_startTime; // 기본 단위는 초!
 	//DEBUG_LOG("시간 간격 : (%f)초", timeInterval.count());
-
-	return timeIntervalue.count();
+	m_elaspedTime = elaspedTime.count();
 }

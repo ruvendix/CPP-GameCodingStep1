@@ -11,15 +11,15 @@
 #include "PCH.h"
 #include "Random.h"
 
-namespace math
+namespace rx_math
 {
 
-	std::default_random_engine RandomUtil::m_defaultRandomEngine;
+	std::default_random_engine Random::m_defaultRandomEngine;
 
 	/*
 	디폴트 랜덤 엔진에 시드값 목록을 적용해서 초기화합니다.
 	*/
-	void RandomUtil::Initialize()
+	void Random::Initialize()
 	{
 		std::array<Int32, std::default_random_engine::state_size> arrRandomSeed; // 시드값은 624개
 		std::generate_n(arrRandomSeed.begin(), arrRandomSeed.size(), std::ref(m_defaultRandomEngine)); // 624개의 랜덤 시드값 생성
@@ -31,7 +31,7 @@ namespace math
 	정수 균일 분포로 랜덤값을 뽑습니다.
 	일반적인 랜덤값 생성입니다.
 	*/
-	Int32 RandomUtil::GenerateRandom(Int32 begin, Int32 end)
+	Int32 Random::GenerateRandom(Int32 begin, Int32 end)
 	{
 		std::uniform_int_distribution<Int32> uniformIntDistribution(begin, end);
 		return uniformIntDistribution(m_defaultRandomEngine);
@@ -41,7 +41,7 @@ namespace math
 	실수 균일 분포로 랜덤값을 뽑습니다.
 	일반적인 랜덤값 생성입니다.
 	*/
-	Real32 RandomUtil::GenerateRandom(Real32 begin, Real32 end)
+	Real32 Random::GenerateRandom(Real32 begin, Real32 end)
 	{
 		std::uniform_real_distribution<Real32> uniformRealDistribution(begin, end);
 		return uniformRealDistribution(m_defaultRandomEngine);
@@ -50,7 +50,7 @@ namespace math
 	/*
 	사건 개수와 사건이 일어날 확률을 넣은 정수 이항 분포로 랜덤값을 뽑습니다.
 	*/
-	Int32 RandomUtil::GenerateBinormalRandom(Int32 eventCnt, Real32 probability)
+	Int32 Random::GenerateBinormalRandom(Int32 eventCnt, Real32 probability)
 	{
 		std::binomial_distribution<Int32> binomialDistribution(eventCnt, probability);
 		return binomialDistribution(m_defaultRandomEngine);

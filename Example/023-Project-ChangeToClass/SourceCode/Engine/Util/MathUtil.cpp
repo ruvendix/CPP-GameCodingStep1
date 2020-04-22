@@ -10,7 +10,7 @@
 #include "PCH.h"
 #include "Math.h"
 
-namespace math
+namespace rx_math
 {
 
 	/*

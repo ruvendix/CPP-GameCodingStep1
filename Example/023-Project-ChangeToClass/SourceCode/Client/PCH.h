@@ -29,7 +29,11 @@
 #include "Common\CommonLog.h"
 #include "Common\CommonTemplate.h"
 
-// 그 다음 중요도가 높은 헤더 파일을 포함!
-#include "Math\Math.h"
+// 유틸리티 헤더 파일은 2순위!
+#include "Util\MathUtil.h"
+#include "Util\TimeUtil.h"
+
+// 그 다음은 math
+#include "Math\Random.h"
 
 #endif

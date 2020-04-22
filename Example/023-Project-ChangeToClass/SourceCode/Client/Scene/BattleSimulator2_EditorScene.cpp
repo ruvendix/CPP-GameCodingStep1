@@ -20,6 +20,7 @@
 
 #include "Scene\IntroMenuScene.h"
 #include "IntroMenu\IntroMenu_ComeBack.h"
+#include "MiniGame\BattleSimulator2\BattleSimulator2_BattleReporter.h"
 #include "MiniGame\BattleSimulator2\BattleSimulator2World.h"
 #include "MiniGame\BattleSimulator2\BattleSimulator2_LevelDesign.h"
 #include "MiniGame\BattleSimulator2\Menu\Menu_ResetLevelDesign.h"
@@ -49,47 +50,8 @@ public:
 
 void BattleSimulator2_EditorSceneHelper::DrawMenu(const COORD& pos, std::shared_ptr<MenuTable_Row> spMenuTable)
 {
-	Int32 drawPosX = pos.X;
-	Int32 drawPosY = spMenuTable->getFirstMenu()->getPos().Y - 1;
-
-#pragma region 위쪽 경계선
-	PUT_STRING(drawPosX, drawPosY, "┏");
-	
-	TSize drawLength =
-		(spMenuTable->getLongestMenu()->getNameTag().size() / 2) + (ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_MENU / 2) + 1;
-
-	for (TSize i = 0; i < drawLength; ++i)
-	{
-		drawPosX += 2;
-		PUT_STRING(drawPosX, drawPosY, "━");		
-	}
-
-	PUT_STRING(drawPosX, drawPosY, "┓");
-#pragma endregion
-
-#pragma region 양쪽 경계선
-	drawPosX = pos.X;
-	TSize menuCnt = spMenuTable->getMenuCnt();
-	for (TSize i = 0; i < menuCnt; ++i)
-	{
-		PUT_STRING(drawPosX, ++drawPosY, "┃");
-		PUT_STRING(drawPosX + (drawLength * 2), drawPosY, "┃");
-	}
-#pragma endregion
-
-#pragma region 아래쪽 경계선
-	drawPosX = pos.X;
-	PUT_STRING(drawPosX, ++drawPosY, "┗");
-
-	for (TSize i = 0; i < drawLength; ++i)
-	{
-		drawPosX += 2;
-		PUT_STRING(drawPosX, drawPosY, "━");
-	}
-
-	PUT_STRING(drawPosX, drawPosY, "┛");
-#pragma endregion
-
+	common_func::DrawBorder(COORD{ pos.X, spMenuTable->getFirstMenu()->getPos().Y - 1 },
+		SizeInfo{ (spMenuTable->getLongestMenu()->getNameTag().size() / 2) + 1, spMenuTable->getMenuCnt() });
 	spMenuTable->DrawMenu();
 }
 
@@ -212,7 +174,7 @@ void BattleSimulator2_EditorSceneHelper::OnInput_EditorMode(_Inout_ BattleSimula
 		Int32 currentPrototypeUnitID = common_func::ToUnderlyingType(targetHelper.m_currentPrototypeUnitID);
 		++currentPrototypeUnitID;
 
-		currentPrototypeUnitID = math::ClampCycle(currentPrototypeUnitID,
+		currentPrototypeUnitID = rx_math::ClampCycle(currentPrototypeUnitID,
 			common_func::ToUnderlyingType(EDynamicObjID::UNKNOWN) + 1, common_func::ToUnderlyingType(EDynamicObjID::END) - 1);
 		targetHelper.m_currentPrototypeUnitID = static_cast<EDynamicObjID>(currentPrototypeUnitID);
 
@@ -404,6 +366,7 @@ EErrorType BattleSimulator2_EditorScene::OnRender()
 		return EErrorType::RENDER_FAIL;
 	}
 
+	BattleSimulator2_BattleReporter::I()->DrawUnitStat();
 	BattleSimulator2_EditorSceneHelper::DrawMenu(s_spUI_posInfo->startPos, m_spEditorMenuTable);
 	ConsoleController::I()->DrawSelector();
 

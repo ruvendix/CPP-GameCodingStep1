@@ -19,6 +19,7 @@
 
 #include "BattleSimulator2_EditorScene.h"
 #include "MiniGame\BattleSimulator2\BattleSimulator2_DataCollector.h"
+#include "MiniGame\BattleSimulator2\BattleSimulator2_BattleReporter.h"
 #include "MiniGame\BattleSimulator2\BattleSimulator2World.h"
 #include "MiniGame\BattleSimulator2\BattleSimulator2_LevelDesign.h"
 #include "MiniGame\BattleSimulator2\GameObject\DynamicObject\MedievalKnight.h"
@@ -28,6 +29,8 @@ namespace
 {
 	Uint32 s_triggerTimerID_deathUnit = 0;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class PredUnit
 {
@@ -54,97 +57,6 @@ public:
 private:
 	UnitPtr m_spUnit = nullptr;
 };
-
-//
-//void BattleSimulator2_GameSceneHelper::DrawTitle()
-//{
-//	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::LIGHT_AQUA);
-//
-//	Int32 drawPosY = -1;
-//	PUT_STRING(12, ++drawPosY, "▲▲▲▲▲▲▲▲▲▲");
-//	PUT_STRING(12, ++drawPosY, "<중세기사 VS 바이킹>");
-//	PUT_STRING(12, ++drawPosY, "▼▼▼▼▼▼▼▼▼▼");
-//
-//	ConsoleController::I()->ChangeConsoleOutputColor(EConsoleOutputType::TEXT, EConsoleOutputColorType::WHITE);
-//}
-//
-//void BattleSimulator2_GameSceneHelper::DrawUnitStat()
-//{
-//	Int32 drawPosY = 3;
-//	PUT_STRING(0, ++drawPosY, "-------------------------------------------");
-//	PUT_STRING(0, ++drawPosY, "              중세기사    바이킹");
-//	PUT_STRING(0, ++drawPosY, "-------------------------------------------");
-//	PUT_STRING(0, ++drawPosY, "HP           : %7d   %7d", s_dummyMedievalKnight.getMaxHP(), s_dummyViking.getMaxHP());
-//	PUT_STRING(0, ++drawPosY, "공격력       : %7d   %7d", s_dummyMedievalKnight.getAttackDamage(), s_dummyViking.getAttackDamage());
-//	PUT_STRING(0, ++drawPosY, "공격 성공율  : %7d%%  %7d%%", static_cast<Int32>(s_dummyMedievalKnight.getAttackSuccessRate() * 100.0f),
-//		static_cast<Int32>(s_dummyViking.getAttackSuccessRate() * 100.0f));
-//	PUT_STRING(0, ++drawPosY, "-------------------------------------------");
-//}
-//
-//void BattleSimulator2_GameSceneHelper::DrawBattleReport(const BattleSimulator2_GameScene& helperTarget)
-//{
-//	Int32 remainMedievalKnightCnt = static_cast<Int32>(helperTarget.m_vecMedievalKnight.size());
-//	Int32 remainVikingCnt = static_cast<Int32>(helperTarget.m_vecViking.size());
-//
-//	Int32 drawPosX = 50;
-//	Int32 drawPosY = 3;
-//	PUT_STRING(drawPosX, ++drawPosY, "-------------------------------------------");
-//	PUT_STRING(drawPosX, ++drawPosY, "              중세기사    바이킹");
-//	PUT_STRING(drawPosX, ++drawPosY, "-------------------------------------------");
-//	PUT_STRING(drawPosX, ++drawPosY, "살아남은 수 : %7d   %7d", remainMedievalKnightCnt, remainVikingCnt);
-//
-//	Int32 medievalKnightDeadCnt = MedievalKnight::GetTotalCnt() - remainMedievalKnightCnt;
-//	Int32 vikingDeadCnt = Viking::GetTotalCnt() - remainVikingCnt;
-//	PUT_STRING(drawPosX, ++drawPosY, "사망한 수   : %7d   %7d", medievalKnightDeadCnt, vikingDeadCnt);
-//
-//	// 중세기사 부대가 준 피해량
-//	Int32 totalMedievalKnightAttackDamage = (s_dummyViking.getMaxHP() * vikingDeadCnt);
-//	if (helperTarget.m_vecViking.empty() == false)
-//	{
-//		std::shared_ptr<Viking> spViking = helperTarget.m_vecViking[0];
-//		totalMedievalKnightAttackDamage += (s_dummyViking.getMaxHP() - spViking->getHP());
-//	}
-//
-//	// 바이킹 부대가 준 피해량
-//	Int32 totalVikingAttackDamage = (s_dummyMedievalKnight.getMaxHP() * medievalKnightDeadCnt);
-//	if (helperTarget.m_vecMedievalKnight.empty() == false)
-//	{
-//		std::shared_ptr<MedievalKnight> spMedievalKnight = helperTarget.m_vecMedievalKnight[0];
-//		totalVikingAttackDamage += (s_dummyMedievalKnight.getMaxHP() - spMedievalKnight->getHP());
-//	}
-//
-//	PUT_STRING(drawPosX, ++drawPosY, "준 피해량   : %7d   %7d", totalMedievalKnightAttackDamage, totalVikingAttackDamage);
-//	PUT_STRING(drawPosX, ++drawPosY, "-------------------------------------------");
-//
-//	// 어느 쪽이 이겼는지 점수를 계산해보죠~
-//	// "준 피해량"은 공정하지 않으므로 점수에서 제외할게요.
-//	// 아군이 살아남은 수만큼 5점 득점, 적군이 사망된 수만큼 3점 득점!
-//	Int32 totalMedievalKnightScore = (remainMedievalKnightCnt * 5) + (vikingDeadCnt * 3);
-//	Int32 totalVikingScore = (remainVikingCnt * 5) + (medievalKnightDeadCnt * 3);
-//
-//	PUT_STRING(drawPosX, ++drawPosY, "총점        : %7d   %7d", totalMedievalKnightScore, totalVikingScore);
-//	PUT_STRING(drawPosX, ++drawPosY, "-------------------------------------------");
-//
-//	PUT_STRING(drawPosX, ++drawPosY, "※ 승리한 부대는 ");
-//	if (totalMedievalKnightScore == totalVikingScore)
-//	{
-//		PUT_STRING(drawPosX, ++drawPosY, "없네요... 점수가 동일해요.");
-//	}
-//	else
-//	{
-//		std::string strWinner;
-//		if (totalMedievalKnightScore > totalVikingScore)
-//		{
-//			strWinner = "중세기사";
-//		}
-//		else
-//		{
-//			strWinner = "바이킹";
-//		}
-//
-//		PUT_STRING(drawPosX, ++drawPosY, "\"%s\" 부대네요~!", strWinner.c_str());
-//	}
-//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -192,6 +104,7 @@ EErrorType BattleSimulator2_GameScene::OnInitialize()
 	m_mapUnitStateCallback.Subscribe(EUnitState::DEATH,
 		std::bind(&BattleSimulator2_GameScene::OnCallback_UpdateDeathState, this, std::placeholders::_1));
 
+	BattleSimulator2_DataCollector::I()->StartBattleTime();
 	return EErrorType::NOTHING;
 }
 
@@ -208,7 +121,7 @@ EErrorType BattleSimulator2_GameScene::OnInput()
 
 EErrorType BattleSimulator2_GameScene::OnUpdate()
 {
-	if (m_bBattleEnd == true)
+	if (m_bGameEnd == true)
 	{
 		return EErrorType::NOTHING;
 	}
@@ -247,27 +160,14 @@ EErrorType BattleSimulator2_GameScene::OnRender()
 		}
 	}
 
-	//BattleSimulator2_GameSceneHelper::DrawTitle();
-	//BattleSimulator2_GameSceneHelper::DrawUnitStat();
+	BattleSimulator2_BattleReporter::I()->DrawUnitStat();
+	BattleSimulator2_BattleReporter::I()->DrawRemainUnit();
 
-	//Int32 drawPosY = 11;
-	//PUT_STRING(0, ++drawPosY, "남은 중세기사의 수 : %d / %d", static_cast<Int32>(m_vecMedievalKnight.size()), MedievalKnight::GetTotalCnt());
-	//PUT_STRING(0, ++drawPosY, "남은 바이킹의 수   : %d / %d", static_cast<Int32>(m_vecViking.size()), Viking::GetTotalCnt());
+	if (m_bGameEnd == true)
+	{
+		BattleSimulator2_BattleReporter::I()->DrawReport();
+	}
 
-	//++drawPosY;
-	//PUT_STRING(0, ++drawPosY, "∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼");
-	//PUT_STRING(0, ++drawPosY, "모의 전투를 시작할게요~!");
-
-	//if (m_bBattleEnd == false)
-	//{
-	//	return EErrorType::NOTHING;
-	//}
-
-	//PUT_STRING(0, ++drawPosY, "모의 전투가 끝났어요~!");
-	//PUT_STRING(0, ++drawPosY, "전투 결과를 알아볼까요?");
-	//PUT_STRING(0, ++drawPosY, "∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼");
-
-	//BattleSimulator2_GameSceneHelper::DrawBattleReport(*this);
 	return EErrorType::NOTHING;
 }
 
@@ -340,7 +240,7 @@ void BattleSimulator2_GameScene::OnCallback_UpdateMoveState(UnitPtr spUnit)
 	// X와 Y축은 어느 방향으로 이동해야 함?
 	spUnit->AdjustMoveAxisDir(spTargetUnit);
 
-	EPreferMoveAxis preferMoveAxis = static_cast<EPreferMoveAxis>(math::RandomUtil::GenerateRandom(0, 1));
+	EPreferMoveAxis preferMoveAxis = static_cast<EPreferMoveAxis>(rx_math::Random::GenerateRandom(0, 1));
 	spUnit->setPreferMoveAxis(preferMoveAxis);
 
 	const COORD prevPos = spUnit->getPos();
@@ -352,7 +252,7 @@ void BattleSimulator2_GameScene::OnCallback_UpdateMoveState(UnitPtr spUnit)
 		CHECK_NULLPTR_CONTINUE(iter);
 
 		// 위치가 겹치면 길을 새로 조정해야 하는데 길찾기 알고리즘이 필요하므로 생략...
-		if (math::IsSamePos(spUnit->getPos(), iter->getPos()))
+		if (rx_math::IsSamePos(spUnit->getPos(), iter->getPos()))
 		{
 			spUnit->setPos(prevPos);
 			break;
@@ -385,7 +285,7 @@ void BattleSimulator2_GameScene::OnCallback_UpdateAttackState(UnitPtr spUnit)
 void BattleSimulator2_GameScene::OnCallback_UpdateDeathState(UnitPtr spUnit)
 {
 	// 죽으면 이펙트 남기기
-	spUnit->setShape("★"); // 시체 길막?
+	spUnit->setShape("★");
 
 	std::string strTrigger = common_func::MakeFormatString("%s_%d", "Trigger_DeathUnit", s_triggerTimerID_deathUnit++);
 	TriggerTimerMgr::I()->AddTriggerTimer(strTrigger, 1.2f, 0.0f,
@@ -406,7 +306,6 @@ void BattleSimulator2_GameScene::OnTrigger_DeathUnit()
 	}
 
 	// 트리거에 등록된 순서대로 지워야 함!
-	// 이건 중구난방으로 지워짐...
 	const auto& iter = std::find_if(m_vecUnit.cbegin(), m_vecUnit.cend(), PredUnit(m_queueDeathUnit.front()));
 	if (iter == m_vecUnit.cend())
 	{
@@ -430,14 +329,22 @@ void BattleSimulator2_GameScene::OnTrigger_DeathUnit()
 	m_queueDeathUnit.pop();
 
 	// 배틀이 끝났는지 여기서 확인!
-	if (BattleSimulator2_DataCollector::I()->IsBattleEnd())
+	if ( (BattleSimulator2_DataCollector::I()->IsBattleEnd()) && 
+		 (m_bGameEnd == false) )
 	{
-		m_bBattleEnd = true;
 		RESERVE_RENDERING_STRING(3.0f, std::bind(&BattleSimulator2_GameScene::OnTrigger_BattleEnd, this));
 	}
 }
 
-void BattleSimulator2_GameScene::OnTrigger_BattleEnd() const
+void BattleSimulator2_GameScene::OnTrigger_BattleEnd()
 {
-	PUT_STRING(82, 28, "배틀 끗!");
+	//PUT_STRING(82, 28, "배틀 끗!");
+
+	if (m_bGameEnd == false)
+	{		
+		BattleSimulator2_DataCollector::I()->EndBattleTime();
+		BattleSimulator2_BattleReporter::I()->Result();
+
+		m_bGameEnd = true;
+	}
 }

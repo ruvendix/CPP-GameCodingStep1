@@ -20,7 +20,8 @@
 */
 void TriggerTimer::AddElapsedTime()
 {
-	m_elapsedTime += EndTime();
+	EndTime();
+	m_triggerElaspedTime += getElaspedTime();
 	SwapTime();
 
 	//DEBUG_LOG("(%f)√  √º≈©!", m_elapsedTime);

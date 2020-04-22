@@ -32,7 +32,7 @@ public:
 
 	void Reset()
 	{
-		m_elapsedTime -= m_triggerTime; // 짜투리 시간까지 생각합니다.
+		m_triggerElaspedTime -= m_triggerTime; // 짜투리 시간까지 생각합니다.
 	}
 
 	void CallTriggerTimerFunc()
@@ -47,7 +47,7 @@ public:
 
 	bool IsTriggerTime() const
 	{
-		return (m_elapsedTime > m_triggerTime);
+		return (m_triggerElaspedTime > m_triggerTime);
 	}
 
 	bool IsExistKeepTime() const
@@ -91,7 +91,7 @@ public:
 	}
 
 private:
-	Real32 m_elapsedTime = 0.0f; // 경과 시간
+	Real32 m_triggerElaspedTime = 0.0f; // 경과 시간
 	Real32 m_triggerTime = 0.0f; // 트리거 발동 시간
 	Real32 m_keepTime = 0.0f; // 지속 시간
 

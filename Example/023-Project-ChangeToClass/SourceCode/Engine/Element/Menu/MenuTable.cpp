@@ -51,7 +51,7 @@ void MenuTable::AddMenu(std::shared_ptr<Menu> spMenu, Int32 idx)
 void MenuTable::AddCurrentMenuIdx(Int32 value)
 {
 	m_currentMenuIdx += value;
-	m_currentMenuIdx = math::ClampCycle(m_currentMenuIdx, 0, static_cast<Int32>(m_vecMenu.size()) - 1);
+	m_currentMenuIdx = rx_math::ClampCycle(m_currentMenuIdx, 0, static_cast<Int32>(m_vecMenu.size()) - 1);
 }
 
 void MenuTable::ResizeMenuTable(TSize size)

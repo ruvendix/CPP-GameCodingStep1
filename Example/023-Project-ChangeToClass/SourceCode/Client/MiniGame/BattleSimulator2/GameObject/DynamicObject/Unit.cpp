@@ -66,7 +66,7 @@ void Unit::Attack(UnitPtr spTargetUnit)
 {
 	CHECK_NULLPTR_RETURN_VOID(spTargetUnit);
 
-	if (m_attackSuccessRate > math::RandomUtil::GenerateRandom(0.0f, 1.0f))
+	if (m_attackSuccessRate > rx_math::Random::GenerateRandom(0.0f, 1.0f))
 	{
 		spTargetUnit->Damage(m_attackDamage);
 	}
@@ -95,7 +95,7 @@ void Unit::FilterUnitInRange(const std::vector<UnitPtr>& vecUnit, const SizeInfo
 	{
 		CHECK_NULLPTR_CONTINUE(iter);
 
-		if (math::IsSamePos(getPos(), iter->getPos()))
+		if (rx_math::IsSamePos(getPos(), iter->getPos()))
 		{
 			//DEBUG_LOG("난 패스!");
 			continue;
@@ -103,7 +103,7 @@ void Unit::FilterUnitInRange(const std::vector<UnitPtr>& vecUnit, const SizeInfo
 
 		// 시야에 들어온 유닛은 리스트에 추가!
 		// 죽거나 제거 예정 유닛도 포함!
-		if (math::IsPointInRect(iter->getPos(), rangeStartPos, rangeEndPos))
+		if (rx_math::IsPointInRect(iter->getPos(), rangeStartPos, rangeEndPos))
 		{
 			m_listUnitInRange.push_back(iter);
 		}

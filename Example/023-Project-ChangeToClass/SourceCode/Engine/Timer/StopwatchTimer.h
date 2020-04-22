@@ -15,7 +15,7 @@
 #include "Common\CommonMacro.h"
 #include "Common\CommonNecessary.h"
 
-using TimePoint = std::chrono::steady_clock::time_point;
+using TimePoint = std::chrono::system_clock::time_point;
 
 class StopwatchTimer
 {
@@ -28,7 +28,7 @@ public:
 #pragma endregion
 
 	void StartTime();
-	Real32 EndTime();
+	void EndTime();
 
 	void SwapTime()
 	{
@@ -45,9 +45,15 @@ public:
 		return m_endTime;
 	}
 
+	Real32 getElaspedTime() const
+	{
+		return m_elaspedTime;
+	}
+
 private:
 	TimePoint m_startTime;
 	TimePoint m_endTime;
+	Real32 m_elaspedTime = 0.0f;
 };
 
 #endif

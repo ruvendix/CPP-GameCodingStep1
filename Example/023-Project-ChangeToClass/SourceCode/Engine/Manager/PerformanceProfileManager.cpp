@@ -55,7 +55,8 @@ void PerformanceProfileMgr::End(Int32 ID)
 	}
 
 	PerformanceProfileInfo& info = *(iter->second);
-	info.totalPerformanceTime += info.stopwatchTimer.EndTime();
+	info.stopwatchTimer.EndTime();
+	info.totalPerformanceTime += info.stopwatchTimer.getElaspedTime();
 }
 
 /*

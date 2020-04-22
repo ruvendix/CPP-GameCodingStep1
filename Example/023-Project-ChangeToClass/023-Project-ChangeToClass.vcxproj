@@ -88,7 +88,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>SourceCode\Engine;SourceCode\Client;SourceCode\Client\PCH;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <PreprocessorDefinitions>ACTIVATION_CONSOLE_DBL_BUFFERING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -149,6 +149,7 @@
     <ClCompile Include="SourceCode\Client\IntroMenu\IntroMenu_Quit.cpp" />
     <ClCompile Include="SourceCode\Client\IntroMenu\IntroMenu_SceneLoader.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2World.cpp" />
+    <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_BattleReporter.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_DataCollector.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_LevelDesign.cpp" />
     <ClCompile Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\MedievalKnight.cpp" />
@@ -221,10 +222,11 @@
     <ClCompile Include="SourceCode\Engine\Manager\ResourcePathManager.cpp" />
     <ClCompile Include="SourceCode\Engine\Manager\SceneManager.cpp" />
     <ClCompile Include="SourceCode\Engine\Manager\TriggerTimerManager.cpp" />
-    <ClCompile Include="SourceCode\Engine\Math\Math.cpp" />
     <ClCompile Include="SourceCode\Engine\Math\Random.cpp" />
     <ClCompile Include="SourceCode\Engine\Timer\StopwatchTimer.cpp" />
     <ClCompile Include="SourceCode\Engine\Timer\TriggerTimer.cpp" />
+    <ClCompile Include="SourceCode\Engine\Util\MathUtil.cpp" />
+    <ClCompile Include="SourceCode\Engine\Util\TimeUtil.cpp" />
     <ClCompile Include="SourceCode\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -234,6 +236,7 @@
     <ClInclude Include="SourceCode\Client\IntroMenu\IntroMenu_Quit.h" />
     <ClInclude Include="SourceCode\Client\IntroMenu\IntroMenu_SceneLoader.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2World.h" />
+    <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_BattleReporter.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_DataCollector.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\BattleSimulator2_LevelDesign.h" />
     <ClInclude Include="SourceCode\Client\MiniGame\BattleSimulator2\GameObject\DynamicObject\MedievalKnight.h" />
@@ -318,10 +321,11 @@
     <ClInclude Include="SourceCode\Engine\Manager\ResourcePathManager.h" />
     <ClInclude Include="SourceCode\Engine\Manager\SceneManager.h" />
     <ClInclude Include="SourceCode\Engine\Manager\TriggerTimerManager.h" />
-    <ClInclude Include="SourceCode\Engine\Math\Math.h" />
     <ClInclude Include="SourceCode\Engine\Math\Random.h" />
     <ClInclude Include="SourceCode\Engine\Timer\StopwatchTimer.h" />
     <ClInclude Include="SourceCode\Engine\Timer\TriggerTimer.h" />
+    <ClInclude Include="SourceCode\Engine\Util\MathUtil.h" />
+    <ClInclude Include="SourceCode\Engine\Util\TimeUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

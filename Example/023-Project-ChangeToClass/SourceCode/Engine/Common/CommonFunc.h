@@ -11,14 +11,18 @@
 #ifndef COMMON_FUNC__H__
 #define COMMON_FUNC__H__
 
+#include "CommonNecessary.h"
 #include "CommonStruct.h"
 #include "CommonMacro.h"
 #include "Handler\ErrorHandler\ErrorHandler.h"
+
+using TimePoint = std::chrono::system_clock::time_point;
 
 namespace common_func
 {
 
 #pragma region 일반 함수
+    void DrawBorder(const COORD& pos, const SizeInfo& size);
     std::string MakeFormatString(const char* szFormat, ...);
     bool InputNumClamp(_Out_ Int32& num, Int32 minNum, Int32 maxNum); // 직관적이도록 _Out_을 맨 앞으로!
 #pragma endregion

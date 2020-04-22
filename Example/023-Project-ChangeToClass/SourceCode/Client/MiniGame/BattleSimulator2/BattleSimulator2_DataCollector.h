@@ -55,6 +55,8 @@ public:
 
 	UnitPtr FindPrototypeUnit(EDynamicObjID ID) const;
 	
+	void StartBattleTime();
+	void EndBattleTime();
 	void ModifyBattleData(EDynamicObjID unitID, EBattleDataType dataType, Int32 data);
 	void ModifyBattleData(EDynamicObjID unitID, EBattleDataType dataType, EDataProgressDir dir, Int32 data);
 
@@ -64,6 +66,11 @@ public:
 	TSize getPrototypeUnitCnt() const
 	{
 		return m_mapPrototypeUnit.Size();
+	}
+
+	StopwatchTimerPtr getBattleTimer() const
+	{
+		return m_spBattleTimer;
 	}
 
 private:

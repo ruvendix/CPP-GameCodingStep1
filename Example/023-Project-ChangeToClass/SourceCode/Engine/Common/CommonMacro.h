@@ -337,7 +337,7 @@ private:\
 //	}
 
 #define CHECK_RANGE(value, min, max)\
-		if (math::IsValidRange(value, min, max) == false)\
+		if (rx_math::IsValidRange(value, min, max) == false)\
 		{\
 			DEFAULT_ERROR_HANDLER(EErrorType::INVALID_RANGE, value, min, max);\
 		}

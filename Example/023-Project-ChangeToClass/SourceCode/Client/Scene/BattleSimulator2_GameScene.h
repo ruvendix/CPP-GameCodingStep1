@@ -45,7 +45,7 @@ private:
 	void OnCallback_UpdateDeathState(UnitPtr spUnit);
 
 	void OnTrigger_DeathUnit();
-	void OnTrigger_BattleEnd() const;
+	void OnTrigger_BattleEnd();
 
 	std::shared_ptr<BattleSimulator2World> m_spWorld = nullptr;
 	std::shared_ptr<BattleSimulator2_LevelDesign> m_spLevelDesign = nullptr;
@@ -53,7 +53,7 @@ private:
 	std::queue<UnitPtr> m_queueDeathUnit;
 	MapUnitStateCallback m_mapUnitStateCallback;
 
-	bool m_bBattleEnd = false;
+	bool m_bGameEnd = false;
 };
 
 #endif
