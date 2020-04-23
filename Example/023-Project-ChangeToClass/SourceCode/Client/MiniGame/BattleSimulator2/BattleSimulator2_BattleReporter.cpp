@@ -159,8 +159,8 @@ void BattleSimulator2_BattleReporter::DrawReport() const
 	// "준 피해량"은 공정하지 않으므로 점수에서 제외할게요.
 	// 아군이 살아남은 수만큼 5점 득점, 적군이 사망된 수만큼 3점 득점!
 	drawPos.X += 2;
-	PUT_STRING(drawPos.X, ++drawPos.Y, "중세기사의 총점   : %7d", m_arrTotalScore[0]);
-	PUT_STRING(drawPos.X, ++drawPos.Y, "바이킹의 총점     : %7d", m_arrTotalScore[1]);
+	PUT_STRING(drawPos.X, ++drawPos.Y, "중세기사의 총점 : %7d", m_arrTotalScore[0]);
+	PUT_STRING(drawPos.X, ++drawPos.Y, "바이킹의 총점   : %7d", m_arrTotalScore[1]);
 
 	++drawPos.Y;
 	PUT_STRING(drawPos.X, ++drawPos.Y, m_strWinnerGuide.c_str());
