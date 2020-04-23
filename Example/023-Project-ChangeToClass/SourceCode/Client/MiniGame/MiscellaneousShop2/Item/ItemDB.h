@@ -17,42 +17,38 @@
 
 class ItemBase;
 
-using MapItemDB = std::unordered_map<std::string, ItemBase*>;
+using ItemBasePtr = std::shared_ptr<ItemBase>;
+using MapItemDB = MapCustom<std::string, ItemBasePtr>;
 
 class ItemDB final
 {
 public:
 #pragma region 생성자 및 소멸자
 	ItemDB() = default;
-	~ItemDB();
+	~ItemDB() = default;
 #pragma endregion
 
-	ItemBase* FindItem(const std::string& strNameTag) const;
-	void CopyToVector(_Out_ std::vector<ItemBase*>& vecItem) const;
+	ItemBasePtr FindItem(const std::string& strNameTag) const;
+	void CopyToVector(_Out_ std::vector<ItemBasePtr>& vecItem) const;
 
 	const MapItemDB& getMapItemDB() const
 	{
-		return m_mapItem;
+		return m_mapItemDB;
 	}
 
 	template <typename TItem>
 	void InsertItem(const std::string_view& strNameTag, Int32 ID, Int32 price)
 	{
-		TItem* pItem = trace_new TItem;
-		pItem->setNameTag(strNameTag);
-		pItem->setID(ID);
-		pItem->setPrice(price);
-		
-		// 맵에 공간을 확보한 후에 동적할당
-		auto ret = m_mapItem.insert(std::make_pair(strNameTag, nullptr));
-		if (ret.second == true)
-		{
-			ret.first->second = pItem;
-		}
+		std::shared_ptr<TItem> spItem = std::make_shared<TItem>();
+		spItem->setNameTag(strNameTag);
+		spItem->setID(ID);
+		spItem->setPrice(price);
+
+		m_mapItemDB.Subscribe(strNameTag.data(), spItem);
  	}
 
 private:
-	MapItemDB m_mapItem;
+	MapItemDB m_mapItemDB;
 };
 
 #endif

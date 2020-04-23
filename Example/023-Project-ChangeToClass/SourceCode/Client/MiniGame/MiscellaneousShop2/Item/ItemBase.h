@@ -15,6 +15,9 @@
 #include "Common\CommonMacro.h"
 #include "Element\NameTag.h"
 
+class ItemBase;
+using ItemBasePtr = std::shared_ptr<ItemBase>;
+
 class ItemBase
 {
 	DECLARE_ROOT_RTTI(ItemBase);
@@ -26,7 +29,7 @@ public:
 	virtual ~ItemBase() = default;
 #pragma endregion
 
-	ItemBase* Clone() const;
+	ItemBasePtr Clone() const;
 
 	Int32 getID() const
 	{

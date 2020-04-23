@@ -16,10 +16,9 @@
 #include "Element\Menu\Menu.h"
 
 MenuTable_Mat::MenuTable_Mat(Int32 row, Int32 col) :
-	m_row(row),
-	m_col(col)
+	m_matInfo{ row, col }
 {
-	ResizeMenuTable(m_row * m_col);
+	ResizeMenuTable(m_matInfo.row * m_matInfo.col);
 }
 
 MenuTable_Mat::MenuTable_Mat(Int32 row, Int32 col, bool bCyclePosX, bool bCyclePosY) :
@@ -33,18 +32,18 @@ void MenuTable_Mat::OnInput()
 {
 	if (InputController::I()->CheckInputState("MenuLeft", EInputMappingState::DOWN) == true)
 	{
-		--m_currentColIdx;
+		--m_currentMatInfo.col;
 
 		if (m_bCyclePosX == true)
 		{
-			m_currentColIdx = rx_math::ClampCycle(m_currentColIdx, 0, m_col - 1);
+			m_currentMatInfo.col = rx_math::ClampCycle(m_currentMatInfo.col, 0, m_matInfo.col - 1);
 		}
 		else
 		{
-			m_currentColIdx = rx_math::Clamp(m_currentColIdx, 0, m_col - 1);
+			m_currentMatInfo.col = rx_math::Clamp(m_currentMatInfo.col, 0, m_matInfo.col - 1);
 		}
 
-		setCurrentMenuIdx(rx_math::CalcIdx(m_col, m_currentRowIdx, m_currentColIdx));
+		ChangeCurrentMenu(rx_math::CalcIdx(m_matInfo.col, m_currentMatInfo.row, m_currentMatInfo.col));
 		ConsoleController::I()->ModifyCurrentConsoleSelectorPosX(
 			getCurrentMenu()->getPos().X - ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_MENU + ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_BORDER);
 
@@ -54,18 +53,18 @@ void MenuTable_Mat::OnInput()
 
 	if (InputController::I()->CheckInputState("MenuRight", EInputMappingState::DOWN) == true)
 	{
-		++m_currentColIdx;
+		++m_currentMatInfo.col;
 
 		if (m_bCyclePosX == true)
 		{
-			m_currentColIdx = rx_math::ClampCycle(m_currentColIdx, 0, m_col - 1);
+			m_currentMatInfo.col = rx_math::ClampCycle(m_currentMatInfo.col, 0, m_matInfo.col - 1);
 		}
 		else
 		{
-			m_currentColIdx = rx_math::Clamp(m_currentColIdx, 0, m_col - 1);
+			m_currentMatInfo.col = rx_math::Clamp(m_currentMatInfo.col, 0, m_matInfo.col - 1);
 		}
 
-		setCurrentMenuIdx(rx_math::CalcIdx(m_col, m_currentRowIdx, m_currentColIdx));
+		ChangeCurrentMenu(rx_math::CalcIdx(m_matInfo.col, m_currentMatInfo.row, m_currentMatInfo.col));
 		ConsoleController::I()->ModifyCurrentConsoleSelectorPosX(
 			getCurrentMenu()->getPos().X - ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_MENU + ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_BORDER);
 
@@ -75,18 +74,18 @@ void MenuTable_Mat::OnInput()
 
 	if (InputController::I()->CheckInputState("MenuUp", EInputMappingState::DOWN) == true)
 	{
-		--m_currentRowIdx;
+		--m_currentMatInfo.row;
 
 		if (m_bCyclePosY == true)
 		{
-			m_currentRowIdx = rx_math::ClampCycle(m_currentRowIdx, 0, m_row - 1);
+			m_currentMatInfo.row = rx_math::ClampCycle(m_currentMatInfo.row, 0, m_matInfo.row - 1);
 		}
 		else
 		{
-			m_currentRowIdx = rx_math::Clamp(m_currentRowIdx, 0, m_row - 1);
+			m_currentMatInfo.row = rx_math::Clamp(m_currentMatInfo.row, 0, m_matInfo.row - 1);
 		}
 
-		setCurrentMenuIdx(rx_math::CalcIdx(m_col, m_currentRowIdx, m_currentColIdx));
+		ChangeCurrentMenu(rx_math::CalcIdx(m_matInfo.col, m_currentMatInfo.row, m_currentMatInfo.col));
 		ConsoleController::I()->ModifyCurrentConsoleSelectorPosY(getCurrentMenu()->getPos().Y);
 
 		m_localTime = 0.0f;
@@ -95,18 +94,18 @@ void MenuTable_Mat::OnInput()
 
 	if (InputController::I()->CheckInputState("MenuDown", EInputMappingState::DOWN) == true)
 	{
-		++m_currentRowIdx;
+		++m_currentMatInfo.row;
 
 		if (m_bCyclePosY == true)
 		{
-			m_currentRowIdx = rx_math::ClampCycle(m_currentRowIdx, 0, m_row - 1);
+			m_currentMatInfo.row = rx_math::ClampCycle(m_currentMatInfo.row, 0, m_matInfo.row - 1);
 		}
 		else
 		{
-			m_currentRowIdx = rx_math::Clamp(m_currentRowIdx, 0, m_row - 1);
+			m_currentMatInfo.row = rx_math::Clamp(m_currentMatInfo.row, 0, m_matInfo.row - 1);
 		}
 
-		setCurrentMenuIdx(rx_math::CalcIdx(m_col, m_currentRowIdx, m_currentColIdx));
+		ChangeCurrentMenu(rx_math::CalcIdx(m_matInfo.col, m_currentMatInfo.row, m_currentMatInfo.col));
 		ConsoleController::I()->ModifyCurrentConsoleSelectorPosY(getCurrentMenu()->getPos().Y);
 
 		m_localTime = 0.0f;
@@ -116,18 +115,18 @@ void MenuTable_Mat::OnInput()
 	BEGIN_INPUT_FPS_LIMITED();
 	if (InputController::I()->CheckInputState("MenuLeft", EInputMappingState::PRESSING) == true)
 	{
-		--m_currentColIdx;
+		--m_currentMatInfo.col;
 
 		if (m_bCyclePosX == true)
 		{
-			m_currentColIdx = rx_math::ClampCycle(m_currentColIdx, 0, m_col - 1);
+			m_currentMatInfo.col = rx_math::ClampCycle(m_currentMatInfo.col, 0, m_matInfo.col - 1);
 		}
 		else
 		{
-			m_currentColIdx = rx_math::Clamp(m_currentColIdx, 0, m_col - 1);
+			m_currentMatInfo.col = rx_math::Clamp(m_currentMatInfo.col, 0, m_matInfo.col - 1);
 		}
 
-		setCurrentMenuIdx(rx_math::CalcIdx(m_col, m_currentRowIdx, m_currentColIdx));
+		ChangeCurrentMenu(rx_math::CalcIdx(m_matInfo.col, m_currentMatInfo.row, m_currentMatInfo.col));
 		ConsoleController::I()->ModifyCurrentConsoleSelectorPosX(
 			getCurrentMenu()->getPos().X - ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_MENU + ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_BORDER);
 		DEBUG_LOG("MenuLeft 누르는 중!");
@@ -135,18 +134,18 @@ void MenuTable_Mat::OnInput()
 
 	if (InputController::I()->CheckInputState("MenuRight", EInputMappingState::PRESSING) == true)
 	{
-		++m_currentColIdx;
-		
+		++m_currentMatInfo.col;
+
 		if (m_bCyclePosX == true)
 		{
-			m_currentColIdx = rx_math::ClampCycle(m_currentColIdx, 0, m_col - 1);
+			m_currentMatInfo.col = rx_math::ClampCycle(m_currentMatInfo.col, 0, m_matInfo.col - 1);
 		}
 		else
 		{
-			m_currentColIdx = rx_math::Clamp(m_currentColIdx, 0, m_col - 1);
+			m_currentMatInfo.col = rx_math::Clamp(m_currentMatInfo.col, 0, m_matInfo.col - 1);
 		}
 
-		setCurrentMenuIdx(rx_math::CalcIdx(m_col, m_currentRowIdx, m_currentColIdx));
+		ChangeCurrentMenu(rx_math::CalcIdx(m_matInfo.col, m_currentMatInfo.row, m_currentMatInfo.col));
 		ConsoleController::I()->ModifyCurrentConsoleSelectorPosX(
 			getCurrentMenu()->getPos().X - ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_MENU + ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_BORDER);
 		DEBUG_LOG("MenuRight 누르는 중!");
@@ -154,36 +153,36 @@ void MenuTable_Mat::OnInput()
 
 	if (InputController::I()->CheckInputState("MenuUp", EInputMappingState::PRESSING) == true)
 	{
-		--m_currentRowIdx;
+		--m_currentMatInfo.row;
 
 		if (m_bCyclePosY == true)
 		{
-			m_currentRowIdx = rx_math::ClampCycle(m_currentRowIdx, 0, m_row - 1);
+			m_currentMatInfo.row = rx_math::ClampCycle(m_currentMatInfo.row, 0, m_matInfo.row - 1);
 		}
 		else
 		{
-			m_currentRowIdx = rx_math::Clamp(m_currentRowIdx, 0, m_row - 1);
+			m_currentMatInfo.row = rx_math::Clamp(m_currentMatInfo.row, 0, m_matInfo.row - 1);
 		}
 
-		setCurrentMenuIdx(rx_math::CalcIdx(m_col, m_currentRowIdx, m_currentColIdx));
+		ChangeCurrentMenu(rx_math::CalcIdx(m_matInfo.col, m_currentMatInfo.row, m_currentMatInfo.col));
 		ConsoleController::I()->ModifyCurrentConsoleSelectorPosY(getCurrentMenu()->getPos().Y);
 		DEBUG_LOG("MenuUp 누르는 중!");
 	}
 
 	if (InputController::I()->CheckInputState("MenuDown", EInputMappingState::PRESSING) == true)
 	{
-		++m_currentRowIdx;
+		++m_currentMatInfo.row;
 
 		if (m_bCyclePosY == true)
 		{
-			m_currentRowIdx = rx_math::ClampCycle(m_currentRowIdx, 0, m_row - 1);
+			m_currentMatInfo.row = rx_math::ClampCycle(m_currentMatInfo.row, 0, m_matInfo.row - 1);
 		}
 		else
 		{
-			m_currentRowIdx = rx_math::Clamp(m_currentRowIdx, 0, m_row - 1);
+			m_currentMatInfo.row = rx_math::Clamp(m_currentMatInfo.row, 0, m_matInfo.row - 1);
 		}
 
-		setCurrentMenuIdx(rx_math::CalcIdx(m_col, m_currentRowIdx, m_currentColIdx));
+		ChangeCurrentMenu(rx_math::CalcIdx(m_matInfo.col, m_currentMatInfo.row, m_currentMatInfo.col));
 		ConsoleController::I()->ModifyCurrentConsoleSelectorPosY(getCurrentMenu()->getPos().Y);
 		DEBUG_LOG("MenuDown 누르는 중!");
 	}
@@ -196,15 +195,25 @@ void MenuTable_Mat::OnInput()
 	}
 }
 
-void MenuTable_Mat::AddForMat(std::shared_ptr<Menu> spMenu, Int32 rowIdx, Int32 colIdx)
+void MenuTable_Mat::AddMenu(MenuPtr spMenu, Int32 rowIdx, Int32 colIdx)
 {
-	if ( (m_row <= rowIdx) ||
-		 (m_col <= colIdx) )
+	if ( (m_matInfo.row <= rowIdx) ||
+		 (m_matInfo.col <= colIdx) )
 	{
-		DEFAULT_ERROR_HANDLER(EErrorType::INVALID_MATRIX, rowIdx, colIdx, m_row, m_col, 0, 0, m_row - 1, m_col - 1);
+		DEFAULT_ERROR_HANDLER(EErrorType::INVALID_MATRIX, rowIdx, colIdx, 0, 0, m_matInfo.row - 1, m_matInfo.col - 1);
 		return;
 	}
 
-	Int32 menuIdx = (rowIdx * m_col) + colIdx;
-	AddMenu(spMenu, menuIdx);
+	m_vecMatInfo.push_back(MatInfo{ rowIdx, colIdx });
+
+	Int32 menuIdx = (rowIdx * m_matInfo.col) + colIdx;
+	MenuTable::AddMenu(spMenu, menuIdx);
+}
+
+void MenuTable_Mat::ChangeCurrentMenu(Int32 menuIdx)
+{
+	setCurrentMenuIdx(menuIdx);
+	
+	CHECK_RANGE(menuIdx, 0, m_vecMatInfo.size() - 1);
+	m_currentMatInfo = m_vecMatInfo.at(menuIdx);
 }

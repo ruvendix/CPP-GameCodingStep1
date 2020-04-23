@@ -25,6 +25,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+using InvenPtr = std::shared_ptr<Inven>;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 class SellPhaseHelper final
 {
 	NON_COPYABLE_ONLY_PRIVATE_CLASS(SellPhaseHelper);
@@ -39,27 +43,23 @@ void SellPhaseHelper::SellItem(const SellPhase& targetHelper)
 	const ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
 	Int32 selectedIdx = consoleSelector.getSelectorPos().Y - consoleSelector.getMinSelectorPos().Y;
 
-	Inven* pInven = PlayerCtx::I()->getInven();
-	CHECK_NULLPTR(pInven);
-	
-	InvenItemInfo* pInvenItemInfo = pInven->FindInvenItemInfo(selectedIdx);
-	if ( (pInvenItemInfo == nullptr) ||
-		 (pInvenItemInfo->cnt <= 0) )
+	InvenPtr spInven = PlayerCtx::I()->getInven();
+	InvenItemInfoPtr spInvenItemInfo = spInven->FindInvenItemInfo(selectedIdx);
+
+	if ( (spInvenItemInfo == nullptr) ||
+		 (spInvenItemInfo->cnt <= 0) )
 	{
 		DEFAULT_ERROR_HANDLER_RENDERING(0, 12, 3.0f, EErrorType::NO_ITEM_IN_INVEN);
 		return;
 	}
 
-	ItemBase* pItem = pInvenItemInfo->pItem;
-	CHECK_NULLPTR(pItem);
-
-	Int32 itemPrice = static_cast<Int32>(pItem->getPrice() * 0.8f);
+	Int32 itemPrice = static_cast<Int32>(spInvenItemInfo->spItem->getPrice() * 0.8f);
 	PlayerCtx::I()->AddGameMoney(itemPrice);
-	--pInvenItemInfo->cnt;
+	--(spInvenItemInfo->cnt);
 
-	if (pInvenItemInfo->cnt <= 0)
+	if (spInvenItemInfo->cnt <= 0)
 	{
-		pInven->DeleteInvenItemInfo(selectedIdx);
+		spInven->DeleteInvenItemInfo(selectedIdx);
 	}
 
 	RESERVE_RENDERING_STRING(3.0f, &SellPhaseHelper::SellItemComplete);
@@ -85,10 +85,7 @@ EErrorType SellPhase::OnInitialize()
 	consoleSelector.setSelectorPos(2, 3);
 	consoleSelector.setMinSelectorPosY(3);
 
-	Inven* pInven = PlayerCtx::I()->getInven();
-	CHECK_NULLPTR(pInven);
-	consoleSelector.setMaxSelectorPosY(3 + pInven->getMaxInvenSize() - 1);
-
+	consoleSelector.setMaxSelectorPosY(consoleSelector.getMinSelectorPos().Y + PlayerCtx::I()->getInven()->getMaxInvenSize() - 1);
 	return EErrorType::NOTHING;
 }
 
@@ -143,10 +140,8 @@ EErrorType SellPhase::OnInput()
 
 EErrorType SellPhase::OnRender()
 {
-	Inven* pInven = PlayerCtx::I()->getInven();
-	CHECK_NULLPTR(pInven);
-	pInven->DrawForSell(0, 0);
-
+	PlayerCtx::I()->getInven()->DrawForSell(0, 0);
 	ConsoleController::I()->DrawSelector();
+
 	return EErrorType::NOTHING;
 }

@@ -27,15 +27,12 @@ public:
 
 	~PredInvenItemInfo() = default;
 
-	bool operator()(const InvenItemInfo* pInvenItemInfo)
+	bool operator()(const InvenItemInfoPtr spInvenItemInfo)
 	{
-		if (pInvenItemInfo == nullptr)
-		{
-			return false;
-		}
+		CHECK_NULLPTR_RETURN(spInvenItemInfo, false);
+		CHECK_NULLPTR(spInvenItemInfo->spItem);
 
-		CHECK_NULLPTR(pInvenItemInfo->pItem);
-		return (m_strItemNameTag == pInvenItemInfo->pItem->getNameTag());
+		return (m_strItemNameTag == spInvenItemInfo->spItem->getNameTag());
 	}
 
 private:
@@ -49,29 +46,18 @@ Inven::Inven()
 	m_vecInvenItemInfo.resize(m_maxInvenSize);
 }
 
-Inven::~Inven()
+void Inven::AddInvenItemInfo(ItemBasePtr spItem)
 {
-	for (auto& iter : m_vecInvenItemInfo)
+	InvenItemInfoPtr spInvenItemInfo = FindInvenItemInfo(spItem->getNameTag());
+	if (spInvenItemInfo != nullptr)
 	{
-		CHECK_NULLPTR_CONTINUE(iter);
-
-		SAFE_DELETE(iter->pItem);
-		SAFE_DELETE(iter);
-	}
-}
-
-void Inven::AddInvenItemInfo(const ItemBase* pItem)
-{
-	InvenItemInfo* pInvenItemInfo = FindInvenItemInfo(pItem->getNameTag());
-	if (pInvenItemInfo != nullptr)
-	{
-		++(pInvenItemInfo->cnt);
+		++(spInvenItemInfo->cnt);
 	}
 	else
 	{
-		pInvenItemInfo = trace_new InvenItemInfo;
-		pInvenItemInfo->cnt = 1; // 최초로 인벤토리에 넣었으니 1개!
-		pInvenItemInfo->pItem = pItem->Clone();
+		spInvenItemInfo = std::make_shared<InvenItemInfo>();
+		spInvenItemInfo->cnt = 1; // 최초로 인벤토리에 넣었으니 1개!
+		spInvenItemInfo->spItem = spItem->Clone();
 		
 		// 비어있는 인덱스 찾기
 		for (Int32 i = 0; i < m_maxInvenSize; ++i)
@@ -84,7 +70,7 @@ void Inven::AddInvenItemInfo(const ItemBase* pItem)
 		}
 
 		CHECK_RANGE(m_currentIdx, 0, m_maxInvenSize);
-		m_vecInvenItemInfo[m_currentIdx] = pInvenItemInfo;
+		m_vecInvenItemInfo[m_currentIdx] = spInvenItemInfo;
 		rx_math::Clamp(m_currentIdx, 0, m_maxInvenSize);
 	}	
 }
@@ -92,13 +78,10 @@ void Inven::AddInvenItemInfo(const ItemBase* pItem)
 // 인벤토리에서 아이템을 삭제할 때는 순서를 유지시켜야 해요!
 void Inven::DeleteInvenItemInfo(Int32 invenIdx)
 {
-	CHECK_RANGE(invenIdx, 0, m_maxInvenSize);
+	CHECK_RANGE(invenIdx, 0, m_maxInvenSize - 1);
 
 	auto& iter = m_vecInvenItemInfo.at(invenIdx);
-	CHECK_NULLPTR(iter);
-
-	SAFE_DELETE(iter->pItem);
-	SAFE_DELETE(iter);
+	iter = nullptr;
 }
 
 void Inven::Draw(Int32 x, Int32 y) const
@@ -123,13 +106,7 @@ void Inven::Draw(Int32 x, Int32 y) const
 			continue;
 		}
 
-		ItemBase* pItem = iter->pItem;
-		if (pItem == nullptr)
-		{
-			continue;
-		}
-
-		PUT_STRING(x, ++drawPosY, "┃    %-32s┃ %4d┃", pItem->getNameTag().c_str(), iter->cnt);
+		PUT_STRING(x, ++drawPosY, "┃    %-32s┃ %4d┃", iter->spItem->getNameTag().c_str(), iter->cnt);
 	}
 
 	PUT_STRING(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━┫");
@@ -164,11 +141,9 @@ void Inven::DrawForSell(Int32 x, Int32 y) const
 			continue;
 		}
 
-		ItemBase* pItem = iter->pItem;
-		CHECK_NULLPTR_CONTINUE(pItem);
-
-		Int32 itemPrice = static_cast<Int32>(pItem->getPrice() * 0.8f);
-		PUT_STRING(x, ++drawPosY, "┃    %-32s┃ %8d┃ %4d┃", pItem->getNameTag().c_str(), itemPrice, iter->cnt);
+		ItemBasePtr spItem = iter->spItem;
+		Int32 itemPrice = static_cast<Int32>(spItem->getPrice() * 0.8f);
+		PUT_STRING(x, ++drawPosY, "┃    %-32s┃ %8d┃ %4d┃", spItem->getNameTag().c_str(), itemPrice, iter->cnt);
 	}
 
 	PUT_STRING(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━┻━━━━━┫");
@@ -185,7 +160,7 @@ void Inven::Arrange()
 {
 	m_currentIdx = 0;
 
-	std::vector<InvenItemInfo*> vecNew(m_maxInvenSize);
+	std::vector<InvenItemInfoPtr> vecNew(m_maxInvenSize);
 	for (auto& iter : m_vecInvenItemInfo)
 	{
 		CHECK_NULLPTR_CONTINUE(iter);
@@ -209,7 +184,7 @@ bool Inven::IsFull() const
 	return true;
 }
 
-InvenItemInfo* Inven::FindInvenItemInfo(const std::string& strItemNameTag) const
+InvenItemInfoPtr Inven::FindInvenItemInfo(const std::string& strItemNameTag) const
 {
 	auto iter = std::find_if(m_vecInvenItemInfo.cbegin(), m_vecInvenItemInfo.cend(), PredInvenItemInfo(strItemNameTag));
 	if (iter != m_vecInvenItemInfo.cend())
@@ -220,7 +195,7 @@ InvenItemInfo* Inven::FindInvenItemInfo(const std::string& strItemNameTag) const
 	return nullptr;
 }
 
-InvenItemInfo* Inven::FindInvenItemInfo(Int32 invenIdx) const
+InvenItemInfoPtr Inven::FindInvenItemInfo(Int32 invenIdx) const
 {
 	return m_vecInvenItemInfo.at(invenIdx);
 }

@@ -29,7 +29,8 @@ std::string_view ErrorHandler::ToString(EErrorType errorType)
 		CASE_RETURN_STRING(EErrorType::UPDATE_FAIL, "갱신 실패!");
 		CASE_RETURN_STRING(EErrorType::RENDER_FAIL, "렌더링 실패!");
 		CASE_RETURN_STRING(EErrorType::FINAL_FAIL, "마무리 실패!");
-		CASE_RETURN_STRING(EErrorType::COPY_FAIL, "복사 실패!");		
+		CASE_RETURN_STRING(EErrorType::COPY_FAIL, "복사 실패!");	
+		CASE_RETURN_STRING(EErrorType::INSERT_FAIL, "삽입 실패!");		
 
 		CASE_RETURN_STRING(EErrorType::UNKNOWN_CONSOLE_SCREEN_BUFFER_TYPE, "알 수 없는 콘솔 스크린 버퍼!");
 		CASE_RETURN_STRING(EErrorType::UNKNOWN_CONSOLE_COLOR, "알 수 없는 콘솔 색상!");

@@ -18,15 +18,10 @@ DEFINE_PHOENIX_SINGLETON(PlayerCtx);
 
 void PlayerCtx::Initialize()
 {
-	m_pInven = trace_new Inven;
+	m_spInven = std::make_shared<Inven>();
 
 	// 인벤에 아이템 넣고 테스트
-	m_pInven->AddInvenItemInfo(ItemDBCtx::I()->QueryItem("만병통치약"));
-	m_pInven->AddInvenItemInfo(ItemDBCtx::I()->QueryItem("만병통치약"));
-	m_pInven->AddInvenItemInfo(ItemDBCtx::I()->QueryItem("특제 회복약"));
-}
-
-void PlayerCtx::Finalize()
-{
-	SAFE_DELETE(m_pInven);
+	m_spInven->AddInvenItemInfo(ItemDBCtx::I()->FindItem("만병통치약"));
+	m_spInven->AddInvenItemInfo(ItemDBCtx::I()->FindItem("만병통치약"));
+	m_spInven->AddInvenItemInfo(ItemDBCtx::I()->FindItem("특제 회복약"));
 }

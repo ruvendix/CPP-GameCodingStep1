@@ -39,10 +39,7 @@ void ArrangePhaseHelper::ArrangeInven(_Out_ ArrangePhase& targetHelper)
 		return;
 	}
 
-	Inven* pInven = PlayerCtx::I()->getInven();
-	CHECK_NULLPTR(pInven);
-	pInven->Arrange();
-
+	PlayerCtx::I()->getInven()->Arrange();
 	RESERVE_RENDERING_STRING(3.0f, &ArrangePhaseHelper::ArrangeInvenComplete);
 }
 
@@ -103,9 +100,7 @@ EErrorType ArrangePhase::OnInput()
 
 EErrorType ArrangePhase::OnRender()
 {
-	Inven* pInven = PlayerCtx::I()->getInven();
-	CHECK_NULLPTR(pInven);
-	pInven->Draw(0, 0);
+	PlayerCtx::I()->getInven()->Draw(0, 0);
 
 	PUT_STRING(0, 12, "인벤토리를 정리하시겠습니까?");
 	PUT_STRING(0, 14, "    예");

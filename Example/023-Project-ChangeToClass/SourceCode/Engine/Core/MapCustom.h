@@ -30,7 +30,13 @@ public:
 
 	void Subscribe(TKey key, TElem elem)
 	{
-		m_map.insert(std::make_pair(key, elem));
+		auto ret = m_map.insert(std::make_pair(key, elem));
+
+		// 맵에 성공적으로 등록되었는지 추가 확인!
+		if (ret.second == false)
+		{
+			DEFAULT_ERROR_HANDLER(EErrorType::INSERT_FAIL);
+		}
 	}
 
 	void Unsubscribe(TKey key)
@@ -59,6 +65,11 @@ public:
 	TSize Size() const
 	{
 		return m_map.size();
+	}
+
+	const MapType& getMap() const
+	{
+		return m_map;
 	}
 
 private:

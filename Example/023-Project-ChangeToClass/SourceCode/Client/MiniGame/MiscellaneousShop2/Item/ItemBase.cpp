@@ -11,9 +11,7 @@
 #include "PCH.h"
 #include "ItemBase.h"
 
-ItemBase* ItemBase::Clone() const
+ItemBasePtr ItemBase::Clone() const
 {
-	ItemBase* pItem = trace_new ItemBase;
-	*pItem = *this;
-	return pItem;
+	return std::make_shared<ItemBase>(*this);
 }

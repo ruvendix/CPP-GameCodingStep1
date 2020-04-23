@@ -17,6 +17,12 @@
 #include "..\Item\ItemDBContext.h"
 #include "..\Item\ItemDB.h"
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+using ItemDBPtr = std::shared_ptr<ItemDB>;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 BuyPhaseMenu_ProductFamilySelection::BuyPhaseMenu_ProductFamilySelection(const std::string_view& szNameTag,
 	const COORD& pos, EItemDBType itemDBType, BuyPhase* pTargetPhase) :
 	Menu(szNameTag, pos),
@@ -32,16 +38,14 @@ EErrorType BuyPhaseMenu_ProductFamilySelection::OnExcute()
 	m_pTargetPhase->SelectedProductFamily(true);
 
 	ConsoleController::I()->PushBackupConsoleSelector();
-
 	m_pTargetPhase->setCurrentItemDBType(m_itemDBType);
-	ItemDB* pItemDB = ItemDBCtx::I()->QueryItemDB(m_itemDBType);
-	CHECK_NULLPTR(pItemDB);
 
-	TSize itemCnt = pItemDB->getMapItemDB().size();
+	ItemDBPtr spItemDB = ItemDBCtx::I()->FindItemDB(m_itemDBType);
+	TSize itemCnt = spItemDB->getMapItemDB().Size();
 
 	std::vector<ItemBase*> vecItem;
 	m_pTargetPhase->ResetDisplayItem(itemCnt);
-	pItemDB->CopyToVector(m_pTargetPhase->getVecDisplayItem());
+	spItemDB->CopyToVector(m_pTargetPhase->getVecDisplayItem());
 
 	ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
 	consoleSelector.setMinSelectorPosY(3);

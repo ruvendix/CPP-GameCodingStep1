@@ -72,8 +72,5 @@ EErrorType MiscellaneousShop2Scene::OnFinalize()
 		return EErrorType::FINAL_FAIL;
 	}
 
-	PlayerCtx::I()->Finalize();
-	ItemDBCtx::I()->Finalize();
-
 	return EErrorType::NOTHING;
 }

@@ -21,42 +21,34 @@ DEFINE_PHOENIX_SINGLETON(ItemDBCtx);
 void ItemDBCtx::Initialize()
 {
 	// 포션 DB 초기화
-	ItemDB* pPotionDB = new ItemDB;
-	pPotionDB->InsertItem<ShopItem_Potion>("평범한 회복약", 0x00001000, 10);
-	pPotionDB->InsertItem<ShopItem_Potion>("쓸만한 회복약", 0x00001001, 50);
-	pPotionDB->InsertItem<ShopItem_Potion>("특제 회복약", 0x00001002, 100);
-	pPotionDB->InsertItem<ShopItem_Potion>("만병통치약", 0x00001003, 200);
-	m_itemDBTable[common_func::ToUnderlyingType(EItemDBType::POTION)] = pPotionDB;
+	ItemDBPtr spPotionDB = std::make_shared<ItemDB>();
+	spPotionDB->InsertItem<ShopItem_Potion>("평범한 회복약", 0x00001000, 10);
+	spPotionDB->InsertItem<ShopItem_Potion>("쓸만한 회복약", 0x00001001, 50);
+	spPotionDB->InsertItem<ShopItem_Potion>("특제 회복약", 0x00001002, 100);
+	spPotionDB->InsertItem<ShopItem_Potion>("만병통치약", 0x00001003, 200);
+	m_arrItemDB[common_func::ToUnderlyingType(EItemDBType::POTION)] = spPotionDB;
 
 	// 식료품 DB 초기화
-	ItemDB* pGroceryDB = new ItemDB;
-	pGroceryDB->InsertItem<ShopItem_Grocery>("계란", 0x00002000, 5);
-	pGroceryDB->InsertItem<ShopItem_Grocery>("돼지고기", 0x00002001, 10);
-	pGroceryDB->InsertItem<ShopItem_Grocery>("소고기", 0x00002002, 20);
-	pGroceryDB->InsertItem<ShopItem_Grocery>("소금", 0x00002003, 5);
-	pGroceryDB->InsertItem<ShopItem_Grocery>("후추", 0x00002004, 5);
-	m_itemDBTable[common_func::ToUnderlyingType(EItemDBType::GROCERY)] = pGroceryDB;
+	ItemDBPtr spGroceryDB = std::make_shared<ItemDB>();
+	spGroceryDB->InsertItem<ShopItem_Grocery>("계란", 0x00002000, 5);
+	spGroceryDB->InsertItem<ShopItem_Grocery>("돼지고기", 0x00002001, 10);
+	spGroceryDB->InsertItem<ShopItem_Grocery>("소고기", 0x00002002, 20);
+	spGroceryDB->InsertItem<ShopItem_Grocery>("소금", 0x00002003, 5);
+	spGroceryDB->InsertItem<ShopItem_Grocery>("후추", 0x00002004, 5);
+	m_arrItemDB[common_func::ToUnderlyingType(EItemDBType::GROCERY)] = spGroceryDB;
 
 	// 캠핑용품
-	ItemDB* pCampingDB = new ItemDB;
-	pCampingDB->InsertItem<ShopItem_Camping>("야영텐트", 0x00003000, 150);
-	pCampingDB->InsertItem<ShopItem_Camping>("가스 토치", 0x00003001, 100);
-	pCampingDB->InsertItem<ShopItem_Camping>("손전등", 0x00003002, 50);
-	pCampingDB->InsertItem<ShopItem_Camping>("침낭", 0x00003003, 150);
-	m_itemDBTable[common_func::ToUnderlyingType(EItemDBType::CAMPING)] = pCampingDB;
+	ItemDBPtr spCampingDB = std::make_shared<ItemDB>();
+	spCampingDB->InsertItem<ShopItem_Camping>("야영텐트", 0x00003000, 150);
+	spCampingDB->InsertItem<ShopItem_Camping>("가스 토치", 0x00003001, 100);
+	spCampingDB->InsertItem<ShopItem_Camping>("손전등", 0x00003002, 50);
+	spCampingDB->InsertItem<ShopItem_Camping>("침낭", 0x00003003, 150);
+	m_arrItemDB[common_func::ToUnderlyingType(EItemDBType::CAMPING)] = spCampingDB;
 }
 
-void ItemDBCtx::Finalize()
+ItemBasePtr ItemDBCtx::FindItem(const std::string& strItemNameTag) const
 {
-	for (auto& iter : m_itemDBTable)
-	{
-		SAFE_DELETE(iter);
-	}
-}
-
-ItemBase* ItemDBCtx::QueryItem(const std::string& strItemNameTag) const
-{
-	for (const auto& iter : m_itemDBTable)
+	for (const auto& iter : m_arrItemDB)
 	{
 		CHECK_NULLPTR(iter);
 		return (iter->FindItem(strItemNameTag));
@@ -65,18 +57,13 @@ ItemBase* ItemDBCtx::QueryItem(const std::string& strItemNameTag) const
 	return nullptr;
 }
 
-ItemDB* ItemDBCtx::QueryItemDB(EItemDBType itemDBType) const
+ItemDBPtr ItemDBCtx::FindItemDB(EItemDBType type) const
 {
-	return m_itemDBTable.at(common_func::ToUnderlyingType(itemDBType));
+	return m_arrItemDB.at(common_func::ToUnderlyingType(type));
 }
 
-TSize ItemDBCtx::QueryItemCntOfItemDB(EItemDBType itemDBType) const
+TSize ItemDBCtx::FindItemCntOfItemDB(EItemDBType type) const
 {
-	ItemDB* pItemDB = QueryItemDB(itemDBType);
-	if (pItemDB == nullptr)
-	{
-		return 0;
-	}
-
-	return (pItemDB->getMapItemDB().size());
+	ItemDBPtr spItemDB = FindItemDB(type);
+	return (spItemDB->getMapItemDB().Size());
 }

@@ -12,6 +12,12 @@
 
 #include "MenuTable.h"
 
+struct MatInfo
+{
+	Int32 row = 0;
+	Int32 col = 0;
+};
+
 class MenuTable_Mat : public MenuTable
 {
 	DECLARE_RTTI(MenuTable_Mat, MenuTable);
@@ -30,14 +36,13 @@ public:
 
 	virtual void OnInput() override;
 
-	void AddForMat(std::shared_ptr<Menu> spMenu, Int32 rowIdx, Int32 colIdx);
+	void AddMenu(MenuPtr spMenu, Int32 rowIdx, Int32 colIdx);
+	void ChangeCurrentMenu(Int32 menuIdx);
 
 private:
-	Int32 m_row = 0;
-	Int32 m_col = 0;
-
-	Int32 m_currentRowIdx = 0;
-	Int32 m_currentColIdx = 0;
+	MatInfo m_matInfo;
+	MatInfo m_currentMatInfo;
+	std::vector<MatInfo> m_vecMatInfo;
 
 	bool m_bCyclePosX = true;
 	bool m_bCyclePosY = true;

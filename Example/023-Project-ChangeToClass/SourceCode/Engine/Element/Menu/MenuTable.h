@@ -12,6 +12,7 @@
 #define MENU_TABLE_H__
 
 class Menu;
+using MenuPtr = std::shared_ptr<Menu>;
 
 class MenuTable
 {
@@ -27,8 +28,8 @@ public:
 
 	virtual void OnInput() = 0;
 
-	void AddMenu(std::shared_ptr<Menu> spMenu);
-	void AddMenu(std::shared_ptr<Menu> spMenu, Int32 idx);
+	void AddMenu(MenuPtr spMenu);
+	void AddMenu(MenuPtr spMenu, Int32 idx);
 	void AddCurrentMenuIdx(Int32 value);
 	void ResizeMenuTable(TSize size);
 	void AlignCenterForMenu();
@@ -43,7 +44,7 @@ public:
 		m_currentMenuIdx = menuIdx;
 	}
 
-	std::shared_ptr<Menu> getMenu(Int32 menuIdx) const
+	MenuPtr getMenu(Int32 menuIdx) const
 	{
 		CHECK_RANGE(menuIdx, 0, m_vecMenu.size() - 1);
 		return m_vecMenu.at(menuIdx);
@@ -59,30 +60,30 @@ public:
 		return (m_vecMenu.size() - 1);
 	}
 
-	std::shared_ptr<Menu> getCurrentMenu() const
+	MenuPtr getCurrentMenu() const
 	{
 		return getMenu(m_currentMenuIdx);
 	}
 
-	std::shared_ptr<Menu> getFirstMenu() const
+	MenuPtr getFirstMenu() const
 	{
 		return getMenu(0);
 	}
 
-	std::shared_ptr<Menu> getLastMenu() const
+	MenuPtr getLastMenu() const
 	{
 		return getMenu(m_vecMenu.size() - 1);
 	}
 
-	std::shared_ptr<Menu> getLongestMenu() const
+	MenuPtr getLongestMenu() const
 	{
 		return m_spLongestMenu;
 	}
 
 private:
 	Int32 m_currentMenuIdx = 0;
-	std::shared_ptr<Menu> m_spLongestMenu;
-	std::vector<std::shared_ptr<Menu>> m_vecMenu;
+	MenuPtr m_spLongestMenu;
+	std::vector<MenuPtr> m_vecMenu;
 };
 
 #endif

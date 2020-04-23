@@ -16,30 +16,33 @@
 #include "Common\CommonNecessary.h"
 
 class ItemBase;
+using ItemBasePtr = std::shared_ptr<ItemBase>;
 
 struct InvenItemInfo
 {
-	ItemBase* pItem = nullptr;
+	ItemBasePtr spItem = nullptr;
 	Int32 cnt = 0;
 };
+
+using InvenItemInfoPtr = std::shared_ptr<InvenItemInfo>;
 
 class Inven final
 {
 public:
 #pragma region 생성자 및 소멸자
 	Inven();
-	virtual ~Inven();
+	~Inven() = default;
 #pragma endregion
 
-	void AddInvenItemInfo(const ItemBase* pItem);
+	void AddInvenItemInfo(ItemBasePtr spItem);
 	void DeleteInvenItemInfo(Int32 invenIdx);
 	void Draw(Int32 x, Int32 y) const;
 	void DrawForSell(Int32 x, Int32 y) const;
 	void Arrange();
 	bool IsFull() const;
 
-	InvenItemInfo* FindInvenItemInfo(Int32 invenIdx) const;
-	InvenItemInfo* FindInvenItemInfo(const std::string& strItemNameTag) const;
+	InvenItemInfoPtr FindInvenItemInfo(Int32 invenIdx) const;
+	InvenItemInfoPtr FindInvenItemInfo(const std::string& strItemNameTag) const;
 
 	Int32 getMaxInvenSize() const
 	{
@@ -49,7 +52,7 @@ public:
 private:
 	Int32 m_currentIdx = 0;
 	Int32 m_maxInvenSize = 5; // 인벤에 담을 수 있는 개수는 5개
-	std::vector<InvenItemInfo*> m_vecInvenItemInfo;
+	std::vector<InvenItemInfoPtr> m_vecInvenItemInfo;
 };
 
 #endif

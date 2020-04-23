@@ -14,10 +14,12 @@
 #include "Common\CommonFunc.h"
 #include "ItemDBType.h"
 
-class ItemBase;
 class ItemDB;
+class ItemBase;
 
-using ArrItemDB = std::array<ItemDB*, common_func::ToUnderlyingType(EItemDBType::END)>;
+using ItemDBPtr = std::shared_ptr<ItemDB>;
+using ItemBasePtr = std::shared_ptr<ItemBase>;
+using ArrItemDB = std::array<ItemDBPtr, common_func::ToUnderlyingType(EItemDBType::END)>;
 
 class ItemDBCtx final
 {
@@ -25,14 +27,13 @@ class ItemDBCtx final
 
 public:
 	void Initialize();
-	void Finalize();
 
-	ItemBase* QueryItem(const std::string& strItemNameTag) const;	
-	ItemDB* QueryItemDB(EItemDBType itemDBType) const;
-	TSize QueryItemCntOfItemDB(EItemDBType itemDBType) const;
+	ItemBasePtr FindItem(const std::string& strItemNameTag) const;
+	ItemDBPtr FindItemDB(EItemDBType type) const;
+	TSize FindItemCntOfItemDB(EItemDBType type) const;
 
 private:
-	ArrItemDB m_itemDBTable;
+	ArrItemDB m_arrItemDB;
 };
 
 #endif

@@ -16,6 +16,7 @@
 #include "..\Item\ItemDBType.h"
 
 class ItemBase;
+using ItemBasePtr = std::shared_ptr<ItemBase>;
 
 class BuyPhase final : public Phase
 {
@@ -44,19 +45,19 @@ public:
 		m_bSelectedProductFamily = bResult;
 	}
 
-	void setCurrentItemDBType(EItemDBType itemDBType)
+	void setCurrentItemDBType(EItemDBType type)
 	{
-		m_currentItemDBType = itemDBType;
+		m_currentItemDBType = type;
 	}
 
-	std::vector<ItemBase*>& getVecDisplayItem()
+	std::vector<ItemBasePtr>& getVecDisplayItem()
 	{
 		return m_vecDisplayItem;
 	}
 
 private:
 	EItemDBType m_currentItemDBType = EItemDBType::POTION;
-	std::vector<ItemBase*> m_vecDisplayItem;
+	std::vector<ItemBasePtr> m_vecDisplayItem;
 	bool m_bSelectedProductFamily = false;
 	std::shared_ptr<MenuTable_Mat> m_spMenuTable;
 };

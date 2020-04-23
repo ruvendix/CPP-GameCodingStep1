@@ -30,6 +30,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+using InvenPtr = std::shared_ptr<Inven>;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 namespace
 {
 	std::unique_ptr<UI_PosInfo> s_spUI_posInfo;
@@ -70,25 +74,22 @@ void BuyPhaseHelper::BuyItem(const BuyPhase& targetHelper)
 {
 	const ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
 	Int32 selectedIdx = consoleSelector.getSelectorPos().Y - consoleSelector.getMinSelectorPos().Y;
-	ItemBase* pItem = targetHelper.m_vecDisplayItem.at(selectedIdx);
-	CHECK_NULLPTR(pItem);
-
-	Inven* pInven = PlayerCtx::I()->getInven();
-	CHECK_NULLPTR(pInven);
+	ItemBasePtr spItem = targetHelper.m_vecDisplayItem.at(selectedIdx);
 
 	// 이미 인벤에 있는 아이템인지 확인!
-	if ( (pInven->FindInvenItemInfo(pItem->getNameTag()) == nullptr) &&
-		 (pInven->IsFull()) )
+	InvenPtr spInven = PlayerCtx::I()->getInven();
+	if ( (spInven->FindInvenItemInfo(spItem->getNameTag()) == nullptr) &&
+		 (spInven->IsFull()) )
 	{
 		DEFAULT_ERROR_HANDLER_RENDERING(0, 12, 3.0f, EErrorType::FULL_INVEN);
 		return;
 	}
 
 	Int32 playerGameMoney = PlayerCtx::I()->getGameMoney();
-	Int32 itemPrice = pItem->getPrice();
+	Int32 itemPrice = spItem->getPrice();
 
 	// 가격 확인
-	if (playerGameMoney < pItem->getPrice())
+	if (playerGameMoney < spItem->getPrice())
 	{
 		DEFAULT_ERROR_HANDLER_RENDERING(0, 12, 3.0f, EErrorType::NOT_ENOUGH_GAME_MONEY, playerGameMoney, itemPrice);
 		return;
@@ -100,7 +101,7 @@ void BuyPhaseHelper::BuyItem(const BuyPhase& targetHelper)
 	}
 
 	// 위에서 이미 확인했지만 내부에서도 또 확인해요...
-	pInven->AddInvenItemInfo(pItem);
+	spInven->AddInvenItemInfo(spItem);
 	RESERVE_RENDERING_STRING(3.0f, &BuyPhaseHelper::BuyItemComplete);
 }
 
@@ -182,18 +183,18 @@ EErrorType BuyPhase::OnInitialize()
 	s_spUI_posInfo->diffSize = SizeInfo{ 17, 2 };
 	
 	m_spMenuTable = std::make_shared<MenuTable_Mat>(2, 2);
-	m_spMenuTable->AddForMat(std::make_shared<BuyPhaseMenu_ProductFamilySelection>("물약",
+	m_spMenuTable->AddMenu(std::make_shared<BuyPhaseMenu_ProductFamilySelection>("물약",
 		COORD{ s_spUI_posInfo->menuStartPos.X, s_spUI_posInfo->menuStartPos.Y }, EItemDBType::POTION, this), 0, 0);
 
-	m_spMenuTable->AddForMat(std::make_shared<BuyPhaseMenu_ProductFamilySelection>("식료품",
+	m_spMenuTable->AddMenu(std::make_shared<BuyPhaseMenu_ProductFamilySelection>("식료품",
 		COORD{ s_spUI_posInfo->menuStartPos.X + static_cast<SHORT>(s_spUI_posInfo->diffSize.width),
 		s_spUI_posInfo->menuStartPos.Y }, EItemDBType::GROCERY, this), 0, 1);
 
-	m_spMenuTable->AddForMat(std::make_shared<BuyPhaseMenu_ProductFamilySelection>("야외용품",
+	m_spMenuTable->AddMenu(std::make_shared<BuyPhaseMenu_ProductFamilySelection>("야외용품",
 		COORD{ s_spUI_posInfo->menuStartPos.X,
 		s_spUI_posInfo->menuStartPos.Y + static_cast<SHORT>(s_spUI_posInfo->diffSize.height) }, EItemDBType::CAMPING, this), 1, 0);
 
-	m_spMenuTable->AddForMat(std::make_shared<EntrancePhaseMenu_PhaseLoader>("뒤로 가기",
+	m_spMenuTable->AddMenu(std::make_shared<EntrancePhaseMenu_PhaseLoader>("뒤로 가기",
 		COORD{ s_spUI_posInfo->menuStartPos.X + static_cast<SHORT>(s_spUI_posInfo->diffSize.width),
 		s_spUI_posInfo->menuStartPos.Y + static_cast<SHORT>(s_spUI_posInfo->diffSize.height) },
 		EMiscellaneousShop2PhaseType::ENTRANCE), 1, 1);
@@ -228,13 +229,9 @@ EErrorType BuyPhase::OnRender()
 	else
 	{
 		MiscellanouseShop2Util::DrawItemTable(0, 0, m_currentItemDBType);
-
-		Inven* pInven = PlayerCtx::I()->getInven();
-		CHECK_NULLPTR(pInven);
-		pInven->Draw(50, 0);
+		PlayerCtx::I()->getInven()->Draw(50, 0);
 	}
 
 	ConsoleController::I()->DrawSelector();
-
 	return EErrorType::NOTHING;
 }

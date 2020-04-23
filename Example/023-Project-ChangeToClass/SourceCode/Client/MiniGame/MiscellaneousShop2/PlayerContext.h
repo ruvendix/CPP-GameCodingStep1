@@ -16,6 +16,7 @@
 #include "Common\CommonNecessary.h"
 
 class Inven;
+using InvenPtr = std::shared_ptr<Inven>;
 
 class PlayerCtx final
 {
@@ -25,7 +26,6 @@ class PlayerCtx final
 
 public:
 	void Initialize();
-	void Finalize();
 
 	void AddGameMoney(Int32 gameMoney)
 	{
@@ -33,9 +33,9 @@ public:
 		rx_math::Clamp(m_gameMoney, 0, MAX_GAME_MONEY);
 	}
 
-	Inven* getInven() const
+	InvenPtr getInven() const
 	{
-		return m_pInven;
+		return m_spInven;
 	}
 
 	Int32 getGameMoney() const
@@ -50,7 +50,7 @@ public:
 
 private:
 	Int32 m_gameMoney = 0;
-	Inven* m_pInven = nullptr;
+	InvenPtr m_spInven;
 };
 
 #endif

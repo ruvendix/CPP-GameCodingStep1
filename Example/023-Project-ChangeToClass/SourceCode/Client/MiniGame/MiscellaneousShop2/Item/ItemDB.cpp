@@ -13,26 +13,13 @@
 
 #include "ItemBase.h"
 
-ItemDB::~ItemDB()
+ItemBasePtr ItemDB::FindItem(const std::string& strNameTag) const
 {
-	for (auto iter : m_mapItem)
-	{
-		SAFE_DELETE(iter.second);
-	}
+	return m_mapItemDB.Find(strNameTag);
 }
 
-ItemBase* ItemDB::FindItem(const std::string& strNameTag) const
+void ItemDB::CopyToVector(std::vector<ItemBasePtr>& vecItem) const
 {
-	auto iter = m_mapItem.find(strNameTag);
-	if (iter != m_mapItem.end())
-	{
-		return (iter->second);
-	}
-
-	return nullptr;
-}
-
-void ItemDB::CopyToVector(std::vector<ItemBase*>& vecItem) const
-{
-	std::transform(m_mapItem.cbegin(), m_mapItem.cend(), std::back_inserter(vecItem), common_func::GetSecond(m_mapItem));
+	const MapItemDB::MapType& mapItem = m_mapItemDB.getMap();
+	std::transform(mapItem.cbegin(), mapItem.cend(), std::back_inserter(vecItem), common_func::GetSecond(mapItem));
 }

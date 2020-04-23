@@ -70,19 +70,19 @@ EErrorType EntrancePhase::OnInitialize()
 	s_spUI_posInfo->diffSize = SizeInfo{ 17, 2 };
 
 	m_spMenuTable = std::make_shared<MenuTable_Mat>(2, 2, false, false);
-	m_spMenuTable->AddForMat(std::make_shared<EntrancePhaseMenu_PhaseLoader>("구입", s_spUI_posInfo->menuStartPos,
+	m_spMenuTable->AddMenu(std::make_shared<EntrancePhaseMenu_PhaseLoader>("구입", s_spUI_posInfo->menuStartPos,
 		EMiscellaneousShop2PhaseType::BUY), 0, 0);
 
-	m_spMenuTable->AddForMat(std::make_shared<EntrancePhaseMenu_PhaseLoader>("판매",
+	m_spMenuTable->AddMenu(std::make_shared<EntrancePhaseMenu_PhaseLoader>("판매",
 		COORD{ s_spUI_posInfo->menuStartPos.X + static_cast<SHORT>(s_spUI_posInfo->diffSize.width),
 		s_spUI_posInfo->menuStartPos.Y }, EMiscellaneousShop2PhaseType::SELL), 0, 1);
 
-	m_spMenuTable->AddForMat(std::make_shared<EntrancePhaseMenu_PhaseLoader>("정리",
+	m_spMenuTable->AddMenu(std::make_shared<EntrancePhaseMenu_PhaseLoader>("정리",
 		COORD{ s_spUI_posInfo->menuStartPos.X,
 		s_spUI_posInfo->menuStartPos.Y + static_cast<SHORT>(s_spUI_posInfo->diffSize.height) },
 		EMiscellaneousShop2PhaseType::ARRANGE), 1, 0);
 
-	m_spMenuTable->AddForMat(std::make_shared<IntroMenu_ComeBack>("나가기",
+	m_spMenuTable->AddMenu(std::make_shared<IntroMenu_ComeBack>("나가기",
 		COORD{ s_spUI_posInfo->menuStartPos.X + static_cast<SHORT>(s_spUI_posInfo->diffSize.width),
 		s_spUI_posInfo->menuStartPos.Y + static_cast<SHORT>(s_spUI_posInfo->diffSize.height) }), 1, 1);
 
@@ -99,7 +99,7 @@ EErrorType EntrancePhase::OnPostInitialize()
 	selectorPos.X += (ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_MENU - ConsoleSelector::SELECTOR_LEFT_MARGIN_ON_BORDER);
 
 	Int32 currentMenuIdx = m_spMenuTable->ToMenuIdx(selectorPos);
-	m_spMenuTable->setCurrentMenuIdx(currentMenuIdx);
+	m_spMenuTable->ChangeCurrentMenu(currentMenuIdx);
 
 	return EErrorType::NOTHING;
 }

@@ -5,7 +5,7 @@
 // http://creativecommons.org/licenses/by/4.0/
 //
 // 기본 메뉴 테이블입니다.
-// 메뉴를 추가하고 실행할 수 있습닏나.
+// 메뉴를 추가하고 실행할 수 있습니다.
 // =====================================================================================
 
 #include "PCH.h"
@@ -28,7 +28,7 @@ void MenuTable::Initialize()
 	InputController::I()->InsertInputMappingInfo("MenuSelect", VK_RETURN);
 }
 
-void MenuTable::AddMenu(std::shared_ptr<Menu> spMenu)
+void MenuTable::AddMenu(MenuPtr spMenu)
 {
 	m_vecMenu.push_back(spMenu);
 
@@ -42,7 +42,7 @@ void MenuTable::AddMenu(std::shared_ptr<Menu> spMenu)
 	}
 }
 
-void MenuTable::AddMenu(std::shared_ptr<Menu> spMenu, Int32 idx)
+void MenuTable::AddMenu(MenuPtr spMenu, Int32 idx)
 {
 	CHECK_RANGE(idx, 0, m_vecMenu.size() - 1);
 	m_vecMenu[idx] = spMenu;

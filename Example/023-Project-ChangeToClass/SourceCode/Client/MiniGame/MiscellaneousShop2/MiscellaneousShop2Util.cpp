@@ -16,30 +16,18 @@
 #include "Item\ItemBase.h"
 #include "PlayerContext.h"
 
-void MiscellanouseShop2Util::DrawItemTable(Int32 x, Int32 y, EItemDBType itemDBType)
+void MiscellanouseShop2Util::DrawItemTable(Int32 x, Int32 y, EItemDBType type)
 {
-	ItemDB* pItemDB = ItemDBCtx::I()->QueryItemDB(itemDBType);	
-	if (pItemDB == nullptr)
-	{
-		PUT_STRING(0, 0, "알 수 없는 아이템 DB에요!");
-		return;
-	}
-
 	Int32 drawPosY = y - 1;
 	PUT_STRING(x, ++drawPosY, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓");
 	PUT_STRING(x, ++drawPosY, "┃    이름                            ┃     가격┃");
 	PUT_STRING(x, ++drawPosY, "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━┫");
 
-	const MapItemDB& mapItemDB = pItemDB->getMapItemDB();
-	for (const auto& iter : mapItemDB)
+	const MapItemDB& mapItemDB = ItemDBCtx::I()->FindItemDB(type)->getMapItemDB();
+	for (const auto& iter : mapItemDB.getMap())
 	{
-		ItemBase* pItem = iter.second;
-		if (pItem == nullptr)
-		{
-			continue;
-		}
-
-		PUT_STRING(x, ++drawPosY, "┃    %-32s┃ %8d┃", pItem->getNameTag().c_str(), pItem->getPrice());
+		ItemBasePtr spItem = iter.second;
+		PUT_STRING(x, ++drawPosY, "┃    %-32s┃ %8d┃", spItem->getNameTag().c_str(), spItem->getPrice());
 	}
 
 	PUT_STRING(x, ++drawPosY, "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━┛");
