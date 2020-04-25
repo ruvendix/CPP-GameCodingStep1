@@ -35,7 +35,7 @@ public:
 		// 맵에 성공적으로 등록되었는지 추가 확인!
 		if (ret.second == false)
 		{
-			DEFAULT_ERROR_HANDLER(EErrorType::INSERT_FAIL);
+			//DEFAULT_ERROR_HANDLER(EErrorType::INSERT_FAIL);
 		}
 	}
 
