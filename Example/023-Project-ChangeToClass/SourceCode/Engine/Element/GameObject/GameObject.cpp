@@ -12,8 +12,8 @@
 
 #include "Controller\ConsoleController.h"
 
-GameObj::GameObj(Int32 objID) :
-	m_ID(objID)
+GameObj::GameObj(EObjID ID) :
+	m_ID(ID)
 {
 
 }

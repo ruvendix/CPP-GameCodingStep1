@@ -61,7 +61,7 @@ public:
 		return m_spLevelDesign;
 	}
 
-	EDynamicObjID getCurrentPrototypeUnitID() const
+	EObjID getCurrentPrototypeUnitID() const
 	{
 		return m_currentPrototypeUnitID;
 	}
@@ -71,7 +71,7 @@ public:
 		m_mode = mode;
 	}
 
-	void setCurrentPrototypeUnitID(EDynamicObjID unitID)
+	void setCurrentPrototypeUnitID(EObjID unitID)
 	{
 		m_currentPrototypeUnitID = unitID;
 	}
@@ -80,7 +80,7 @@ private:
 	EBattleSimulator2Mode m_mode = EBattleSimulator2Mode::MENU;
 	std::shared_ptr<MenuTable_Row> m_spEditorMenuTable = nullptr;;
 
-	EDynamicObjID m_currentPrototypeUnitID = EDynamicObjID::UNKNOWN;
+	EObjID m_currentPrototypeUnitID = EObjID::UNKNOWN;
 	std::shared_ptr<BattleSimulator2World> m_spWorld = nullptr;
 	std::shared_ptr<BattleSimulator2_LevelDesign> m_spLevelDesign = nullptr;
 };

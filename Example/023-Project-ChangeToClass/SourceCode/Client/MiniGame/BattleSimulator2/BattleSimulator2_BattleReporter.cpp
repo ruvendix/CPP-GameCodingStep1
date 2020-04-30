@@ -29,17 +29,17 @@ void BattleSimulator2_BattleReporter::Result()
 	rx_time::ToHHMMSS(spBattleTimer->getElaspedTime(), nullptr, nullptr, &m_elapsedBattleTimeSecond);
 
 	Int32 medievalKnight_remainCnt =
-		BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::MEDIEVAL_KNIGHT, EBattleDataType::REMAIN_UNIT_CNT);
+		BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::MEDIEVAL_KNIGHT, EBattleDataType::REMAIN_UNIT_CNT);
 	Int32 medievalKnight_deathCnt =
-		BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::MEDIEVAL_KNIGHT, EBattleDataType::DEATH_UNIT_CNT);
+		BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::MEDIEVAL_KNIGHT, EBattleDataType::DEATH_UNIT_CNT);
 
 	Int32 viking_remainCnt =
-		BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::VIKING, EBattleDataType::REMAIN_UNIT_CNT);
+		BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::VIKING, EBattleDataType::REMAIN_UNIT_CNT);
 	Int32 viking_deathCnt =
-		BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::VIKING, EBattleDataType::DEATH_UNIT_CNT);
+		BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::VIKING, EBattleDataType::DEATH_UNIT_CNT);
 
-	Int32 medievalKnightIdx = common_func::ToUnderlyingType(EDynamicObjID::END) - common_func::ToUnderlyingType(EDynamicObjID::MEDIEVAL_KNIGHT) - 1;
-	Int32 vikingIdx = common_func::ToUnderlyingType(EDynamicObjID::END) - common_func::ToUnderlyingType(EDynamicObjID::VIKING) - 1;
+	Int32 medievalKnightIdx = common_func::ToUnderlyingType(EObjID::END_DYNAMIC_OBJ_ID) - common_func::ToUnderlyingType(EObjID::MEDIEVAL_KNIGHT) - 1;
+	Int32 vikingIdx = common_func::ToUnderlyingType(EObjID::END_DYNAMIC_OBJ_ID) - common_func::ToUnderlyingType(EObjID::VIKING) - 1;
 
 	m_arrTotalScore[medievalKnightIdx] = (medievalKnight_remainCnt * 5) + (viking_deathCnt * 3);
 	m_arrTotalScore[vikingIdx] = (viking_remainCnt * 5) + (medievalKnight_deathCnt * 3);
@@ -70,8 +70,8 @@ void BattleSimulator2_BattleReporter::DrawUnitStat() const
 	common_func::DrawBorder(drawPos, SizeInfo{ 17, 6 });
 
 	// 유닛 스탯 출력!
-	UnitPtr spMedievalKnight = BattleSimulator2_DataCollector::I()->FindPrototypeUnit(EDynamicObjID::MEDIEVAL_KNIGHT);
-	UnitPtr spViking = BattleSimulator2_DataCollector::I()->FindPrototypeUnit(EDynamicObjID::VIKING);
+	UnitPtr spMedievalKnight = BattleSimulator2_DataCollector::I()->FindPrototypeUnit(EObjID::MEDIEVAL_KNIGHT);
+	UnitPtr spViking = BattleSimulator2_DataCollector::I()->FindPrototypeUnit(EObjID::VIKING);
 
 	drawPos.X += 2;
 	PUT_STRING(drawPos.X, ++drawPos.Y, "              중세기사    바이킹");
@@ -95,11 +95,11 @@ void BattleSimulator2_BattleReporter::DrawRemainUnit() const
 
 	common_func::DrawBorder(drawPos, drawSize);
 
-	Int32 medievalKnight_totalCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::MEDIEVAL_KNIGHT, EBattleDataType::TOTAL_UNIT_CNT);
-	Int32 medievalKnight_remainCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::MEDIEVAL_KNIGHT, EBattleDataType::REMAIN_UNIT_CNT);
+	Int32 medievalKnight_totalCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::MEDIEVAL_KNIGHT, EBattleDataType::TOTAL_UNIT_CNT);
+	Int32 medievalKnight_remainCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::MEDIEVAL_KNIGHT, EBattleDataType::REMAIN_UNIT_CNT);
 
-	Int32 viking_totalCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::VIKING, EBattleDataType::TOTAL_UNIT_CNT);
-	Int32 viking_remainCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::VIKING, EBattleDataType::REMAIN_UNIT_CNT);
+	Int32 viking_totalCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::VIKING, EBattleDataType::TOTAL_UNIT_CNT);
+	Int32 viking_remainCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::VIKING, EBattleDataType::REMAIN_UNIT_CNT);
 
 	PUT_STRING(drawPos.X + 2, ++drawPos.Y, "남은 중세기사의 수 : %d / %d", medievalKnight_totalCnt, medievalKnight_remainCnt);
 	PUT_STRING(drawPos.X + 2, ++drawPos.Y, "남은 바이킹의 수   : %d / %d", viking_totalCnt, viking_remainCnt);
@@ -129,23 +129,23 @@ void BattleSimulator2_BattleReporter::DrawReport() const
 	PUT_STRING(drawPos.X, ++drawPos.Y, "              중세기사    바이킹");
 	
 	Int32 medievalKnight_remainCnt =
-		BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::MEDIEVAL_KNIGHT, EBattleDataType::REMAIN_UNIT_CNT);
+		BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::MEDIEVAL_KNIGHT, EBattleDataType::REMAIN_UNIT_CNT);
 	Int32 viking_remainCnt =
-		BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::VIKING, EBattleDataType::REMAIN_UNIT_CNT);
+		BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::VIKING, EBattleDataType::REMAIN_UNIT_CNT);
 	
 	++drawPos.Y;
 	PUT_STRING(drawPos.X, ++drawPos.Y, "살아남은 수 : %7d   %7d", medievalKnight_remainCnt, viking_remainCnt);
 
 	Int32 medievalKnight_deathCnt = 
-		BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::MEDIEVAL_KNIGHT, EBattleDataType::DEATH_UNIT_CNT);
+		BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::MEDIEVAL_KNIGHT, EBattleDataType::DEATH_UNIT_CNT);
 	Int32 viking_deathCnt =
-		BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::VIKING, EBattleDataType::DEATH_UNIT_CNT);
+		BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::VIKING, EBattleDataType::DEATH_UNIT_CNT);
 	PUT_STRING(drawPos.X, ++drawPos.Y, "사망한 수   : %7d   %7d", medievalKnight_deathCnt, viking_deathCnt);
 
 	Int32 medievalKnight_totalAttackDamage =
-		BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::MEDIEVAL_KNIGHT, EBattleDataType::TOTAL_ATTACK_DAMAGE);
+		BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::MEDIEVAL_KNIGHT, EBattleDataType::TOTAL_ATTACK_DAMAGE);
 	Int32 viking_totalAttackDamage = 
-		BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::VIKING, EBattleDataType::TOTAL_ATTACK_DAMAGE);
+		BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::VIKING, EBattleDataType::TOTAL_ATTACK_DAMAGE);
 	PUT_STRING(drawPos.X, ++drawPos.Y, "준 피해량   : %7d   %7d", medievalKnight_totalAttackDamage, viking_totalAttackDamage);
 #pragma endregion
 

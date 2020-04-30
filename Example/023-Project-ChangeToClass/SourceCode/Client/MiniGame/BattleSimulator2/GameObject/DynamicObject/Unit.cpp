@@ -17,10 +17,10 @@ Unit::Unit(const Unit& src)
 	Copy(src);
 }
 
-Unit::Unit(const std::string_view& szName, EDynamicObjID objID, const std::string_view& szShape) :
+Unit::Unit(const std::string_view& szName, EObjID objID, const std::string_view& szShape) :
 	DynamicObj(szName)
 {
-	setID(common_func::ToUnderlyingType(objID));
+	setID(objID);
 	setShape(szShape);
 }
 

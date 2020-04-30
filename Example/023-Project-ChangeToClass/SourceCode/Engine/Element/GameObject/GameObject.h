@@ -13,6 +13,8 @@
 #include "GameObjectType.h"
 #include "..\GameElement.h"
 
+enum class EObjID : Int32;
+
 class GameObj : public GameElem
 {
 	DECLARE_RTTI(GameObj, GameElem);
@@ -24,7 +26,7 @@ public:
 	GameObj() = default;
 	virtual ~GameObj() = default;
 
-	GameObj(Int32 objID);
+	GameObj(EObjID ID);
 #pragma endregion
 
 	virtual EErrorType OnRender() override;
@@ -49,7 +51,7 @@ public:
 		m_pos.Y += y;
 	}
 
-	Int32 getID() const
+	EObjID getID() const
 	{
 		return m_ID;
 	}
@@ -64,7 +66,7 @@ public:
 		return m_strShape;
 	}
 
-	void setID(Int32 ID)
+	void setID(EObjID ID)
 	{
 		m_ID = ID;
 	}
@@ -86,10 +88,7 @@ public:
 	}
 
 private:
-	// 사용하는 쪽에서는 enum class로 매핑시키는 게 좋아요!
-	// 0은 아무 의미가 없음을 의미해요.
-	Int32 m_ID = 0;
-
+	EObjID m_ID = static_cast<EObjID>(0);
 	COORD m_pos;
 	std::string m_strShape;
 };

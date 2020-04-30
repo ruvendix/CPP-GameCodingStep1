@@ -85,11 +85,11 @@ EErrorType BattleSimulator2_GameScene::OnInitialize()
 	}
 
 	// 게임 씬에서는 남은 유닛수를 초기화해야 해요!
-	Int32 vikingCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::VIKING, EBattleDataType::TOTAL_UNIT_CNT);
-	BattleSimulator2_DataCollector::I()->ModifyBattleData(EDynamicObjID::VIKING, EBattleDataType::REMAIN_UNIT_CNT, vikingCnt);
+	Int32 vikingCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::VIKING, EBattleDataType::TOTAL_UNIT_CNT);
+	BattleSimulator2_DataCollector::I()->ModifyBattleData(EObjID::VIKING, EBattleDataType::REMAIN_UNIT_CNT, vikingCnt);
 
-	Int32 medievalKnightCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::MEDIEVAL_KNIGHT, EBattleDataType::TOTAL_UNIT_CNT);
-	BattleSimulator2_DataCollector::I()->ModifyBattleData(EDynamicObjID::MEDIEVAL_KNIGHT, EBattleDataType::REMAIN_UNIT_CNT, medievalKnightCnt);
+	Int32 medievalKnightCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::MEDIEVAL_KNIGHT, EBattleDataType::TOTAL_UNIT_CNT);
+	BattleSimulator2_DataCollector::I()->ModifyBattleData(EObjID::MEDIEVAL_KNIGHT, EBattleDataType::REMAIN_UNIT_CNT, medievalKnightCnt);
 
 	const VecLevelDesigndObj& vecObj = m_spLevelDesign->getVecObj();
 	m_vecUnit.reserve(vecObj.size());
@@ -318,10 +318,10 @@ void BattleSimulator2_GameScene::OnTrigger_DeathUnit()
 	spUnit->ChangeLockOnTargetUnit(nullptr);
 	spUnit->ClearUnitInRange();
 
-	BattleSimulator2_DataCollector::I()->ModifyBattleData(static_cast<EDynamicObjID>(spUnit->getID()),
+	BattleSimulator2_DataCollector::I()->ModifyBattleData(static_cast<EObjID>(spUnit->getID()),
 		EBattleDataType::REMAIN_UNIT_CNT, EDataProgressDir::NEGATIVENESS, 1);
 
-	BattleSimulator2_DataCollector::I()->ModifyBattleData(static_cast<EDynamicObjID>(spUnit->getID()),
+	BattleSimulator2_DataCollector::I()->ModifyBattleData(static_cast<EObjID>(spUnit->getID()),
 		EBattleDataType::DEATH_UNIT_CNT, EDataProgressDir::POSITIVENESS, 1);
 
 	//DEBUG_LOG("(%s) 유닛 제거!", spUnit->getNameTag().c_str());

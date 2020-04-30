@@ -49,8 +49,8 @@ EErrorType Menu_EditLevelDesign::OnExcute()
 	consoleSelector.setMaxSelectorPos((worldSize.width - 2) * consoleSelector.getShapeLength(), worldSize.height - 2);
 
 	// 리스트에서 첫번째꺼
-	Int32 defaultPrototypeUnitID = common_func::ToUnderlyingType(EDynamicObjID::UNKNOWN) + 1;
-	m_pTargetScene->setCurrentPrototypeUnitID(static_cast<EDynamicObjID>(defaultPrototypeUnitID));
+	Int32 defaultPrototypeUnitID = common_func::ToUnderlyingType(EObjID::START_DYNAMIC_OBJ_ID) + 1;
+	m_pTargetScene->setCurrentPrototypeUnitID(static_cast<EObjID>(defaultPrototypeUnitID));
 	consoleSelector.setShape(
 		BattleSimulator2_DataCollector::I()->FindPrototypeUnit(m_pTargetScene->getCurrentPrototypeUnitID())->getShape());
 

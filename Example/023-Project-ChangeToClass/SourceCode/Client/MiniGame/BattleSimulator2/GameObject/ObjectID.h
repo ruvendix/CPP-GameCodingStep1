@@ -13,19 +13,18 @@
 
 #include "Common\CommonType.h"
 
-enum class EStaticObjID : Int32
+enum class EObjID : Int32
 {
 	UNKNOWN = 0,
-	WALL,
-	END, // 동적 오브젝트 ID와의 경계용으로 사용!
-};
 
-enum class EDynamicObjID : Int32
-{
-	UNKNOWN = static_cast<Int32>(EStaticObjID::END),
+	START_STATIC_OBJ_ID,
+	WALL,
+	END_STATIC_OBJ_ID,
+
+	START_DYNAMIC_OBJ_ID,
 	VIKING,
 	MEDIEVAL_KNIGHT,
-	END,
+	END_DYNAMIC_OBJ_ID,
 };
 
 #endif

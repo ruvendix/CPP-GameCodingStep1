@@ -78,8 +78,8 @@ void BattleSimulator2_EditorSceneHelper::OnInput_EditorMode(_Inout_ BattleSimula
 		targetHelper.m_spEditorMenuTable->setCurrentMenuIdx(currentMenuIdx);
 
 		Int32 currentPrototypeUnitID = common_func::ToUnderlyingType(targetHelper.m_currentPrototypeUnitID);
-		currentPrototypeUnitID = common_func::ToUnderlyingType(EDynamicObjID::UNKNOWN) + 1;
-		targetHelper.m_currentPrototypeUnitID = static_cast<EDynamicObjID>(currentPrototypeUnitID);
+		currentPrototypeUnitID = common_func::ToUnderlyingType(EObjID::UNKNOWN) + 1;
+		targetHelper.m_currentPrototypeUnitID = static_cast<EObjID>(currentPrototypeUnitID);
 		targetHelper.m_mode = EBattleSimulator2Mode::MENU;
 	}
 
@@ -128,31 +128,31 @@ void BattleSimulator2_EditorSceneHelper::OnInput_EditorMode(_Inout_ BattleSimula
 		// 현재 선택된 ID에 따라 스폰!
 		switch (targetHelper.m_currentPrototypeUnitID)
 		{
-		case EDynamicObjID::VIKING:
+		case EObjID::VIKING:
 		{
-			UnitPtr spPrototypeViking = BattleSimulator2_DataCollector::I()->FindPrototypeUnit(EDynamicObjID::VIKING);
+			UnitPtr spPrototypeViking = BattleSimulator2_DataCollector::I()->FindPrototypeUnit(EObjID::VIKING);
 			VikingPtr spViking = common_func::KindCastSP<Viking>(spPrototypeViking)->Clone();
 			spViking->setPos(mappingPos);
 
-			Int32 vikingCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::VIKING, EBattleDataType::TOTAL_UNIT_CNT);
+			Int32 vikingCnt = BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::VIKING, EBattleDataType::TOTAL_UNIT_CNT);
 			spViking->setNameTag(common_func::MakeFormatString("%s_%d", spViking->getNameTag().c_str(), vikingCnt));
-			BattleSimulator2_DataCollector::I()->ModifyBattleData(EDynamicObjID::VIKING,
+			BattleSimulator2_DataCollector::I()->ModifyBattleData(EObjID::VIKING,
 				EBattleDataType::TOTAL_UNIT_CNT, EDataProgressDir::POSITIVENESS, 1);
 
 			targetHelper.m_spLevelDesign->AddObj(spViking);
 			break;
 		}
 
-		case EDynamicObjID::MEDIEVAL_KNIGHT:
+		case EObjID::MEDIEVAL_KNIGHT:
 		{
-			UnitPtr spPrototypeMedievalKnight = BattleSimulator2_DataCollector::I()->FindPrototypeUnit(EDynamicObjID::MEDIEVAL_KNIGHT);
+			UnitPtr spPrototypeMedievalKnight = BattleSimulator2_DataCollector::I()->FindPrototypeUnit(EObjID::MEDIEVAL_KNIGHT);
 			MedievalKnightPtr spMedievalKnight = common_func::KindCastSP<MedievalKnight>(spPrototypeMedievalKnight)->Clone();
 			spMedievalKnight->setPos(mappingPos);
 
 			Int32 medievalKnightCnt =
-				BattleSimulator2_DataCollector::I()->FindBattleData(EDynamicObjID::MEDIEVAL_KNIGHT, EBattleDataType::TOTAL_UNIT_CNT);
+				BattleSimulator2_DataCollector::I()->FindBattleData(EObjID::MEDIEVAL_KNIGHT, EBattleDataType::TOTAL_UNIT_CNT);
 			spMedievalKnight->setNameTag(common_func::MakeFormatString("%s_%d", spMedievalKnight->getNameTag().c_str(), medievalKnightCnt));
-			BattleSimulator2_DataCollector::I()->ModifyBattleData(EDynamicObjID::MEDIEVAL_KNIGHT,
+			BattleSimulator2_DataCollector::I()->ModifyBattleData(EObjID::MEDIEVAL_KNIGHT,
 				EBattleDataType::TOTAL_UNIT_CNT, EDataProgressDir::POSITIVENESS, 1);
 
 			targetHelper.m_spLevelDesign->AddObj(spMedievalKnight);
@@ -175,8 +175,8 @@ void BattleSimulator2_EditorSceneHelper::OnInput_EditorMode(_Inout_ BattleSimula
 		++currentPrototypeUnitID;
 
 		currentPrototypeUnitID = rx_math::ClampCycle(currentPrototypeUnitID,
-			common_func::ToUnderlyingType(EDynamicObjID::UNKNOWN) + 1, common_func::ToUnderlyingType(EDynamicObjID::END) - 1);
-		targetHelper.m_currentPrototypeUnitID = static_cast<EDynamicObjID>(currentPrototypeUnitID);
+			common_func::ToUnderlyingType(EObjID::UNKNOWN) + 1, common_func::ToUnderlyingType(EObjID::END_DYNAMIC_OBJ_ID) - 1);
+		targetHelper.m_currentPrototypeUnitID = static_cast<EObjID>(currentPrototypeUnitID);
 
 		ConsoleSelector& consoleSelector = ConsoleController::I()->getCurrentConsoleSelector();
 		consoleSelector.setShape(
@@ -263,14 +263,14 @@ EErrorType BattleSimulator2_EditorScene::OnInitialize()
 	m_spLevelDesign->LoadFile("BattleSimulator2.level");
 
 	// 레벨 디자인을 불러왔으면 데이터 콜렉터의 생존 유닛수를 갱신해줘야 해요.
-	Int32 startID = common_func::ToUnderlyingType(EDynamicObjID::UNKNOWN) + 1;
-	Int32 endID = common_func::ToUnderlyingType(EDynamicObjID::END);
+	Int32 startID = common_func::ToUnderlyingType(EObjID::START_DYNAMIC_OBJ_ID) + 1;
+	Int32 endID = common_func::ToUnderlyingType(EObjID::END_DYNAMIC_OBJ_ID);
 	for (Int32 i = startID; i < endID; ++i)
 	{
 		Int32 totalUnitCnt = BattleSimulator2_DataCollector::I()->FindBattleData(
-			static_cast<EDynamicObjID>(i), EBattleDataType::TOTAL_UNIT_CNT);
+			static_cast<EObjID>(i), EBattleDataType::TOTAL_UNIT_CNT);
 
-		BattleSimulator2_DataCollector::I()->ModifyBattleData(static_cast<EDynamicObjID>(i),
+		BattleSimulator2_DataCollector::I()->ModifyBattleData(static_cast<EObjID>(i),
 			EBattleDataType::REMAIN_UNIT_CNT, totalUnitCnt);
 	}
 

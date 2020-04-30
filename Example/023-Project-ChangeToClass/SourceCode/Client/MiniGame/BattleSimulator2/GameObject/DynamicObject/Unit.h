@@ -30,7 +30,7 @@ public:
 	virtual ~Unit() = default;
 	
 	Unit(const Unit& src);
-	Unit(const std::string_view& szName, EDynamicObjID objID, const std::string_view& szShape);
+	Unit(const std::string_view& szName, EObjID objID, const std::string_view& szShape);
 #pragma endregion
 
 	virtual EErrorType OnSaveFile(FILE* pFileStream) override;

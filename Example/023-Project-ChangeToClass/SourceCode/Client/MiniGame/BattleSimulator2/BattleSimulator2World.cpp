@@ -27,21 +27,21 @@ class BattleSimulator2WorldHelper final
 	NON_COPYABLE_ONLY_PRIVATE_CLASS(BattleSimulator2WorldHelper);
 
 public:
-	static std::shared_ptr<StaticObj> CreateStaticObj(EStaticObjID staticObjID);
+	static std::shared_ptr<StaticObj> CreateStaticObj(EObjID ID);
 };
 
-std::shared_ptr<StaticObj> BattleSimulator2WorldHelper::CreateStaticObj(EStaticObjID staticObjID)
+std::shared_ptr<StaticObj> BattleSimulator2WorldHelper::CreateStaticObj(EObjID ID)
 {
-	switch (staticObjID)
+	switch (ID)
 	{
-	case EStaticObjID::WALL:
+	case EObjID::WALL:
 	{
-		return std::make_shared<Wall>(common_func::ToUnderlyingType(staticObjID));
+		return std::make_shared<Wall>(ID);
 	}
 
 	default:
 	{
-		DEFAULT_ERROR_HANDLER(EErrorType::UNKNOWN_DYNAMIC_OBJ);
+		DEFAULT_ERROR_HANDLER(EErrorType::UNKNOWN_STATIC_OBJ);
 		return nullptr;
 	}
 	}
@@ -58,13 +58,13 @@ EErrorType BattleSimulator2World::OnPostInitialize()
 	const SizeInfo& sizeInfo = getSize();
 	for (Int32 i = 0; i < static_cast<Int32>(sizeInfo.width); ++i)
 	{
-		std::shared_ptr<Wall> staticObj = std::make_shared<Wall>(common_func::ToUnderlyingType(EStaticObjID::WALL));
+		std::shared_ptr<Wall> staticObj = std::make_shared<Wall>(EObjID::WALL);
 		staticObj->setPos(i, 0);
 		staticObj->setNameTag(common_func::MakeFormatString("Wall_%d", s_wallNum++));
 		staticObj->setShape("■");
 		AddObj(staticObj);
 
-		staticObj = std::make_shared<Wall>(common_func::ToUnderlyingType(EStaticObjID::WALL));
+		staticObj = std::make_shared<Wall>(EObjID::WALL);
 		staticObj->setPos(i, sizeInfo.height - 1);
 		staticObj->setNameTag(common_func::MakeFormatString("Wall_%d", s_wallNum++));
 		staticObj->setShape("■");
@@ -73,13 +73,13 @@ EErrorType BattleSimulator2World::OnPostInitialize()
 
 	for (Int32 i = 1; i < static_cast<Int32>(sizeInfo.height - 1); ++i)
 	{
-		std::shared_ptr<Wall> staticObj = std::make_shared<Wall>(common_func::ToUnderlyingType(EStaticObjID::WALL));
+		std::shared_ptr<Wall> staticObj = std::make_shared<Wall>(EObjID::WALL);
 		staticObj->setPos(0, i);
 		staticObj->setNameTag(common_func::MakeFormatString("Wall_%d", s_wallNum++));
 		staticObj->setShape("■");
 		AddObj(staticObj);
 
-		staticObj = std::make_shared<Wall>(common_func::ToUnderlyingType(EStaticObjID::WALL));
+		staticObj = std::make_shared<Wall>(EObjID::WALL);
 		staticObj->setPos(sizeInfo.width - 1, i);
 		staticObj->setNameTag(common_func::MakeFormatString("Wall_%d", s_wallNum++));
 		staticObj->setShape("■");
@@ -97,24 +97,17 @@ EErrorType BattleSimulator2World::OnLoadFile(FILE* pFileStream)
 	for (TSize i = 0; i < spWorldFileHeader->worldObjCnt; ++i)
 	{
 		// 아이디를 체크해서 만든다!
-		Int32 objID = 0;
-		fread(&objID, sizeof(Int32), 1, pFileStream);
+		EObjID ID = EObjID::UNKNOWN;
+		fread(&ID, sizeof(EObjID), 1, pFileStream);
 
-		std::shared_ptr<StaticObj> spWorldObj =
-			BattleSimulator2WorldHelper::CreateStaticObj(static_cast<EStaticObjID>(objID));
-
-		if (objID == common_func::ToUnderlyingType(EStaticObjID::WALL))
-		{
-			spWorldObj = std::make_shared<Wall>(common_func::ToUnderlyingType(EStaticObjID::WALL));
-		}
-
-		if (spWorldObj->OnLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
+		std::shared_ptr<StaticObj> spObj = BattleSimulator2WorldHelper::CreateStaticObj(ID);
+		if (spObj->OnLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
 		{
 			return EErrorType::LOAD_FILE_FAIL;
 		}
 
 		//DEBUG_LOG("(%d)번째 읽기 성공!", i);
-		AddObj(spWorldObj);
+		AddObj(spObj);
 	}
 
 	return EErrorType::NOTHING;

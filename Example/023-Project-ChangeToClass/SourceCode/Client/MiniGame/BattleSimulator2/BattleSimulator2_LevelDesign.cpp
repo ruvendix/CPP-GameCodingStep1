@@ -24,25 +24,25 @@ class BattleSimulator2_LevelDesignHelper final
 	NON_COPYABLE_ONLY_PRIVATE_CLASS(BattleSimulator2_LevelDesignHelper);
 
 public:
-	static std::shared_ptr<DynamicObj> CreateDynamicObj(EDynamicObjID dynamicObjID);
+	static std::shared_ptr<DynamicObj> CreateDynamicObj(EObjID ID);
 };
 
-std::shared_ptr<DynamicObj> BattleSimulator2_LevelDesignHelper::CreateDynamicObj(EDynamicObjID objID)
+std::shared_ptr<DynamicObj> BattleSimulator2_LevelDesignHelper::CreateDynamicObj(EObjID ID)
 {
-	switch (objID)
+	switch (ID)
 	{
-	case EDynamicObjID::VIKING:
+	case EObjID::VIKING:
 	{
-		BattleSimulator2_DataCollector::I()->ModifyBattleData(EDynamicObjID::VIKING,
+		BattleSimulator2_DataCollector::I()->ModifyBattleData(EObjID::VIKING,
 			EBattleDataType::TOTAL_UNIT_CNT, EDataProgressDir::POSITIVENESS, 1);
-		return std::make_shared<Viking>(common_func::ToUnderlyingType(objID));
+		return std::make_shared<Viking>(ID);
 	}
 
-	case EDynamicObjID::MEDIEVAL_KNIGHT:
+	case EObjID::MEDIEVAL_KNIGHT:
 	{
-		BattleSimulator2_DataCollector::I()->ModifyBattleData(EDynamicObjID::MEDIEVAL_KNIGHT,
+		BattleSimulator2_DataCollector::I()->ModifyBattleData(EObjID::MEDIEVAL_KNIGHT,
 			EBattleDataType::TOTAL_UNIT_CNT, EDataProgressDir::POSITIVENESS, 1);
-		return std::make_shared<MedievalKnight>(common_func::ToUnderlyingType(objID));
+		return std::make_shared<MedievalKnight>(ID);
 	}
 
 	default:
@@ -66,19 +66,17 @@ EErrorType BattleSimulator2_LevelDesign::OnLoadFile(FILE* pFileStream)
 	for (TSize i = 0; i < spLevelDesignFileHeader->levelDesignObjCnt; ++i)
 	{
 		// 아이디를 체크해서 만든다!
-		Int32 objID = 0;
-		fread(&objID, sizeof(Int32), 1, pFileStream);
+		EObjID ID = EObjID::UNKNOWN;
+		fread(&ID, sizeof(EObjID), 1, pFileStream);
 
-		std::shared_ptr<DynamicObj> spLevelDesignObj =
-			BattleSimulator2_LevelDesignHelper::CreateDynamicObj(static_cast<EDynamicObjID>(objID));
-
-		if (spLevelDesignObj->OnLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
+		std::shared_ptr<DynamicObj> spObj = BattleSimulator2_LevelDesignHelper::CreateDynamicObj(ID);
+		if (spObj->OnLoadFile(pFileStream) == EErrorType::LOAD_FILE_FAIL)
 		{
 			return EErrorType::LOAD_FILE_FAIL;
 		}
 
 		//DEBUG_LOG("(%d)번째 읽기 성공!", i);
-		AddObj(spLevelDesignObj);
+		AddObj(spObj);
 	}
 
 	return EErrorType::NOTHING;

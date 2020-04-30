@@ -42,8 +42,8 @@ using VikingPtr = std::shared_ptr<Viking>;
 using MedievalKnightPtr = std::shared_ptr<MedievalKnight>;
 using StopwatchTimerPtr = std::shared_ptr<StopwatchTimer>;
 using BattleDataPtr = std::shared_ptr<BattleData>;
-using MapPrototypeUnit = MapCustom<EDynamicObjID, UnitPtr>;
-using MapBattleData = MapCustom<EDynamicObjID, BattleDataPtr>;
+using MapPrototypeUnit = MapCustom<EObjID, UnitPtr>;
+using MapBattleData = MapCustom<EObjID, BattleDataPtr>;
 
 class BattleSimulator2_DataCollector final
 {
@@ -53,14 +53,14 @@ public:
 	void Initialize();
 	void Finalize();
 
-	UnitPtr FindPrototypeUnit(EDynamicObjID ID) const;
+	UnitPtr FindPrototypeUnit(EObjID ID) const;
 	
 	void StartBattleTime();
 	void EndBattleTime();
-	void ModifyBattleData(EDynamicObjID unitID, EBattleDataType dataType, Int32 data);
-	void ModifyBattleData(EDynamicObjID unitID, EBattleDataType dataType, EDataProgressDir dir, Int32 data);
+	void ModifyBattleData(EObjID unitID, EBattleDataType dataType, Int32 data);
+	void ModifyBattleData(EObjID unitID, EBattleDataType dataType, EDataProgressDir dir, Int32 data);
 
-	Int32 FindBattleData(EDynamicObjID unitID, EBattleDataType dataType) const;
+	Int32 FindBattleData(EObjID unitID, EBattleDataType dataType) const;
 	bool IsBattleEnd() const;
 
 	TSize getPrototypeUnitCnt() const
