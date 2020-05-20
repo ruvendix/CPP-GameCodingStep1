@@ -52,7 +52,6 @@ public:
 private:
     FoodInfo m_ordereMenuInfo;
 };
-
 #else
 class WaitingStaff; // 전방선언 필요!
 
@@ -156,5 +155,5 @@ int main()
 #endif
 
     printf("\n");
-	return 0;
+    return 0;
 }
