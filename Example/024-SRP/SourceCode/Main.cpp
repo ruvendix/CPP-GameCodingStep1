@@ -14,8 +14,9 @@ struct FoodInfo
     bool bFinishedCooking = false;
 };
 
-// 테스트할 때는 디파인값을 활성해주세요.
-//#define NO_SRP
+// 문제가 해결된 상황을 보고 싶으면
+// 아래에 있는 디파인값을 주석 처리해주세요.
+#define NO_SRP
 
 #ifdef NO_SRP
 class Chef
