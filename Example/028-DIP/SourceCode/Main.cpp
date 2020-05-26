@@ -5,168 +5,184 @@
 // http://creativecommons.org/licenses/by/4.0/
 // =====================================================================================
 
+// 테스트를 하려면 네임스페이스를 참고해주세요.
+// 예) no_DIP::UnitTest();
+
 #include <cstdio>
 #include <string>
 
-// 문제가 해결된 상황을 보고 싶으면
-// 아래에 있는 디파인값을 주석 처리해주세요.
-#define NO_DIP
-
-#ifdef NO_DIP
-class Lamp
+namespace no_DIP
 {
-public:
-    Lamp() = default;
-    ~Lamp() = default;
 
-    void TurnOn() const
+    class Lamp
     {
-        printf("[Lamp]: 램프를 켰다!\n");
-    }
+    public:
+        Lamp() = default;
+        ~Lamp() = default;
 
-    void TurnOff() const
-    {
-        printf("[Lamp]: 램프를 껐다!\n");
-    }
-};
-
-class House
-{
-public:
-    // 의존성 주입 이용!
-    House(Lamp* pLamp) :
-        m_pLamp(pLamp)
-    {
-
-    }
-
-    ~House()
-    {
-        delete m_pLamp;
-    }
-
-    void UseLamp(bool bUse)
-    {
-        if (bUse == true)
+        void TurnOn() const
         {
-            m_pLamp->TurnOn();
+            printf("[Lamp]: 램프를 켰다!\n");
         }
-        else
+
+        void TurnOff() const
         {
-            m_pLamp->TurnOff();
+            printf("[Lamp]: 램프를 껐다!\n");
         }
-    }
+    };
 
-private:
-    Lamp* m_pLamp = nullptr;
-};
-#else
-class ILamp abstract
-{
-public:
-    ILamp() = default;
-    virtual ~ILamp() = default;
-
-    virtual void TurnOn() const abstract;
-    virtual void TurnOff() const abstract;
-};
-
-class Lamp : public ILamp
-{
-public:
-    using ILamp::ILamp;
-    virtual ~Lamp() = default;
-
-    virtual void TurnOn() const override
+    class House
     {
-        printf("[Lamp]: 램프를 켰다!\n");
-    }
-
-    virtual void TurnOff() const override
-    {
-        printf("[Lamp]: 램프를 껐다!\n");
-    }
-};
-
-class CharacterLamp : public ILamp
-{
-public:
-    using ILamp::ILamp;
-    virtual ~CharacterLamp() = default;
-
-    virtual void TurnOn() const override
-    {
-        printf("[CharacterLamp]: 램프를 켰다!\n");
-    }
-
-    virtual void TurnOff() const override
-    {
-        printf("[CharacterLamp]: 램프를 껐다!\n");
-    }
-};
-
-class House
-{
-public:
-    // 의존성 주입 이용!
-    House(ILamp* pLamp) :
-        m_pLamp(pLamp)
-    {
-
-    }
-
-    ~House()
-    {
-        delete m_pLamp;
-    }
-
-    void UseLamp(bool bUse)
-    {
-        if (bUse == true)
+    public:
+        // 의존성 주입 이용!
+        House(Lamp* pLamp) :
+            m_pLamp(pLamp)
         {
-            m_pLamp->TurnOn();
+
         }
-        else
+
+        ~House()
         {
-            m_pLamp->TurnOff();
+            delete m_pLamp;
         }
-    }
 
-    // Setter도 의존성 주입이 가능!
-    void setLamp(ILamp* pLamp)
+        void UseLamp(bool bUse)
+        {
+            if (bUse == true)
+            {
+                m_pLamp->TurnOn();
+            }
+            else
+            {
+                m_pLamp->TurnOff();
+            }
+        }
+
+    private:
+        Lamp* m_pLamp = nullptr;
+    };
+
+    void UnitTest()
     {
-        delete m_pLamp;
-        m_pLamp = pLamp;
+        printf("<집에서 램프를 사용해보자!>\n");
+
+        House house(new Lamp());
+        house.UseLamp(true);
+        house.UseLamp(false);
     }
 
-private:
-    ILamp* m_pLamp = nullptr;
-};
-#endif
+} // namespace no_DIP end
+
+namespace DIP
+{
+
+    class ILamp abstract
+    {
+    public:
+        ILamp() = default;
+        virtual ~ILamp() = default;
+
+        virtual void TurnOn() const abstract;
+        virtual void TurnOff() const abstract;
+    };
+
+    class Lamp : public ILamp
+    {
+    public:
+        using ILamp::ILamp;
+        virtual ~Lamp() = default;
+
+        virtual void TurnOn() const override
+        {
+            printf("[Lamp]: 램프를 켰다!\n");
+        }
+
+        virtual void TurnOff() const override
+        {
+            printf("[Lamp]: 램프를 껐다!\n");
+        }
+    };
+
+    class CharacterLamp : public ILamp
+    {
+    public:
+        using ILamp::ILamp;
+        virtual ~CharacterLamp() = default;
+
+        virtual void TurnOn() const override
+        {
+            printf("[CharacterLamp]: 램프를 켰다!\n");
+        }
+
+        virtual void TurnOff() const override
+        {
+            printf("[CharacterLamp]: 램프를 껐다!\n");
+        }
+    };
+
+    class House
+    {
+    public:
+        // 의존성 주입 이용!
+        House(ILamp* pLamp) :
+            m_pLamp(pLamp)
+        {
+
+        }
+
+        ~House()
+        {
+            delete m_pLamp;
+        }
+
+        void UseLamp(bool bUse)
+        {
+            if (bUse == true)
+            {
+                m_pLamp->TurnOn();
+            }
+            else
+            {
+                m_pLamp->TurnOff();
+            }
+        }
+
+        // Setter도 의존성 주입이 가능!
+        void setLamp(ILamp* pLamp)
+        {
+            delete m_pLamp;
+            m_pLamp = pLamp;
+        }
+
+    private:
+        ILamp* m_pLamp = nullptr;
+    };
+
+    void UnitTest()
+    {
+        printf("<집에서 램프를 사용해보자!>\n");
+
+        House house(new Lamp());
+        house.UseLamp(true);
+        house.UseLamp(false);
+
+        printf("\n");
+        printf("캐릭터 램프로 바꿀래!\n");
+        printf("\n");
+
+        house.setLamp(new CharacterLamp());
+        house.UseLamp(true);
+        house.UseLamp(false);
+    }
+
+} // namespace DIP end
 
 //////////////////////////////////////////////////////////////////////////
 // 프로그램이 시작되는 곳이에요.
 int main()
 {
-    printf("<집에서 램프를 사용해보자!>\n");
-
-#ifdef NO_DIP
-    House house(new Lamp());
-    house.UseLamp(true);
-    house.UseLamp(false);
-#else
-    House house(new Lamp());
-    house.UseLamp(true);
-    house.UseLamp(false);
-
-    printf("\n");
-    printf("캐릭터 램프로 바꿀래!\n");
-    printf("\n");
-
-    house.setLamp(new CharacterLamp());
-    house.UseLamp(true);
-    house.UseLamp(false);
-#endif
+    no_DIP::UnitTest();
+    //DIP::UnitTest();
 
     printf("\n");
     return 0;

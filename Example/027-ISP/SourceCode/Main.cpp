@@ -5,162 +5,179 @@
 // http://creativecommons.org/licenses/by/4.0/
 // =====================================================================================
 
+// 테스트를 하려면 네임스페이스를 참고해주세요.
+// 예) no_ISP::UnitTest();
+
 #include <cstdio>
 #include <string>
-
-// 문제가 해결된 상황을 보고 싶으면
-// 아래에 있는 디파인값을 주석 처리해주세요.
-#define NO_ISP
 
 struct Food
 {
     std::string strName;
 };
 
-#ifdef NO_ISP
-class IRequireFood abstract
+namespace no_ISP
 {
-public:
-    IRequireFood() = default;
-    virtual ~IRequireFood() = default;
 
-    virtual void Eat(const Food& food) const abstract;
-    virtual void LightCandelabra() const abstract;
-    virtual void LayoutCutlery() const abstract;
-};
+    class IRequireFood abstract
+    {
+    public:
+        IRequireFood() = default;
+        virtual ~IRequireFood() = default;
 
-class SavagePerson : public IRequireFood
+        virtual void Eat(const Food& food) const abstract;
+        virtual void LightCandelabra() const abstract;
+        virtual void LayoutCutlery() const abstract;
+    };
+
+    class SavagePerson : public IRequireFood
+    {
+    public:
+        using IRequireFood::IRequireFood;
+        virtual ~SavagePerson() = default;
+
+        virtual void Eat(const Food& food) const override
+        {
+            printf("\"%s\" 먹는다!\n", food.strName.c_str());
+        }
+
+        virtual void LightCandelabra() const override
+        {
+            printf("난 양초 필요 없다!\n");
+        }
+
+        virtual void LayoutCutlery() const override
+        {
+            printf("난 손으로만 먹는다!\n");
+        }
+    };
+
+    class CulturedPerson : public IRequireFood
+    {
+    public:
+        using IRequireFood::IRequireFood;
+        virtual ~CulturedPerson() = default;
+
+        virtual void Eat(const Food& food) const override
+        {
+            printf("\"%s\" 먹을게요!\n", food.strName.c_str());
+        }
+
+        virtual void LightCandelabra() const override
+        {
+            printf("양초는 분위기 있게 해주죠!\n");
+        }
+
+        virtual void LayoutCutlery() const override
+        {
+            printf("수저가 필요해요!\n");
+        }
+    };
+
+    void UnitTest()
+    {
+        Food food;
+        food.strName = "소고기";
+
+        SavagePerson savagePerson;
+        printf("<야만인의 식사>\n");
+        savagePerson.Eat(food);
+        savagePerson.LightCandelabra();
+        savagePerson.LayoutCutlery();
+
+        printf("\n");
+
+        CulturedPerson culturedPerson;
+        printf("<문화인의 식사>\n");
+        culturedPerson.Eat(food);
+        culturedPerson.LightCandelabra();
+        culturedPerson.LayoutCutlery();
+    }
+
+} // namespace no_ISP end
+
+namespace ISP
 {
-public:
-    using IRequireFood::IRequireFood;
-    virtual ~SavagePerson() = default;
 
-    virtual void Eat(const Food& food) const override
+    class IRequireFood abstract
     {
-        printf("\"%s\" 먹는다!\n", food.strName.c_str());
+    public:
+        IRequireFood() = default;
+        virtual ~IRequireFood() = default;
+
+        virtual void Eat(const Food& food) const abstract;
+    };
+
+    class SavagePerson : public IRequireFood
+    {
+    public:
+        using IRequireFood::IRequireFood;
+        virtual ~SavagePerson() = default;
+
+        virtual void Eat(const Food& food) const override
+        {
+            printf("\"%s\" 먹는다!\n", food.strName.c_str());
+        }
+    };
+
+    class IRequireFoodForCulturedPerson : public IRequireFood
+    {
+    public:
+        using IRequireFood::IRequireFood;
+        virtual ~IRequireFoodForCulturedPerson() = default;
+
+        virtual void LightCandelabra() const abstract;
+        virtual void LayoutCutlery() const abstract;
+    };
+
+    class CulturedPerson : public IRequireFoodForCulturedPerson
+    {
+    public:
+        using IRequireFoodForCulturedPerson::IRequireFoodForCulturedPerson;
+        virtual ~CulturedPerson() = default;
+
+        virtual void Eat(const Food& food) const override
+        {
+            printf("\"%s\" 먹을게요!\n", food.strName.c_str());
+        }
+
+        virtual void LightCandelabra() const override
+        {
+            printf("양초는 분위기 있게 해주죠!\n");
+        }
+
+        virtual void LayoutCutlery() const override
+        {
+            printf("수저가 필요해요!\n");
+        }
+    };
+
+    void UnitTest()
+    {
+        Food food;
+        food.strName = "소고기";
+
+        SavagePerson savagePerson;
+        printf("<야만인의 식사>\n");
+        savagePerson.Eat(food);
+
+        printf("\n");
+
+        CulturedPerson culturedPerson;
+        printf("<문화인의 식사>\n");
+        culturedPerson.Eat(food);
+        culturedPerson.LightCandelabra();
+        culturedPerson.LayoutCutlery();
     }
 
-    virtual void LightCandelabra() const override
-    {
-        printf("난 양초 필요 없다!\n");
-    }
-
-    virtual void LayoutCutlery() const override
-    {
-        printf("난 손으로만 먹는다!\n");
-    }
-};
-
-class CulturedPerson : public IRequireFood
-{
-public:
-    using IRequireFood::IRequireFood;
-    virtual ~CulturedPerson() = default;
-
-    virtual void Eat(const Food & food) const override
-    {
-        printf("\"%s\" 먹을게요!\n", food.strName.c_str());
-    }
-
-    virtual void LightCandelabra() const override
-    {
-        printf("양초는 분위기 있게 해주죠!\n");
-    }
-
-    virtual void LayoutCutlery() const override
-    {
-        printf("수저가 필요해요!\n");
-    }
-};
-#else
-class IRequireFood abstract
-{
-public:
-    IRequireFood() = default;
-    virtual ~IRequireFood() = default;
-
-    virtual void Eat(const Food& food) const abstract;
-};
-
-class SavagePerson : public IRequireFood
-{
-public:
-    using IRequireFood::IRequireFood;
-    virtual ~SavagePerson() = default;
-
-    virtual void Eat(const Food& food) const override
-    {
-        printf("\"%s\" 먹는다!\n", food.strName.c_str());
-    }
-};
-
-class IRequireFoodForCulturedPerson : public IRequireFood
-{
-public:
-    using IRequireFood::IRequireFood;
-    virtual ~IRequireFoodForCulturedPerson() = default;
-
-    virtual void LightCandelabra() const abstract;
-    virtual void LayoutCutlery() const abstract;
-};
-
-class CulturedPerson : public IRequireFoodForCulturedPerson
-{
-public:
-    using IRequireFoodForCulturedPerson::IRequireFoodForCulturedPerson;
-    virtual ~CulturedPerson() = default;
-
-    virtual void Eat(const Food& food) const override
-    {
-        printf("\"%s\" 먹을게요!\n", food.strName.c_str());
-    }
-
-    virtual void LightCandelabra() const override
-    {
-        printf("양초는 분위기 있게 해주죠!\n");
-    }
-
-    virtual void LayoutCutlery() const override
-    {
-        printf("수저가 필요해요!\n");
-    }
-};
-#endif
+} // namespace ISP end
 
 //////////////////////////////////////////////////////////////////////////
 // 프로그램이 시작되는 곳이에요.
 int main()
 {
-    Food food;
-    food.strName = "소고기";
-
-#ifdef NO_ISP
-    SavagePerson savagePerson;
-    printf("<야만인의 식사>\n");
-    savagePerson.Eat(food);
-    savagePerson.LightCandelabra();
-    savagePerson.LayoutCutlery();
-
-    printf("\n");
-
-    CulturedPerson culturedPerson;
-    printf("<문화인의 식사>\n");
-    culturedPerson.Eat(food);
-    culturedPerson.LightCandelabra();
-    culturedPerson.LayoutCutlery();
-#else
-    SavagePerson savagePerson;
-    printf("<야만인의 식사>\n");
-    savagePerson.Eat(food);
-
-    printf("\n");
-
-    CulturedPerson culturedPerson;
-    printf("<문화인의 식사>\n");
-    culturedPerson.Eat(food);
-    culturedPerson.LightCandelabra();
-    culturedPerson.LayoutCutlery();
-#endif
+    no_ISP::UnitTest();
+    //ISP::UnitTest();
 
     printf("\n");
     return 0;
