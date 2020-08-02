@@ -11,53 +11,53 @@ namespace unit_test
 {
     namespace basic
     {
-        class AbstractProductA abstract// interface로 표현하기 위해!
+        class ProductA abstract
         {
         public:
-            AbstractProductA() = default;
-            virtual ~AbstractProductA() = default;
+            ProductA() = default;
+            virtual ~ProductA() = default;
         };
 
-        class ConcreteProductA1 : public AbstractProductA
+        class ConcreteProductA1 : public ProductA
         {
         private:
             friend class ConcreteFactoryA;
 
-            using AbstractProductA::AbstractProductA;
+            using ProductA::ProductA;
             virtual ~ConcreteProductA1() = default;
         };
 
-        class ConcreteProductA2 : public AbstractProductA
+        class ConcreteProductA2 : public ProductA
         {
         private:
             friend class ConcreteFactoryB;
 
-            using AbstractProductA::AbstractProductA;
+            using ProductA::ProductA;
             virtual ~ConcreteProductA2() = default;
         };
 
-        class AbstractProductB abstract// interface로 표현하기 위해!
+        class ProductB abstract
         {
         public:
-            AbstractProductB() = default;
-            virtual ~AbstractProductB() = default;
+            ProductB() = default;
+            virtual ~ProductB() = default;
         };
 
-        class ConcreteProductB1 : public AbstractProductB
+        class ConcreteProductB1 : public ProductB
         {
         private:
             friend class ConcreteFactoryA;
 
-            using AbstractProductB::AbstractProductB;
+            using ProductB::ProductB;
             virtual ~ConcreteProductB1() = default;
         };
 
-        class ConcreteProductB2 : public AbstractProductB
+        class ConcreteProductB2 : public ProductB
         {
         private:
             friend class ConcreteFactoryB;
 
-            using AbstractProductB::AbstractProductB;
+            using ProductB::ProductB;
             virtual ~ConcreteProductB2() = default;
         };
 
@@ -67,8 +67,8 @@ namespace unit_test
             AbstractFactory() = default;
             virtual ~AbstractFactory() = default;
 
-            virtual AbstractProductA* createProductA() abstract;
-            virtual AbstractProductB* createProductB() abstract;
+            virtual ProductA* createProductA() abstract;
+            virtual ProductB* createProductB() abstract;
         };
 
         class ConcreteFactoryA : public AbstractFactory
@@ -223,8 +223,8 @@ namespace unit_test
             AbstractFactory* pProductFactory = nullptr;
 
             pProductFactory = new ConcreteFactoryA();            
-            AbstractProductA* pProductA = pProductFactory->createProductA();
-            AbstractProductB* pProductB = pProductFactory->createProductB();
+            ProductA* pProductA = pProductFactory->createProductA();
+            ProductB* pProductB = pProductFactory->createProductB();
 
             delete pProductA;
             delete pProductB;
@@ -289,7 +289,7 @@ namespace unit_test
 // 프로그램이 시작되는 곳이에요.
 int main()
 {
-    //unit_test::basic::Test();
+    unit_test::basic::Test();
     //unit_test::use_pattern::Test();
 
 	return 0;

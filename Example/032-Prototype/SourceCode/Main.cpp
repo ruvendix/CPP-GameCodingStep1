@@ -22,51 +22,56 @@ namespace unit_test
             // abstract 클래스에서는 딱히 의미 없습니다.
             Prototype(const Prototype&)
             {
-                printf("Prototype 복사 생성자 호출!\n");
+                printf("Prototype: 복사 생성자 호출!\n");
             }
 
             // 복사 생성자를 호출하는 함수입니다.
             virtual Prototype* clone() abstract;
         };
 
-        class ConcretePrototype1 : public Prototype
+        class ConcretePrototype : public Prototype
         {
         public:
-            ConcretePrototype1() = default;
-            virtual ~ConcretePrototype1() = default;
+            ConcretePrototype() = default;
+            virtual ~ConcretePrototype() = default;
 
             // 구현 클래스에서는 복사 생성자 구현이 필요해요!
-            ConcretePrototype1(const ConcretePrototype1& ref) :
+            ConcretePrototype(const ConcretePrototype& ref) :
                 Prototype(ref) // 부모 복사 생성자 호출 필수!
             {
                 *this = ref;
-                printf("ConcretePrototype1 복사 생성자 호출!\n");
+                printf("ConcretePrototype: 복사 생성자 호출!\n");
             }
 
-            virtual ConcretePrototype1* clone() override
+            virtual ConcretePrototype* clone() override
             {
-                return (new ConcretePrototype1(*this));
+                return (new ConcretePrototype(*this));
             }
+
+        private:
+            int field1 = 0;
         };
 
-        class ConcretePrototype2 : public Prototype
+        class SubclassPrototype : public ConcretePrototype
         {
         public:
-            ConcretePrototype2() = default;
-            virtual ~ConcretePrototype2() = default;
+            SubclassPrototype() = default;
+            virtual ~SubclassPrototype() = default;
 
-            // 구현 클래스에서는 복사 생성자 구현이 필요해요!
-            ConcretePrototype2(const ConcretePrototype2& ref) :
-                Prototype(ref) // 부모 복사 생성자 호출 필수!
+            SubclassPrototype(const SubclassPrototype& ref) :
+                ConcretePrototype(ref)
             {
                 *this = ref;
-                printf("ConcretePrototype2 복사 생성자 호출!\n");
+                printf("SubclassPrototype: 복사 생성자 호출!\n");
             }
 
-            virtual ConcretePrototype2* clone() override
+            virtual SubclassPrototype* clone() override
             {
-                return (new ConcretePrototype2(*this));
+                return (new SubclassPrototype(*this));
             }
+
+        private:
+            int field2 = 0;
         };
     }
 
@@ -158,12 +163,14 @@ namespace unit_test
         {
             printf("<기본 Prototype 테스트!>\n\n");
 
-            ConcretePrototype1 concretePrototype1;
-            Prototype* pPrototype = concretePrototype1.clone();
+            ConcretePrototype concretePrototype;
+            Prototype* pPrototype = concretePrototype.clone();
             delete pPrototype;
 
-            ConcretePrototype2 concretePrototype2;
-            pPrototype = concretePrototype2.clone();
+            printf("\n");
+
+            SubclassPrototype subclassPrototype;
+            pPrototype = subclassPrototype.clone();
             delete pPrototype;
 
             printf("\n");

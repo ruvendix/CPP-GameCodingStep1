@@ -11,46 +11,72 @@ namespace unit_test
 {
     namespace basic
     {
-        class Product abstract // interface로 표현하기 위해!
+        class Product abstract // interface라는 의미입니다. (추상 클래스에도 사용 가능)
         {
         public:
             Product() = default;
             virtual ~Product() = default;
+
+            virtual void doStuff() abstract;
         };
 
-        class ConcreteProduct : public Product // Concrete는 "구현"을 의미합니다.
+        class ConcreteProductA : public Product // Concrete는 "구현"을 의미합니다.
         {
         public:
             using Product::Product; // 생성자 상속, 이러면 자식은 부모 생성자를 이용할 수 있어요!
-            virtual ~ConcreteProduct() = default;
+            virtual ~ConcreteProductA() = default;
 
-            void TestFunc()
+            virtual void doStuff() override
             {
-                printf("상품 테스트!\n");
+                printf("ConcreteProductA: doStuff 호출!\n");
             }
         };
 
-        class Creato
+        class ConcreteProductB : public Product
         {
         public:
-            Creato() = default;
-            virtual ~Creato() = default;
+            using Product::Product;
+            virtual ~ConcreteProductB() = default;
 
-            virtual Product* factoryMethod() abstract;
-            void anOperation() { }
+            virtual void doStuff() override
+            {
+                printf("ConcreteProductB: doStuff 호출!\n");
+            }
         };
 
-        class ConcreteCreator : public Creato
+        class Creator
         {
         public:
-            using Creato::Creato;
-            virtual ~ConcreteCreator() = default;
+            Creator() = default;
+            virtual ~Creator() = default;
+
+            virtual Product* createProduct() abstract;
+            void someOperation() { }
+        };
+
+        class ConcreteCreatorA : public Creator
+        {
+        public:
+            using Creator::Creator;
+            virtual ~ConcreteCreatorA() = default;
 
             // 함수의 반환형은 오버로딩 조건이 아니에요!
             // 따라서 오버라이딩으로 인식됩니다.
-            virtual ConcreteProduct* factoryMethod() override
+            virtual ConcreteProductA* createProduct() override
             {
-                return new ConcreteProduct();
+                return new ConcreteProductA();
+            }
+        };
+
+        class ConcreteCreatorB : public Creator
+        {
+        public:
+            using Creator::Creator;
+            virtual ~ConcreteCreatorB() = default;
+
+            virtual ConcreteProductB* createProduct() override
+            {
+                return new ConcreteProductB();
             }
         };
     }
@@ -136,11 +162,25 @@ namespace unit_test
     {
         void Test()
         {
-            printf("기본 FactoryMethod 테스트!\n");
-            ConcreteCreator concreteCreator;
-            ConcreteProduct* pConcreteProduct = concreteCreator.factoryMethod();
-            pConcreteProduct->TestFunc();
-            delete pConcreteProduct;
+            printf("<기본 FactoryMethod 테스트!>\n\n");
+            
+            Creator* pCreator = nullptr;
+            Product* pProduct = nullptr;
+
+            // ConcreteCreatorA를 테스트합니다.
+            pCreator = new ConcreteCreatorA();
+            pProduct = pCreator->createProduct();
+            pProduct->doStuff();
+            delete pProduct;
+            delete pCreator;
+
+            // ConcreteCreatorB를 테스트합니다.
+            pCreator = new ConcreteCreatorB();
+            pProduct = pCreator->createProduct();
+            pProduct->doStuff();
+            delete pProduct;
+            delete pCreator;
+
             printf("\n");
         }
     }
@@ -149,7 +189,7 @@ namespace unit_test
     {
         void Test()
         {
-            printf("간단한 FactoryMethod 테스트!\n");
+            printf("<간단한 FactoryMethod 테스트!>\n\n");
             ConcreteProduct* pConcreteProduct = ConcreteCreator::factoryMethod();
             pConcreteProduct->TestFunc();
             ConcreteCreator::FreeProduct(pConcreteProduct);
@@ -161,7 +201,7 @@ namespace unit_test
     {
         void Test()
         {
-            printf("패턴 적용 테스트!\n");
+            printf("<패턴 적용 테스트!>\n\n");
             Monster* pMonster = MonsterFactory::CreateMonster();
             pMonster->Attack();
             MonsterFactory::DeleteMonster(pMonster);
@@ -176,7 +216,7 @@ int main()
 {
     //unit_test::basic::Test();
     //unit_test::simple::Test();
+    
     //unit_test::use_pattern::Test();
-
     return 0;
 }
