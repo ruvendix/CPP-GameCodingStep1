@@ -289,8 +289,8 @@ namespace unit_test
 // 프로그램이 시작되는 곳이에요.
 int main()
 {
-    unit_test::basic::Test();
-    //unit_test::use_pattern::Test();
+    //unit_test::basic::Test();
 
+    //unit_test::use_pattern::Test();
 	return 0;
 }

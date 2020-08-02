@@ -145,11 +145,13 @@ namespace unit_test
         public:
             static Monster* CreateMonster()
             {
+                printf("±«¹° »ý¼º!\n");
                 return new Monster();
             }
 
             static void DeleteMonster(Monster* pMonster)
             {
+                printf("±«¹° »èÁ¦!\n");
                 delete pMonster;
             }
         };

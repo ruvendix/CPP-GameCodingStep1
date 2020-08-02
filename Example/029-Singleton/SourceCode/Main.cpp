@@ -327,6 +327,6 @@ int main()
 	//unit_test::phoenix_singleton::Test();
 	//unit_test::thread_safe_singleton::Test();
 
-	unit_test::use_pattern::Test();
+	//unit_test::use_pattern::Test();
 	return 0;
 }
