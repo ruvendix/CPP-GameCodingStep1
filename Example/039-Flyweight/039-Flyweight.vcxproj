@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{31307257-a3b6-4c40-b3dc-8f0032e82bf6}</ProjectGuid>
-    <RootNamespace>_039_FlyweightFactory</RootNamespace>
+    <ProjectGuid>{87c5d9e2-8fd3-492a-a8c4-b8cd4d79e866}</ProjectGuid>
+    <RootNamespace>_039_Flyweight</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

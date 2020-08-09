@@ -50,7 +50,7 @@ namespace unit_test
 		{
 		public:
 			FlyweightFactory() = default;
-			
+
 			~FlyweightFactory()
 			{
 				for (int i = 0; i < 10; ++i)
@@ -312,7 +312,7 @@ namespace unit_test
 int main()
 {
 	//unit_test::basic::Test();
-	
+
 	//unit_test::use_pattern::Test();
 	return 0;
 }
