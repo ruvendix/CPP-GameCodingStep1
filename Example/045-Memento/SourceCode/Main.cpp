@@ -198,7 +198,7 @@ namespace unit_test
 	{
 		void Test()
 		{
-			printf("<기본 Pattern 테스트!>\n\n");
+			printf("<기본 Memento 테스트!>\n\n");
 
 			printf("Originator에 상태 저장!\n");
 			Originator originator;
