@@ -186,6 +186,6 @@ int main()
 {
 	//unit_test::basic::Test();
 
-	unit_test::use_pattern::Test();
+	//unit_test::use_pattern::Test();
 	return 0;
 }
