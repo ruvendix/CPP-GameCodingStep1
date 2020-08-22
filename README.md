@@ -43,7 +43,7 @@
 | 21 | [ClassMacro](https://github.com/ruvendix/CPP-GameCodingStep1/tree/master/Example/021-ClassMacro) |
 | 22 | [Interface](https://github.com/ruvendix/CPP-GameCodingStep1/tree/master/Example/022-Interface) |
 | 23 | [Project-ChangeToClass](https://github.com/ruvendix/CPP-GameCodingStep1/tree/master/Example/023-Project-ChangeToClass) |
-&nbsp;
+
   ### 2부
 | 번호 | 위치 |
 | ------ | ------ |
@@ -75,7 +75,7 @@
 | 49 | [TemplateMethod](https://github.com/ruvendix/CPP-GameCodingStep1/tree/master/Example/049-TemplateMethod) |
 | 50 | [Visitor](https://github.com/ruvendix/CPP-GameCodingStep1/tree/master/Example/050-Visitor) |
 | 51 | [Interpreter](https://github.com/ruvendix/CPP-GameCodingStep1/tree/master/Example/051-Interpreter) |
-&nbsp;
+
   ### 3부
 &nbsp;
 &nbsp;
