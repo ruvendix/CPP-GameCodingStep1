@@ -193,7 +193,7 @@ namespace LSP
 
 		int length = square.getLength();
 
-		printf("정사각형의 길와 넓이 분석\n");
+		printf("정사각형의 길이와 넓이 분석\n");
 		printf("length: %d\tgetLength(): %d\t\t넓이: %d\n",
 			length, square.getLength(), square.CalcArea()); // 부모 클래스의 인터페이스
 		//////////////////////////////////////////////////////////////////
@@ -205,8 +205,8 @@ namespace LSP
 // 프로그램이 시작되는 곳이에요.
 int main()
 {
-	no_LSP::UnitTest();
-	//LSP::UnitTest();
+	//no_LSP::UnitTest();
+	LSP::UnitTest();
 
 	return 0;
 }
