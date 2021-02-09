@@ -44,6 +44,10 @@
 *.db-shm
 *.db-wal
 
+# Project
+*.suo
+*.user
+
 #intermediate
 /Example/Binaries/Intermediate
 

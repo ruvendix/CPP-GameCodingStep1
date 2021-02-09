@@ -65,6 +65,8 @@ namespace no_LSP
 
     void UnitTest()
     {
+        //////////////////////////////////////////////////////////////////
+        // 부모 클래스 테스트
         Rectangle rectangle;
         rectangle.setWidth(10);
 
@@ -74,15 +76,19 @@ namespace no_LSP
         printf("직사각형의 길이 분석\n");
         printf("width: %d\tgetWidth(): %d\n", width, rectangle.getWidth());
         printf("\n");
+        //////////////////////////////////////////////////////////////////
 
+        //////////////////////////////////////////////////////////////////
+        // 자식 클래스 테스트(위의 코드에서 부모 클래스를 자식 클래스로 바꾸기)
         Square square;
         square.setWidth(10);
 
         width = square.getWidth();
-        square.setHeight(8);
+        square.setHeight(8); // 여기서 가로 길이도 변경되는 문제 발생
 
         printf("정사각형의 길이 분석\n");
         printf("width: %d\tgetWidth(): %d\n", width, square.getWidth());
+        //////////////////////////////////////////////////////////////////
     }
 
 } // namesapce no_LSP
@@ -95,6 +101,8 @@ namespace LSP
     public:
         Shape() = default;
         virtual ~Shape() = default;
+
+        virtual int CalcArea() abstract;
     };
 
     class Rectangle : public Shape
@@ -102,6 +110,11 @@ namespace LSP
     public:
         using Shape::Shape;
         virtual ~Rectangle() = default;
+
+        virtual int CalcArea() override
+        {
+            return (m_width * m_height);
+        }
 
         int getWidth() const
         {
@@ -134,6 +147,11 @@ namespace LSP
         using Shape::Shape;
         virtual ~Square() = default;
 
+        virtual int CalcArea() override
+        {
+            return (m_length * m_length);
+        }
+
         int getLength() const
         {
             return m_length;
@@ -150,28 +168,35 @@ namespace LSP
 
 	void UnitTest()
 	{
-		Shape shape; // Shape 대신 Rectangle 또는 Square가 들어가도 아무 문제 없음!
-                     
-        // 전에는 Rectangle이 Square의 부모였지만
-        // 이제는 Shape이 Square의 부모이므로 동일하게 구현할 필요가 없음!
+        // 전에는 Rectangle이 Square의 부모 클래스였지만
+        // 이제는 Shape이 Square의 부모 클래스니까 동일하게 구현할 필요가 없음!
+        // 단, 부모 클래스가 들어갈 위치에 자식 클래스가 들어가도 정상 작동되어야 함!
 
-		Rectangle rectangle;
-		rectangle.setWidth(10);
+        //////////////////////////////////////////////////////////////////
+        // Rectangle 테스트(자식 클래스)
+        Rectangle rectangle;
+        rectangle.setWidth(10);
 
-		int width = rectangle.getWidth();
-		rectangle.setHeight(8);
+        int width = rectangle.getWidth();
+        rectangle.setHeight(8);
 
-		printf("직사각형의 길이 분석\n");
-		printf("width: %d\tgetWidth(): %d\n", width, rectangle.getWidth());
+        printf("직사각형의 길이와 넓이 분석\n");
+        printf("width: %d\tgetWidth(): %d\t\t넓이: %d\n",
+            width, rectangle.getWidth(), rectangle.CalcArea()); // 부모 클래스의 인터페이스
         printf("\n");
+        //////////////////////////////////////////////////////////////////
 
+        //////////////////////////////////////////////////////////////////
+        // Square 테스트(자식 클래스)
         Square square;
         square.setLength(10);
 
         int length = square.getLength();
 
-        printf("정사각형의 길이 분석\n");
-        printf("length: %d\tgetLength(): %d\n", length, square.getLength());
+        printf("정사각형의 길와 넓이 분석\n");
+        printf("length: %d\tgetLength(): %d\t\t넓이: %d\n",
+            length, square.getLength(), square.CalcArea()); // 부모 클래스의 인터페이스
+        //////////////////////////////////////////////////////////////////
     }
 
 } // namespace LSP end
@@ -183,6 +208,5 @@ int main()
     no_LSP::UnitTest();
     //LSP::UnitTest();
 
-    printf("\n");
     return 0;
 }
