@@ -18,7 +18,7 @@ ItemBasePtr ItemDB::FindItem(const std::string& strNameTag) const
 	return m_mapItemDB.Find(strNameTag);
 }
 
-void ItemDB::CopyToVector(std::vector<ItemBasePtr>& vecItem) const
+void ItemDB::CopyToVector(_Out_ std::vector<ItemBasePtr>& vecItem) const
 {
 	const MapItemDB::MapType& mapItem = m_mapItemDB.getMap();
 	std::transform(mapItem.cbegin(), mapItem.cend(), std::back_inserter(vecItem), common_func::GetSecond(mapItem));
