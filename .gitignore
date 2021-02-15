@@ -50,6 +50,4 @@
 
 #intermediate
 /Example/Binaries/Intermediate
-
-/Example/001-HelloGameCodingWorld/SourceCode/main2.cpp
-/Example/001-HelloGameCodingWorld/SourceCode/ring_buffer.hpp
+/Framework/Binaries/Intermediate
