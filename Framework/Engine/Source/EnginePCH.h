@@ -13,3 +13,8 @@
 
 #include <cstdio>
 #include <cstdlib>
+
+void TestFunc()
+{
+	printf("엔진에서 만든 함수 호출해보기\n");
+}
