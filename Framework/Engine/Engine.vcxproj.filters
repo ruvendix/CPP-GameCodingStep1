@@ -10,6 +10,9 @@
     <ClCompile Include="Source\EnginePCH.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TestFunc.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnginePCH.h">

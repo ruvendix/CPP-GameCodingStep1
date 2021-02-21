@@ -9,6 +9,8 @@
 
 #include <EnginePCH.h>
 
+#pragma comment(lib, "EngineDebug.lib")
+
 int main()
 {
 	TestFunc();
