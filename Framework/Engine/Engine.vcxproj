@@ -16,9 +16,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugEngine|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseEngine|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Source\TestFunc.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Common\Base.h" />
+    <ClInclude Include="Source\Common\Common.h" />
+    <ClInclude Include="Source\Common\MacroFunc.h" />
+    <ClInclude Include="Source\Common\Type.h" />
     <ClInclude Include="Source\Console\ConsoleHandler.h" />
     <ClInclude Include="Source\EnginePCH.h" />
   </ItemGroup>

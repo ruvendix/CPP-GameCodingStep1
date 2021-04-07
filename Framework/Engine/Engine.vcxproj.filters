@@ -6,24 +6,38 @@
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Source\Console">
-      <UniqueIdentifier>{e1041c15-b104-43b2-a04f-818e7729270a}</UniqueIdentifier>
+      <UniqueIdentifier>{bc4853fe-a731-4f8f-b709-b07e90f2ea9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Common">
+      <UniqueIdentifier>{cde91b66-44b0-4386-9cb6-a18f17824bea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\EnginePCH.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\TestFunc.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Console\ConsoleHandler.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Console</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnginePCH.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Console\ConsoleHandler.h" />
+    <ClInclude Include="Source\Common\MacroFunc.h">
+      <Filter>Source\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Console\ConsoleHandler.h">
+      <Filter>Source\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Common.h">
+      <Filter>Source\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Base.h">
+      <Filter>Source\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Type.h">
+      <Filter>Source\Common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

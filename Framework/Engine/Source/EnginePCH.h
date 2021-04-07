@@ -11,7 +11,4 @@
 
 #pragma once
 
-#include <cstdio>
-#include <cstdlib>
-
-void TestFunc();
+#include "Common/Common.h"

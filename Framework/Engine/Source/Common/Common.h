@@ -4,13 +4,10 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// Engine 프로젝트에서만 사용 가능한 소스 파일입니다.
-// Client 프로젝트는 소스 파일이 빌드된 .lib를 이용해야 해요.
+// Common에 있는 헤더 파일 모음입니다.
 // =====================================================================================
+#pragma once
 
-#include "EnginePCH.h"
-
-void TestFunc()
-{
-	printf("엔진에서 만든 함수 호출해보기\n");
-}
+#include "Base.h"
+#include "Type.h"
+#include "MacroFunc.h"
