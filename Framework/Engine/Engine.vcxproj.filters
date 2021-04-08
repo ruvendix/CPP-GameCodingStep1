@@ -5,19 +5,25 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Source\Console">
-      <UniqueIdentifier>{bc4853fe-a731-4f8f-b709-b07e90f2ea9e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Common">
       <UniqueIdentifier>{cde91b66-44b0-4386-9cb6-a18f17824bea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Service">
+      <UniqueIdentifier>{bc4853fe-a731-4f8f-b709-b07e90f2ea9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Service\Console">
+      <UniqueIdentifier>{68ae19a3-65c6-4868-9830-342e7f59075d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\EnginePCH.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Console\ConsoleHandler.cpp">
-      <Filter>Source\Console</Filter>
+    <ClCompile Include="Source\Service\Console\ConsoleService.cpp">
+      <Filter>Source\Service\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Service\ServiceLocator.cpp">
+      <Filter>Source\Service</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -27,9 +33,6 @@
     <ClInclude Include="Source\Common\MacroFunc.h">
       <Filter>Source\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Console\ConsoleHandler.h">
-      <Filter>Source\Console</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\Common.h">
       <Filter>Source\Common</Filter>
     </ClInclude>
@@ -38,6 +41,18 @@
     </ClInclude>
     <ClInclude Include="Source\Common\Type.h">
       <Filter>Source\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\Console\IConsoleService.h">
+      <Filter>Source\Service\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\Console\ConsoleService.h">
+      <Filter>Source\Service\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\ServiceInclusion.h">
+      <Filter>Source\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\ServiceLocator.h">
+      <Filter>Source\Service</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

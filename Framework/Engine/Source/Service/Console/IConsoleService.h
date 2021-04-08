@@ -4,8 +4,12 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 콘솔창을 다루는 핸들러입니다.
+// 콘솔 서비스의 인터페이스입니다.
 // =====================================================================================
-#include "EnginePCH.h"
-#include "ConsoleHandler.h"
+#pragma once
 
+class IConsoleService
+{
+public:
+	virtual void TestFunc() = 0;
+};

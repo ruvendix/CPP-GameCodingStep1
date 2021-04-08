@@ -8,7 +8,6 @@
 // =====================================================================================
 
 #include <EnginePCH.h>
-#include <Console/ConsoleHandler.h>
 
 #ifdef _DEBUG
 #pragma comment(lib, "Engine_Debug.lib")
@@ -18,6 +17,12 @@
 
 int main()
 {
-	ConsoleHandler::I().TestFunc();
+	// 첫 번째 사용 방법
+	//ServiceLocator::I().IConsoleServiceInstance()->TestFunc();
+
+	// 두 번째 사용 방법
+	//IConsoleService* pConsoleService = ServiceLocator::I().IConsoleServiceInstance();
+	//pConsoleService->TestFunc();
+
 	return 0;
 }

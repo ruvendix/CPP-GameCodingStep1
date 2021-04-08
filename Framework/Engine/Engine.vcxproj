@@ -11,19 +11,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Console\ConsoleHandler.cpp" />
+    <ClCompile Include="Source\Service\Console\ConsoleService.cpp" />
     <ClCompile Include="Source\EnginePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugEngine|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseEngine|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Service\ServiceLocator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Common\Base.h" />
     <ClInclude Include="Source\Common\Common.h" />
     <ClInclude Include="Source\Common\MacroFunc.h" />
     <ClInclude Include="Source\Common\Type.h" />
-    <ClInclude Include="Source\Console\ConsoleHandler.h" />
+    <ClInclude Include="Source\Service\Console\ConsoleService.h" />
     <ClInclude Include="Source\EnginePCH.h" />
+    <ClInclude Include="Source\Service\Console\IConsoleService.h" />
+    <ClInclude Include="Source\Service\ServiceInclusion.h" />
+    <ClInclude Include="Source\Service\ServiceLocator.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
