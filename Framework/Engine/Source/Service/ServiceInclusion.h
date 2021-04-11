@@ -9,4 +9,4 @@
 #pragma once
 
 #include "ServiceLocator.h"
-#include "Console/IConsoleService.h"
+#include "Console/IConsoleHandler.h"

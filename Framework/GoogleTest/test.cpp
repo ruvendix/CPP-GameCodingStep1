@@ -19,7 +19,7 @@
 
 TEST(ConsoleServiceTest, ReturnValueCheck)
 {
-	IConsoleService* pConsole = ServiceLocator::I().IConsoleServiceInstance();
+	IConsoleHandler* pConsole = ServiceLocator::I().IConsoleHandlerInstance();
 	ASSERT_NE(pConsole, nullptr);
 
 	ASSERT_EQ(pConsole->SetUp(), EReturnType::SUCCESS);

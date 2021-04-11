@@ -31,5 +31,5 @@ class ServiceLocator final
 	GENERATE_LOCAL_SINGLETON(ServiceLocator);
 
 	//DECLARE_SERVICE(IConsoleService, ConsoleService);
-	DECLARE_SERVICE_SMARTPOINTER(IConsoleService, ConsoleService);
+	DECLARE_SERVICE_SMARTPOINTER(IConsoleHandler, ConsoleHandler);
 };

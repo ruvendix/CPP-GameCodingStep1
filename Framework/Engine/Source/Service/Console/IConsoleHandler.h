@@ -11,7 +11,7 @@
 #include "Common/CommonEnum.h"
 #include "ConsoleEnum.h"
 
-class IConsoleService
+class IConsoleHandler
 {
 public:
 	virtual EReturnType SetUp() = 0;

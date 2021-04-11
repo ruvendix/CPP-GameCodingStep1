@@ -19,7 +19,7 @@
     <ClCompile Include="Source\EnginePCH.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Service\Console\ConsoleService.cpp">
+    <ClCompile Include="Source\Service\Console\ConsoleHandler.cpp">
       <Filter>Source\Service\Console</Filter>
     </ClCompile>
     <ClCompile Include="Source\Service\ServiceLocator.cpp">
@@ -42,10 +42,10 @@
     <ClInclude Include="Source\Common\CommonType.h">
       <Filter>Source\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Console\IConsoleService.h">
+    <ClInclude Include="Source\Service\Console\IConsoleHandler.h">
       <Filter>Source\Service\Console</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Console\ConsoleService.h">
+    <ClInclude Include="Source\Service\Console\ConsoleHandler.h">
       <Filter>Source\Service\Console</Filter>
     </ClInclude>
     <ClInclude Include="Source\Service\ServiceInclusion.h">

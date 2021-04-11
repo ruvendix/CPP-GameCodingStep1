@@ -17,7 +17,7 @@
 
 int main()
 {
-	IConsoleService* pConsole = ServiceLocator::I().IConsoleServiceInstance();
+	IConsoleHandler* pConsole = ServiceLocator::I().IConsoleHandlerInstance();
 	pConsole->SetUp();
 
 	pConsole->ShowCursor(false);

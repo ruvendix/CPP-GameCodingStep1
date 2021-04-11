@@ -11,13 +11,13 @@
 
 #include "Common/CommonBase.h"
 #include "Common/CommonType.h"
-#include "IConsoleService.h"
+#include "IConsoleHandler.h"
 
-class ConsoleService final : public IConsoleService
+class ConsoleHandler final : public IConsoleHandler
 {
 public:
-	ConsoleService() = default;
-	virtual ~ConsoleService() = default;
+	ConsoleHandler() = default;
+	virtual ~ConsoleHandler() = default;
 
 	virtual EReturnType SetUp() override;
 	virtual EReturnType CleanUp() override;

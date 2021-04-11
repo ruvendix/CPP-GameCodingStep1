@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Service\Console\ConsoleService.cpp" />
+    <ClCompile Include="Source\Service\Console\ConsoleHandler.cpp" />
     <ClCompile Include="Source\EnginePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugEngine|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseEngine|Win32'">Create</PrecompiledHeader>
@@ -26,9 +26,9 @@
     <ClInclude Include="Source\Common\CommonMacro.h" />
     <ClInclude Include="Source\Common\CommonType.h" />
     <ClInclude Include="Source\Service\Console\ConsoleEnum.h" />
-    <ClInclude Include="Source\Service\Console\ConsoleService.h" />
+    <ClInclude Include="Source\Service\Console\ConsoleHandler.h" />
     <ClInclude Include="Source\EnginePCH.h" />
-    <ClInclude Include="Source\Service\Console\IConsoleService.h" />
+    <ClInclude Include="Source\Service\Console\IConsoleHandler.h" />
     <ClInclude Include="Source\Service\ServiceInclusion.h" />
     <ClInclude Include="Source\Service\ServiceLocator.h" />
   </ItemGroup>

@@ -10,7 +10,7 @@
 #include "EnginePCH.h"
 #include "ServiceLocator.h"
 
-#include "Console/ConsoleService.h"
+#include "Console/ConsoleHandler.h"
 
 #define DEFINE_SERVICE(AbstractService, ConcreteService)\
 	AbstractService* ServiceLocator::AbstractService##Instance()\
@@ -40,4 +40,4 @@
 	}
 
 //DEFINE_SERVICE(IConsoleService, ConsoleService);
-DEFINE_SERVICE_SMARTPOINTER(IConsoleService, ConsoleService);
+DEFINE_SERVICE_SMARTPOINTER(IConsoleHandler, ConsoleHandler);

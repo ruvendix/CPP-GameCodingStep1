@@ -8,7 +8,7 @@
 // 콘솔창을 다룰 때 사용됩니다.
 // =====================================================================================
 #include "EnginePCH.h"
-#include "ConsoleService.h"
+#include "ConsoleHandler.h"
 
 namespace
 {
@@ -20,7 +20,7 @@ namespace
 	콘솔창 이름과 사이즈 설정이 가능해요.
 	핸들도 여기에서 저장합니다.
 */
-EReturnType ConsoleService::SetUp()
+EReturnType ConsoleHandler::SetUp()
 {
 	m_hConsole = ::GetConsoleWindow();
 	assert(m_hConsole != nullptr);
@@ -44,7 +44,7 @@ EReturnType ConsoleService::SetUp()
 	콘솔창을 정리합니다.
 	아직은 추가할 내용이 없어요.
 */
-EReturnType ConsoleService::CleanUp()
+EReturnType ConsoleHandler::CleanUp()
 {
 	return EReturnType::SUCCESS;
 }
@@ -52,7 +52,7 @@ EReturnType ConsoleService::CleanUp()
 /*
 	콘솔창 커서의 좌표를 옮깁니다.
 */
-void ConsoleService::MovePosition(Int32 x, Int32 y)
+void ConsoleHandler::MovePosition(Int32 x, Int32 y)
 {
 	COORD pos;
 	pos.X = static_cast<Int16>(x);
@@ -64,7 +64,7 @@ void ConsoleService::MovePosition(Int32 x, Int32 y)
 /*
 	콘솔창 사이즈를 조정합니다.
 */
-void ConsoleService::AdjustSize(Uint32 width, Uint32 height)
+void ConsoleHandler::AdjustSize(Uint32 width, Uint32 height)
 {
 	Char buffer[DEFAULT_CHAR_BUFFER_SIZE];
 	::ZeroMemory(buffer, DEFAULT_CHAR_BUFFER_SIZE);
@@ -79,7 +79,7 @@ void ConsoleService::AdjustSize(Uint32 width, Uint32 height)
 /*
 	콘솔창 타이틀을 변경합니다.
 */
-void ConsoleService::ChangeTitle(const Char* szTitle)
+void ConsoleHandler::ChangeTitle(const Char* szTitle)
 {
 	::SetWindowText(m_hConsole, szTitle);
 }
@@ -88,7 +88,7 @@ void ConsoleService::ChangeTitle(const Char* szTitle)
 	콘솔창 렌더링 색깔을 변경합니다.
 	글자색과 배경색 중에서 선택할 수 있어요.
 */
-EReturnType ConsoleService::ChangeRenderColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType)
+EReturnType ConsoleHandler::ChangeRenderColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType)
 {
 	if ((renderingColor < EConsoleRenderingColor::BLACK) ||
 		(renderingColor > EConsoleRenderingColor::BRIGHT_WHITE))
@@ -126,7 +126,7 @@ EReturnType ConsoleService::ChangeRenderColor(EConsoleRenderingColor renderingCo
 	콘솔창 커서 출력 여부를 설정합니다.
 	마우스 커서가 아니라 키보드 커서를 의미해요.
 */
-void ConsoleService::ShowCursor(bool bShow)
+void ConsoleHandler::ShowCursor(bool bShow)
 {
 	CONSOLE_CURSOR_INFO consoleCursorInfo; // 커서 정보는 CONSOLE_CURSOR_INFO에 있습니다.
 	::GetConsoleCursorInfo(m_hStdOutput, &consoleCursorInfo);
@@ -138,7 +138,7 @@ void ConsoleService::ShowCursor(bool bShow)
 /*
 	콘솔창에 글자들을 출력합니다.
 */
-void ConsoleService::RenderText(Int32 x, Int32 y, const Char* szText)
+void ConsoleHandler::RenderText(Int32 x, Int32 y, const Char* szText)
 {
 	MovePosition(x, y);
 	printf("%s\n", szText);
@@ -148,7 +148,7 @@ void ConsoleService::RenderText(Int32 x, Int32 y, const Char* szText)
 	콘솔창에 출력된 모든 것들을 지웁니다.
 	출력 버퍼의 색상 정보는 그대로 유지합니다.
 */
-EReturnType ConsoleService::ClearScreen()
+EReturnType ConsoleHandler::ClearScreen()
 {
 	// 가로 X 세로 = 사각형 넓이
 	Uint32 size = m_outputScreenBufferInfo.dwSize.X * m_outputScreenBufferInfo.dwSize.Y;
@@ -175,7 +175,7 @@ EReturnType ConsoleService::ClearScreen()
 	콘솔창 입력 버퍼를 비웁니다.
 	콘솔창에서는 일부 문자가 입력 버퍼에 남을 수 있으니까 주의하세요!
 */
-void ConsoleService::FlushInputBuffer()
+void ConsoleHandler::FlushInputBuffer()
 {
 	::FlushConsoleInputBuffer(m_hStdInput);
 }
@@ -183,7 +183,7 @@ void ConsoleService::FlushInputBuffer()
 /*
 	정수를 입력받습니다.
 */
-Int32 ConsoleService::InputInteger()
+Int32 ConsoleHandler::InputInteger()
 {
 	Int32 value = 0;
 	scanf_s("%d", &value);
@@ -194,7 +194,7 @@ Int32 ConsoleService::InputInteger()
 /*
 	실수를 입력받습니다.
 */
-Float ConsoleService::InputFloat()
+Float ConsoleHandler::InputFloat()
 {
 	Float value = 0.0f;
 	scanf_s("%f", &value);
@@ -205,7 +205,7 @@ Float ConsoleService::InputFloat()
 /*
 	문자열을 입력받습니다.
 */
-const Char* ConsoleService::InputString()
+const Char* ConsoleHandler::InputString()
 {
 	static Char buffer[DEFAULT_CHAR_BUFFER_SIZE];
 	::ZeroMemory(buffer, DEFAULT_CHAR_BUFFER_SIZE);
