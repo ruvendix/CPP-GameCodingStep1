@@ -19,10 +19,13 @@
     <ClCompile Include="Source\Service\ServiceLocator.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Common\Base.h" />
-    <ClInclude Include="Source\Common\Common.h" />
-    <ClInclude Include="Source\Common\MacroFunc.h" />
-    <ClInclude Include="Source\Common\Type.h" />
+    <ClInclude Include="Source\Common\CommonBase.h" />
+    <ClInclude Include="Source\Common\CommonConstant.h" />
+    <ClInclude Include="Source\Common\CommonEnum.h" />
+    <ClInclude Include="Source\Common\CommonInclusion.h" />
+    <ClInclude Include="Source\Common\CommonMacro.h" />
+    <ClInclude Include="Source\Common\CommonType.h" />
+    <ClInclude Include="Source\Service\Console\ConsoleEnum.h" />
     <ClInclude Include="Source\Service\Console\ConsoleService.h" />
     <ClInclude Include="Source\EnginePCH.h" />
     <ClInclude Include="Source\Service\Console\IConsoleService.h" />
@@ -41,14 +44,14 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseEngine|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">

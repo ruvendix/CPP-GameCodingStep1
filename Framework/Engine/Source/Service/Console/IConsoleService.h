@@ -8,8 +8,25 @@
 // =====================================================================================
 #pragma once
 
+#include "Common/CommonEnum.h"
+#include "ConsoleEnum.h"
+
 class IConsoleService
 {
 public:
-	virtual void TestFunc() = 0;
+	virtual EReturnType SetUp() = 0;
+	virtual EReturnType CleanUp() = 0;
+	virtual EReturnType ChangeRenderColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) = 0;
+	virtual EReturnType ClearScreen() = 0;
+
+	virtual void MovePosition(Int32 x, Int32 y) = 0;
+	virtual void AdjustSize(Uint32 width, Uint32 height) = 0;
+	virtual void ChangeTitle(const Char* szTitle) = 0;	
+	virtual void ShowCursor(bool bShow) = 0;
+	virtual void RenderText(Int32 x, Int32 y, const Char* szText) = 0;
+	virtual void FlushInputBuffer() = 0;
+
+	virtual Int32 InputInteger() = 0;
+	virtual Float InputFloat() = 0;
+	virtual const Char* InputString() = 0;
 };

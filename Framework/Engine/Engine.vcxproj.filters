@@ -30,16 +30,16 @@
     <ClInclude Include="Source\EnginePCH.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\MacroFunc.h">
+    <ClInclude Include="Source\Common\CommonMacro.h">
       <Filter>Source\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\Common.h">
+    <ClInclude Include="Source\Common\CommonInclusion.h">
       <Filter>Source\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\Base.h">
+    <ClInclude Include="Source\Common\CommonBase.h">
       <Filter>Source\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\Type.h">
+    <ClInclude Include="Source\Common\CommonType.h">
       <Filter>Source\Common</Filter>
     </ClInclude>
     <ClInclude Include="Source\Service\Console\IConsoleService.h">
@@ -53,6 +53,15 @@
     </ClInclude>
     <ClInclude Include="Source\Service\ServiceLocator.h">
       <Filter>Source\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\CommonConstant.h">
+      <Filter>Source\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\CommonEnum.h">
+      <Filter>Source\Service\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\Console\ConsoleEnum.h">
+      <Filter>Source\Service\Console</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

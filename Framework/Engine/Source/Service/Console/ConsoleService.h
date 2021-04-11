@@ -9,7 +9,8 @@
 // =====================================================================================
 #pragma once
 
-#include "Common/Common.h"
+#include "Common/CommonBase.h"
+#include "Common/CommonType.h"
 #include "IConsoleService.h"
 
 class ConsoleService final : public IConsoleService
@@ -18,20 +19,25 @@ public:
 	ConsoleService() = default;
 	virtual ~ConsoleService() = default;
 
-	virtual void TestFunc() override
-	{
-		printf("서비스 로케이터로 콘솔 서비스의 함수 호출!\n");
-	}
-};
+	virtual EReturnType SetUp() override;
+	virtual EReturnType CleanUp() override;
+	virtual EReturnType ChangeRenderColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) override;
+	virtual EReturnType ClearScreen() override;
 
-class ConsoleService_Version2 final : public IConsoleService
-{
-public:
-	ConsoleService_Version2() = default;
-	virtual ~ConsoleService_Version2() = default;
+	virtual void MovePosition(Int32 x, Int32 y) override;
+	virtual void AdjustSize(Uint32 width, Uint32 height) override;
+	virtual void ChangeTitle(const Char* szTitle) override;	
+	virtual void ShowCursor(bool bShow) override;
+	virtual void RenderText(Int32 x, Int32 y, const Char* szText) override;
+	virtual void FlushInputBuffer() override;
 
-	virtual void TestFunc() override
-	{
-		printf("서비스 로케이터로 콘솔 서비스 버전2의 함수 호출!\n");
-	}
+	virtual Int32 InputInteger() override;
+	virtual Float InputFloat() override;
+	virtual const Char* InputString() override;
+
+private:
+	HWND m_hConsole = nullptr; // 콘솔창의 핸들입니다.
+	HANDLE m_hStdInput = nullptr; // 표준 입력 버퍼의 핸들입니다.
+	HANDLE m_hStdOutput = nullptr; // 표준 출력 버퍼의 핸들입니다.
+	CONSOLE_SCREEN_BUFFER_INFO m_outputScreenBufferInfo; // 출력 버퍼 정보입니다.
 };

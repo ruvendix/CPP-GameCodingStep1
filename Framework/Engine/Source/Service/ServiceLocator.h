@@ -9,7 +9,7 @@
 // =====================================================================================
 #pragma once
 
-#include "Common/Common.h"
+#include "Common/CommonMacro.h"
 
 #define DECLARE_SERVICE(AbstractService, ConcreteService)\
 public:\

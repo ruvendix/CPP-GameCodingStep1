@@ -17,12 +17,24 @@
 
 int main()
 {
-	// 첫 번째 사용 방법
-	//ServiceLocator::I().IConsoleServiceInstance()->TestFunc();
+	IConsoleService* pConsole = ServiceLocator::I().IConsoleServiceInstance();
+	pConsole->SetUp();
 
-	// 두 번째 사용 방법
-	//IConsoleService* pConsoleService = ServiceLocator::I().IConsoleServiceInstance();
-	//pConsoleService->TestFunc();
+	pConsole->ShowCursor(false);
 
+	pConsole->ChangeRenderColor(EConsoleRenderingColor::AQUA, EConsoleRenderingType::BACKGROUND);
+
+	const Char* sz = pConsole->InputString();
+	Int32 value1 = pConsole->InputInteger();
+	Float value2 = pConsole->InputFloat();
+
+	pConsole->RenderText(10, 10, sz);
+	pConsole->MovePosition(0, 0);
+
+	pConsole->ClearScreen();
+	pConsole->ChangeRenderColor(EConsoleRenderingColor::RED, EConsoleRenderingType::TEXT);
+	pConsole->RenderText(0, 0, "흐음");
+
+	pConsole->CleanUp();
 	return 0;
 }
