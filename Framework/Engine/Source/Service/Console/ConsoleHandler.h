@@ -21,14 +21,14 @@ public:
 
 	virtual EReturnType SetUp() override;
 	virtual EReturnType CleanUp() override;
-	virtual EReturnType ChangeRenderColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) override;
+	virtual EReturnType ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) override;
 	virtual EReturnType ClearScreen() override;
 
 	virtual void MovePosition(Int32 x, Int32 y) override;
 	virtual void AdjustSize(Uint32 width, Uint32 height) override;
 	virtual void ChangeTitle(const Char* szTitle) override;	
 	virtual void ShowCursor(bool bShow) override;
-	virtual void RenderText(Int32 x, Int32 y, const Char* szText) override;
+	virtual void RenderString(Int32 x, Int32 y, const Char* szText) override;
 	virtual void FlushInputBuffer() override;
 
 	virtual Int32 InputInteger() override;

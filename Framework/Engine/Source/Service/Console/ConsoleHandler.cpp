@@ -13,6 +13,7 @@
 namespace
 {
 	Uint32 defaultAttr = 0;
+	Char charBuffer[DEFAULT_CHAR_BUFFER_SIZE];
 }
 
 /*
@@ -88,7 +89,7 @@ void ConsoleHandler::ChangeTitle(const Char* szTitle)
 	콘솔창 렌더링 색깔을 변경합니다.
 	글자색과 배경색 중에서 선택할 수 있어요.
 */
-EReturnType ConsoleHandler::ChangeRenderColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType)
+EReturnType ConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType)
 {
 	if ((renderingColor < EConsoleRenderingColor::BLACK) ||
 		(renderingColor > EConsoleRenderingColor::BRIGHT_WHITE))
@@ -138,7 +139,7 @@ void ConsoleHandler::ShowCursor(bool bShow)
 /*
 	콘솔창에 글자들을 출력합니다.
 */
-void ConsoleHandler::RenderText(Int32 x, Int32 y, const Char* szText)
+void ConsoleHandler::RenderString(Int32 x, Int32 y, const Char* szText)
 {
 	MovePosition(x, y);
 	printf("%s\n", szText);
@@ -207,9 +208,8 @@ Float ConsoleHandler::InputFloat()
 */
 const Char* ConsoleHandler::InputString()
 {
-	static Char buffer[DEFAULT_CHAR_BUFFER_SIZE];
-	::ZeroMemory(buffer, DEFAULT_CHAR_BUFFER_SIZE);
-	scanf_s("%[^\n]s", buffer, DEFAULT_CHAR_BUFFER_SIZE);
+	::ZeroMemory(charBuffer, DEFAULT_CHAR_BUFFER_SIZE);
+	scanf_s("%[^\n]s", charBuffer, DEFAULT_CHAR_BUFFER_SIZE);
 	FlushInputBuffer();
-	return buffer;
+	return charBuffer;
 }

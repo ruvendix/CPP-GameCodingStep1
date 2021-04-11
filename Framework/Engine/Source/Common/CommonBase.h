@@ -20,5 +20,6 @@
 #pragma endregion
 
 #pragma region Win32API
+#define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #pragma endregion

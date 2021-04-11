@@ -16,14 +16,14 @@ class IConsoleHandler
 public:
 	virtual EReturnType SetUp() = 0;
 	virtual EReturnType CleanUp() = 0;
-	virtual EReturnType ChangeRenderColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) = 0;
+	virtual EReturnType ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) = 0;
 	virtual EReturnType ClearScreen() = 0;
 
 	virtual void MovePosition(Int32 x, Int32 y) = 0;
 	virtual void AdjustSize(Uint32 width, Uint32 height) = 0;
 	virtual void ChangeTitle(const Char* szTitle) = 0;	
 	virtual void ShowCursor(bool bShow) = 0;
-	virtual void RenderText(Int32 x, Int32 y, const Char* szText) = 0;
+	virtual void RenderString(Int32 x, Int32 y, const Char* szText) = 0;
 	virtual void FlushInputBuffer() = 0;
 
 	virtual Int32 InputInteger() = 0;

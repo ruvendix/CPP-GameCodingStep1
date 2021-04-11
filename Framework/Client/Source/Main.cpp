@@ -21,19 +21,11 @@ int main()
 	pConsole->SetUp();
 
 	pConsole->ShowCursor(false);
-
-	pConsole->ChangeRenderColor(EConsoleRenderingColor::AQUA, EConsoleRenderingType::BACKGROUND);
+	pConsole->ChangeRenderingColor(EConsoleRenderingColor::AQUA, EConsoleRenderingType::BACKGROUND);
 
 	const Char* sz = pConsole->InputString();
-	Int32 value1 = pConsole->InputInteger();
-	Float value2 = pConsole->InputFloat();
-
-	pConsole->RenderText(10, 10, sz);
+	pConsole->RenderString(10, 10, sz);
 	pConsole->MovePosition(0, 0);
-
-	pConsole->ClearScreen();
-	pConsole->ChangeRenderColor(EConsoleRenderingColor::RED, EConsoleRenderingType::TEXT);
-	pConsole->RenderText(0, 0, "ÈåÀ½");
 
 	pConsole->CleanUp();
 	return 0;
