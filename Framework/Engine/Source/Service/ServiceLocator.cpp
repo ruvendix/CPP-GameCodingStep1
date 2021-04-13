@@ -11,6 +11,7 @@
 #include "ServiceLocator.h"
 
 #include "Console/ConsoleHandler.h"
+#include "Log/Logger.h"
 
 #define DEFINE_SERVICE(AbstractService, ConcreteService)\
 	AbstractService* ServiceLocator::AbstractService##Instance()\
@@ -39,5 +40,5 @@
 		return m_sp##AbstractService.get();\
 	}
 
-//DEFINE_SERVICE(IConsoleService, ConsoleService);
 DEFINE_SERVICE_SMARTPOINTER(IConsoleHandler, ConsoleHandler);
+DEFINE_SERVICE_SMARTPOINTER(ILogger, Logger);

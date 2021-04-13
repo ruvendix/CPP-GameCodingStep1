@@ -16,21 +16,33 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugEngine|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseEngine|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Service\Log\LogCategory.cpp" />
+    <ClCompile Include="Source\Service\Log\Logger.cpp" />
     <ClCompile Include="Source\Service\ServiceLocator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Common\CommonBase.h" />
     <ClInclude Include="Source\Common\CommonConstant.h" />
     <ClInclude Include="Source\Common\CommonEnum.h" />
+    <ClInclude Include="Source\Common\CommonFunction.h" />
+    <ClInclude Include="Source\Common\CommonFunction\MakeFormatString.hpp" />
     <ClInclude Include="Source\Common\CommonInclusion.h" />
+    <ClInclude Include="Source\Common\CommonInterface.h" />
     <ClInclude Include="Source\Common\CommonMacro.h" />
     <ClInclude Include="Source\Common\CommonType.h" />
     <ClInclude Include="Source\Service\Console\ConsoleEnum.h" />
     <ClInclude Include="Source\Service\Console\ConsoleHandler.h" />
     <ClInclude Include="Source\EnginePCH.h" />
     <ClInclude Include="Source\Service\Console\IConsoleHandler.h" />
+    <ClInclude Include="Source\Service\Log\ILogger.h" />
+    <ClInclude Include="Source\Service\Log\LogCategory.h" />
+    <ClInclude Include="Source\Service\Log\LogCategoryBase.h" />
+    <ClInclude Include="Source\Service\Log\LogEnum.h" />
+    <ClInclude Include="Source\Service\Log\Logger.h" />
+    <ClInclude Include="Source\Service\Log\LogMacro.h" />
     <ClInclude Include="Source\Service\ServiceInclusion.h" />
     <ClInclude Include="Source\Service\ServiceLocator.h" />
+    <ClInclude Include="Source\Service\ServiceMacro.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -83,6 +95,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>EnginePCH.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -101,6 +114,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>EnginePCH.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>

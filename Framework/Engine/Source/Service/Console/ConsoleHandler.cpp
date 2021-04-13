@@ -118,7 +118,10 @@ EReturnType ConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor renderin
 	}
 
 	m_outputScreenBufferInfo.wAttributes = attr;
-	::SetConsoleTextAttribute(m_hStdOutput, m_outputScreenBufferInfo.wAttributes);
+	if (::SetConsoleTextAttribute(m_hStdOutput, m_outputScreenBufferInfo.wAttributes) == FALSE)
+	{
+		return EReturnType::FAIL;
+	}
 
 	return EReturnType::SUCCESS;
 }
@@ -182,6 +185,15 @@ void ConsoleHandler::FlushInputBuffer()
 }
 
 /*
+	콘솔창 출력 색상을 원래대로 돌립니다.
+*/
+void ConsoleHandler::ResetRenderingColor()
+{
+	m_outputScreenBufferInfo.wAttributes = defaultAttr;
+	::SetConsoleTextAttribute(m_hStdOutput, defaultAttr);
+}
+
+/*
 	정수를 입력받습니다.
 */
 Int32 ConsoleHandler::InputInteger()
@@ -212,4 +224,13 @@ const Char* ConsoleHandler::InputString()
 	scanf_s("%[^\n]s", charBuffer, DEFAULT_CHAR_BUFFER_SIZE);
 	FlushInputBuffer();
 	return charBuffer;
+}
+
+/*
+	콘솔창 커서의 현재 좌표를 알려줍니다.
+*/
+COORD ConsoleHandler::QueryCurrentPosition()
+{
+	::GetConsoleScreenBufferInfo(m_hStdOutput, &m_outputScreenBufferInfo);
+	return m_outputScreenBufferInfo.dwCursorPosition;
 }

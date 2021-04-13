@@ -12,3 +12,5 @@
 
 #include "Common/CommonInclusion.h"
 #include "Service/ServiceInclusion.h"
+
+#include "Service/Log/LogCategory.h"

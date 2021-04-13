@@ -17,6 +17,8 @@
 #include <unordered_map>
 #include <string>
 #include <memory>
+#include <bitset>
+#include <type_traits>
 #pragma endregion
 
 #pragma region Win32API

@@ -48,6 +48,11 @@
 *.suo
 *.user
 
-#intermediate
+# Misc
+*.manifest
+*.testdurations
+*.testlog
+
+# Intermediate
 /Example/Binaries/Intermediate
 /Framework/Binaries/Intermediate

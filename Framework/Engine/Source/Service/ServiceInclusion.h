@@ -10,3 +10,4 @@
 
 #include "ServiceLocator.h"
 #include "Console/IConsoleHandler.h"
+#include "Log/ILogger.h"

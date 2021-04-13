@@ -17,16 +17,15 @@
 
 int main()
 {
-	IConsoleHandler* pConsole = ServiceLocator::I().IConsoleHandlerInstance();
-	pConsole->SetUp();
+	PrintF("%s\n\n", "Variadic 템플릿으로 printf()를 호출합니다.");
 
-	pConsole->ShowCursor(false);
-	pConsole->ChangeRenderingColor(EConsoleRenderingColor::AQUA, EConsoleRenderingType::BACKGROUND);
+	Char buffer[DEFAULT_CHAR_BUFFER_SIZE];
+	StringPrint(buffer, DEFAULT_CHAR_BUFFER_SIZE, "%s", "std::string에 문자열을 출력합니다.");
+	printf("%s\n\n", buffer);
 
-	const Char* sz = pConsole->InputString();
-	pConsole->RenderString(10, 10, sz);
-	pConsole->MovePosition(0, 0);
+	std::string str("[덧붙일 문자열]");
+	std::string strResult = MakeFormatString("%s %s", buffer, str);
+	printf("%s\n\n", strResult.c_str());
 
-	pConsole->CleanUp();
 	return 0;
 }

@@ -30,10 +30,13 @@ public:
 	virtual void ShowCursor(bool bShow) override;
 	virtual void RenderString(Int32 x, Int32 y, const Char* szText) override;
 	virtual void FlushInputBuffer() override;
+	virtual void ResetRenderingColor() override;
 
 	virtual Int32 InputInteger() override;
 	virtual Float InputFloat() override;
 	virtual const Char* InputString() override;
+
+	virtual COORD QueryCurrentPosition() override;
 
 private:
 	HWND m_hConsole = nullptr; // 콘솔창의 핸들입니다.
