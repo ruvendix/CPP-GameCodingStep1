@@ -8,6 +8,7 @@
 // =====================================================================================
 #pragma once
 
+#include "CommonMacro.h"
 #include "CommonEnum.h"
 
 class IDefault
@@ -16,6 +17,6 @@ public:
 	IDefault() = default;
 	virtual ~IDefault() = default;
 
-	virtual EReturnType SetUp() = 0;
-	virtual EReturnType CleanUp() = 0;
+	virtual EReturnType SetUp() PURE_FUNC
+	virtual EReturnType CleanUp() PURE_FUNC
 };

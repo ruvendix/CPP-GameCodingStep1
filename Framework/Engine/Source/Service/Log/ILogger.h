@@ -8,10 +8,7 @@
 // =====================================================================================
 #pragma once
 
-#include "common/CommonMacro.h"
-#include "Common/CommonEnum.h"
 #include "Common/CommonInterface.h"
-
 #include "LogCategoryBase.h"
 
 class ILogger : public IDefault
@@ -24,20 +21,20 @@ public:
 	virtual EReturnType CleanUp() DEFAULT_FUNC
 
 	virtual void Trace(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) = 0;
+		const Char* szTime, const Char* szFilePath, Int32 line) PURE_FUNC
 
 	virtual void Assert(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) = 0;
+		const Char* szTime, const Char* szFilePath, Int32 line) PURE_FUNC
 
 	virtual void Info(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) = 0;
+		const Char* szTime, const Char* szFilePath, Int32 line) PURE_FUNC
 
 	virtual void Warning(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) = 0;
+		const Char* szTime, const Char* szFilePath, Int32 line) PURE_FUNC
 
 	virtual void Error(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) = 0;
+		const Char* szTime, const Char* szFilePath, Int32 line) PURE_FUNC
 
 	virtual void Fatal(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) = 0;
+		const Char* szTime, const Char* szFilePath, Int32 line) PURE_FUNC
 };

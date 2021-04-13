@@ -10,6 +10,7 @@
 
 #include "CommonBase.h"
 #include "CommonType.h"
+#include "CommonEnum.h"
 #include "CommonConstant.h"
 #include "CommonMacro.h"
 #include "CommonInterface.h"

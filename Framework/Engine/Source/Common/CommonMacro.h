@@ -31,7 +31,5 @@ private:\
 	}
 
 #define EMPTY_FUNC { }
-#define DEFAULT_FUNC\
-	{\
-		return EReturnType::SUCCESS;\
-	}
+#define PURE_FUNC = 0;
+#define DEFAULT_FUNC { return EReturnType::SUCCESS; }
