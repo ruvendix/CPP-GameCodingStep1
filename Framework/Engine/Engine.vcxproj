@@ -17,6 +17,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseEngine|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\Service\Log\LogCategory.cpp" />
+    <ClCompile Include="Source\Service\Log\LogCategoryBase.cpp" />
     <ClCompile Include="Source\Service\Log\Logger.cpp" />
     <ClCompile Include="Source\Service\ServiceLocator.cpp" />
   </ItemGroup>

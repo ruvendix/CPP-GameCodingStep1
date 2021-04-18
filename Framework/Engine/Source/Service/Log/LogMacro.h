@@ -16,18 +16,21 @@
 		CategoryName##Type() : LogCategoryBase(#CategoryName) EMPTY_FUNC\
 	};\
 	\
-	extern CategoryName##Type CategoryName
+	extern CategoryName##Type g_##CategoryName
 
 // DECLARE_LOG_CATEGORY()에서 선언한 클래스를 객체로 만듭니다.
 // 실제로 객체를 만들 때는 매크로에 전달한 이름과 동일하게 만듭니다.
-#define DEFINE_LOG_CATEGORY(CategoryName) CategoryName##Type CategoryName
+#define DEFINE_LOG_CATEGORY(CategoryName) CategoryName##Type g_##CategoryName
 
 #pragma region 로그 카테고리가 없는 버전입니다.
 #define RX_SIMPLE_TRACE(szFormat, ...)\
     ServiceLocator::I().ILoggerInstance()->Trace(nullptr, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
 
-#define RX_SIMPLE_ASSERT(szFormat, ...)\
-    ServiceLocator::I().ILoggerInstance()->Assert(nullptr, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+#define RX_SIMPLE_ASSERT(expression)\
+    if (!(expression))\
+    {\
+        ServiceLocator::I().ILoggerInstance()->Assert(nullptr, #expression, __TIME__, __FILE__, __LINE__);\
+    }
 
 #define RX_SIMPLE_INFO(szFormat, ...)\
     ServiceLocator::I().ILoggerInstance()->Info(nullptr, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
@@ -44,20 +47,23 @@
 
 #pragma region 로그 카테고리가 있는 버전입니다.
 #define RX_TRACE(logCategory, szFormat, ...)\
-    ServiceLocator::I().ILoggerInstance()->Trace(&logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+    ServiceLocator::I().ILoggerInstance()->Trace(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
 
-#define RX_ASSERT(logCategory, szFormat, ...)\
-	ServiceLocator::I().ILoggerInstance()->Assert(&logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+#define RX_ASSERT(logCategory, expression)\
+    if (!(expression))\
+    {\
+        ServiceLocator::I().ILoggerInstance()->Assert(&g_##logCategory, #expression, __TIME__, __FILE__, __LINE__);\
+    }
 
 #define RX_INFO(logCategory, szFormat, ...)\
-    ServiceLocator::I().ILoggerInstance()->Info(&logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+    ServiceLocator::I().ILoggerInstance()->Info(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
 
 #define RX_WARNING(logCategory, szFormat, ...)\
-    ServiceLocator::I().ILoggerInstance()->Warning(&logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+    ServiceLocator::I().ILoggerInstance()->Warning(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
 
 #define RX_ERROR(logCategory, szFormat, ...)\
-    ServiceLocator::I().ILoggerInstance()->Error(&logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+    ServiceLocator::I().ILoggerInstance()->Error(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
 
 #define RX_FATAL(logCategory, szFormat, ...)\
-    ServiceLocator::I().ILoggerInstance()->Fatal(&logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+    ServiceLocator::I().ILoggerInstance()->Fatal(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
 #pragma endregion

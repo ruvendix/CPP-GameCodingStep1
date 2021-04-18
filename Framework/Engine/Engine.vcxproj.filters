@@ -37,6 +37,9 @@
     <ClCompile Include="Source\Service\Log\LogCategory.cpp">
       <Filter>Source\Service\Log</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Service\Log\LogCategoryBase.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnginePCH.h">

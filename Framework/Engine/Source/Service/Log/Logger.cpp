@@ -19,8 +19,9 @@ namespace
 
 	void BeginLog(EConsoleRenderingColor renderingColor);
 	void EndLog();
+	void PrintDebugOutputLog(OUT std::string& strLog);
 
-	void MakeLog(const LogCategoryBase* pCategory, const std::string_view& strContent,
+	Bool MakeLog(const LogCategoryBase* pCategory, const std::string_view& strContent,
 		 const Char* szTime, const Char* szFilePath, Int32 line, OUT std::string& strLog);	
 }
 
@@ -48,6 +49,22 @@ EReturnType Logger::CleanUp()
 }
 
 /*
+	로그 카테고리를 활성화합니다.
+*/
+void Logger::ActivateCategory(LogCategoryBase* pCategory)
+{
+	pCategory->Activate();
+}
+
+/*
+	로그 카테고리를 비활성화합니다.
+*/
+void Logger::DeactivateCategory(LogCategoryBase* pCategory)
+{
+	pCategory->Deactivate();
+}
+
+/*
 	디버그 모드에서만 출력하는 로그입니다.
 */
 void Logger::Trace(const LogCategoryBase* pCategory, const std::string_view& strContent,
@@ -60,10 +77,15 @@ void Logger::Trace(const LogCategoryBase* pCategory, const std::string_view& str
 	BeginLog(EConsoleRenderingColor::GREEN);
 
 	std::string strLog;
-	MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog);
+	if (MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	{
+		EndLog();
+		return;
+	}
 
 	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
-	
+	PrintDebugOutputLog(strLog);
+
 	EndLog();
 }
 
@@ -81,8 +103,14 @@ void Logger::Assert(const LogCategoryBase* pCategory, const std::string_view& st
 	BeginLog(EConsoleRenderingColor::AQUA);
 
 	std::string strLog;
-	MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog);
+	if (MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	{
+		EndLog();
+		return;
+	}
+
 	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
+	PrintDebugOutputLog(strLog);
 	DebugBreak();
 
 	EndLog();
@@ -97,8 +125,14 @@ void Logger::Info(const LogCategoryBase* pCategory, const std::string_view& strC
 	BeginLog(EConsoleRenderingColor::LIGHT_GREEN);
 
 	std::string strLog;
-	MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog);
+	if (MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	{
+		EndLog();
+		return;
+	}
+
 	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
+	PrintDebugOutputLog(strLog);
 
 	EndLog();
 }
@@ -113,8 +147,14 @@ void Logger::Warning(const LogCategoryBase* pCategory, const std::string_view& s
 	BeginLog(EConsoleRenderingColor::YELLOW);
 
 	std::string strLog;
-	MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog);
+	if (MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	{
+		EndLog();
+		return;
+	}
+
 	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
+	PrintDebugOutputLog(strLog);
 
 	EndLog();
 }
@@ -130,12 +170,14 @@ void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& str
 	BeginLog(EConsoleRenderingColor::LIGHT_YELLOW);
 
 	std::string strLog;
-	MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog);
-
-	// 마지막 발생한 에러 코드를 알아내서 에러 내용 붙이기
-	// 에러 핸들러가 에러 코드를 갖고 있고, 에러 내용을 출력하면 초기화시킴
+	if (MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	{
+		EndLog();
+		return;
+	}
 
 	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
+	PrintDebugOutputLog(strLog);
 
 	EndLog();
 }
@@ -150,7 +192,13 @@ void Logger::Fatal(const LogCategoryBase* pCategory, const std::string_view& str
 	BeginLog(EConsoleRenderingColor::RED);
 
 	std::string strLog;
-	MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog);
+	if (MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	{
+		EndLog();
+		return;
+	}
+
+	::OutputDebugString(strLog.c_str());
 	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
 	std::abort();
 
@@ -182,9 +230,20 @@ namespace
 	/*
 		전달받은 인자들을 이용해서 로그 문자열을 만듭니다.
 	*/
-	void MakeLog(const LogCategoryBase* pCategory, const std::string_view& strContent,
+	Bool MakeLog(const LogCategoryBase* pCategory, const std::string_view& strContent,
 		const Char* szTime, const Char* szFilePath, Int32 line, OUT std::string& strLog)
 	{
+		std::string strCategory;
+		if (pCategory != nullptr)
+		{
+			if (pCategory->CheckActivate() == false)
+			{
+				return false;
+			}
+
+			strCategory = pCategory->getName() + ": ";
+		}
+
 		if ((detailOption.test(ToUnderlyingType(EDetailType::TIME)) == true) &&
 			(szTime != nullptr))
 		{
@@ -214,11 +273,16 @@ namespace
 			strLog.insert(0, strContent);
 		}
 
-		if (pCategory != nullptr)
-		{
-			std::string strCategory;
-			strCategory = pCategory->getName() + ": ";
-			strLog.insert(0, strCategory);
-		}
+		strLog.insert(0, strCategory);
+		return true;
+	}
+
+	/*
+		디버그 출력창에 로그를 출력합니다.
+	*/
+	void PrintDebugOutputLog(OUT std::string& strLog)
+	{
+		strLog += "\n";
+		::OutputDebugString(strLog.c_str());
 	}
 }

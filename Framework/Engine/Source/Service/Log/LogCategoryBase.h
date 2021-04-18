@@ -21,6 +21,8 @@ public:
 
 	virtual ~LogCategoryBase() = default;
 
+	Bool CheckActivate() const;
+
 	const std::string& getName() const
 	{
 		return m_strName;
@@ -34,7 +36,7 @@ public:
 	void Deactivate()
 	{
 		m_bActivation = false;
-	}
+	}	
 
 private:
 	Bool m_bActivation = true;

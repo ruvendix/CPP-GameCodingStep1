@@ -20,6 +20,9 @@ public:
 	virtual EReturnType SetUp() DEFAULT_FUNC
 	virtual EReturnType CleanUp() DEFAULT_FUNC
 
+	virtual void ActivateCategory(LogCategoryBase* pCategory) PURE_FUNC
+	virtual void DeactivateCategory(LogCategoryBase* pCategory) PURE_FUNC
+
 	virtual void Trace(const LogCategoryBase* pCategory, const std::string_view& strContent,
 		const Char* szTime, const Char* szFilePath, Int32 line) PURE_FUNC
 

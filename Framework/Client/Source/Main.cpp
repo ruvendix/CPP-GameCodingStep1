@@ -17,15 +17,11 @@
 
 int main()
 {
-	PrintF("%s\n\n", "Variadic 템플릿으로 printf()를 호출합니다.");
+	ServiceLocator::I().IConsoleHandlerInstance()->SetUp();
+	ServiceLocator::I().ILoggerInstance()->SetUp();
 
-	Char buffer[DEFAULT_CHAR_BUFFER_SIZE];
-	StringPrint(buffer, DEFAULT_CHAR_BUFFER_SIZE, "%s", "std::string에 문자열을 출력합니다.");
-	printf("%s\n\n", buffer);
-
-	std::string str("[덧붙일 문자열]");
-	std::string strResult = MakeFormatString("%s %s", buffer, str);
-	printf("%s\n\n", strResult.c_str());
+	ServiceLocator::I().IConsoleHandlerInstance()->CleanUp();
+	ServiceLocator::I().ILoggerInstance()->CleanUp();
 
 	return 0;
 }
