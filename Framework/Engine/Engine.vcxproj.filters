@@ -38,7 +38,7 @@
       <Filter>Source\Service\Log</Filter>
     </ClCompile>
     <ClCompile Include="Source\Service\Log\LogCategoryBase.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Service\Log</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
