@@ -20,6 +20,9 @@
     <Filter Include="Source\Common\CommonFunction">
       <UniqueIdentifier>{c4f760c0-6063-4197-bb67-d2cf25a10b35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Service\Error">
+      <UniqueIdentifier>{c306d93d-9d51-4377-820e-a61a1889861b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\EnginePCH.cpp">
@@ -39,6 +42,9 @@
     </ClCompile>
     <ClCompile Include="Source\Service\Log\LogCategoryBase.cpp">
       <Filter>Source\Service\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Service\Error\ErrorHandler.cpp">
+      <Filter>Source\Service\Error</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +113,18 @@
     </ClInclude>
     <ClInclude Include="Source\Common\CommonFunction\MakeFormatString.hpp">
       <Filter>Source\Common\CommonFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\Error\ErrorEnum.h">
+      <Filter>Source\Service\Error</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\Error\ErrorHandler.h">
+      <Filter>Source\Service\Error</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\Error\ErrorMacro.h">
+      <Filter>Source\Service\Error</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\Error\IErrorHandler.h">
+      <Filter>Source\Service\Error</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

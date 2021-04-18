@@ -11,3 +11,6 @@
 #include "ServiceLocator.h"
 #include "Console/IConsoleHandler.h"
 #include "Log/ILogger.h"
+#include "Error/IErrorHandler.h"
+
+#include "Error/ErrorMacro.h"

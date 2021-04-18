@@ -170,6 +170,11 @@ void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& str
 	BeginLog(EConsoleRenderingColor::LIGHT_YELLOW);
 
 	std::string strLog;
+	if (strContent.empty() == true)
+	{
+		ServiceLocator::I().IErrorHandlerInstance()->FindErrorContent(strLog);
+	}
+
 	if (MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
 	{
 		EndLog();
@@ -178,6 +183,7 @@ void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& str
 
 	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
 	PrintDebugOutputLog(strLog);
+	DebugBreak();
 
 	EndLog();
 }

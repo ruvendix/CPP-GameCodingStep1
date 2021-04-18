@@ -45,9 +45,13 @@ Int32 StringPrint(Char buffer[], size_t bufferCount, const Char* szFormat, Args&
 template <typename... Args>
 std::string MakeFormatString(const Char* szFormat, Args&&... args)
 {
-    Int32 stringLength = StringPrint(nullptr, 0, szFormat, std::forward<Args>(args)...);
-
     std::string str;
+    if (szFormat == nullptr)
+    {
+        return str;
+    }
+
+    Int32 stringLength = StringPrint(nullptr, 0, szFormat, std::forward<Args>(args)...);
     str.resize(stringLength);
 
     // snprintf()는 종료문자가 포함되었다고 가정하므로 +1을 해줘야 합니다.

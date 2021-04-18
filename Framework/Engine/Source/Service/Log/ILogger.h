@@ -17,27 +17,27 @@ public:
 	ILogger() = default;
 	virtual ~ILogger() = default;
 
-	virtual EReturnType SetUp() DEFAULT_FUNC
-	virtual EReturnType CleanUp() DEFAULT_FUNC
+	virtual EReturnType SetUp() { return EReturnType::SUCCESS; }
+	virtual EReturnType CleanUp() { return EReturnType::SUCCESS; }
 
-	virtual void ActivateCategory(LogCategoryBase* pCategory) PURE_FUNC
-	virtual void DeactivateCategory(LogCategoryBase* pCategory) PURE_FUNC
+	virtual void ActivateCategory(LogCategoryBase* pCategory) = 0;
+	virtual void DeactivateCategory(LogCategoryBase* pCategory) = 0;
 
 	virtual void Trace(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) PURE_FUNC
+		const Char* szTime, const Char* szFilePath, Int32 line) = 0;
 
 	virtual void Assert(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) PURE_FUNC
+		const Char* szTime, const Char* szFilePath, Int32 line) = 0;
 
 	virtual void Info(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) PURE_FUNC
+		const Char* szTime, const Char* szFilePath, Int32 line) = 0;
 
 	virtual void Warning(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) PURE_FUNC
+		const Char* szTime, const Char* szFilePath, Int32 line) = 0;
 
 	virtual void Error(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) PURE_FUNC
+		const Char* szTime, const Char* szFilePath, Int32 line) = 0;
 
 	virtual void Fatal(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) PURE_FUNC
+		const Char* szTime, const Char* szFilePath, Int32 line) = 0;
 };

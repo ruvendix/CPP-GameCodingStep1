@@ -29,7 +29,3 @@ private:\
 		delete ptr;\
 		ptr = nullptr;\
 	}
-
-#define EMPTY_FUNC { }
-#define PURE_FUNC = 0;
-#define DEFAULT_FUNC { return EReturnType::SUCCESS; }

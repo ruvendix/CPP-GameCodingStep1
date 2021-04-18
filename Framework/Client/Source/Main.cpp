@@ -19,9 +19,13 @@ int main()
 {
 	ServiceLocator::I().IConsoleHandlerInstance()->SetUp();
 	ServiceLocator::I().ILoggerInstance()->SetUp();
+	ServiceLocator::I().IErrorHandlerInstance()->SetUp();
 
-	ServiceLocator::I().IConsoleHandlerInstance()->CleanUp();
+	CEHCK_NULLPTR(nullptr);
+	
+	ServiceLocator::I().IErrorHandlerInstance()->CleanUp();
 	ServiceLocator::I().ILoggerInstance()->CleanUp();
+	ServiceLocator::I().IConsoleHandlerInstance()->CleanUp();	
 
 	return 0;
 }

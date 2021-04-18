@@ -12,7 +12,7 @@
 
 namespace
 {
-	Uint32 defaultAttr PURE_FUNC
+	Uint32 defaultAttr = 0;
 	Char charBuffer[DEFAULT_CHAR_BUFFER_SIZE];
 }
 
@@ -158,7 +158,7 @@ EReturnType ConsoleHandler::ClearScreen()
 	Uint32 size = m_outputScreenBufferInfo.dwSize.X * m_outputScreenBufferInfo.dwSize.Y;
 
 	// 콘솔창의 버퍼를 공백으로 채웁니다.
-	DWORD dwWrittenCnt PURE_FUNC
+	DWORD dwWrittenCnt = 0;
 	COORD beginPos = { 0, 0 };
 	if (::FillConsoleOutputCharacter(m_hStdOutput, ' ', size, beginPos, &dwWrittenCnt) == FALSE)
 	{
@@ -198,7 +198,7 @@ void ConsoleHandler::ResetRenderingColor()
 */
 Int32 ConsoleHandler::InputInteger()
 {
-	Int32 value PURE_FUNC
+	Int32 value = 0;
 	scanf_s("%d", &value);
 	FlushInputBuffer();
 	return value;

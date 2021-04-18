@@ -18,4 +18,5 @@ class ServiceLocator final
 
 	DECLARE_SERVICE_SMARTPOINTER(IConsoleHandler, ConsoleHandler);
 	DECLARE_SERVICE_SMARTPOINTER(ILogger, Logger);
+	DECLARE_SERVICE_SMARTPOINTER(IErrorHandler, ErrorHandler);
 };

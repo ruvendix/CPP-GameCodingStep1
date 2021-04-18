@@ -4,19 +4,14 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 공통적으로 사용되는 인터페이스 모음입니다.
+// 에러 핸들러에 사용되는 열거형입니다.
 // =====================================================================================
 #pragma once
 
-#include "CommonMacro.h"
-#include "CommonEnum.h"
+#include "Common/CommonType.h"
 
-class IDefault
+enum class EErrorType : Int32
 {
-public:
-	IDefault() = default;
-	virtual ~IDefault() = default;
-
-	virtual EReturnType SetUp() = 0;
-	virtual EReturnType CleanUp() = 0;
+	NONE = 0,
+	INDIRECT_NULLPTR, // 널포인터 역참조
 };
