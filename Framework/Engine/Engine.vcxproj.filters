@@ -23,6 +23,9 @@
     <Filter Include="Source\Service\Error">
       <UniqueIdentifier>{c306d93d-9d51-4377-820e-a61a1889861b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\GameObject">
+      <UniqueIdentifier>{a4469a9d-de9e-41cd-ab96-b722ff03120c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\EnginePCH.cpp">
@@ -45,6 +48,12 @@
     </ClCompile>
     <ClCompile Include="Source\Service\Error\ErrorHandler.cpp">
       <Filter>Source\Service\Error</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Service\GameObject\GameObject.cpp">
+      <Filter>Source\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Service\GameObject\GameObjectManager.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,5 +135,10 @@
     <ClInclude Include="Source\Service\Error\IErrorHandler.h">
       <Filter>Source\Service\Error</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Service\GameObject\GameObject.h">
+      <Filter>Source\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\GameObject\IGameObjectManger.h" />
+    <ClInclude Include="Source\Service\GameObject\GameObjectManager.h" />
   </ItemGroup>
 </Project>

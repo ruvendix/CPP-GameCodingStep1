@@ -8,6 +8,7 @@
 // =====================================================================================
 
 #include <EnginePCH.h>
+#include <Service/GameObject/GameObject.h>
 
 #ifdef _DEBUG
 #pragma comment(lib, "Engine_Debug.lib")
@@ -20,9 +21,16 @@ int main()
 	ServiceLocator::I().IConsoleHandlerInstance()->SetUp();
 	ServiceLocator::I().ILoggerInstance()->SetUp();
 	ServiceLocator::I().IErrorHandlerInstance()->SetUp();
+	ServiceLocator::I().IGameObjectManagerInstance()->SetUp();
 
-	CEHCK_NULLPTR(nullptr);
+	GameObject obj;
+	obj.SetUp();
+	ServiceLocator::I().IGameObjectManagerInstance()->AddGameObject(&obj);
+
+	ServiceLocator::I().IGameObjectManagerInstance()->UpdateAllGameObject();
+	ServiceLocator::I().IGameObjectManagerInstance()->RenderAllGameObject();
 	
+	ServiceLocator::I().IGameObjectManagerInstance()->CleanUp();
 	ServiceLocator::I().IErrorHandlerInstance()->CleanUp();
 	ServiceLocator::I().ILoggerInstance()->CleanUp();
 	ServiceLocator::I().IConsoleHandlerInstance()->CleanUp();	

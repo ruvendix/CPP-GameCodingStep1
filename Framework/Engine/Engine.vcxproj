@@ -11,12 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Service\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\Service\Console\ConsoleHandler.cpp" />
     <ClCompile Include="Source\EnginePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugEngine|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseEngine|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\Service\Error\ErrorHandler.cpp" />
+    <ClCompile Include="Source\Service\GameObject\GameObjectManager.cpp" />
     <ClCompile Include="Source\Service\Log\LogCategory.cpp" />
     <ClCompile Include="Source\Service\Log\LogCategoryBase.cpp" />
     <ClCompile Include="Source\Service\Log\Logger.cpp" />
@@ -32,6 +34,7 @@
     <ClInclude Include="Source\Common\CommonInterface.h" />
     <ClInclude Include="Source\Common\CommonMacro.h" />
     <ClInclude Include="Source\Common\CommonType.h" />
+    <ClInclude Include="Source\Service\GameObject\GameObject.h" />
     <ClInclude Include="Source\Service\Console\ConsoleEnum.h" />
     <ClInclude Include="Source\Service\Console\ConsoleHandler.h" />
     <ClInclude Include="Source\EnginePCH.h" />
@@ -40,6 +43,8 @@
     <ClInclude Include="Source\Service\Error\ErrorHandler.h" />
     <ClInclude Include="Source\Service\Error\ErrorMacro.h" />
     <ClInclude Include="Source\Service\Error\IErrorHandler.h" />
+    <ClInclude Include="Source\Service\GameObject\GameObjectManager.h" />
+    <ClInclude Include="Source\Service\GameObject\IGameObjectManger.h" />
     <ClInclude Include="Source\Service\Log\ILogger.h" />
     <ClInclude Include="Source\Service\Log\LogCategory.h" />
     <ClInclude Include="Source\Service\Log\LogCategoryBase.h" />

@@ -8,9 +8,8 @@
 // =====================================================================================
 #pragma once
 
-#define CEHCK_NULLPTR(ptr)\
+#define CHECK_NULLPTR(ptr)\
 	if (ptr == nullptr)\
 	{\
-		ServiceLocator::I().IErrorHandlerInstance()->SetLastError(EErrorType::INDIRECT_NULLPTR);\
-		RX_SIMPLE_ERROR(nullptr);\
+		RX_SIMPLE_ERRORTYPE(EErrorType::INDIRECT_NULLPTR);\
 	}

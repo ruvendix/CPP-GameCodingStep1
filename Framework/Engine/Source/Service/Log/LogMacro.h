@@ -41,6 +41,10 @@
 #define RX_SIMPLE_ERROR(szFormat, ...)\
     ServiceLocator::I().ILoggerInstance()->Error(nullptr, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
 
+#define RX_SIMPLE_ERRORTYPE(error)\
+    ServiceLocator::I().IErrorHandlerInstance()->SetLastError(error);\
+    RX_SIMPLE_ERROR(nullptr);
+
 #define RX_SIMPLE_FATAL(szFormat, ...)\
     ServiceLocator::I().ILoggerInstance()->Fatal(nullptr, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
 #pragma endregion
@@ -63,6 +67,10 @@
 
 #define RX_ERROR(logCategory, szFormat, ...)\
     ServiceLocator::I().ILoggerInstance()->Error(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+
+#define RX_ERRORTYPE(logCategory, error)\
+    ServiceLocator::I().IErrorHandlerInstance()->SetLastError(error);\
+    RX_ERROR(logCategory, nullptr);
 
 #define RX_FATAL(logCategory, szFormat, ...)\
     ServiceLocator::I().ILoggerInstance()->Fatal(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)

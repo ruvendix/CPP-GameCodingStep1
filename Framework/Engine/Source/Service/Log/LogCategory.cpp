@@ -12,3 +12,4 @@
 #include "LogCategory.h"
 
 DEFINE_LOG_CATEGORY(LogDefault);
+DEFINE_LOG_CATEGORY(LogGameObjectManager);

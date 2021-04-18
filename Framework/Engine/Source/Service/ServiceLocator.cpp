@@ -44,3 +44,4 @@
 DEFINE_SERVICE_SMARTPOINTER(IConsoleHandler, ConsoleHandler);
 DEFINE_SERVICE_SMARTPOINTER(ILogger, Logger);
 DEFINE_SERVICE_SMARTPOINTER(IErrorHandler, ErrorHandler);
+DEFINE_SERVICE_SMARTPOINTER(IGameObjectManager, GameObjectManager);

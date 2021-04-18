@@ -23,5 +23,6 @@
 
 #pragma region Win32API
 #define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 #include <Windows.h>
 #pragma endregion

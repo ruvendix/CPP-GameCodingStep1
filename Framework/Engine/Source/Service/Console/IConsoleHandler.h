@@ -11,11 +11,11 @@
 #include "Common/CommonInterface.h"
 #include "ConsoleEnum.h"
 
-class IConsoleHandler : public IDefault
+class IConsoleHandler : public IService
 {
 public:
-	virtual EReturnType SetUp() { return EReturnType::SUCCESS; }
-	virtual EReturnType CleanUp() { return EReturnType::SUCCESS; }
+	virtual EReturnType SetUp() override { return EReturnType::SUCCESS; }
+	virtual EReturnType CleanUp() override { return EReturnType::SUCCESS; }
 
 	virtual EReturnType ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) = 0;
 	virtual EReturnType ClearScreen() = 0;

@@ -173,6 +173,7 @@ void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& str
 	if (strContent.empty() == true)
 	{
 		ServiceLocator::I().IErrorHandlerInstance()->FindErrorContent(strLog);
+		ServiceLocator::I().IErrorHandlerInstance()->SetLastError(EErrorType::NONE);
 	}
 
 	if (MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)

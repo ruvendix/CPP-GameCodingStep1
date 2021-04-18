@@ -9,16 +9,17 @@
 #pragma once
 
 #include "Common/CommonInterface.h"
-#include "LogCategoryBase.h"
 
-class ILogger : public IDefault
+class LogCategoryBase;
+
+class ILogger : public IService
 {
 public:
 	ILogger() = default;
 	virtual ~ILogger() = default;
 
-	virtual EReturnType SetUp() { return EReturnType::SUCCESS; }
-	virtual EReturnType CleanUp() { return EReturnType::SUCCESS; }
+	virtual EReturnType SetUp() override { return EReturnType::SUCCESS; }
+	virtual EReturnType CleanUp() override { return EReturnType::SUCCESS; }
 
 	virtual void ActivateCategory(LogCategoryBase* pCategory) = 0;
 	virtual void DeactivateCategory(LogCategoryBase* pCategory) = 0;

@@ -11,7 +11,7 @@
 #include "Common/CommonInterface.h"
 #include "ErrorEnum.h"
 
-class IErrorHandler : public IDefault
+class IErrorHandler : public IService
 {
 public:
 	IErrorHandler() = default;

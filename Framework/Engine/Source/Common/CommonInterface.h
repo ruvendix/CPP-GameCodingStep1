@@ -11,12 +11,25 @@
 #include "CommonMacro.h"
 #include "CommonEnum.h"
 
-class IDefault
+class IService
 {
 public:
-	IDefault() = default;
-	virtual ~IDefault() = default;
+	IService() = default;
+	virtual ~IService() = default;
 
 	virtual EReturnType SetUp() = 0;
 	virtual EReturnType CleanUp() = 0;
+};
+
+class IGameObject
+{
+public:
+	IGameObject() = default;
+	virtual ~IGameObject() = default;
+
+	virtual EReturnType SetUp() = 0;
+	virtual EReturnType CleanUp() = 0;
+
+	virtual EReturnType Update() = 0;
+	virtual EReturnType Render() = 0;
 };
