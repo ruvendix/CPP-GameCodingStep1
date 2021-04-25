@@ -23,6 +23,8 @@
 #define DEFINE_LOG_CATEGORY(CategoryName) CategoryName##Type g_##CategoryName
 
 #pragma region 로그 카테고리가 없는 버전입니다.
+
+#ifdef _DEBUG
 #define RX_SIMPLE_TRACE(szFormat, ...)\
     ServiceLocator::I().ILoggerInstance()->Trace(nullptr, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
 
@@ -31,6 +33,10 @@
     {\
         ServiceLocator::I().ILoggerInstance()->Assert(nullptr, #expression, __TIME__, __FILE__, __LINE__);\
     }
+#else
+#define RX_SIMPLE_TRACE(szFormat, ...) __noop
+#define RX_SIMPLE_ASSERT(expression) __noop
+#endif
 
 #define RX_SIMPLE_INFO(szFormat, ...)\
     ServiceLocator::I().ILoggerInstance()->Info(nullptr, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
@@ -50,6 +56,8 @@
 #pragma endregion
 
 #pragma region 로그 카테고리가 있는 버전입니다.
+
+#ifdef _DEBUG
 #define RX_TRACE(logCategory, szFormat, ...)\
     ServiceLocator::I().ILoggerInstance()->Trace(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
 
@@ -58,6 +66,10 @@
     {\
         ServiceLocator::I().ILoggerInstance()->Assert(&g_##logCategory, #expression, __TIME__, __FILE__, __LINE__);\
     }
+#else
+#define RX_TRACE(logCategory, szFormat, ...) __noop
+#define RX_ASSERT(logCategory, expression) __noop
+#endif
 
 #define RX_INFO(logCategory, szFormat, ...)\
     ServiceLocator::I().ILoggerInstance()->Info(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)

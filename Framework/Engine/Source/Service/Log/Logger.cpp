@@ -221,7 +221,8 @@ namespace
 	{
 		if (pConsoleHandler->ChangeRenderingColor(renderingColor, EConsoleRenderingType::TEXT) == EReturnType::FAIL)
 		{
-			assert(nullptr);
+
+			RX_SIMPLE_ASSERT(nullptr);
 			return;
 		}
 	}
