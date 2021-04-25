@@ -4,7 +4,6 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 콘솔 서비스입니다.
 // 콘솔창을 다룰 때 사용됩니다.
 // =====================================================================================
 #include "EnginePCH.h"
@@ -24,13 +23,13 @@ namespace
 EReturnType ConsoleHandler::SetUp()
 {
 	m_hConsole = ::GetConsoleWindow();
-	assert(m_hConsole != nullptr);
+	RX_ASSERT(LogConsoleHandler, m_hConsole != nullptr);
 
 	m_hStdInput = ::GetStdHandle(STD_INPUT_HANDLE);
-	assert(m_hStdInput != nullptr);
+	RX_ASSERT(LogConsoleHandler, m_hStdInput != nullptr);
 
 	m_hStdOutput = ::GetStdHandle(STD_OUTPUT_HANDLE);
-	assert(m_hStdOutput != nullptr);
+	RX_ASSERT(LogConsoleHandler, m_hStdOutput != nullptr);
 
 	::GetConsoleScreenBufferInfo(m_hStdOutput, &m_outputScreenBufferInfo);
 	defaultAttr = m_outputScreenBufferInfo.wAttributes;

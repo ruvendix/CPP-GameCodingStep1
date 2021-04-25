@@ -14,3 +14,7 @@
 #include "Service/ServiceInclusion.h"
 
 #include "Service/Log/LogCategory.h"
+
+#pragma comment(lib, "winmm.lib") // ::timeGetTime() 때문...
+
+#pragma warning(disable:6387)

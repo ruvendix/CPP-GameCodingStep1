@@ -11,8 +11,11 @@
 #include "ServiceLocator.h"
 
 #include "Console/ConsoleHandler.h"
+#include "Console/DoubleBufferingConsoleHandler.h"
 #include "Log/Logger.h"
 #include "Error/ErrorHandler.h"
+#include "GameObject/GameObjectManager.h"
+#include "Time/Time.h"
 
 #define DEFINE_SERVICE(AbstractService, ConcreteService)\
 	AbstractService* ServiceLocator::AbstractService##Instance()\
@@ -41,7 +44,9 @@
 		return m_sp##AbstractService.get();\
 	}
 
-DEFINE_SERVICE_SMARTPOINTER(IConsoleHandler, ConsoleHandler);
+//DEFINE_SERVICE_SMARTPOINTER(IConsoleHandler, ConsoleHandler);
+DEFINE_SERVICE_SMARTPOINTER(IConsoleHandler, DoubleBufferingConsoleHandler);
 DEFINE_SERVICE_SMARTPOINTER(ILogger, Logger);
 DEFINE_SERVICE_SMARTPOINTER(IErrorHandler, ErrorHandler);
 DEFINE_SERVICE_SMARTPOINTER(IGameObjectManager, GameObjectManager);
+DEFINE_SERVICE_SMARTPOINTER(ITime, Time);

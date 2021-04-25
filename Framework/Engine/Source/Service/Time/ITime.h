@@ -4,28 +4,26 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 게임 오브젝트를 관리합니다.
-// 매니저에 등록된 게임 오브젝트만 다룰 수 있습니다.
+// 타임의 인터페이스입니다.
 // =====================================================================================
 #pragma once
 
-#include "IGameObjectManager.h"
+#include "Common/CommonInterface.h"
 
-class GameObjectManager : public IGameObjectManager
+class ITime : public IService
 {
 public:
-	GameObjectManager() = default;
-	virtual ~GameObjectManager() = default;
+	ITime() = default;
+	virtual ~ITime() = default;
 
 	virtual EReturnType SetUp() override { return EReturnType::SUCCESS; }
 	virtual EReturnType CleanUp() override { return EReturnType::SUCCESS; }
 
-	virtual EReturnType AddGameObject(GameObject* pGameObj) override;
+	virtual void UpdateFrameTime() = 0;
 
-	virtual EReturnType UpdateAllGameObject() override;
-	virtual EReturnType RenderAllGameObject() override;
+	virtual Float GetDeltaTime() const = 0;
+	virtual Float GetTimeScale() const = 0;
 
-private:
-	Uint32 m_ID = 0;
-	std::unordered_map<Uint32, GameObject*> m_mapGameObject;
+	virtual void SetFixedDeltaTime(Int32 FPS) = 0;
+	virtual void SetTimeScale(Float timeScale) = 0;
 };

@@ -4,13 +4,14 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 로그 카테고리의 선언 모음입니다.
+// 시간 관련 내용에 사용되는 열거형입니다.
 // =====================================================================================
 #pragma once
 
-#include "LogMacro.h"
-#include "LogCategoryBase.h"
+#include "Common/CommonType.h"
 
-DECLARE_LOG_CATEGORY(LogDefault);
-DECLARE_LOG_CATEGORY(LogConsoleHandler);
-DECLARE_LOG_CATEGORY(LogGameObjectManager);
+enum class ETimeDeviceType : Int32
+{
+	STOPWATCH = 0,
+	TIMER,
+};

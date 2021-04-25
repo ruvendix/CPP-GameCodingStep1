@@ -26,6 +26,12 @@
     <Filter Include="Source\GameObject">
       <UniqueIdentifier>{a4469a9d-de9e-41cd-ab96-b722ff03120c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Service\Time">
+      <UniqueIdentifier>{6ad64215-104a-4813-bca6-a81033e73222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Service\GameObject">
+      <UniqueIdentifier>{5f288e8e-45e1-4a11-acbf-4b9d6dee283a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\EnginePCH.cpp">
@@ -52,7 +58,19 @@
     <ClCompile Include="Source\Service\GameObject\GameObject.cpp">
       <Filter>Source\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Service\Time\Timer.cpp">
+      <Filter>Source\Service\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Service\Time\Stopwatch.cpp">
+      <Filter>Source\Service\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Service\Time\Time.cpp">
+      <Filter>Source\Service\Time</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Service\GameObject\GameObjectManager.cpp">
+      <Filter>Source\Service\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Service\Console\DoubleBufferingConsoleHandler.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -138,7 +156,27 @@
     <ClInclude Include="Source\Service\GameObject\GameObject.h">
       <Filter>Source\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\GameObject\IGameObjectManger.h" />
-    <ClInclude Include="Source\Service\GameObject\GameObjectManager.h" />
+    <ClInclude Include="Source\Service\Time\ITime.h">
+      <Filter>Source\Service\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\Time\Stopwatch.h">
+      <Filter>Source\Service\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\Time\Time.h">
+      <Filter>Source\Service\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\Time\TimeEnum.h">
+      <Filter>Source\Service\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\Time\Timer.h">
+      <Filter>Source\Service\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\GameObject\GameObjectManager.h">
+      <Filter>Source\Service\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\GameObject\IGameObjectManager.h">
+      <Filter>Source\Service\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Service\Console\DoubleBufferingConsoleHandler.h" />
   </ItemGroup>
 </Project>

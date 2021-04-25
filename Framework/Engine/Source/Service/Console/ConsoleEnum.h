@@ -38,3 +38,10 @@ enum class EConsoleRenderingType : Int32
 	TEXT = 0,
 	BACKGROUND,
 };
+
+enum class EConsoleOutputBufferType : Int32
+{
+	FRONT = 0,
+	BACK,
+	COUNT,
+};

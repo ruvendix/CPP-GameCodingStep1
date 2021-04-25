@@ -12,6 +12,7 @@
 #include "Console/IConsoleHandler.h"
 #include "Log/ILogger.h"
 #include "Error/IErrorHandler.h"
-#include "GameObject/GameObjectManager.h"
+#include "GameObject/IGameObjectManager.h"
+#include "Time/ITime.h"
 
 #include "Error/ErrorMacro.h"

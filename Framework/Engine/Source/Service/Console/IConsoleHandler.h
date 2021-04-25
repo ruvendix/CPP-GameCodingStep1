@@ -27,6 +27,7 @@ public:
 	virtual void RenderString(Int32 x, Int32 y, const Char* szText) = 0;
 	virtual void FlushInputBuffer() = 0;
 	virtual void ResetRenderingColor() = 0;
+	virtual void FlipOutputBuffer() = 0;
 
 	virtual Int32 InputInteger() = 0;
 	virtual Float InputFloat() = 0;

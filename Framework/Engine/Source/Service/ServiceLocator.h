@@ -16,8 +16,10 @@ class ServiceLocator final
 {
 	GENERATE_LOCAL_SINGLETON(ServiceLocator);
 
-	DECLARE_SERVICE_SMARTPOINTER(IConsoleHandler, ConsoleHandler);
+	//DECLARE_SERVICE_SMARTPOINTER(IConsoleHandler, ConsoleHandler);
+	DECLARE_SERVICE_SMARTPOINTER(IConsoleHandler, DoubleBufferingConsoleHandler);
 	DECLARE_SERVICE_SMARTPOINTER(ILogger, Logger);
 	DECLARE_SERVICE_SMARTPOINTER(IErrorHandler, ErrorHandler);
 	DECLARE_SERVICE_SMARTPOINTER(IGameObjectManager, GameObjectManager);
+	DECLARE_SERVICE_SMARTPOINTER(ITime, Time);
 };
