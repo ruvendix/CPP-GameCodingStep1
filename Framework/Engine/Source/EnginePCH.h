@@ -17,4 +17,5 @@
 
 #pragma comment(lib, "winmm.lib") // ::timeGetTime() 때문...
 
-#pragma warning(disable:6387)
+#pragma warning(disable:6387) // nullptr이 전달될 수 있다는 경고(_Notnull_을 앞에 붙여주면 되는데 귀찮아서 무시)
+#pragma warning(disable:26812) // enum을 정수값으로 사용했다는 경고(enum class는 처리가 귀찮아서 무시)

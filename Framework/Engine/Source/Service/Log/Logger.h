@@ -11,11 +11,11 @@
 
 #include "ILogger.h"
 
-class Logger : public ILogger
+class Logger final : public ILogger
 {
 public:
-	Logger() = default;
-	virtual ~Logger() = default;
+	Logger();
+	virtual ~Logger();
 
 	virtual EReturnType SetUp() override;
 	virtual EReturnType CleanUp() override;
@@ -40,4 +40,7 @@ public:
 
 	virtual void Fatal(const LogCategoryBase* pCategory, const std::string_view& strContent,
 		const Char* szTime, const Char* szFilePath, Int32 line) override;
+
+private:
+	class LoggerInternal* m_pInternal = nullptr;
 };

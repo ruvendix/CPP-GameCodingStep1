@@ -39,6 +39,7 @@
 *.ilk
 *.pdb
 *.ipdb
+*.idb
 
 # Solution
 *.db-shm
@@ -52,6 +53,7 @@
 *.manifest
 *.testdurations
 *.testlog
+
 
 # Intermediate
 /Example/Binaries/Intermediate

@@ -10,9 +10,15 @@
 
 #include "Common/CommonType.h"
 
-enum class EDetailType : Int32
+namespace EnumIdx
 {
-	TIME = 0,
-	FILEPATH_AND_LINE,
-	COUNT,
-};
+	namespace LogOption
+	{
+		enum Data
+		{
+			TIME = 0,
+			FILEPATH_AND_LINE,
+			END,
+		};
+	}
+}
