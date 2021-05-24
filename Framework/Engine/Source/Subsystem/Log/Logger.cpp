@@ -30,6 +30,11 @@ public:
 		m_bitsetDetail.set(value, true);
 	}
 
+	void DeactivateOption(EnumIdx::LogOption::Data value)
+	{
+		m_bitsetDetail.set(value, false);
+	}
+
 	bool IsActivateOption(EnumIdx::LogOption::Data value) const
 	{
 		return m_bitsetDetail.test(value);
@@ -142,8 +147,6 @@ void Logger::SetUp()
 {
 	m_pInternal->ActivateOption(EnumIdx::LogOption::TIME);
 	m_pInternal->ActivateOption(EnumIdx::LogOption::FILEPATH_AND_LINE);
-
-	
 }
 
 /*
@@ -153,22 +156,6 @@ void Logger::SetUp()
 void Logger::CleanUp()
 {
 	
-}
-
-/*
-	로그 카테고리를 활성화합니다.
-*/
-void Logger::ActivateCategory(LogCategoryBase* pCategory)
-{
-	pCategory->Activate();
-}
-
-/*
-	로그 카테고리를 비활성화합니다.
-*/
-void Logger::DeactivateCategory(LogCategoryBase* pCategory)
-{
-	pCategory->Deactivate();
 }
 
 /*

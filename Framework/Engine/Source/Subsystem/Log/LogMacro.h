@@ -22,6 +22,9 @@
 // 실제로 객체를 만들 때는 매크로에 전달한 이름과 동일하게 만듭니다.
 #define DEFINE_LOG_CATEGORY(CategoryName) CategoryName##Type g_##CategoryName
 
+#define ACTIVATE_LOG_CATEGORY(CategoryName) g_##CategoryName.Activate()
+#define DEACTIVATE_LOG_CATEGORY(CategoryName) g_##CategoryName.Deactivate()
+
 #pragma region 로그 카테고리가 없는 버전입니다.
 
 #ifdef _DEBUG

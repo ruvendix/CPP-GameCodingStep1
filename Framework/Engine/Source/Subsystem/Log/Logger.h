@@ -20,9 +20,6 @@ public:
 	virtual void SetUp() override;
 	virtual void CleanUp() override;
 
-	virtual void ActivateCategory(LogCategoryBase* pCategory) override;
-	virtual void DeactivateCategory(LogCategoryBase* pCategory) override;
-
 	virtual void Trace(const LogCategoryBase* pCategory, const std::string_view& strContent,
 		const Char* szTime, const Char* szFilePath, Int32 line) const override;
 
