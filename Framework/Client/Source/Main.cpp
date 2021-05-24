@@ -20,12 +20,6 @@ int main()
 {
 	SubsystemLocator::I().SetUp();
 
-	FIND_SUBSYSTEM(IConsoleHandler)->SetUp();
-	FIND_SUBSYSTEM(ILogger)->SetUp();
-	FIND_SUBSYSTEM(IErrorHandler)->SetUp();
-	FIND_SUBSYSTEM(IGameObjectManager)->SetUp();
-	FIND_SUBSYSTEM(IFrameTimeManager)->SetUp();
-
 	GameObject obj;
 	obj.SetUp();
 	FIND_SUBSYSTEM(IGameObjectManager)->AddGameObject(&obj);
