@@ -9,9 +9,3 @@
 #pragma once
 
 #include "CommonType.h"
-
-enum class EReturnType : Int32
-{
-	SUCCESS = 0,
-	FAIL,
-};

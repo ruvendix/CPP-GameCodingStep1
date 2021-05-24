@@ -11,22 +11,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Service\Console\DoubleBufferingConsoleHandler.cpp" />
-    <ClCompile Include="Source\Service\GameObject\GameObject.cpp" />
-    <ClCompile Include="Source\Service\Console\ConsoleHandler.cpp" />
+    <ClCompile Include="Source\Subsystem\Console\DoubleBufferingConsoleHandler.cpp" />
+    <ClCompile Include="Source\Subsystem\GameObject\GameObject.cpp" />
+    <ClCompile Include="Source\Subsystem\Console\ConsoleHandler.cpp" />
     <ClCompile Include="Source\EnginePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugEngine|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseEngine|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Source\Service\Error\ErrorHandler.cpp" />
-    <ClCompile Include="Source\Service\GameObject\GameObjectManager.cpp" />
-    <ClCompile Include="Source\Service\Log\LogCategory.cpp" />
-    <ClCompile Include="Source\Service\Log\LogCategoryBase.cpp" />
-    <ClCompile Include="Source\Service\Log\Logger.cpp" />
-    <ClCompile Include="Source\Service\ServiceLocator.cpp" />
-    <ClCompile Include="Source\Service\Time\Time.cpp" />
-    <ClCompile Include="Source\Service\Time\Stopwatch.cpp" />
-    <ClCompile Include="Source\Service\Time\Timer.cpp" />
+    <ClCompile Include="Source\Subsystem\Error\ErrorHandler.cpp" />
+    <ClCompile Include="Source\Subsystem\GameObject\GameObjectManager.cpp" />
+    <ClCompile Include="Source\Subsystem\Log\LogCategory.cpp" />
+    <ClCompile Include="Source\Subsystem\Log\LogCategoryBase.cpp" />
+    <ClCompile Include="Source\Subsystem\Log\Logger.cpp" />
+    <ClCompile Include="Source\Subsystem\SubsystemLocator.cpp" />
+    <ClCompile Include="Source\Subsystem\Time\FrameTimeManager.cpp" />
+    <ClCompile Include="Source\Subsystem\Time\Stopwatch.cpp" />
+    <ClCompile Include="Source\Subsystem\Time\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Common\CommonBase.h" />
@@ -38,32 +38,34 @@
     <ClInclude Include="Source\Common\CommonInterface.h" />
     <ClInclude Include="Source\Common\CommonMacro.h" />
     <ClInclude Include="Source\Common\CommonType.h" />
-    <ClInclude Include="Source\Service\Console\DoubleBufferingConsoleHandler.h" />
-    <ClInclude Include="Source\Service\GameObject\GameObject.h" />
-    <ClInclude Include="Source\Service\Console\ConsoleEnum.h" />
-    <ClInclude Include="Source\Service\Console\ConsoleHandler.h" />
+    <ClInclude Include="Source\Subsystem\Console\DoubleBufferingConsoleHandler.h" />
+    <ClInclude Include="Source\Subsystem\GameObject\GameObject.h" />
+    <ClInclude Include="Source\Subsystem\Console\ConsoleEnum.h" />
+    <ClInclude Include="Source\Subsystem\Console\ConsoleHandler.h" />
     <ClInclude Include="Source\EnginePCH.h" />
-    <ClInclude Include="Source\Service\Console\IConsoleHandler.h" />
-    <ClInclude Include="Source\Service\Error\ErrorEnum.h" />
-    <ClInclude Include="Source\Service\Error\ErrorHandler.h" />
-    <ClInclude Include="Source\Service\Error\ErrorMacro.h" />
-    <ClInclude Include="Source\Service\Error\IErrorHandler.h" />
-    <ClInclude Include="Source\Service\GameObject\GameObjectManager.h" />
-    <ClInclude Include="Source\Service\GameObject\IGameObjectManager.h" />
-    <ClInclude Include="Source\Service\Log\ILogger.h" />
-    <ClInclude Include="Source\Service\Log\LogCategory.h" />
-    <ClInclude Include="Source\Service\Log\LogCategoryBase.h" />
-    <ClInclude Include="Source\Service\Log\LogEnum.h" />
-    <ClInclude Include="Source\Service\Log\Logger.h" />
-    <ClInclude Include="Source\Service\Log\LogMacro.h" />
-    <ClInclude Include="Source\Service\ServiceInclusion.h" />
-    <ClInclude Include="Source\Service\ServiceLocator.h" />
-    <ClInclude Include="Source\Service\ServiceMacro.h" />
-    <ClInclude Include="Source\Service\Time\ITime.h" />
-    <ClInclude Include="Source\Service\Time\Time.h" />
-    <ClInclude Include="Source\Service\Time\Stopwatch.h" />
-    <ClInclude Include="Source\Service\Time\TimeEnum.h" />
-    <ClInclude Include="Source\Service\Time\Timer.h" />
+    <ClInclude Include="Source\Subsystem\Console\IConsoleHandler.h" />
+    <ClInclude Include="Source\Subsystem\Error\ErrorEnum.h" />
+    <ClInclude Include="Source\Subsystem\Error\ErrorHandler.h" />
+    <ClInclude Include="Source\Subsystem\Error\ErrorMacro.h" />
+    <ClInclude Include="Source\Subsystem\Error\IErrorHandler.h" />
+    <ClInclude Include="Source\Subsystem\GameObject\GameObjectManager.h" />
+    <ClInclude Include="Source\Subsystem\GameObject\IGameObjectManager.h" />
+    <ClInclude Include="Source\Subsystem\ISubsytem.h" />
+    <ClInclude Include="Source\Subsystem\Log\ILogger.h" />
+    <ClInclude Include="Source\Subsystem\Log\LogCategory.h" />
+    <ClInclude Include="Source\Subsystem\Log\LogCategoryBase.h" />
+    <ClInclude Include="Source\Subsystem\Log\LogEnum.h" />
+    <ClInclude Include="Source\Subsystem\Log\Logger.h" />
+    <ClInclude Include="Source\Subsystem\Log\LogMacro.h" />
+    <ClInclude Include="Source\Subsystem\SubsystemEnum.h" />
+    <ClInclude Include="Source\Subsystem\SubsystemInclusion.h" />
+    <ClInclude Include="Source\Subsystem\SubsystemLocator.h" />
+    <ClInclude Include="Source\Subsystem\SubsystemMacro.h" />
+    <ClInclude Include="Source\Subsystem\Time\IFrameTimeManager.h" />
+    <ClInclude Include="Source\Subsystem\Time\FrameTimeManager.h" />
+    <ClInclude Include="Source\Subsystem\Time\Stopwatch.h" />
+    <ClInclude Include="Source\Subsystem\Time\TimeEnum.h" />
+    <ClInclude Include="Source\Subsystem\Time\Timer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

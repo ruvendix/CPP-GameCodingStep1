@@ -11,9 +11,9 @@
 #pragma once
 
 #include "Common/CommonInclusion.h"
-#include "Service/ServiceInclusion.h"
+#include "Subsystem/SubsystemInclusion.h"
 
-#include "Service/Log/LogCategory.h"
+#include "Subsystem/Log/LogCategory.h"
 
 #pragma comment(lib, "winmm.lib") // ::timeGetTime() 때문...
 

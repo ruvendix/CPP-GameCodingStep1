@@ -8,28 +8,28 @@
     <Filter Include="Source\Common">
       <UniqueIdentifier>{cde91b66-44b0-4386-9cb6-a18f17824bea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Service">
-      <UniqueIdentifier>{bc4853fe-a731-4f8f-b709-b07e90f2ea9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Service\Console">
-      <UniqueIdentifier>{68ae19a3-65c6-4868-9830-342e7f59075d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Service\Log">
-      <UniqueIdentifier>{ae82bfaf-a737-4b0c-8836-d4eca4603b37}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Common\CommonFunction">
       <UniqueIdentifier>{c4f760c0-6063-4197-bb67-d2cf25a10b35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Service\Error">
-      <UniqueIdentifier>{c306d93d-9d51-4377-820e-a61a1889861b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\GameObject">
       <UniqueIdentifier>{a4469a9d-de9e-41cd-ab96-b722ff03120c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Service\Time">
+    <Filter Include="Source\Subsystem">
+      <UniqueIdentifier>{bc4853fe-a731-4f8f-b709-b07e90f2ea9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Subsystem\Console">
+      <UniqueIdentifier>{68ae19a3-65c6-4868-9830-342e7f59075d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Subsystem\Log">
+      <UniqueIdentifier>{ae82bfaf-a737-4b0c-8836-d4eca4603b37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Subsystem\Error">
+      <UniqueIdentifier>{c306d93d-9d51-4377-820e-a61a1889861b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Subsystem\Time">
       <UniqueIdentifier>{6ad64215-104a-4813-bca6-a81033e73222}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Service\GameObject">
+    <Filter Include="Source\Subsystem\GameObject">
       <UniqueIdentifier>{5f288e8e-45e1-4a11-acbf-4b9d6dee283a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -37,40 +37,40 @@
     <ClCompile Include="Source\EnginePCH.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Service\Console\ConsoleHandler.cpp">
-      <Filter>Source\Service\Console</Filter>
+    <ClCompile Include="Source\Subsystem\Console\ConsoleHandler.cpp">
+      <Filter>Source\Subsystem\Console</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Service\ServiceLocator.cpp">
-      <Filter>Source\Service</Filter>
+    <ClCompile Include="Source\Subsystem\SubsystemLocator.cpp">
+      <Filter>Source\Subsystem</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Service\Log\Logger.cpp">
-      <Filter>Source\Service\Log</Filter>
+    <ClCompile Include="Source\Subsystem\Log\Logger.cpp">
+      <Filter>Source\Subsystem\Log</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Service\Log\LogCategory.cpp">
-      <Filter>Source\Service\Log</Filter>
+    <ClCompile Include="Source\Subsystem\Log\LogCategory.cpp">
+      <Filter>Source\Subsystem\Log</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Service\Log\LogCategoryBase.cpp">
-      <Filter>Source\Service\Log</Filter>
+    <ClCompile Include="Source\Subsystem\Log\LogCategoryBase.cpp">
+      <Filter>Source\Subsystem\Log</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Service\Error\ErrorHandler.cpp">
-      <Filter>Source\Service\Error</Filter>
+    <ClCompile Include="Source\Subsystem\Error\ErrorHandler.cpp">
+      <Filter>Source\Subsystem\Error</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Service\GameObject\GameObject.cpp">
+    <ClCompile Include="Source\Subsystem\GameObject\GameObject.cpp">
       <Filter>Source\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Service\Time\Timer.cpp">
-      <Filter>Source\Service\Time</Filter>
+    <ClCompile Include="Source\Subsystem\Time\Timer.cpp">
+      <Filter>Source\Subsystem\Time</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Service\Time\Stopwatch.cpp">
-      <Filter>Source\Service\Time</Filter>
+    <ClCompile Include="Source\Subsystem\Time\Stopwatch.cpp">
+      <Filter>Source\Subsystem\Time</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Service\Time\Time.cpp">
-      <Filter>Source\Service\Time</Filter>
+    <ClCompile Include="Source\Subsystem\Time\FrameTimeManager.cpp">
+      <Filter>Source\Subsystem\Time</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Service\GameObject\GameObjectManager.cpp">
-      <Filter>Source\Service\GameObject</Filter>
+    <ClCompile Include="Source\Subsystem\GameObject\GameObjectManager.cpp">
+      <Filter>Source\Subsystem\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Service\Console\DoubleBufferingConsoleHandler.cpp">
+    <ClCompile Include="Source\Subsystem\Console\DoubleBufferingConsoleHandler.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -90,26 +90,26 @@
     <ClInclude Include="Source\Common\CommonType.h">
       <Filter>Source\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Console\IConsoleHandler.h">
-      <Filter>Source\Service\Console</Filter>
+    <ClInclude Include="Source\Subsystem\Console\IConsoleHandler.h">
+      <Filter>Source\Subsystem\Console</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Console\ConsoleHandler.h">
-      <Filter>Source\Service\Console</Filter>
+    <ClInclude Include="Source\Subsystem\Console\ConsoleHandler.h">
+      <Filter>Source\Subsystem\Console</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\ServiceInclusion.h">
-      <Filter>Source\Service</Filter>
+    <ClInclude Include="Source\Subsystem\SubsystemInclusion.h">
+      <Filter>Source\Subsystem</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\ServiceLocator.h">
-      <Filter>Source\Service</Filter>
+    <ClInclude Include="Source\Subsystem\SubsystemLocator.h">
+      <Filter>Source\Subsystem</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\CommonConstant.h">
       <Filter>Source\Common</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\CommonEnum.h">
-      <Filter>Source\Service\Console</Filter>
+      <Filter>Source\Subsystem\Console</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Console\ConsoleEnum.h">
-      <Filter>Source\Service\Console</Filter>
+    <ClInclude Include="Source\Subsystem\Console\ConsoleEnum.h">
+      <Filter>Source\Subsystem\Console</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\CommonFunction.h">
       <Filter>Source\Common</Filter>
@@ -117,66 +117,74 @@
     <ClInclude Include="Source\Common\CommonInterface.h">
       <Filter>Source\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Log\ILogger.h">
-      <Filter>Source\Service\Log</Filter>
+    <ClInclude Include="Source\Subsystem\Log\ILogger.h">
+      <Filter>Source\Subsystem\Log</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Log\LogCategory.h">
-      <Filter>Source\Service\Log</Filter>
+    <ClInclude Include="Source\Subsystem\Log\LogCategory.h">
+      <Filter>Source\Subsystem\Log</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Log\LogCategoryBase.h">
-      <Filter>Source\Service\Log</Filter>
+    <ClInclude Include="Source\Subsystem\Log\LogCategoryBase.h">
+      <Filter>Source\Subsystem\Log</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Log\LogEnum.h">
-      <Filter>Source\Service\Log</Filter>
+    <ClInclude Include="Source\Subsystem\Log\LogEnum.h">
+      <Filter>Source\Subsystem\Log</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Log\Logger.h">
-      <Filter>Source\Service\Log</Filter>
+    <ClInclude Include="Source\Subsystem\Log\Logger.h">
+      <Filter>Source\Subsystem\Log</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Log\LogMacro.h">
-      <Filter>Source\Service\Log</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Service\ServiceMacro.h">
-      <Filter>Source\Service</Filter>
+    <ClInclude Include="Source\Subsystem\Log\LogMacro.h">
+      <Filter>Source\Subsystem\Log</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\CommonFunction\MakeFormatString.hpp">
       <Filter>Source\Common\CommonFunction</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Error\ErrorEnum.h">
-      <Filter>Source\Service\Error</Filter>
+    <ClInclude Include="Source\Subsystem\Error\ErrorEnum.h">
+      <Filter>Source\Subsystem\Error</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Error\ErrorHandler.h">
-      <Filter>Source\Service\Error</Filter>
+    <ClInclude Include="Source\Subsystem\Error\ErrorHandler.h">
+      <Filter>Source\Subsystem\Error</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Error\ErrorMacro.h">
-      <Filter>Source\Service\Error</Filter>
+    <ClInclude Include="Source\Subsystem\Error\ErrorMacro.h">
+      <Filter>Source\Subsystem\Error</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Error\IErrorHandler.h">
-      <Filter>Source\Service\Error</Filter>
+    <ClInclude Include="Source\Subsystem\Error\IErrorHandler.h">
+      <Filter>Source\Subsystem\Error</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\GameObject\GameObject.h">
+    <ClInclude Include="Source\Subsystem\GameObject\GameObject.h">
       <Filter>Source\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Time\ITime.h">
-      <Filter>Source\Service\Time</Filter>
+    <ClInclude Include="Source\Subsystem\Time\IFrameTimeManager.h">
+      <Filter>Source\Subsystem\Time</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Time\Stopwatch.h">
-      <Filter>Source\Service\Time</Filter>
+    <ClInclude Include="Source\Subsystem\Time\Stopwatch.h">
+      <Filter>Source\Subsystem\Time</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Time\Time.h">
-      <Filter>Source\Service\Time</Filter>
+    <ClInclude Include="Source\Subsystem\Time\FrameTimeManager.h">
+      <Filter>Source\Subsystem\Time</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Time\TimeEnum.h">
-      <Filter>Source\Service\Time</Filter>
+    <ClInclude Include="Source\Subsystem\Time\TimeEnum.h">
+      <Filter>Source\Subsystem\Time</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Time\Timer.h">
-      <Filter>Source\Service\Time</Filter>
+    <ClInclude Include="Source\Subsystem\Time\Timer.h">
+      <Filter>Source\Subsystem\Time</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\GameObject\GameObjectManager.h">
-      <Filter>Source\Service\GameObject</Filter>
+    <ClInclude Include="Source\Subsystem\GameObject\GameObjectManager.h">
+      <Filter>Source\Subsystem\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\GameObject\IGameObjectManager.h">
-      <Filter>Source\Service\GameObject</Filter>
+    <ClInclude Include="Source\Subsystem\GameObject\IGameObjectManager.h">
+      <Filter>Source\Subsystem\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Service\Console\DoubleBufferingConsoleHandler.h" />
+    <ClInclude Include="Source\Subsystem\SubsystemEnum.h">
+      <Filter>Source\Subsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\SubsystemMacro.h">
+      <Filter>Source\Subsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\Console\DoubleBufferingConsoleHandler.h">
+      <Filter>Source\Subsystem\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\ISubsytem.h">
+      <Filter>Source\Subsystem</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

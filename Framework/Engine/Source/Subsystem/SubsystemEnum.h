@@ -4,22 +4,19 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 공통적으로 사용되는 인터페이스 모음입니다.
+// 서브시스템에 사용되는 열거형입니다.
 // =====================================================================================
 #pragma once
 
-#include "CommonMacro.h"
-#include "CommonEnum.h"
+#include "Common/CommonType.h"
 
-class IGameObject
+enum class ESubsystemType : Int32
 {
-public:
-	IGameObject() = default;
-	virtual ~IGameObject() = default;
-
-	virtual void SetUp() = 0;
-	virtual void CleanUp() = 0;
-
-	virtual void Update() = 0;
-	virtual void Render() = 0;
+	UNKNOWN = -1,
+	LOGGER,
+	ERROR_HANLDER,
+	CONSOLE_HANDLER,
+	GAME_OBJECT_MANAGER,
+	FRAME_TIME_MANAGER,
+	COUNT,
 };
