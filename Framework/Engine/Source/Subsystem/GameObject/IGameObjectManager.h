@@ -20,8 +20,8 @@ public:
 	IGameObjectManager() = default;
 	virtual ~IGameObjectManager() = default;
 
-	virtual void SetUp() override {  }
-	virtual void CleanUp() override {  }
+	virtual void SetUp() override { }
+	virtual void CleanUp() override { }
 
 	virtual void AddGameObject(GameObject* pGameObj) = 0;
 

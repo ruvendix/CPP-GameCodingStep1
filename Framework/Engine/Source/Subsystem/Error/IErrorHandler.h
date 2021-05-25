@@ -19,9 +19,11 @@ public:
 	IErrorHandler() = default;
 	virtual ~IErrorHandler() = default;
 
-	virtual void SetUp() {  }
-	virtual void CleanUp() {  }
+	virtual void SetUp() { }
+	virtual void CleanUp() { }
 
-	virtual void FindErrorContent(OUT std::string& strError) = 0;
-	virtual void SetLastError(EErrorType error) = 0;
+	virtual const Char* FindErrorContent(EErrorCode errorCode) const = 0;
+
+	virtual EErrorCode ObtainLastError() const = 0;
+	virtual void ModifyLastError(EErrorCode errorCode) = 0;
 };

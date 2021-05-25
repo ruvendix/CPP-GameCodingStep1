@@ -24,11 +24,8 @@ void GameObjectManager::AddGameObject(GameObject* pGameObj)
 
 	if (m_ID == std::numeric_limits<Uint32>::max())
 	{
-		RX_ERRORTYPE(LogGameObjectManager, EErrorType::OUT_OF_GAMEOBJECT);
-		
+		RX_ERROR(LogGameObjectManager, EErrorCode::OUT_OF_GAMEOBJECT);
 	}
-
-	
 }
 
 /*
@@ -45,8 +42,6 @@ void GameObjectManager::UpdateAllGameObject()
 
 		iter.second->Update();
 	}
-
-	
 }
 
 /*
@@ -63,6 +58,4 @@ void GameObjectManager::RenderAllGameObject()
 
 		iter.second->Render();
 	}
-
-	
 }

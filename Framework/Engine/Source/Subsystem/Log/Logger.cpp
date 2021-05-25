@@ -253,14 +253,14 @@ void Logger::Warning(const LogCategoryBase* pCategory, const std::string_view& s
 	IConsoleHandler* pConsoleHandler = FIND_SUBSYSTEM(IConsoleHandler);
 	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
 	m_pInternal->PrintDebugOutputLog(strLog);
+	DebugBreak();
 
 	m_pInternal->EndLog();
 }
 
 /*
 	프로그램 화면과 파일에 출력하는 로그입니다.
-	사용자에게 에러로 알리고 싶을 때 사용합니다.
-	추가적으로 에러 코드에 해당되는 에러 내용을 붙입니다.
+	에러는 에러코드에 해당되는 내용만 사용할 수 있습니다.
 */
 void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& strContent,
 	const Char* szTime, const Char* szFilePath, Int32 line) const
@@ -268,12 +268,6 @@ void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& str
 	m_pInternal->BeginLog(EConsoleRenderingColor::LIGHT_YELLOW);
 
 	std::string strLog;
-	if (strContent.empty() == true)
-	{
-		FIND_SUBSYSTEM(IErrorHandler)->FindErrorContent(strLog);
-		FIND_SUBSYSTEM(IErrorHandler)->SetLastError(EErrorType::UNKNOWN);
-	}
-
 	if (m_pInternal->MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
 	{
 		m_pInternal->EndLog();

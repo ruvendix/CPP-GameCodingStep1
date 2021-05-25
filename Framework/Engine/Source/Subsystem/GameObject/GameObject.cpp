@@ -21,8 +21,6 @@ void GameObject::SetUp()
 {
 	m_strTag = "Default";
 	m_strShape = "A";
-
-	
 }
 
 /*
@@ -48,7 +46,6 @@ void GameObject::Update()
 void GameObject::Render()
 {
 	FIND_SUBSYSTEM(IConsoleHandler)->RenderString(m_posX, m_posY, m_strShape.c_str());
-	
 }
 
 // 이렇게 하지 말고 한번 찾은 서브시스템은 따로 갖고 있는 게 어떰?

@@ -24,7 +24,7 @@ namespace
 void DoubleBufferingConsoleHandler::SetUp()
 {
 	ChangeTitle("Default");
-	AdjustSize(60, 30);
+	AdjustSize(120, 30);
 
 	m_hConsole = ::GetConsoleWindow();
 	RX_ASSERT(LogConsoleHandler, m_hConsole != nullptr);
@@ -60,8 +60,6 @@ void DoubleBufferingConsoleHandler::SetUp()
 	// 백버퍼의 키보드 커서를 가립니다.
 	m_currentOutputBuffer = EConsoleOutputBufferType::BACK;
 	ShowCursor(false);
-
-	
 }
 
 /*
@@ -74,8 +72,6 @@ void DoubleBufferingConsoleHandler::CleanUp()
 	{
 		::CloseHandle(m_arrOutputBuffer[i]);
 	}
-
-	
 }
 
 /*
@@ -124,7 +120,7 @@ void DoubleBufferingConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor 
 	if ((renderingColor < EConsoleRenderingColor::BLACK) ||
 		(renderingColor > EConsoleRenderingColor::BRIGHT_WHITE))
 	{
-		
+		RX_ERROR(LogConsoleHandler, EErrorCode::INVALID_SCREEN_COLOR);
 	}
 
 	// CONSOLE_SCREEN_BUFFER_INFO의 wAttributes에 색상 정보가 있어요!
@@ -144,7 +140,7 @@ void DoubleBufferingConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor 
 	}
 	else
 	{
-		
+		RX_ERROR(LogConsoleHandler, EErrorCode::UNKNOWN);
 	}
 
 	m_outputScreenBufferInfo.wAttributes = attr;
@@ -154,10 +150,8 @@ void DoubleBufferingConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor 
 
 	if (::SetConsoleTextAttribute(hCurrentOutputBuffer, m_outputScreenBufferInfo.wAttributes) == FALSE)
 	{
-		
+		RX_ERROR(LogConsoleHandler, EErrorCode::UNKNOWN);
 	}
-
-	
 }
 
 /*
@@ -211,17 +205,16 @@ void DoubleBufferingConsoleHandler::ClearScreen()
 
 	if (::FillConsoleOutputCharacter(hCurrentOutputBuffer, ' ', size, beginPos, &dwWrittenCount) == FALSE)
 	{
-		
+		RX_ERROR(LogConsoleHandler, EErrorCode::FAILED_CLEAR_SCREEN);
 	}
 
 	// 콘솔창 출력 버퍼 속성이 적용된 부분을 지웁니다.
 	if (::FillConsoleOutputAttribute(hCurrentOutputBuffer, defaultAttr, size, beginPos, &dwWrittenCount) == FALSE)
 	{
-		
+		RX_ERROR(LogConsoleHandler, EErrorCode::FAILED_CLEAR_SCREEN);
 	}
 
 	MovePosition(beginPos.X, beginPos.Y); // 커서 위치를 처음으로 이동시킵니다.
-	
 }
 
 /*

@@ -10,10 +10,12 @@
 
 #include "Common/CommonType.h"
 
-enum class EErrorType : Int32
+enum class EErrorCode : Int32
 {
 	UNKNOWN = -1,
-	INDIRECT_NULLPTR, // 널포인터 역참조
-	OUT_OF_GAMEOBJECT, // 게임 오브젝트 매니저가 수용 가능한 개수 초과
+	INDIRECT_NULLPTR,
+	OUT_OF_GAMEOBJECT,
+	INVALID_SCREEN_COLOR,
+	FAILED_CLEAR_SCREEN,
 	COUNT,
 };

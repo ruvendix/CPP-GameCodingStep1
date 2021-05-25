@@ -16,8 +16,8 @@ class IConsoleHandler : public ISubsystem
 	GENERATE_MATCH_TYPE(ESubsystemType::CONSOLE_HANDLER)
 
 public:
-	virtual void SetUp() override {  }
-	virtual void CleanUp() override {  }
+	virtual void SetUp() override { }
+	virtual void CleanUp() override { }
 
 	virtual void ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) = 0;
 	virtual void ClearScreen() = 0;

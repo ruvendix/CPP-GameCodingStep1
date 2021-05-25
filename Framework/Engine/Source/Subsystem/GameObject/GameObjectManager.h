@@ -19,8 +19,8 @@ public:
 	GameObjectManager() = default;
 	virtual ~GameObjectManager() = default;
 
-	virtual void SetUp() override {  }
-	virtual void CleanUp() override {  }
+	virtual void SetUp() override { }
+	virtual void CleanUp() override { }
 
 	virtual void AddGameObject(GameObject* pGameObj) override;
 

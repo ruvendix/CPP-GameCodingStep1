@@ -19,8 +19,6 @@ void FrameTimeManager::SetUp()
 
 	m_deltaTimeStopwatch.StartTime();
 	SetFixedDeltaTime(60);
-
-	
 }
 
 /*

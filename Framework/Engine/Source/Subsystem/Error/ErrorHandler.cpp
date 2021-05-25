@@ -16,9 +16,10 @@
 */
 void ErrorHandler::SetUp()
 {
-	m_mapError.insert(std::make_pair(EErrorType::INDIRECT_NULLPTR, "nullptr 역참조 에러!"));
-
-	
+	m_mapError.emplace(EErrorCode::UNKNOWN, "알 수 없는 에러!");
+	m_mapError.emplace(EErrorCode::INDIRECT_NULLPTR, "nullptr 역참조!");
+	m_mapError.emplace(EErrorCode::FAILED_CLEAR_SCREEN, "화면 지우기 실패!");
+	m_mapError.emplace(EErrorCode::INVALID_SCREEN_COLOR, "유효하지 않은 화면 색상!");
 }
 
 /*
@@ -33,19 +34,13 @@ void ErrorHandler::CleanUp()
 /*
 	마지막에 발생된 에러에 해당되는 내용을 가져옵니다.
 */
-void ErrorHandler::FindErrorContent(OUT std::string& strError)
+const Char* ErrorHandler::FindErrorContent(EErrorCode errorCode) const
 {
 	const auto& iter = m_mapError.find(m_lastError);
-	if (iter != m_mapError.cend())
+	if (iter == m_mapError.cend())
 	{
-		strError = iter->second;
+		return "";
 	}
-}
 
-/*
-	마지막에 발생된 에러를 기록합니다.
-*/
-void ErrorHandler::SetLastError(EErrorType error)
-{
-	m_lastError = error;
+	return iter->second.c_str();
 }

@@ -18,8 +18,8 @@ public:
 	IFrameTimeManager() = default;
 	virtual ~IFrameTimeManager() = default;
 
-	virtual void SetUp() override {  }
-	virtual void CleanUp() override {  }
+	virtual void SetUp() override { }
+	virtual void CleanUp() override { }
 
 	virtual void UpdateFrameTime() = 0;
 

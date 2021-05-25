@@ -91,7 +91,7 @@ void ConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor renderingColor,
 	if ((renderingColor < EConsoleRenderingColor::BLACK) ||
 		(renderingColor > EConsoleRenderingColor::BRIGHT_WHITE))
 	{
-		// TODO: 에러
+		RX_ERROR(LogConsoleHandler, EErrorCode::INVALID_SCREEN_COLOR);
 	}
 
 	// CONSOLE_SCREEN_BUFFER_INFO의 wAttributes에 색상 정보가 있어요!
@@ -111,13 +111,13 @@ void ConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor renderingColor,
 	}
 	else
 	{
-		// TODO: 에러
+		RX_ERROR(LogConsoleHandler, EErrorCode::UNKNOWN);
 	}
 
 	m_outputScreenBufferInfo.wAttributes = attr;
 	if (::SetConsoleTextAttribute(m_hStdOutput, m_outputScreenBufferInfo.wAttributes) == FALSE)
 	{
-		// TODO: 에러
+		RX_ERROR(LogConsoleHandler, EErrorCode::UNKNOWN);
 	}
 }
 
@@ -157,17 +157,16 @@ void ConsoleHandler::ClearScreen()
 	COORD beginPos = { 0, 0 };
 	if (::FillConsoleOutputCharacter(m_hStdOutput, ' ', size, beginPos, &dwWrittenCnt) == FALSE)
 	{
-		
+		RX_ERROR(LogConsoleHandler, EErrorCode::FAILED_CLEAR_SCREEN);
 	}
 
 	// 콘솔창 출력 버퍼 속성이 적용된 부분을 지웁니다.
 	if (::FillConsoleOutputAttribute(m_hStdOutput, defaultAttr, size, beginPos, &dwWrittenCnt) == FALSE)
 	{
-		
+		RX_ERROR(LogConsoleHandler, EErrorCode::FAILED_CLEAR_SCREEN);
 	}
 
-	MovePosition(beginPos.X, beginPos.Y); // 커서 위치를 처음으로 이동시킵니다.
-	
+	MovePosition(beginPos.X, beginPos.Y); // 커서 위치를 처음으로 이동시킵니다.	
 }
 
 /*

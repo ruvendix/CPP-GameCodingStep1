@@ -20,10 +20,19 @@ public:
 	virtual void SetUp() override;
 	virtual void CleanUp() override;
 
-	virtual void FindErrorContent(OUT std::string& strError) override;
-	virtual void SetLastError(EErrorType error) override;
+	virtual const Char* FindErrorContent(EErrorCode errorCode) const override;
+
+	virtual EErrorCode ObtainLastError() const override
+	{
+		return m_lastError;
+	}
+
+	virtual void ModifyLastError(EErrorCode errorCode) override
+	{
+		m_lastError = errorCode;
+	}
 
 private:
-	EErrorType m_lastError = EErrorType::UNKNOWN;
-	std::unordered_map<EErrorType, std::string> m_mapError;
+	EErrorCode m_lastError = EErrorCode::UNKNOWN;
+	std::unordered_map<EErrorCode, std::string> m_mapError;
 };
