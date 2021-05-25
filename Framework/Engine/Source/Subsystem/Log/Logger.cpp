@@ -42,7 +42,7 @@ public:
 
 private:
 	Logger* m_pLogger = nullptr;
-	std::bitset<EnumIdx::LogOption::END> m_bitsetDetail;
+	std::bitset<EnumIdx::LogOption::COUNT> m_bitsetDetail;
 };
 
 /*
@@ -87,23 +87,41 @@ Bool LoggerInternal::MakeLog(const LogCategoryBase* pCategory, const std::string
 	}
 
 	if ((IsActivateOption(EnumIdx::LogOption::TIME)) &&
-		(szTime != nullptr))
+		(szTime != 0))
 	{
 		strLog += " [";
 		strLog += szTime;
 		strLog += "]";
 	}
 
-	if ((IsActivateOption(EnumIdx::LogOption::FILEPATH_AND_LINE)) &&
+	bool bAbsoluteFilePath = IsActivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);
+	bool bRelativeFilePath = IsActivateOption(EnumIdx::LogOption::RELATIVE_FILEPATH);
+	bool bAnyFilePath = (bAbsoluteFilePath || bRelativeFilePath);
+
+	if ((bAnyFilePath == true) &&
 		(szFilePath != nullptr))
 	{
 		strLog += " [";
-		strLog += szFilePath;
-		strLog += "]";
 
-		strLog += "(";
-		strLog += std::to_string(line);
-		strLog += ")";
+		// 절대경로와 상대경로 둘 다 설정되어있다면 절대경로로 처리합니다.
+		if (bAbsoluteFilePath == true)
+		{			
+			strLog += szFilePath;
+		}
+		else if (bRelativeFilePath == true)
+		{
+			strLog += (szFilePath + FrameworkPathfinder::GetFolderPathLength());
+		}
+
+		// 라인은 파일 경로 옵션이 활성화될 때만 적용됩니다.
+		if (IsActivateOption(EnumIdx::LogOption::LINE))
+		{
+			strLog += "(";
+			strLog += std::to_string(line);
+			strLog += ")";
+		}
+
+		strLog += "]";
 	}
 
 	if (strLog.empty() == true)
@@ -146,7 +164,9 @@ Logger::~Logger()
 void Logger::SetUp()
 {
 	m_pInternal->ActivateOption(EnumIdx::LogOption::TIME);
-	m_pInternal->ActivateOption(EnumIdx::LogOption::FILEPATH_AND_LINE);
+	//m_pInternal->ActivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);
+	m_pInternal->ActivateOption(EnumIdx::LogOption::RELATIVE_FILEPATH);
+	m_pInternal->ActivateOption(EnumIdx::LogOption::LINE);
 }
 
 /*

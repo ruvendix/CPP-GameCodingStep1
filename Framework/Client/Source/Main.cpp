@@ -18,7 +18,7 @@
 
 int main()
 {
-	SubsystemLocator::I().SetUp();
+	FrameworkPathfinder::SetUp();
 
 	GameObject obj;
 	obj.SetUp();

@@ -73,6 +73,9 @@
     <ClCompile Include="Source\Subsystem\Console\DoubleBufferingConsoleHandler.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\FrameworkPathFinder.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnginePCH.h">
@@ -186,5 +189,6 @@
     <ClInclude Include="Source\Subsystem\ISubsytem.h">
       <Filter>Source\Subsystem</Filter>
     </ClInclude>
+    <ClInclude Include="..\FrameworkPathfinder.h" />
   </ItemGroup>
 </Project>

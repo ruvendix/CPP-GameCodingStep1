@@ -10,9 +10,10 @@
 // =====================================================================================
 #pragma once
 
+#include "../../FrameworkPathfinder.h"
+
 #include "Common/CommonInclusion.h"
 #include "Subsystem/SubsystemInclusion.h"
-
 #include "Subsystem/Log/LogCategory.h"
 
 #pragma comment(lib, "winmm.lib") // ::timeGetTime() 때문...

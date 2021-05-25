@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\FrameworkPathFinder.cpp" />
     <ClCompile Include="Source\Subsystem\Console\DoubleBufferingConsoleHandler.cpp" />
     <ClCompile Include="Source\Subsystem\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\Subsystem\Console\ConsoleHandler.cpp" />
@@ -29,6 +30,7 @@
     <ClCompile Include="Source\Subsystem\Time\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\FrameworkPathfinder.h" />
     <ClInclude Include="Source\Common\CommonBase.h" />
     <ClInclude Include="Source\Common\CommonConstant.h" />
     <ClInclude Include="Source\Common\CommonEnum.h" />
@@ -119,6 +121,7 @@
       <PrecompiledHeaderFile>EnginePCH.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -138,6 +141,7 @@
       <PrecompiledHeaderFile>EnginePCH.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
       <SubSystem>
