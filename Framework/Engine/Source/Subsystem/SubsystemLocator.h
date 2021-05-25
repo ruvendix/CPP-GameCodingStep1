@@ -77,7 +77,9 @@ inline TSubsystem* SubsystemLocator::FindSubsystem()
 		return nullptr;
 	}
 
-	TSubsystem* pSubsystem = dynamic_cast<TSubsystem*>(iter->second);
+	// 템플릿은 타입을 정확하게 알고 있으므로 static_cast로 성능을 향상시킵니다.
+	// dynamic_cast는 RTTI에 의존하므로 캐스팅 오버헤드가 좀 있어요.
+	TSubsystem* pSubsystem = static_cast<TSubsystem*>(iter->second);
 	if (pSubsystem == nullptr)
 	{
 		::OutputDebugString("서브시스템을 캐스팅할 수 없습니다!\n");
