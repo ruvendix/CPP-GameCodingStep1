@@ -31,6 +31,7 @@ public:
 	virtual void FlushInputBuffer() override;
 	virtual void ResetRenderingColor() override;
 	virtual void FlipOutputBuffer() override { }
+	virtual void Pause() const override;
 
 	virtual Int32 InputInteger() override;
 	virtual Float InputFloat() override;

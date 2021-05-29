@@ -273,7 +273,7 @@ void Logger::Warning(const LogCategoryBase* pCategory, const std::string_view& s
 	IConsoleHandler* pConsoleHandler = FIND_SUBSYSTEM(IConsoleHandler);
 	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
 	m_pInternal->PrintDebugOutputLog(strLog);
-	DebugBreak();
+	pConsoleHandler->Pause();
 
 	m_pInternal->EndLog();
 }
@@ -297,7 +297,7 @@ void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& str
 	IConsoleHandler* pConsoleHandler = FIND_SUBSYSTEM(IConsoleHandler);
 	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
 	m_pInternal->PrintDebugOutputLog(strLog);
-	DebugBreak();
+	pConsoleHandler->Pause();
 
 	m_pInternal->EndLog();
 }

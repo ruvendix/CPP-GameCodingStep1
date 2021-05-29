@@ -187,6 +187,11 @@ void ConsoleHandler::ResetRenderingColor()
 	::SetConsoleTextAttribute(m_hStdOutput, defaultAttr);
 }
 
+void ConsoleHandler::Pause() const
+{
+	std::system("pause");
+}
+
 /*
 	정수를 입력받습니다.
 */

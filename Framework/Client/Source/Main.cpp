@@ -16,9 +16,10 @@
 #include <EnginePCH.h>
 #include <Subsystem/GameObject/GameObject.h>
 
-int main()
+Int32 main()
 {
 	FrameworkPathfinder::SetUp();
+	SubsystemLocator::I().SetUp();
 
 	GameObject obj;
 	obj.SetUp();

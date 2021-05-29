@@ -30,6 +30,7 @@ public:
 	virtual void FlushInputBuffer() = 0;
 	virtual void ResetRenderingColor() = 0;
 	virtual void FlipOutputBuffer() = 0;
+	virtual void Pause() const = 0;
 
 	virtual Int32 InputInteger() = 0;
 	virtual Float InputFloat() = 0;

@@ -261,6 +261,11 @@ void DoubleBufferingConsoleHandler::FlipOutputBuffer()
 	}
 }
 
+void DoubleBufferingConsoleHandler::Pause() const
+{
+	std::system("pause");
+}
+
 /*
 	정수를 입력받습니다.
 */

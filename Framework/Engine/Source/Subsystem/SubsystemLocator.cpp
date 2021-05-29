@@ -14,6 +14,7 @@
 #include "Subsystem/Error/ErrorHandler.h"
 #include "Subsystem/GameObject/GameObjectManager.h"
 #include "Subsystem/Time/FrameTimeManager.h"
+#include "Subsystem/Console/ConsoleHandler.h"
 #include "Subsystem/Console/DoubleBufferingConsoleHandler.h"
 
 /*
