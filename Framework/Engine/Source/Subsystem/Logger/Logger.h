@@ -39,5 +39,5 @@ public:
 		const Char* szTime, const Char* szFilePath, Int32 line) const override;
 
 private:
-	class LoggerInternal* m_pInternal = nullptr;
+	class InnerPart* m_pInnerPart = nullptr;
 };

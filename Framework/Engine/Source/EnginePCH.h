@@ -14,7 +14,7 @@
 
 #include "Common/CommonInclusion.h"
 #include "Subsystem/SubsystemInclusion.h"
-#include "Subsystem/Log/LogCategory.h"
+#include "Subsystem/Logger/LogCategory.h"
 
 #pragma comment(lib, "winmm.lib") // ::timeGetTime() 때문...
 

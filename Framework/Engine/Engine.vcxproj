@@ -12,22 +12,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\FrameworkPathFinder.cpp" />
-    <ClCompile Include="Source\Subsystem\Console\DoubleBufferingConsoleHandler.cpp" />
-    <ClCompile Include="Source\Subsystem\GameObject\GameObject.cpp" />
-    <ClCompile Include="Source\Subsystem\Console\ConsoleHandler.cpp" />
+    <ClCompile Include="Source\Subsystem\ConsoleHandler\DoubleBufferingConsoleHandler.cpp" />
+    <ClCompile Include="Source\InnerPart\GameObject\GameObject.cpp" />
+    <ClCompile Include="Source\Subsystem\ConsoleHandler\ConsoleHandler.cpp" />
     <ClCompile Include="Source\EnginePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugEngine|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseEngine|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Source\Subsystem\Error\ErrorHandler.cpp" />
-    <ClCompile Include="Source\Subsystem\GameObject\GameObjectManager.cpp" />
-    <ClCompile Include="Source\Subsystem\Log\LogCategory.cpp" />
-    <ClCompile Include="Source\Subsystem\Log\LogCategoryBase.cpp" />
-    <ClCompile Include="Source\Subsystem\Log\Logger.cpp" />
+    <ClCompile Include="Source\Subsystem\ErrorHandler\ErrorHandler.cpp" />
+    <ClCompile Include="Source\Subsystem\GameObjectManager\GameObjectManager.cpp" />
+    <ClCompile Include="Source\Subsystem\Logger\LogCategory.cpp" />
+    <ClCompile Include="Source\Subsystem\Logger\LogCategoryBase.cpp" />
+    <ClCompile Include="Source\Subsystem\Logger\Logger.cpp" />
     <ClCompile Include="Source\Subsystem\SubsystemLocator.cpp" />
-    <ClCompile Include="Source\Subsystem\Time\FrameTimeManager.cpp" />
-    <ClCompile Include="Source\Subsystem\Time\Stopwatch.cpp" />
-    <ClCompile Include="Source\Subsystem\Time\Timer.cpp" />
+    <ClCompile Include="Source\Subsystem\FrameTimeManager\FrameTimeManager.cpp" />
+    <ClCompile Include="Source\InnerPart\Time\Stopwatch.cpp" />
+    <ClCompile Include="Source\InnerPart\Time\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\FrameworkPathfinder.h" />
@@ -40,34 +40,36 @@
     <ClInclude Include="Source\Common\CommonInterface.h" />
     <ClInclude Include="Source\Common\CommonMacro.h" />
     <ClInclude Include="Source\Common\CommonType.h" />
-    <ClInclude Include="Source\Subsystem\Console\DoubleBufferingConsoleHandler.h" />
-    <ClInclude Include="Source\Subsystem\GameObject\GameObject.h" />
-    <ClInclude Include="Source\Subsystem\Console\ConsoleEnum.h" />
-    <ClInclude Include="Source\Subsystem\Console\ConsoleHandler.h" />
+    <ClInclude Include="Source\Subsystem\ConsoleHandler\DoubleBufferingConsoleHandler.h" />
+    <ClInclude Include="Source\InnerPart\GameObject\GameObject.h" />
+    <ClInclude Include="Source\Subsystem\ConsoleHandler\ConsoleEnum.h" />
+    <ClInclude Include="Source\Subsystem\ConsoleHandler\ConsoleHandler.h" />
     <ClInclude Include="Source\EnginePCH.h" />
-    <ClInclude Include="Source\Subsystem\Console\IConsoleHandler.h" />
-    <ClInclude Include="Source\Subsystem\Error\ErrorEnum.h" />
-    <ClInclude Include="Source\Subsystem\Error\ErrorHandler.h" />
-    <ClInclude Include="Source\Subsystem\Error\ErrorMacro.h" />
-    <ClInclude Include="Source\Subsystem\Error\IErrorHandler.h" />
-    <ClInclude Include="Source\Subsystem\GameObject\GameObjectManager.h" />
-    <ClInclude Include="Source\Subsystem\GameObject\IGameObjectManager.h" />
+    <ClInclude Include="Source\Subsystem\ConsoleHandler\IConsoleHandler.h" />
+    <ClInclude Include="Source\Subsystem\ErrorHandler\ErrorEnum.h" />
+    <ClInclude Include="Source\Subsystem\ErrorHandler\ErrorHandler.h" />
+    <ClInclude Include="Source\Subsystem\ErrorHandler\ErrorMacro.h" />
+    <ClInclude Include="Source\Subsystem\ErrorHandler\IErrorHandler.h" />
+    <ClInclude Include="Source\Subsystem\GameObjectManager\GameObjectManager.h" />
+    <ClInclude Include="Source\Subsystem\GameObjectManager\IGameObjectManager.h" />
     <ClInclude Include="Source\Subsystem\ISubsytem.h" />
-    <ClInclude Include="Source\Subsystem\Log\ILogger.h" />
-    <ClInclude Include="Source\Subsystem\Log\LogCategory.h" />
-    <ClInclude Include="Source\Subsystem\Log\LogCategoryBase.h" />
-    <ClInclude Include="Source\Subsystem\Log\LogEnum.h" />
-    <ClInclude Include="Source\Subsystem\Log\Logger.h" />
-    <ClInclude Include="Source\Subsystem\Log\LogMacro.h" />
+    <ClInclude Include="Source\Subsystem\Logger\ILogger.h" />
+    <ClInclude Include="Source\Subsystem\Logger\LogCategory.h" />
+    <ClInclude Include="Source\Subsystem\Logger\LogCategoryBase.h" />
+    <ClInclude Include="Source\Subsystem\Logger\LogEnum.h" />
+    <ClInclude Include="Source\Subsystem\Logger\Logger.h" />
+    <ClInclude Include="Source\Subsystem\Logger\LogMacro.h" />
     <ClInclude Include="Source\Subsystem\SubsystemEnum.h" />
     <ClInclude Include="Source\Subsystem\SubsystemInclusion.h" />
     <ClInclude Include="Source\Subsystem\SubsystemLocator.h" />
     <ClInclude Include="Source\Subsystem\SubsystemMacro.h" />
-    <ClInclude Include="Source\Subsystem\Time\IFrameTimeManager.h" />
-    <ClInclude Include="Source\Subsystem\Time\FrameTimeManager.h" />
-    <ClInclude Include="Source\Subsystem\Time\Stopwatch.h" />
-    <ClInclude Include="Source\Subsystem\Time\TimeEnum.h" />
-    <ClInclude Include="Source\Subsystem\Time\Timer.h" />
+    <ClInclude Include="Source\Subsystem\FrameTimeManager\IFrameTimeManager.h" />
+    <ClInclude Include="Source\Subsystem\FrameTimeManager\FrameTimeManager.h" />
+    <ClInclude Include="Source\InnerPart\Time\Stopwatch.h" />
+    <ClInclude Include="Source\InnerPart\Time\Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Subsystem\SubsystemLocator.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -119,7 +121,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>EnginePCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source\InnerPart;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
@@ -139,7 +141,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>EnginePCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source\InnerPart;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>

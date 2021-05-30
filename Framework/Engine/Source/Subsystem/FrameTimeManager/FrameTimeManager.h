@@ -9,8 +9,8 @@
 #pragma once
 
 #include "IFrameTimeManager.h"
-#include "Stopwatch.h"
-#include "Timer.h"
+#include "Time/Stopwatch.h"
+#include "Time/Timer.h"
 
 class FrameTimeManager : public IFrameTimeManager
 {

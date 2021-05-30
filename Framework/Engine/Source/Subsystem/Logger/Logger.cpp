@@ -12,11 +12,14 @@
 
 #include "LogEnum.h"
 
-class LoggerInternal
+class InnerPart
 {
 public:
-	LoggerInternal(Logger* pThis);
-	~LoggerInternal() = default;
+	InnerPart(Logger* pThis);
+	~InnerPart() = default;
+
+	Bool LogImpl(const LogCategoryBase* pCategory, const std::string_view& strContent,
+		const Char* szTime, const Char* szFilePath, Int32 line, OUT std::string& strLog);
 
 	void BeginLog(EConsoleRenderingColor renderingColor) const;
 	void EndLog() const;
@@ -48,15 +51,34 @@ private:
 /*
 	필요한 정보를 설정합니다.
 */
-LoggerInternal::LoggerInternal(Logger* pThis)
+InnerPart::InnerPart(Logger* pThis)
 {
 	m_pLogger = pThis;
 }
 
 /*
+	공통 구현부입니다.
+*/
+Bool InnerPart::LogImpl(const LogCategoryBase* pCategory, const std::string_view& strContent,
+	const Char* szTime, const Char* szFilePath, Int32 line, OUT std::string& strLog)
+{
+	if (MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	{
+		EndLog();
+		return false;
+	}
+
+	IConsoleHandler* pConsoleHandler = FIND_SUBSYSTEM(IConsoleHandler);
+	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
+	PrintDebugOutputLog(strLog);
+
+	return true;
+}
+
+/*
 	로그를 출력하기 전에 호출됩니다.
 */
-void LoggerInternal::BeginLog(EConsoleRenderingColor renderingColor) const
+void InnerPart::BeginLog(EConsoleRenderingColor renderingColor) const
 {
 	FIND_SUBSYSTEM(IConsoleHandler)->ChangeRenderingColor(renderingColor, EConsoleRenderingType::TEXT);
 }
@@ -64,7 +86,7 @@ void LoggerInternal::BeginLog(EConsoleRenderingColor renderingColor) const
 /*
 	로그를 출력한 후에 호출됩니다.
 */
-void LoggerInternal::EndLog() const
+void InnerPart::EndLog() const
 {
 	FIND_SUBSYSTEM(IConsoleHandler)->ResetRenderingColor();
 }
@@ -72,7 +94,7 @@ void LoggerInternal::EndLog() const
 /*
 	전달받은 인자들을 이용해서 로그 문자열을 만듭니다.
 */
-Bool LoggerInternal::MakeLog(const LogCategoryBase* pCategory, const std::string_view& strContent,
+Bool InnerPart::MakeLog(const LogCategoryBase* pCategory, const std::string_view& strContent,
 	const Char* szTime, const Char* szFilePath, Int32 line, OUT std::string& strLog) const
 {
 	std::string strCategory;
@@ -140,7 +162,7 @@ Bool LoggerInternal::MakeLog(const LogCategoryBase* pCategory, const std::string
 /*
 	디버그 출력창에 로그를 출력합니다.
 */
-void LoggerInternal::PrintDebugOutputLog(OUT std::string& strLog) const
+void InnerPart::PrintDebugOutputLog(OUT std::string& strLog) const
 {
 	strLog += "\n";
 	::OutputDebugString(strLog.c_str());
@@ -149,12 +171,12 @@ void LoggerInternal::PrintDebugOutputLog(OUT std::string& strLog) const
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 Logger::Logger()
 {
-	m_pInternal = new LoggerInternal(this);
+	m_pInnerPart = new InnerPart(this);
 }
 
 Logger::~Logger()
 {
-	SAFE_DELETE(m_pInternal);
+	SAFE_DELETE(m_pInnerPart);
 }
 
 /*
@@ -163,10 +185,10 @@ Logger::~Logger()
 */
 void Logger::SetUp()
 {
-	m_pInternal->ActivateOption(EnumIdx::LogOption::TIME);
-	//m_pInternal->ActivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);
-	m_pInternal->ActivateOption(EnumIdx::LogOption::RELATIVE_FILEPATH);
-	m_pInternal->ActivateOption(EnumIdx::LogOption::LINE);
+	m_pInnerPart->ActivateOption(EnumIdx::LogOption::TIME);
+	//m_pInnerPart->ActivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);
+	m_pInnerPart->ActivateOption(EnumIdx::LogOption::RELATIVE_FILEPATH);
+	m_pInnerPart->ActivateOption(EnumIdx::LogOption::LINE);
 }
 
 /*
@@ -188,20 +210,15 @@ void Logger::Trace(const LogCategoryBase* pCategory, const std::string_view& str
 	return;
 #endif
 
-	m_pInternal->BeginLog(EConsoleRenderingColor::GREEN);
+	m_pInnerPart->BeginLog(EConsoleRenderingColor::GREEN);
 
 	std::string strLog;
-	if (m_pInternal->MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_pInnerPart->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
 	{
-		m_pInternal->EndLog();
 		return;
 	}
 
-	IConsoleHandler* pConsoleHandler = FIND_SUBSYSTEM(IConsoleHandler);
-	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
-	m_pInternal->PrintDebugOutputLog(strLog);
-
-	m_pInternal->EndLog();
+	m_pInnerPart->EndLog();
 }
 
 /*
@@ -215,21 +232,16 @@ void Logger::Assert(const LogCategoryBase* pCategory, const std::string_view& st
 	return;
 #endif
 
-	m_pInternal->BeginLog(EConsoleRenderingColor::AQUA);
+	m_pInnerPart->BeginLog(EConsoleRenderingColor::AQUA);
 
 	std::string strLog;
-	if (m_pInternal->MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_pInnerPart->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
 	{
-		m_pInternal->EndLog();
 		return;
 	}
 
-	IConsoleHandler* pConsoleHandler = FIND_SUBSYSTEM(IConsoleHandler);
-	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
-	m_pInternal->PrintDebugOutputLog(strLog);
 	DebugBreak();
-
-	m_pInternal->EndLog();
+	m_pInnerPart->EndLog();
 }
 
 /*
@@ -238,20 +250,15 @@ void Logger::Assert(const LogCategoryBase* pCategory, const std::string_view& st
 void Logger::Info(const LogCategoryBase* pCategory, const std::string_view& strContent,
 	const Char* szTime, const Char* szFilePath, Int32 line) const
 {
-	m_pInternal->BeginLog(EConsoleRenderingColor::LIGHT_GREEN);
+	m_pInnerPart->BeginLog(EConsoleRenderingColor::LIGHT_GREEN);
 
 	std::string strLog;
-	if (m_pInternal->MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_pInnerPart->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
 	{
-		m_pInternal->EndLog();
 		return;
 	}
 
-	IConsoleHandler* pConsoleHandler = FIND_SUBSYSTEM(IConsoleHandler);
-	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
-	m_pInternal->PrintDebugOutputLog(strLog);
-
-	m_pInternal->EndLog();
+	m_pInnerPart->EndLog();
 }
 
 /*
@@ -261,21 +268,16 @@ void Logger::Info(const LogCategoryBase* pCategory, const std::string_view& strC
 void Logger::Warning(const LogCategoryBase* pCategory, const std::string_view& strContent,
 	const Char* szTime, const Char* szFilePath, Int32 line) const
 {
-	m_pInternal->BeginLog(EConsoleRenderingColor::YELLOW);
+	m_pInnerPart->BeginLog(EConsoleRenderingColor::YELLOW);
 
 	std::string strLog;
-	if (m_pInternal->MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_pInnerPart->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
 	{
-		m_pInternal->EndLog();
 		return;
 	}
 
-	IConsoleHandler* pConsoleHandler = FIND_SUBSYSTEM(IConsoleHandler);
-	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
-	m_pInternal->PrintDebugOutputLog(strLog);
-	pConsoleHandler->Pause();
-
-	m_pInternal->EndLog();
+	FIND_SUBSYSTEM(IConsoleHandler)->Pause();
+	m_pInnerPart->EndLog();
 }
 
 /*
@@ -285,21 +287,16 @@ void Logger::Warning(const LogCategoryBase* pCategory, const std::string_view& s
 void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& strContent,
 	const Char* szTime, const Char* szFilePath, Int32 line) const
 {
-	m_pInternal->BeginLog(EConsoleRenderingColor::LIGHT_YELLOW);
+	m_pInnerPart->BeginLog(EConsoleRenderingColor::LIGHT_YELLOW);
 
 	std::string strLog;
-	if (m_pInternal->MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_pInnerPart->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
 	{
-		m_pInternal->EndLog();
 		return;
 	}
 
-	IConsoleHandler* pConsoleHandler = FIND_SUBSYSTEM(IConsoleHandler);
-	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
-	m_pInternal->PrintDebugOutputLog(strLog);
-	pConsoleHandler->Pause();
-
-	m_pInternal->EndLog();
+	FIND_SUBSYSTEM(IConsoleHandler)->Pause();
+	m_pInnerPart->EndLog();
 }
 
 /*
@@ -309,19 +306,14 @@ void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& str
 void Logger::Fatal(const LogCategoryBase* pCategory, const std::string_view& strContent,
 	const Char* szTime, const Char* szFilePath, Int32 line) const
 {
-	m_pInternal->BeginLog(EConsoleRenderingColor::RED);
+	m_pInnerPart->BeginLog(EConsoleRenderingColor::RED);
 
 	std::string strLog;
-	if (m_pInternal->MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_pInnerPart->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
 	{
-		m_pInternal->EndLog();
 		return;
 	}
 
-	IConsoleHandler* pConsoleHandler = FIND_SUBSYSTEM(IConsoleHandler);
-	pConsoleHandler->RenderString(0, pConsoleHandler->QueryCurrentPosition().Y, strLog.c_str());
-	m_pInternal->PrintDebugOutputLog(strLog);
-	m_pInternal->EndLog();
-
+	m_pInnerPart->EndLog();
 	std::abort();
 }

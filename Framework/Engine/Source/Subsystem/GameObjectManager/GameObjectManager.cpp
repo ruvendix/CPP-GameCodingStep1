@@ -11,7 +11,7 @@
 #include "GameObjectManager.h"
 
 #include "Subsystem/SubsystemInclusion.h"
-#include "GameObject.h"
+#include "GameObject/GameObject.h"
 
 /*
 	매니저에 게임 오브젝트를 등록합니다.

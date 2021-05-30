@@ -9,12 +9,14 @@
 #pragma once
 
 #include "SubsystemLocator.h"
+#include "SubsystemLocator.inl"
+
 #include "SubsystemMacro.h"
 
-#include "Console/IConsoleHandler.h"
-#include "Log/ILogger.h"
-#include "Error/IErrorHandler.h"
-#include "GameObject/IGameObjectManager.h"
-#include "Time/IFrameTimeManager.h"
+#include "ConsoleHandler/IConsoleHandler.h"
+#include "Logger/ILogger.h"
+#include "ErrorHandler/IErrorHandler.h"
+#include "GameObjectManager/IGameObjectManager.h"
+#include "FrameTimeManager/IFrameTimeManager.h"
 
-#include "Error/ErrorMacro.h"
+#include "ErrorHandler/ErrorMacro.h"

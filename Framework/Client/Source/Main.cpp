@@ -14,7 +14,7 @@
 #endif
 
 #include <EnginePCH.h>
-#include <Subsystem/GameObject/GameObject.h>
+#include <GameObject/GameObject.h>
 
 Int32 main()
 {
