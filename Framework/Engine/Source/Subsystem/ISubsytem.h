@@ -10,6 +10,8 @@
 
 class ISubsystem
 {
+	friend class SubsystemLocator;
+
 public:
 	ISubsystem() = default;
 	virtual ~ISubsystem() = default;

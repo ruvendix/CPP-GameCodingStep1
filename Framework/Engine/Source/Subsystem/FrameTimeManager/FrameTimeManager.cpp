@@ -18,7 +18,7 @@ void FrameTimeManager::SetUp()
 	m_FPSTimer.setTargetTime(1.0f);
 
 	m_deltaTimeStopwatch.StartTime();
-	SetFixedDeltaTime(60);
+	ModifyFixedDeltaTime(60);
 }
 
 /*
@@ -38,7 +38,7 @@ void FrameTimeManager::CleanUp()
 void FrameTimeManager::UpdateFrameTime()
 {
 	m_deltaTimeStopwatch.EndTime();
-	Float elapsedTime = m_deltaTimeStopwatch.getElapsedTime();
+	Float elapsedTime = m_deltaTimeStopwatch.GetElapsedTime();
 	Float sleepTime = m_fixedDeltaTime - elapsedTime;
 	if (sleepTime >= 0.0f)
 	{

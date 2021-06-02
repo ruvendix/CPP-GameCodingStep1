@@ -14,13 +14,12 @@
 
 class ConsoleHandler final : public IConsoleHandler
 {
-public:
-	ConsoleHandler() = default;
-	virtual ~ConsoleHandler() = default;
+	ONLY_SUBSYSTEM(ConsoleHandler);
 
+public:
 	virtual void SetUp() override;
 	virtual void CleanUp() override;
-	virtual void ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) override;
+	virtual void ChangeRenderingColor(EConsoleRenderingColor eRenderingColor, EConsoleRenderingType eRenderingType) override;
 	virtual void ClearScreen() override;
 
 	virtual void MovePosition(Int32 x, Int32 y) override;

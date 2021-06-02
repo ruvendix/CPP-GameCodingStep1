@@ -13,12 +13,11 @@
 
 class GameObject;
 
-class GameObjectManager : public IGameObjectManager
+class GameObjectManager final : public IGameObjectManager
 {
-public:
-	GameObjectManager() = default;
-	virtual ~GameObjectManager() = default;
+	ONLY_SUBSYSTEM(GameObjectManager);
 
+public:
 	virtual void SetUp() override { }
 	virtual void CleanUp() override { }
 

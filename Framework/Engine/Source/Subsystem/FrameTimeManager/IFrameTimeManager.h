@@ -12,7 +12,7 @@
 
 class IFrameTimeManager : public ISubsystem
 {
-	GENERATE_MATCH_TYPE(ESubsystemType::FRAME_TIME_MANAGER)
+	GENERATE_SUBSYSTEM_ID(ESubsystemID::FRAME_TIME_MANAGER);
 
 public:
 	IFrameTimeManager() = default;
@@ -23,9 +23,9 @@ public:
 
 	virtual void UpdateFrameTime() = 0;
 
-	virtual Float GetDeltaTime() const = 0;
-	virtual Float GetTimeScale() const = 0;
+	virtual Float ObtainDeltaTime() const = 0;
+	virtual void ModifyFixedDeltaTime(Int32 FPS) = 0;
 
-	virtual void SetFixedDeltaTime(Int32 FPS) = 0;
-	virtual void SetTimeScale(Float timeScale) = 0;
+	virtual Float ObtainTimeScale() const = 0;
+	virtual void ModifyTimeScale(Float timeScale) = 0;
 };

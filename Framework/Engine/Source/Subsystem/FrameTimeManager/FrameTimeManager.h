@@ -9,36 +9,35 @@
 #pragma once
 
 #include "IFrameTimeManager.h"
-#include "Time/Stopwatch.h"
-#include "Time/Timer.h"
+#include "Utility/Time/Stopwatch.h"
+#include "Utility/Time/Timer.h"
 
-class FrameTimeManager : public IFrameTimeManager
+class FrameTimeManager final : public IFrameTimeManager
 {
-public:
-	FrameTimeManager() = default;
-	virtual ~FrameTimeManager() = default;
+	ONLY_SUBSYSTEM(FrameTimeManager);
 
+public:
 	virtual void SetUp() override;
 	virtual void CleanUp() override;
 
 	virtual void UpdateFrameTime() override;
 
-	virtual Float GetDeltaTime() const override
-	{
+	virtual Float ObtainDeltaTime() const override
+	{ 
 		return m_deltaTime;
 	}
 
-	virtual Float GetTimeScale() const override
-	{
+	virtual Float ObtainTimeScale() const override
+	{ 
 		return m_timeScale;
 	}
 
-	virtual void SetFixedDeltaTime(Int32 FPS) override
+	virtual void ModifyFixedDeltaTime(Int32 FPS) override
 	{
 		m_fixedDeltaTime = 1.0f / static_cast<Float>(FPS);
 	}
 
-	virtual void SetTimeScale(Float timeScale) override
+	virtual void ModifyTimeScale(Float timeScale) override
 	{
 		m_timeScale = timeScale;
 	}

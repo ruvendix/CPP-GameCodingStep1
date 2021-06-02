@@ -29,3 +29,7 @@ private:\
 		delete ptr;\
 		ptr = nullptr;\
 	}
+
+#define FRIEND_CLASS(Type)\
+private:\
+	friend class Type;

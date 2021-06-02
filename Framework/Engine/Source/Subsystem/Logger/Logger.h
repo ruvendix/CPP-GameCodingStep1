@@ -11,12 +11,14 @@
 
 #include "ILogger.h"
 
+// 전방 선언
+class LoggerInside;
+
 class Logger final : public ILogger
 {
-public:
-	Logger();
-	virtual ~Logger();
+	ONLY_SUBSYSTEM_CTOR(Logger);
 
+public:
 	virtual void SetUp() override;
 	virtual void CleanUp() override;
 
@@ -39,5 +41,5 @@ public:
 		const Char* szTime, const Char* szFilePath, Int32 line) const override;
 
 private:
-	class InnerPart* m_pInnerPart = nullptr;
+	std::unique_ptr<LoggerInside> m_spLoggerInside = nullptr;
 };

@@ -86,10 +86,10 @@ void ConsoleHandler::ChangeTitle(const Char* szTitle)
 	콘솔창 렌더링 색깔을 변경합니다.
 	글자색과 배경색 중에서 선택할 수 있어요.
 */
-void ConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType)
+void ConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor eRenderingColor, EConsoleRenderingType eRenderingType)
 {
-	if ((renderingColor < EConsoleRenderingColor::BLACK) ||
-		(renderingColor > EConsoleRenderingColor::BRIGHT_WHITE))
+	if ((eRenderingColor < EConsoleRenderingColor::BLACK) ||
+		(eRenderingColor > EConsoleRenderingColor::BRIGHT_WHITE))
 	{
 		RX_ERROR(LogConsoleHandler, EErrorCode::INVALID_SCREEN_COLOR);
 	}
@@ -99,15 +99,15 @@ void ConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor renderingColor,
 	// 거기에서도 상위 4비트는 배경색, 하위 4비트는 글자색을 의미해요.
 	// 이 정보와 비트 연산을 이용하면 배경색과 글자색을 따로 알아낼 수 있습니다!	
 	Uint16 attr = m_outputScreenBufferInfo.wAttributes;
-	if (renderingType == EConsoleRenderingType::TEXT)
+	if (eRenderingType == EConsoleRenderingType::TEXT)
 	{
 		attr &= 0xFFF0; // 하위 4비트값만 가져옵니다.
-		attr |= static_cast<Uint16>(renderingColor);
+		attr |= static_cast<Uint16>(eRenderingColor);
 	}
-	else if (renderingType == EConsoleRenderingType::BACKGROUND)
+	else if (eRenderingType == EConsoleRenderingType::BACKGROUND)
 	{
 		attr &= 0xFF0F; // 상위 4비트값만 가져옵니다.
-		attr |= (static_cast<Uint16>(renderingColor) << 4); // 상위 4비트만큼 이동해야 해요!
+		attr |= (static_cast<Uint16>(eRenderingColor) << 4); // 상위 4비트만큼 이동해야 해요!
 	}
 	else
 	{

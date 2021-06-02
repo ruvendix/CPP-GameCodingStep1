@@ -14,7 +14,7 @@ class GameObject;
 
 class IGameObjectManager : public ISubsystem
 {
-	GENERATE_MATCH_TYPE(ESubsystemType::GAME_OBJECT_MANAGER)
+	GENERATE_SUBSYSTEM_ID(ESubsystemID::GAME_OBJECT_MANAGER);
 
 public:
 	IGameObjectManager() = default;

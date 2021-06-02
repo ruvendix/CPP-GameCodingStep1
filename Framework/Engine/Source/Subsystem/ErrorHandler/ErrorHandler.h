@@ -11,12 +11,11 @@
 
 #include "IErrorHandler.h"
 
-class ErrorHandler : public IErrorHandler
+class ErrorHandler final : public IErrorHandler
 {
-public:
-	ErrorHandler() = default;
-	virtual ~ErrorHandler() = default;
+	ONLY_SUBSYSTEM(ErrorHandler);
 
+public:
 	virtual void SetUp() override;
 	virtual void CleanUp() override;
 

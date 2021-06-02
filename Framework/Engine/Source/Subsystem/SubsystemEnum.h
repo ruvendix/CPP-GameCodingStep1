@@ -10,7 +10,7 @@
 
 #include "Common/CommonType.h"
 
-enum class ESubsystemType : Int32
+enum class ESubsystemID : Int32
 {
 	UNKNOWN = -1,
 	LOGGER,

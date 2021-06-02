@@ -23,7 +23,7 @@ class SubsystemLocator final
 public:
 	// 서브시스템은 추가하면 제거할 필요가 없습니다.
 	template <typename TSubsystem>
-	void AddSubsystem();
+	void RegisterSubsystem();
 
 	template <typename TSubsystem>
 	TSubsystem* FindSubsystem();
@@ -32,5 +32,5 @@ public:
 	void CleanUp();
 
 private:
-	std::unordered_map<ESubsystemType, ISubsystem*> m_mapSubsystem;
+	std::unordered_map<ESubsystemID, ISubsystem*> m_mapSubsystem;
 };

@@ -13,7 +13,7 @@
   <ItemGroup>
     <ClCompile Include="..\FrameworkPathFinder.cpp" />
     <ClCompile Include="Source\Subsystem\ConsoleHandler\DoubleBufferingConsoleHandler.cpp" />
-    <ClCompile Include="Source\InnerPart\GameObject\GameObject.cpp" />
+    <ClCompile Include="Source\Scene\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\Subsystem\ConsoleHandler\ConsoleHandler.cpp" />
     <ClCompile Include="Source\EnginePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugEngine|Win32'">Create</PrecompiledHeader>
@@ -26,22 +26,22 @@
     <ClCompile Include="Source\Subsystem\Logger\Logger.cpp" />
     <ClCompile Include="Source\Subsystem\SubsystemLocator.cpp" />
     <ClCompile Include="Source\Subsystem\FrameTimeManager\FrameTimeManager.cpp" />
-    <ClCompile Include="Source\InnerPart\Time\Stopwatch.cpp" />
-    <ClCompile Include="Source\InnerPart\Time\Timer.cpp" />
+    <ClCompile Include="Source\Utility\Time\Stopwatch.cpp" />
+    <ClCompile Include="Source\Utility\Time\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\FrameworkPathfinder.h" />
     <ClInclude Include="Source\Common\CommonBase.h" />
     <ClInclude Include="Source\Common\CommonConstant.h" />
     <ClInclude Include="Source\Common\CommonEnum.h" />
-    <ClInclude Include="Source\Common\CommonFunction.h" />
+    <ClInclude Include="Source\Common\CommonFunction\CommonFunction.h" />
     <ClInclude Include="Source\Common\CommonFunction\MakeFormatString.hpp" />
     <ClInclude Include="Source\Common\CommonInclusion.h" />
     <ClInclude Include="Source\Common\CommonInterface.h" />
     <ClInclude Include="Source\Common\CommonMacro.h" />
     <ClInclude Include="Source\Common\CommonType.h" />
     <ClInclude Include="Source\Subsystem\ConsoleHandler\DoubleBufferingConsoleHandler.h" />
-    <ClInclude Include="Source\InnerPart\GameObject\GameObject.h" />
+    <ClInclude Include="Source\Scene\GameObject\GameObject.h" />
     <ClInclude Include="Source\Subsystem\ConsoleHandler\ConsoleEnum.h" />
     <ClInclude Include="Source\Subsystem\ConsoleHandler\ConsoleHandler.h" />
     <ClInclude Include="Source\EnginePCH.h" />
@@ -65,8 +65,8 @@
     <ClInclude Include="Source\Subsystem\SubsystemMacro.h" />
     <ClInclude Include="Source\Subsystem\FrameTimeManager\IFrameTimeManager.h" />
     <ClInclude Include="Source\Subsystem\FrameTimeManager\FrameTimeManager.h" />
-    <ClInclude Include="Source\InnerPart\Time\Stopwatch.h" />
-    <ClInclude Include="Source\InnerPart\Time\Timer.h" />
+    <ClInclude Include="Source\Utility\Time\Stopwatch.h" />
+    <ClInclude Include="Source\Utility\Time\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Subsystem\SubsystemLocator.inl" />
@@ -121,7 +121,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>EnginePCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source\InnerPart;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
@@ -141,7 +141,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>EnginePCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source\InnerPart;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>

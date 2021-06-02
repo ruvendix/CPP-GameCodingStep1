@@ -13,7 +13,7 @@
 
 class IErrorHandler : public ISubsystem
 {
-	GENERATE_MATCH_TYPE(ESubsystemType::ERROR_HANLDER)
+	GENERATE_SUBSYSTEM_ID(ESubsystemID::ERROR_HANLDER);
 
 public:
 	IErrorHandler() = default;

@@ -24,7 +24,7 @@ Bool Timer::UpdateTime()
 		return false;
 	}
 
-	m_localTime += FIND_SUBSYSTEM(IFrameTimeManager)->GetDeltaTime();
+	m_localTime += FIND_SUBSYSTEM(IFrameTimeManager)->ObtainDeltaTime();
 	FIND_SUBSYSTEM(IConsoleHandler)->RenderString(0, 1, MakeFormatString("localTime: %f", m_localTime).c_str());
 
 	if (m_targetTime > m_localTime)

@@ -15,22 +15,10 @@
 class FrameworkPathfinder final
 {
 public:
-	static void SetUp()
-	{
-		m_strPath = __FILE__;
-		m_folderPathLength = m_strPath.rfind('\\');
-		m_folderPathLength += 1; // '\\' Æ÷ÇÔ!
-	}
+	static void SetUp();
 
-	static const std::string& GetPath()
-	{
-		return m_strPath;
-	}
-
-	static Uint32 GetFolderPathLength()
-	{
-		return m_folderPathLength;
-	}
+	static const std::string& GetPath() { return m_strPath; }
+	static Uint32 GetFolderPathLength() { return m_folderPathLength; }
 
 private:
 	FrameworkPathfinder() = default;

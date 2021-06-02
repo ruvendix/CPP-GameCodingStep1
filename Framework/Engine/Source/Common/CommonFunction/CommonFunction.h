@@ -9,10 +9,10 @@
 // =====================================================================================
 #pragma once
 
-#include "CommonBase.h"
-#include "CommonType.h"
+#include "Common/CommonBase.h"
+#include "Common/CommonType.h"
 
-#include "CommonFunction/MakeFormatString.hpp"
+#include "MakeFormatString.hpp"
 
 /*
 	printf()의 가변 템플릿 버전입니다.

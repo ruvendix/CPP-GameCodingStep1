@@ -8,11 +8,23 @@
 // =====================================================================================
 #pragma once
 
-#define GENERATE_MATCH_TYPE(subsystemType)\
+#define GENERATE_SUBSYSTEM_ID(eID)\
 public:\
-	static constexpr ESubsystemType MatchType()\
+	static constexpr ESubsystemID ID()\
 	{\
-		return subsystemType;\
+		return eID;\
 	}
 
-#define FIND_SUBSYSTEM(TSubsystem) SubsystemLocator::I().FindSubsystem<TSubsystem>()
+#define ONLY_SUBSYSTEM(SubsystemType)\
+private:\
+	friend class SubsystemLocator;\
+	SubsystemType() = default;\
+	virtual ~SubsystemType() = default;
+
+#define ONLY_SUBSYSTEM_CTOR(SubsystemType)\
+private:\
+	friend class SubsystemLocator;\
+	SubsystemType();\
+	virtual ~SubsystemType() = default;
+
+#define FIND_SUBSYSTEM(SubsystemType) SubsystemLocator::I().FindSubsystem<SubsystemType>()

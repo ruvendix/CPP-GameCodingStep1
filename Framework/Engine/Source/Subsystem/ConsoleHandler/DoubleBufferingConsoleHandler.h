@@ -14,13 +14,12 @@
 
 class DoubleBufferingConsoleHandler final : public IConsoleHandler
 {
-public:
-	DoubleBufferingConsoleHandler() = default;
-	virtual ~DoubleBufferingConsoleHandler() = default;
+	ONLY_SUBSYSTEM(DoubleBufferingConsoleHandler);
 
+public:
 	virtual void SetUp() override;
 	virtual void CleanUp() override;
-	virtual void ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) override;
+	virtual void ChangeRenderingColor(EConsoleRenderingColor eRenderingColor, EConsoleRenderingType eRenderingType) override;
 	virtual void ClearScreen() override;
 
 	virtual void MovePosition(Int32 x, Int32 y) override;

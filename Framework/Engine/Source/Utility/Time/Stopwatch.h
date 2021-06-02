@@ -22,20 +22,10 @@ public:
 	void EndTime();
 	void RestartTime();
 
-	std::chrono::system_clock::time_point getStartTimePoint() const
-	{
-		return m_startTimePoint;
-	}
+	std::chrono::system_clock::time_point GetStartTimePoint() const { return m_startTimePoint; }
+	std::chrono::system_clock::time_point GetEndTimePoint() const { return m_startTimePoint; }
 
-	std::chrono::system_clock::time_point getEndTimePoint() const
-	{
-		return m_startTimePoint;
-	}
-
-	Float getElapsedTime() const
-	{
-		return m_elapsedTime;
-	}
+	Float GetElapsedTime() const { return m_elapsedTime; }
 
 private:
 	std::chrono::system_clock::time_point m_startTimePoint;

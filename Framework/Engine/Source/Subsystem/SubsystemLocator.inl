@@ -8,7 +8,7 @@
 // 서비스 로케이터는 싱글톤으로 구현했습니다.
 // ======================================================================================
 template <typename TSubsystem>
-inline void SubsystemLocator::AddSubsystem()
+inline void SubsystemLocator::RegisterSubsystem()
 {
 	static_assert(std::is_base_of_v<ISubsystem, TSubsystem>, "It't not subsystem!");
 
@@ -25,7 +25,7 @@ inline void SubsystemLocator::AddSubsystem()
 		return;
 	}
 
-	const auto& ret = m_mapSubsystem.emplace(TSubsystem::MatchType(), pSubsystem);
+	const auto& ret = m_mapSubsystem.emplace(TSubsystem::ID(), pSubsystem);
 	if (ret.second == false) // 삽입 실패인 경우
 	{
 		::OutputDebugString("서브시스템을 추가하지 못했습니다!\n");
@@ -41,7 +41,7 @@ inline TSubsystem* SubsystemLocator::FindSubsystem()
 {
 	static_assert(std::is_base_of_v<ISubsystem, TSubsystem>, "It't not subsystem!");
 
-	const auto& iter = m_mapSubsystem.find(TSubsystem::MatchType());
+	const auto& iter = m_mapSubsystem.find(TSubsystem::ID());
 	if ((iter == m_mapSubsystem.cend()) ||
 		(iter->second == nullptr))
 	{

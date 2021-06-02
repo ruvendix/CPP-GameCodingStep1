@@ -18,18 +18,21 @@
 #include "Subsystem/ConsoleHandler/DoubleBufferingConsoleHandler.h"
 
 /*
-	기본 서브시스템만 추가합니다.
+	기본 서브시스템만 등록합니다.
 	여기에 없는 서브시스템은 클라이언트에서 추가해주세요!
 */
 void SubsystemLocator::SetUp()
 {
-	AddSubsystem<Logger>();
-	AddSubsystem<ErrorHandler>();
-	AddSubsystem<GameObjectManager>();
-	AddSubsystem<FrameTimeManager>();
-	AddSubsystem<DoubleBufferingConsoleHandler>();
+	RegisterSubsystem<Logger>();
+	RegisterSubsystem<ErrorHandler>();
+	RegisterSubsystem<GameObjectManager>();
+	RegisterSubsystem<FrameTimeManager>();
+	RegisterSubsystem<DoubleBufferingConsoleHandler>();
 }
 
+/*
+	등록된 모든 서브시스템의 CleanUp()을 호출합니다.
+*/
 void SubsystemLocator::CleanUp()
 {
 	for (auto& iter : m_mapSubsystem)

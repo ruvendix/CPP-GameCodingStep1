@@ -10,11 +10,12 @@
 
 #include "Subsystem/ISubsytem.h"
 
+// 전방 선언
 class LogCategoryBase;
 
 class ILogger : public ISubsystem
 {
-	GENERATE_MATCH_TYPE(ESubsystemType::LOGGER)
+	GENERATE_SUBSYSTEM_ID(ESubsystemID::LOGGER);
 
 public:
 	ILogger() = default;

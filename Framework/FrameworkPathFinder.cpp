@@ -12,3 +12,10 @@
 
 std::string FrameworkPathfinder::m_strPath;
 Uint32 FrameworkPathfinder::m_folderPathLength;
+
+void FrameworkPathfinder::SetUp()
+{
+	m_strPath = __FILE__;
+	m_folderPathLength = m_strPath.rfind('\\');
+	m_folderPathLength += 1; // '\\' Æ÷ÇÔ!
+}

@@ -23,20 +23,10 @@ public:
 
 	Bool CheckActivate() const;
 
-	const std::string& getName() const
-	{
-		return m_strName;
-	}
+	void Activate() { m_bActivation = true; }
+	void Deactivate() { m_bActivation = false; }
 
-	void Activate()
-	{
-		m_bActivation = true;
-	}
-
-	void Deactivate()
-	{
-		m_bActivation = false;
-	}	
+	const std::string& GetName() const { return m_strName; }
 
 private:
 	Bool m_bActivation = true;
