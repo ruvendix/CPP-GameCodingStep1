@@ -12,7 +12,7 @@
 
 #include "LogEnum.h"
 
-class LoggerInside
+class LoggerInside final
 {
 public:
 	LoggerInside() = default;
@@ -148,7 +148,6 @@ void LoggerInside::PrintDebugOutputLog(OUT std::string& strLog) const
 	strLog += "\n";
 	::OutputDebugString(strLog.c_str());
 }
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 Logger::Logger()
 {

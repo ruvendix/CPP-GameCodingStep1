@@ -19,25 +19,25 @@ public:
 	IConsoleHandler() = default;
 	virtual ~IConsoleHandler() = default;
 
-	virtual void SetUp() override { }
-	virtual void CleanUp() override { }
+	virtual void SetUp() override EMPTY_FUNC;
+	virtual void CleanUp() override EMPTY_FUNC;
 
 	virtual void ChangeRenderingColor(EConsoleRenderingColor eRenderingColor, EConsoleRenderingType eRenderingType) = 0;
 	virtual void ClearScreen() = 0;
 
-	virtual void MovePosition(Int32 x, Int32 y) = 0;
-	virtual void AdjustSize(Uint32 width, Uint32 height) = 0;
-	virtual void ChangeTitle(const Char* szTitle) = 0;
-	virtual void ShowCursor(bool bShow) = 0;
-	virtual void RenderString(Int32 x, Int32 y, const Char* szText) = 0;
-	virtual void FlushInputBuffer() = 0;
-	virtual void ResetRenderingColor() = 0;
-	virtual void FlipOutputBuffer() = 0;
-	virtual void Pause() const = 0;
+	virtual void MovePosition(Int32 x, Int32 y) PURE_FUNC;
+	virtual void AdjustSize(Uint32 width, Uint32 height) PURE_FUNC;
+	virtual void ChangeTitle(const Char* szTitle) PURE_FUNC;
+	virtual void ShowCursor(bool bShow) PURE_FUNC;
+	virtual void RenderString(Int32 x, Int32 y, const Char* szText) PURE_FUNC;
+	virtual void FlushInputBuffer() PURE_FUNC;
+	virtual void ResetRenderingColor() PURE_FUNC;
+	virtual void FlipOutputBuffer() PURE_FUNC;
+	virtual void Pause() const PURE_FUNC;
 
-	virtual Int32 InputInteger() = 0;
-	virtual Float InputFloat() = 0;
-	virtual const Char* InputString() = 0;
+	virtual Int32 InputInteger() PURE_FUNC;
+	virtual Float InputFloat() PURE_FUNC;
+	virtual const Char* InputString() PURE_FUNC;
 
-	virtual COORD QueryCurrentPosition() = 0;
+	virtual COORD QueryCurrentPosition() PURE_FUNC;
 };

@@ -13,7 +13,7 @@
 #include "Subsystem/Logger/Logger.h"
 #include "Subsystem/ErrorHandler/ErrorHandler.h"
 #include "Subsystem/GameObjectManager/GameObjectManager.h"
-#include "Subsystem/FrameTimeManager/FrameTimeManager.h"
+#include "Subsystem/FrameTimeManager/ConstantFrameManager.h"
 #include "Subsystem/ConsoleHandler/ConsoleHandler.h"
 #include "Subsystem/ConsoleHandler/DoubleBufferingConsoleHandler.h"
 
@@ -26,7 +26,7 @@ void SubsystemLocator::SetUp()
 	RegisterSubsystem<Logger>();
 	RegisterSubsystem<ErrorHandler>();
 	RegisterSubsystem<GameObjectManager>();
-	RegisterSubsystem<FrameTimeManager>();
+	RegisterSubsystem<ConstantFrameManager>();
 	RegisterSubsystem<DoubleBufferingConsoleHandler>();
 }
 

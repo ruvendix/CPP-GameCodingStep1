@@ -30,6 +30,6 @@ private:\
 		ptr = nullptr;\
 	}
 
-#define FRIEND_CLASS(Type)\
-private:\
-	friend class Type;
+#define FRIEND_CLASS(Type) friend class Type
+#define PURE_FUNC = 0
+#define EMPTY_FUNC { }

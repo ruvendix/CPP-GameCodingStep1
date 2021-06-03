@@ -19,11 +19,11 @@ public:
 	IErrorHandler() = default;
 	virtual ~IErrorHandler() = default;
 
-	virtual void SetUp() { }
-	virtual void CleanUp() { }
+	virtual void SetUp() EMPTY_FUNC;
+	virtual void CleanUp() EMPTY_FUNC;
 
-	virtual const Char* FindErrorContent(EErrorCode errorCode) const = 0;
+	virtual const Char* FindErrorContent(EErrorCode errorCode) const PURE_FUNC;
 
-	virtual EErrorCode ObtainLastError() const = 0;
-	virtual void ModifyLastError(EErrorCode errorCode) = 0;
+	virtual EErrorCode ObtainLastError() const PURE_FUNC;
+	virtual void ModifyLastError(EErrorCode errorCode) PURE_FUNC;
 };

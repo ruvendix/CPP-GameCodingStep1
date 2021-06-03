@@ -25,7 +25,7 @@
     <ClCompile Include="Source\Subsystem\Logger\LogCategoryBase.cpp" />
     <ClCompile Include="Source\Subsystem\Logger\Logger.cpp" />
     <ClCompile Include="Source\Subsystem\SubsystemLocator.cpp" />
-    <ClCompile Include="Source\Subsystem\FrameTimeManager\FrameTimeManager.cpp" />
+    <ClCompile Include="Source\Subsystem\FrameTimeManager\ConstantFrameManager.cpp" />
     <ClCompile Include="Source\Utility\Time\Stopwatch.cpp" />
     <ClCompile Include="Source\Utility\Time\Timer.cpp" />
   </ItemGroup>
@@ -50,6 +50,7 @@
     <ClInclude Include="Source\Subsystem\ErrorHandler\ErrorHandler.h" />
     <ClInclude Include="Source\Subsystem\ErrorHandler\ErrorMacro.h" />
     <ClInclude Include="Source\Subsystem\ErrorHandler\IErrorHandler.h" />
+    <ClInclude Include="Source\Subsystem\FrameTimeManager\FrameTimeManagerData.h" />
     <ClInclude Include="Source\Subsystem\GameObjectManager\GameObjectManager.h" />
     <ClInclude Include="Source\Subsystem\GameObjectManager\IGameObjectManager.h" />
     <ClInclude Include="Source\Subsystem\ISubsytem.h" />
@@ -59,12 +60,13 @@
     <ClInclude Include="Source\Subsystem\Logger\LogEnum.h" />
     <ClInclude Include="Source\Subsystem\Logger\Logger.h" />
     <ClInclude Include="Source\Subsystem\Logger\LogMacro.h" />
+    <ClInclude Include="Source\Subsystem\SubsystemData.h" />
     <ClInclude Include="Source\Subsystem\SubsystemEnum.h" />
     <ClInclude Include="Source\Subsystem\SubsystemInclusion.h" />
     <ClInclude Include="Source\Subsystem\SubsystemLocator.h" />
     <ClInclude Include="Source\Subsystem\SubsystemMacro.h" />
     <ClInclude Include="Source\Subsystem\FrameTimeManager\IFrameTimeManager.h" />
-    <ClInclude Include="Source\Subsystem\FrameTimeManager\FrameTimeManager.h" />
+    <ClInclude Include="Source\Subsystem\FrameTimeManager\ConstantFrameManager.h" />
     <ClInclude Include="Source\Utility\Time\Stopwatch.h" />
     <ClInclude Include="Source\Utility\Time\Timer.h" />
   </ItemGroup>

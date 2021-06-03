@@ -11,7 +11,7 @@
 #include "EnginePCH.h"
 #include "Timer.h"
 
-#include "Time.h"
+#include "Subsystem/FrameTimeManager/IFrameTimeManager.h"
 
 /*
 	델타타임을 누적하면서 목표 시간까지 달성했는지 확인합니다.
@@ -24,7 +24,8 @@ Bool Timer::UpdateTime()
 		return false;
 	}
 
-	m_localTime += FIND_SUBSYSTEM(IFrameTimeManager)->ObtainDeltaTime();
+	IFrameTimeManager::DataPtr spData = FIND_SUBSYSTEM(IFrameTimeManager)->Data();
+	m_localTime += spData->GetDeltaTime();
 	FIND_SUBSYSTEM(IConsoleHandler)->RenderString(0, 1, MakeFormatString("localTime: %f", m_localTime).c_str());
 
 	if (m_targetTime > m_localTime)

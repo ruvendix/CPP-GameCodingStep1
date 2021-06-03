@@ -25,7 +25,7 @@ inline void SubsystemLocator::RegisterSubsystem()
 		return;
 	}
 
-	const auto& ret = m_mapSubsystem.emplace(TSubsystem::ID(), pSubsystem);
+	const auto& ret = m_mapSubsystem.emplace(TSubsystem::Type(), pSubsystem);
 	if (ret.second == false) // 삽입 실패인 경우
 	{
 		::OutputDebugString("서브시스템을 추가하지 못했습니다!\n");
@@ -41,7 +41,7 @@ inline TSubsystem* SubsystemLocator::FindSubsystem()
 {
 	static_assert(std::is_base_of_v<ISubsystem, TSubsystem>, "It't not subsystem!");
 
-	const auto& iter = m_mapSubsystem.find(TSubsystem::ID());
+	const auto& iter = m_mapSubsystem.find(TSubsystem::Type());
 	if ((iter == m_mapSubsystem.cend()) ||
 		(iter->second == nullptr))
 	{
@@ -51,7 +51,7 @@ inline TSubsystem* SubsystemLocator::FindSubsystem()
 
 	// 템플릿은 타입을 정확하게 알고 있으므로 static_cast로 성능을 향상시킵니다.
 	// dynamic_cast는 RTTI에 의존하므로 캐스팅 오버헤드가 좀 있어요.
-	TSubsystem* pSubsystem = static_cast<TSubsystem*>(iter->second);
+	TSubsystem* pSubsystem = DownCast<ISubsystem, TSubsystem>(iter->second);
 	if (pSubsystem == nullptr)
 	{
 		::OutputDebugString("서브시스템을 캐스팅할 수 없습니다!\n");
@@ -59,4 +59,31 @@ inline TSubsystem* SubsystemLocator::FindSubsystem()
 	}
 
 	return pSubsystem;
+}
+
+template <typename TSubsystem>
+inline void SubsystemLocator::ExchangeSubsystem()
+{
+	static_assert(std::is_base_of_v<ISubsystem, TSubsystem>, "It't not subsystem!");
+
+	// FindSubsystem()은 반환값을 사용할 때만 의미가 있으니 따로 찾아야 합니다.
+	const auto& iter = m_mapSubsystem.find(TSubsystem::Type());
+	if (iter->second == nullptr)
+	{
+		::OutputDebugString("교체할 서브시스템이 없습니다!\n");
+		return;
+	}
+
+	iter->second->CleanUp();
+	SAFE_DELETE(iter->second);
+
+	TSubsystem* pSubsystem = new TSubsystem;
+	if (pSubsystem == nullptr)
+	{
+		::OutputDebugString("힙메모리 부족으로 서브시스템을 생성할 수 없습니다!\n");
+		return;
+	}
+
+	pSubsystem->SetUp();
+	iter->second = pSubsystem;
 }

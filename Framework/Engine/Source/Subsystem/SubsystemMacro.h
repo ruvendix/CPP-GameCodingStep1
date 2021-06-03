@@ -10,20 +10,34 @@
 
 #define GENERATE_SUBSYSTEM_ID(eID)\
 public:\
-	static constexpr ESubsystemID ID()\
+	static constexpr ESubsystemID Type()\
 	{\
 		return eID;\
 	}
 
+#define GENERATE_SUBSYSTEM_DATA(ChildSubsystemData)\
+public:\
+	using DataPtr = std::shared_ptr<ChildSubsystemData>;\
+	DataPtr Data()\
+	{\
+		if (m_spData == nullptr)\
+		{\
+			m_spData = std::make_shared<ChildSubsystemData>();\
+		}\
+		return DownCastSmartPointer<SubsystemData, ChildSubsystemData>(m_spData);\
+	}\
+private:\
+	DataPtr m_spData = nullptr;
+
 #define ONLY_SUBSYSTEM(SubsystemType)\
 private:\
-	friend class SubsystemLocator;\
+	FRIEND_CLASS(SubsystemLocator);\
 	SubsystemType() = default;\
 	virtual ~SubsystemType() = default;
 
 #define ONLY_SUBSYSTEM_CTOR(SubsystemType)\
 private:\
-	friend class SubsystemLocator;\
+	FRIEND_CLASS(SubsystemLocator);\
 	SubsystemType();\
 	virtual ~SubsystemType() = default;
 

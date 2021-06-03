@@ -10,6 +10,7 @@
 
 #include "Common/CommonInterface.h"
 
+// 전방 선언
 class GameObject;
 
 class IGameObjectManager : public ISubsystem
@@ -20,11 +21,11 @@ public:
 	IGameObjectManager() = default;
 	virtual ~IGameObjectManager() = default;
 
-	virtual void SetUp() override { }
-	virtual void CleanUp() override { }
+	virtual void SetUp() override EMPTY_FUNC;
+	virtual void CleanUp() override EMPTY_FUNC;
 
-	virtual void AddGameObject(GameObject* pGameObj) = 0;
+	virtual void AddGameObject(GameObject* pGameObj) PURE_FUNC;
 
-	virtual void UpdateAllGameObject() = 0;
-	virtual void RenderAllGameObject() = 0;
+	virtual void UpdateAllGameObject() PURE_FUNC;
+	virtual void RenderAllGameObject() PURE_FUNC;
 };

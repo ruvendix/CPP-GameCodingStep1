@@ -21,24 +21,24 @@ public:
 	ILogger() = default;
 	virtual ~ILogger() = default;
 
-	virtual void SetUp() override { }
-	virtual void CleanUp() override { }
+	virtual void SetUp() override EMPTY_FUNC;
+	virtual void CleanUp() override EMPTY_FUNC;
 
 	virtual void Trace(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) const = 0;
+		const Char* szTime, const Char* szFilePath, Int32 line) const PURE_FUNC;
 
 	virtual void Assert(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) const = 0;
+		const Char* szTime, const Char* szFilePath, Int32 line) const PURE_FUNC;
 
 	virtual void Info(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) const = 0;
+		const Char* szTime, const Char* szFilePath, Int32 line) const PURE_FUNC;
 
 	virtual void Warning(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) const = 0;
+		const Char* szTime, const Char* szFilePath, Int32 line) const PURE_FUNC;
 
 	virtual void Error(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) const = 0;
+		const Char* szTime, const Char* szFilePath, Int32 line) const PURE_FUNC;
 
 	virtual void Fatal(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) const = 0;
+		const Char* szTime, const Char* szFilePath, Int32 line) const PURE_FUNC;
 };

@@ -32,3 +32,23 @@ static constexpr auto ToUnderlyingType(EType value)
 	static_assert(std::is_enum_v<EType>, "Only use enum type!");
 	return static_cast<std::underlying_type_t<EType>>(value);
 }
+
+/*
+	자식 클래스를 부모 클래스로 다운캐스팅합니다.
+*/
+template <typename TParent, typename TChild>
+TChild* DownCast(TParent* pChild)
+{
+	static_assert(std::is_base_of_v<TParent, TChild>, "It's not parent!");
+	return static_cast<TChild*>(pChild);
+}
+
+/*
+	자식 클래스를 부모 클래스로 다운캐스팅합니다. (스마트 포인터)
+*/
+template <typename TParent, typename TChild>
+std::shared_ptr<TChild> DownCastSmartPointer(std::shared_ptr<TParent> spChild)
+{
+	static_assert(std::is_base_of_v<TParent, TChild>, "It's not parent!");
+	return std::static_pointer_cast<TChild>(spChild);
+}

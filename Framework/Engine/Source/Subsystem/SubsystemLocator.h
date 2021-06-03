@@ -28,6 +28,9 @@ public:
 	template <typename TSubsystem>
 	TSubsystem* FindSubsystem();
 
+	template <typename TSubsystem>
+	void ExchangeSubsystem();
+
 	void SetUp();
 	void CleanUp();
 
