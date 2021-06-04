@@ -15,7 +15,7 @@ class LogCategoryBase;
 
 class ILogger : public ISubsystem
 {
-	GENERATE_SUBSYSTEM_ID(ESubsystemID::LOGGER);
+	GENERATE_SUBSYSTEM_TYPE(ESubsystemType::LOGGER);
 
 public:
 	ILogger() = default;

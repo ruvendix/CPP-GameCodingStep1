@@ -9,19 +9,35 @@
 #include "EnginePCH.h"
 #include "DoubleBufferingConsoleHandler.h"
 
-namespace
+class DoubleBufferingConsoleHandlerInside final
 {
-	Uint32 defaultAttr = 0;
-	Char charBuffer[DEFAULT_CHAR_BUFFER_SIZE];
-}
+public:
+	DoubleBufferingConsoleHandlerInside() = default;
+	~DoubleBufferingConsoleHandlerInside() = default;
 
-/*
-	콘솔창을 초기화합니다.
-	콘솔창 이름과 사이즈 설정이 가능해요.
-	핸들도 여기에서 저장합니다.
-	더블 버퍼링을 위한 출력 버퍼를 생성하고 설정합니다.
-*/
-void DoubleBufferingConsoleHandler::SetUp()
+	void SetUp();
+	void CleanUp();
+	void MovePosition(Int32 x, Int32 y);
+	void AdjustSize(Uint32 width, Uint32 height);
+	void ChangeTitle(const Char* szTitle);
+	void ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType);
+	void ShowCursor(bool bShow);
+	void RenderString(Int32 x, Int32 y, const Char* szText);
+	void ClearScreen();
+	void FlushInputBuffer();
+	void ResetRenderingColor();
+
+	COORD QueryCurrentPosition();
+
+private:
+	Uint32 m_defaultOutputAttr = 0; // 기본 출력 속성입니다.
+	HWND m_hConsole = nullptr; // 콘솔창의 핸들입니다.
+	CONSOLE_SCREEN_BUFFER_INFO m_outputScreenBufferInfo; // 출력 버퍼 정보입니다.
+	EnumIdx::ConsoleOutputBuffer::Data m_currentOutputBufferIdx = EnumIdx::ConsoleOutputBuffer::FRONT; // 현재 화면에 보이는 출력 버퍼입니다.
+	std::array<HANDLE, EnumIdx::ConsoleOutputBuffer::COUNT> m_OutputBuffers; // 출력 버퍼 배열입니다.
+};
+
+void DoubleBufferingConsoleHandlerInside::SetUp()
 {
 	ChangeTitle("Default");
 	AdjustSize(120, 30);
@@ -34,10 +50,9 @@ void DoubleBufferingConsoleHandler::SetUp()
 
 	::ZeroMemory(&m_outputScreenBufferInfo, sizeof(m_outputScreenBufferInfo));
 	::GetConsoleScreenBufferInfo(hStdOutput, &m_outputScreenBufferInfo);
-	defaultAttr = m_outputScreenBufferInfo.wAttributes;
+	m_defaultOutputAttr = m_outputScreenBufferInfo.wAttributes;
 
-	constexpr Int32 outputBufferCount = ToUnderlyingType(EConsoleOutputBufferType::COUNT);
-	for (Int32 i = 0; i < outputBufferCount; ++i)
+	for (Int32 i = 0; i < EnumIdx::ConsoleOutputBuffer::COUNT; ++i)
 	{
 		// 읽기와 쓰기가 가능한 콘솔창의 버퍼를 생성하는 부분이에요!
 		// 더블 버퍼링에서는 콘솔창의 버퍼가 2개 필요합니다!
@@ -50,48 +65,33 @@ void DoubleBufferingConsoleHandler::SetUp()
 		::SetConsoleTextAttribute(hOutputBuffer, m_outputScreenBufferInfo.wAttributes);
 
 		// 정보 설정이 완료되었으니 저장할게요!
-		m_arrOutputBuffer[i] = hOutputBuffer;
+		m_OutputBuffers[i] = hOutputBuffer;
+
+		m_currentOutputBufferIdx = static_cast<EnumIdx::ConsoleOutputBuffer::Data>(i);
+		ShowCursor(false);
 	}
-
-	// 프론트버퍼의 키보드 커서를 가립니다.
-	m_currentOutputBuffer = EConsoleOutputBufferType::FRONT;
-	ShowCursor(false);
-
-	// 백버퍼의 키보드 커서를 가립니다.
-	m_currentOutputBuffer = EConsoleOutputBufferType::BACK;
-	ShowCursor(false);
 }
 
-/*
-	생성했던 출력 버퍼들을 정리합니다.
-*/
-void DoubleBufferingConsoleHandler::CleanUp()
+void DoubleBufferingConsoleHandlerInside::CleanUp()
 {
-	constexpr Int32 outputBufferCount = ToUnderlyingType(EConsoleOutputBufferType::COUNT);
-	for (Int32 i = 0; i < outputBufferCount; ++i)
+	for (Int32 i = 0; i < EnumIdx::ConsoleOutputBuffer::COUNT; ++i)
 	{
-		::CloseHandle(m_arrOutputBuffer[i]);
+		::CloseHandle(m_OutputBuffers[i]);
 	}
 }
 
-/*
-	현재 출력 버퍼의 출력 좌표를 옮깁니다.
-*/
-void DoubleBufferingConsoleHandler::MovePosition(Int32 x, Int32 y)
+void DoubleBufferingConsoleHandlerInside::MovePosition(Int32 x, Int32 y)
 {
 	COORD pos;
 	pos.X = static_cast<Int16>(x);
 	pos.Y = static_cast<Int16>(y);
 
-	HANDLE hCurrentOutputBuffer = m_arrOutputBuffer[ToUnderlyingType(m_currentOutputBuffer)];
+	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
 	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
 	::SetConsoleCursorPosition(hCurrentOutputBuffer, pos);
 }
 
-/*
-	콘솔창 사이즈를 조정합니다.
-*/
-void DoubleBufferingConsoleHandler::AdjustSize(Uint32 width, Uint32 height)
+void DoubleBufferingConsoleHandlerInside::AdjustSize(Uint32 width, Uint32 height)
 {
 	Char buffer[DEFAULT_CHAR_BUFFER_SIZE];
 	::ZeroMemory(buffer, DEFAULT_CHAR_BUFFER_SIZE);
@@ -103,22 +103,15 @@ void DoubleBufferingConsoleHandler::AdjustSize(Uint32 width, Uint32 height)
 	m_outputScreenBufferInfo.dwSize.Y = static_cast<Uint16>(height);
 }
 
-/*
-	콘솔창 타이틀을 변경합니다.
-*/
-void DoubleBufferingConsoleHandler::ChangeTitle(const Char* szTitle)
+void DoubleBufferingConsoleHandlerInside::ChangeTitle(const Char* szTitle)
 {
 	::SetWindowText(m_hConsole, szTitle);
 }
 
-/*
-	콘솔창 렌더링 색깔을 변경합니다.
-	글자색과 배경색 중에서 선택할 수 있어요.
-*/
-void DoubleBufferingConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor eRenderingColor, EConsoleRenderingType eRenderingType)
+void DoubleBufferingConsoleHandlerInside::ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType)
 {
-	if ((eRenderingColor < EConsoleRenderingColor::BLACK) ||
-		(eRenderingColor > EConsoleRenderingColor::BRIGHT_WHITE))
+	if ((renderingColor < EConsoleRenderingColor::BLACK) ||
+		(renderingColor > EConsoleRenderingColor::BRIGHT_WHITE))
 	{
 		RX_ERROR(LogConsoleHandler, EErrorCode::INVALID_SCREEN_COLOR);
 	}
@@ -128,15 +121,15 @@ void DoubleBufferingConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor 
 	// 거기에서도 상위 4비트는 배경색, 하위 4비트는 글자색을 의미해요.
 	// 이 정보와 비트 연산을 이용하면 배경색과 글자색을 따로 알아낼 수 있습니다!	
 	Uint16 attr = m_outputScreenBufferInfo.wAttributes;
-	if (eRenderingType == EConsoleRenderingType::TEXT)
+	if (renderingType == EConsoleRenderingType::TEXT)
 	{
 		attr &= 0xFFF0; // 하위 4비트값만 가져옵니다.
-		attr |= static_cast<Uint16>(eRenderingColor);
+		attr |= static_cast<Uint16>(renderingColor);
 	}
-	else if (eRenderingType == EConsoleRenderingType::BACKGROUND)
+	else if (renderingType == EConsoleRenderingType::BACKGROUND)
 	{
 		attr &= 0xFF0F; // 상위 4비트값만 가져옵니다.
-		attr |= (static_cast<Uint16>(eRenderingColor) << 4); // 상위 4비트만큼 이동해야 해요!
+		attr |= (static_cast<Uint16>(renderingColor) << 4); // 상위 4비트만큼 이동해야 해요!
 	}
 	else
 	{
@@ -145,7 +138,7 @@ void DoubleBufferingConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor 
 
 	m_outputScreenBufferInfo.wAttributes = attr;
 
-	HANDLE hCurrentOutputBuffer = m_arrOutputBuffer[ToUnderlyingType(m_currentOutputBuffer)];
+	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
 	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
 
 	if (::SetConsoleTextAttribute(hCurrentOutputBuffer, m_outputScreenBufferInfo.wAttributes) == FALSE)
@@ -154,13 +147,9 @@ void DoubleBufferingConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor 
 	}
 }
 
-/*
-	콘솔창 커서 출력 여부를 설정합니다.
-	마우스 커서가 아니라 키보드 커서를 의미해요.
-*/
-void DoubleBufferingConsoleHandler::ShowCursor(bool bShow)
+void DoubleBufferingConsoleHandlerInside::ShowCursor(bool bShow)
 {
-	HANDLE hCurrentOutputBuffer = m_arrOutputBuffer[ToUnderlyingType(m_currentOutputBuffer)];
+	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
 	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
 
 	CONSOLE_CURSOR_INFO consoleCursorInfo; // 커서 정보는 CONSOLE_CURSOR_INFO에 있습니다.
@@ -170,16 +159,12 @@ void DoubleBufferingConsoleHandler::ShowCursor(bool bShow)
 	::SetConsoleCursorInfo(hCurrentOutputBuffer, &consoleCursorInfo);
 }
 
-/*
-	현재 출력 버퍼에 글자들을 출력합니다.
-	출력한 후에는 반드시 버퍼를 교체해야 합니다.
-*/
-void DoubleBufferingConsoleHandler::RenderString(Int32 x, Int32 y, const Char* szText)
+void DoubleBufferingConsoleHandlerInside::RenderString(Int32 x, Int32 y, const Char* szText)
 {
 	DWORD dwWrittenCount = 0;
 	COORD pos = { static_cast<SHORT>(x), static_cast<SHORT>(y) };
 
-	HANDLE hCurrentOutputBuffer = m_arrOutputBuffer[ToUnderlyingType(m_currentOutputBuffer)];
+	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
 	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
 
 	Int32 length = strlen(szText);
@@ -187,11 +172,7 @@ void DoubleBufferingConsoleHandler::RenderString(Int32 x, Int32 y, const Char* s
 	::WriteConsoleOutputCharacter(hCurrentOutputBuffer, szText, length, pos, &dwWrittenCount);
 }
 
-/*
-	콘솔창에 출력된 모든 것들을 지웁니다.
-	출력 버퍼의 색상 정보는 그대로 유지합니다.
-*/
-void DoubleBufferingConsoleHandler::ClearScreen()
+void DoubleBufferingConsoleHandlerInside::ClearScreen()
 {
 	// 가로 X 세로 = 사각형 넓이
 	Uint32 size = m_outputScreenBufferInfo.dwSize.X * m_outputScreenBufferInfo.dwSize.Y;
@@ -200,7 +181,7 @@ void DoubleBufferingConsoleHandler::ClearScreen()
 	DWORD dwWrittenCount = 0;
 	COORD beginPos = { 0, 0 };
 
-	HANDLE hCurrentOutputBuffer = m_arrOutputBuffer[ToUnderlyingType(m_currentOutputBuffer)];
+	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
 	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
 
 	if (::FillConsoleOutputCharacter(hCurrentOutputBuffer, ' ', size, beginPos, &dwWrittenCount) == FALSE)
@@ -209,12 +190,132 @@ void DoubleBufferingConsoleHandler::ClearScreen()
 	}
 
 	// 콘솔창 출력 버퍼 속성이 적용된 부분을 지웁니다.
-	if (::FillConsoleOutputAttribute(hCurrentOutputBuffer, defaultAttr, size, beginPos, &dwWrittenCount) == FALSE)
+	if (::FillConsoleOutputAttribute(hCurrentOutputBuffer, m_defaultOutputAttr, size, beginPos, &dwWrittenCount) == FALSE)
 	{
 		RX_ERROR(LogConsoleHandler, EErrorCode::FAILED_CLEAR_SCREEN);
 	}
 
 	MovePosition(beginPos.X, beginPos.Y); // 커서 위치를 처음으로 이동시킵니다.
+}
+
+void DoubleBufferingConsoleHandlerInside::FlushInputBuffer()
+{
+	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
+	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
+
+	// 백버퍼에 렌더링한 내용을 활성화시키는 부분!
+	::SetConsoleActiveScreenBuffer(hCurrentOutputBuffer);
+
+	if (m_currentOutputBufferIdx == EnumIdx::ConsoleOutputBuffer::FRONT)
+	{
+		m_currentOutputBufferIdx = EnumIdx::ConsoleOutputBuffer::BACK;
+	}
+	else if (m_currentOutputBufferIdx == EnumIdx::ConsoleOutputBuffer::BACK)
+	{
+		m_currentOutputBufferIdx = EnumIdx::ConsoleOutputBuffer::FRONT;
+	}
+}
+
+void DoubleBufferingConsoleHandlerInside::ResetRenderingColor()
+{
+	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
+	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
+
+	m_outputScreenBufferInfo.wAttributes = m_defaultOutputAttr;
+	::SetConsoleTextAttribute(hCurrentOutputBuffer, m_defaultOutputAttr);
+}
+
+COORD DoubleBufferingConsoleHandlerInside::QueryCurrentPosition()
+{
+	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
+	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
+
+	::GetConsoleScreenBufferInfo(hCurrentOutputBuffer, &m_outputScreenBufferInfo);
+	return m_outputScreenBufferInfo.dwCursorPosition;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+DoubleBufferingConsoleHandler::DoubleBufferingConsoleHandler()
+{
+	m_spInside = std::make_unique<DoubleBufferingConsoleHandlerInside>();
+}
+
+/*
+	콘솔창을 초기화합니다.
+	콘솔창 이름과 사이즈 설정이 가능해요.
+	핸들도 여기에서 저장합니다.
+	더블 버퍼링을 위한 출력 버퍼를 생성하고 설정합니다.
+*/
+void DoubleBufferingConsoleHandler::SetUp()
+{
+	m_spInside->SetUp();
+}
+
+/*
+	생성했던 출력 버퍼들을 정리합니다.
+*/
+void DoubleBufferingConsoleHandler::CleanUp()
+{
+	m_spInside->CleanUp();
+}
+
+/*
+	현재 출력 버퍼의 출력 좌표를 옮깁니다.
+*/
+void DoubleBufferingConsoleHandler::MovePosition(Int32 x, Int32 y)
+{
+	m_spInside->MovePosition(x, y);
+}
+
+/*
+	콘솔창 사이즈를 조정합니다.
+*/
+void DoubleBufferingConsoleHandler::AdjustSize(Uint32 width, Uint32 height)
+{
+	m_spInside->AdjustSize(width, height);
+}
+
+/*
+	콘솔창 타이틀을 변경합니다.
+*/
+void DoubleBufferingConsoleHandler::ChangeTitle(const Char* szTitle)
+{
+	m_spInside->ChangeTitle(szTitle);
+}
+
+/*
+	콘솔창 렌더링 색깔을 변경합니다.
+	글자색과 배경색 중에서 선택할 수 있어요.
+*/
+void DoubleBufferingConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType)
+{
+	m_spInside->ChangeRenderingColor(renderingColor, renderingType);
+}
+
+/*
+	콘솔창 커서 출력 여부를 설정합니다.
+	마우스 커서가 아니라 키보드 커서를 의미해요.
+*/
+void DoubleBufferingConsoleHandler::ShowCursor(bool bShow)
+{
+	m_spInside->ShowCursor(bShow);
+}
+
+/*
+	현재 출력 버퍼에 글자들을 출력합니다.
+	출력한 후에는 반드시 버퍼를 교체해야 합니다.
+*/
+void DoubleBufferingConsoleHandler::RenderString(Int32 x, Int32 y, const Char* szText)
+{
+	m_spInside->RenderString(x, y, szText);
+}
+
+/*
+	콘솔창에 출력된 모든 것들을 지웁니다.
+	출력 버퍼의 색상 정보는 그대로 유지합니다.
+*/
+void DoubleBufferingConsoleHandler::ClearScreen()
+{
+	m_spInside->ClearScreen();
 }
 
 /*
@@ -223,9 +324,7 @@ void DoubleBufferingConsoleHandler::ClearScreen()
 */
 void DoubleBufferingConsoleHandler::FlushInputBuffer()
 {
-	HANDLE hCurrentOutputBuffer = m_arrOutputBuffer[ToUnderlyingType(m_currentOutputBuffer)];
-	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
-	::FlushConsoleInputBuffer(hCurrentOutputBuffer);
+	m_spInside->FlushInputBuffer();
 }
 
 /*
@@ -233,11 +332,7 @@ void DoubleBufferingConsoleHandler::FlushInputBuffer()
 */
 void DoubleBufferingConsoleHandler::ResetRenderingColor()
 {
-	HANDLE hCurrentOutputBuffer = m_arrOutputBuffer[ToUnderlyingType(m_currentOutputBuffer)];
-	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
-
-	m_outputScreenBufferInfo.wAttributes = defaultAttr;
-	::SetConsoleTextAttribute(hCurrentOutputBuffer, defaultAttr);
+	m_spInside->ResetRenderingColor();
 }
 
 /*
@@ -245,20 +340,7 @@ void DoubleBufferingConsoleHandler::ResetRenderingColor()
 */
 void DoubleBufferingConsoleHandler::FlipOutputBuffer()
 {
-	HANDLE hCurrentOutputBuffer = m_arrOutputBuffer[ToUnderlyingType(m_currentOutputBuffer)];
-	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
-
-	// 백버퍼에 렌더링한 내용을 활성화시키는 부분!
-	::SetConsoleActiveScreenBuffer(hCurrentOutputBuffer);
-
-	if (m_currentOutputBuffer == EConsoleOutputBufferType::FRONT)
-	{
-		m_currentOutputBuffer = EConsoleOutputBufferType::BACK;
-	}
-	else if (m_currentOutputBuffer == EConsoleOutputBufferType::BACK)
-	{
-		m_currentOutputBuffer = EConsoleOutputBufferType::FRONT;
-	}
+	m_spInside->FlushInputBuffer();
 }
 
 void DoubleBufferingConsoleHandler::Pause() const
@@ -299,16 +381,17 @@ Float DoubleBufferingConsoleHandler::InputFloat()
 /*
 	문자열을 입력받습니다.
 */
-const Char* DoubleBufferingConsoleHandler::InputString()
+void DoubleBufferingConsoleHandler::InputString(OUT std::string& str)
 {
 	ShowCursor(true);
 
-	::ZeroMemory(charBuffer, DEFAULT_CHAR_BUFFER_SIZE);
-	scanf_s("%[^\n]s", charBuffer, DEFAULT_CHAR_BUFFER_SIZE);
+	Char buffer[DEFAULT_CHAR_BUFFER_SIZE];
+	::ZeroMemory(buffer, DEFAULT_CHAR_BUFFER_SIZE);
+	scanf_s("%[^\n]s", buffer, DEFAULT_CHAR_BUFFER_SIZE);
 	FlushInputBuffer();
 
 	ShowCursor(false);
-	return charBuffer;
+	str.assign(buffer);
 }
 
 /*
@@ -316,9 +399,5 @@ const Char* DoubleBufferingConsoleHandler::InputString()
 */
 COORD DoubleBufferingConsoleHandler::QueryCurrentPosition()
 {
-	HANDLE hCurrentOutputBuffer = m_arrOutputBuffer[ToUnderlyingType(m_currentOutputBuffer)];
-	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
-
-	::GetConsoleScreenBufferInfo(hCurrentOutputBuffer, &m_outputScreenBufferInfo);
-	return m_outputScreenBufferInfo.dwCursorPosition;
+	return m_spInside->QueryCurrentPosition();
 }

@@ -17,6 +17,6 @@
 #include "Logger/ILogger.h"
 #include "ErrorHandler/IErrorHandler.h"
 #include "GameObjectManager/IGameObjectManager.h"
-#include "FrameTimeManager/IFrameTimeManager.h"
+#include "FrameManager/IFrameManager.h"
 
 #include "ErrorHandler/ErrorMacro.h"

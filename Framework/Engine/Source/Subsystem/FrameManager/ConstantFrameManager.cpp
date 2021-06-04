@@ -4,8 +4,7 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 프레임 타임 관리자입니다.
-// FPS, 델타타임 등을 관리합니다.
+// 고정 프레임 타임 매니저입니다.
 // =====================================================================================
 #include "EnginePCH.h"
 #include "ConstantFrameManager.h"
@@ -17,7 +16,7 @@ public:
 	~ConstantFrameManagerInside() = default;
 
 	void SetUp();
-	void UpdateFrameTime(ConstantFrameManager& refFrameTimeManager);
+	void UpdateFrameTime(ConstantFrameManager& constantFrameManager);
 
 private:
 	Float m_fixedDeltaTime = 0.0f;
@@ -34,7 +33,7 @@ void ConstantFrameManagerInside::SetUp()
 	m_fixedDeltaTime = ConstantFrameManager::ConvertFPS_ToFixedDeltaTime(60);
 }
 
-void ConstantFrameManagerInside::UpdateFrameTime(ConstantFrameManager& refFrameTimeManager)
+void ConstantFrameManagerInside::UpdateFrameTime(ConstantFrameManager& constantFrameManager)
 {
 	m_deltaTimeStopwatch.EndTime();
 	Float elapsedTime = m_deltaTimeStopwatch.GetElapsedTime();
@@ -45,7 +44,7 @@ void ConstantFrameManagerInside::UpdateFrameTime(ConstantFrameManager& refFrameT
 		::Sleep(dwSleepTime);
 	}
 
-	ConstantFrameManager::DataPtr spData = refFrameTimeManager.Data();
+	ConstantFrameManager::DataPtr spData = constantFrameManager.Data();
 
 	// CF(고정 프레임)에서의 프레임 간격 시간은
 	// 처리 경과 시간과 휴식 시간을 더한 값이에요!
@@ -66,7 +65,7 @@ void ConstantFrameManagerInside::UpdateFrameTime(ConstantFrameManager& refFrameT
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 ConstantFrameManager::ConstantFrameManager()
 {
-	m_spFrameTimeManagerInside = std::make_unique<ConstantFrameManagerInside>();
+	m_spInside = std::make_unique<ConstantFrameManagerInside>();
 }
 
 /*
@@ -74,7 +73,7 @@ ConstantFrameManager::ConstantFrameManager()
 */
 void ConstantFrameManager::SetUp()
 {
-	m_spFrameTimeManagerInside->SetUp();
+	m_spInside->SetUp();
 }
 
 /*
@@ -93,5 +92,5 @@ void ConstantFrameManager::CleanUp()
 */
 void ConstantFrameManager::UpdateFrameTime()
 {
-	m_spFrameTimeManagerInside->UpdateFrameTime(*this);
+	m_spInside->UpdateFrameTime(*this);
 }

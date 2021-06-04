@@ -12,14 +12,17 @@
 #include "Common/CommonType.h"
 #include "IConsoleHandler.h"
 
+// 전방 선언
+class ConsoleHandlerInside;
+
 class ConsoleHandler final : public IConsoleHandler
 {
-	ONLY_SUBSYSTEM(ConsoleHandler);
+	ONLY_SUBSYSTEM_CTOR(ConsoleHandler);
 
 public:
 	virtual void SetUp() override;
 	virtual void CleanUp() override;
-	virtual void ChangeRenderingColor(EConsoleRenderingColor eRenderingColor, EConsoleRenderingType eRenderingType) override;
+	virtual void ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) override;
 	virtual void ClearScreen() override;
 
 	virtual void MovePosition(Int32 x, Int32 y) override;
@@ -34,13 +37,10 @@ public:
 
 	virtual Int32 InputInteger() override;
 	virtual Float InputFloat() override;
-	virtual const Char* InputString() override;
+	virtual void InputString(OUT std::string& str) override;
 
 	virtual COORD QueryCurrentPosition() override;
 
 private:
-	HWND m_hConsole = nullptr; // 콘솔창의 핸들입니다.
-	HANDLE m_hStdInput = nullptr; // 표준 입력 버퍼의 핸들입니다.
-	HANDLE m_hStdOutput = nullptr; // 표준 출력 버퍼의 핸들입니다.
-	CONSOLE_SCREEN_BUFFER_INFO m_outputScreenBufferInfo; // 출력 버퍼 정보입니다.
+	std::unique_ptr<ConsoleHandlerInside> m_spInside = nullptr;
 };

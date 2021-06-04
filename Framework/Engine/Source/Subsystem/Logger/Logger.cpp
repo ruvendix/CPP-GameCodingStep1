@@ -151,7 +151,7 @@ void LoggerInside::PrintDebugOutputLog(OUT std::string& strLog) const
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 Logger::Logger()
 {
-	m_spLoggerInside = std::make_unique<LoggerInside>();
+	m_spInside = std::make_unique<LoggerInside>();
 }
 
 /*
@@ -160,10 +160,10 @@ Logger::Logger()
 */
 void Logger::SetUp()
 {
-	m_spLoggerInside->ActivateOption(EnumIdx::LogOption::TIME);
-	//m_spLoggerInside->ActivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);
-	m_spLoggerInside->ActivateOption(EnumIdx::LogOption::RELATIVE_FILEPATH);
-	m_spLoggerInside->ActivateOption(EnumIdx::LogOption::LINE);
+	m_spInside->ActivateOption(EnumIdx::LogOption::TIME);
+	//m_spInside->ActivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);
+	m_spInside->ActivateOption(EnumIdx::LogOption::RELATIVE_FILEPATH);
+	m_spInside->ActivateOption(EnumIdx::LogOption::LINE);
 }
 
 /*
@@ -185,15 +185,15 @@ void Logger::Trace(const LogCategoryBase* pCategory, const std::string_view& str
 	return;
 #endif
 
-	m_spLoggerInside->BeginLog(EConsoleRenderingColor::GREEN);
+	m_spInside->BeginLog(EConsoleRenderingColor::GREEN);
 
 	std::string strLog;
-	if (m_spLoggerInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
 	{
 		return;
 	}
 
-	m_spLoggerInside->EndLog();
+	m_spInside->EndLog();
 }
 
 /*
@@ -207,16 +207,16 @@ void Logger::Assert(const LogCategoryBase* pCategory, const std::string_view& st
 	return;
 #endif
 
-	m_spLoggerInside->BeginLog(EConsoleRenderingColor::AQUA);
+	m_spInside->BeginLog(EConsoleRenderingColor::AQUA);
 
 	std::string strLog;
-	if (m_spLoggerInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
 	{
 		return;
 	}
 
 	DebugBreak();
-	m_spLoggerInside->EndLog();
+	m_spInside->EndLog();
 }
 
 /*
@@ -225,15 +225,15 @@ void Logger::Assert(const LogCategoryBase* pCategory, const std::string_view& st
 void Logger::Info(const LogCategoryBase* pCategory, const std::string_view& strContent,
 	const Char* szTime, const Char* szFilePath, Int32 line) const
 {
-	m_spLoggerInside->BeginLog(EConsoleRenderingColor::LIGHT_GREEN);
+	m_spInside->BeginLog(EConsoleRenderingColor::LIGHT_GREEN);
 
 	std::string strLog;
-	if (m_spLoggerInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
 	{
 		return;
 	}
 
-	m_spLoggerInside->EndLog();
+	m_spInside->EndLog();
 }
 
 /*
@@ -243,16 +243,16 @@ void Logger::Info(const LogCategoryBase* pCategory, const std::string_view& strC
 void Logger::Warning(const LogCategoryBase* pCategory, const std::string_view& strContent,
 	const Char* szTime, const Char* szFilePath, Int32 line) const
 {
-	m_spLoggerInside->BeginLog(EConsoleRenderingColor::YELLOW);
+	m_spInside->BeginLog(EConsoleRenderingColor::YELLOW);
 
 	std::string strLog;
-	if (m_spLoggerInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
 	{
 		return;
 	}
 
 	FIND_SUBSYSTEM(IConsoleHandler)->Pause();
-	m_spLoggerInside->EndLog();
+	m_spInside->EndLog();
 }
 
 /*
@@ -262,16 +262,16 @@ void Logger::Warning(const LogCategoryBase* pCategory, const std::string_view& s
 void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& strContent,
 	const Char* szTime, const Char* szFilePath, Int32 line) const
 {
-	m_spLoggerInside->BeginLog(EConsoleRenderingColor::LIGHT_YELLOW);
+	m_spInside->BeginLog(EConsoleRenderingColor::LIGHT_YELLOW);
 
 	std::string strLog;
-	if (m_spLoggerInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
 	{
 		return;
 	}
 
-	FIND_SUBSYSTEM(IConsoleHandler)->Pause();
-	m_spLoggerInside->EndLog();
+	DebugBreak();
+	m_spInside->EndLog();
 }
 
 /*
@@ -281,14 +281,14 @@ void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& str
 void Logger::Fatal(const LogCategoryBase* pCategory, const std::string_view& strContent,
 	const Char* szTime, const Char* szFilePath, Int32 line) const
 {
-	m_spLoggerInside->BeginLog(EConsoleRenderingColor::RED);
+	m_spInside->BeginLog(EConsoleRenderingColor::RED);
 
 	std::string strLog;
-	if (m_spLoggerInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
 	{
 		return;
 	}
 
-	m_spLoggerInside->EndLog();
+	m_spInside->EndLog();
 	std::abort();
 }

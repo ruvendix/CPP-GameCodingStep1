@@ -14,9 +14,6 @@
     <Filter Include="Source\1_Subsystem">
       <UniqueIdentifier>{bc4853fe-a731-4f8f-b709-b07e90f2ea9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\1_Subsystem\Time">
-      <UniqueIdentifier>{6ad64215-104a-4813-bca6-a81033e73222}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\1_Subsystem\ConsoleHandler">
       <UniqueIdentifier>{68ae19a3-65c6-4868-9830-342e7f59075d}</UniqueIdentifier>
     </Filter>
@@ -41,6 +38,9 @@
     <Filter Include="Source\3_Utility\Time">
       <UniqueIdentifier>{885022f2-2e95-43e5-b442-4577b06298ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\1_Subsystem\FrameManager">
+      <UniqueIdentifier>{6ad64215-104a-4813-bca6-a81033e73222}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\EnginePCH.cpp">
@@ -64,8 +64,8 @@
     <ClCompile Include="Source\Subsystem\ErrorHandler\ErrorHandler.cpp">
       <Filter>Source\1_Subsystem\ErrorHandler</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Subsystem\FrameTimeManager\ConstantFrameManager.cpp">
-      <Filter>Source\1_Subsystem\Time</Filter>
+    <ClCompile Include="Source\Subsystem\FrameManager\ConstantFrameManager.cpp">
+      <Filter>Source\1_Subsystem\FrameManager</Filter>
     </ClCompile>
     <ClCompile Include="Source\Subsystem\GameObjectManager\GameObjectManager.cpp">
       <Filter>Source\1_Subsystem\GameObjectManager</Filter>
@@ -157,11 +157,11 @@
     <ClInclude Include="Source\Subsystem\ErrorHandler\IErrorHandler.h">
       <Filter>Source\1_Subsystem\ErrorHandler</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Subsystem\FrameTimeManager\IFrameTimeManager.h">
-      <Filter>Source\1_Subsystem\Time</Filter>
+    <ClInclude Include="Source\Subsystem\FrameManager\IFrameManager.h">
+      <Filter>Source\1_Subsystem\FrameManager</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Subsystem\FrameTimeManager\ConstantFrameManager.h">
-      <Filter>Source\1_Subsystem\Time</Filter>
+    <ClInclude Include="Source\Subsystem\FrameManager\ConstantFrameManager.h">
+      <Filter>Source\1_Subsystem\FrameManager</Filter>
     </ClInclude>
     <ClInclude Include="Source\Subsystem\GameObjectManager\GameObjectManager.h">
       <Filter>Source\1_Subsystem\GameObjectManager</Filter>
@@ -194,8 +194,18 @@
     <ClInclude Include="Source\Common\CommonFunction\CommonFunction.h">
       <Filter>Source\0_Common\CommonFunction</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Subsystem\SubsystemData.h" />
-    <ClInclude Include="Source\Subsystem\FrameTimeManager\FrameTimeManagerData.h" />
+    <ClInclude Include="Source\Subsystem\SubsystemData.h">
+      <Filter>Source\1_Subsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\FrameManager\FrameManagerData.h">
+      <Filter>Source\1_Subsystem\FrameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorHandlerData.h">
+      <Filter>Source\1_Subsystem\ErrorHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\ErrorHandler\ErrorHandlerData.h">
+      <Filter>Source\1_Subsystem\ErrorHandler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Subsystem\SubsystemLocator.inl">

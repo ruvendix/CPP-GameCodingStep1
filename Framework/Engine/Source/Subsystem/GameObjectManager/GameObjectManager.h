@@ -11,15 +11,17 @@
 
 #include "IGameObjectManager.h"
 
+// 전방 선언
 class GameObject;
+class GameObjectManagerInside;
 
 class GameObjectManager final : public IGameObjectManager
 {
-	ONLY_SUBSYSTEM(GameObjectManager);
+	ONLY_SUBSYSTEM_CTOR(GameObjectManager);
 
 public:
-	virtual void SetUp() override { }
-	virtual void CleanUp() override { }
+	virtual void SetUp() override EMPTY_FUNC;
+	virtual void CleanUp() override;
 
 	virtual void AddGameObject(GameObject* pGameObj) override;
 
@@ -27,6 +29,5 @@ public:
 	virtual void RenderAllGameObject() override;
 
 private:
-	Uint32 m_ID = 0;
-	std::unordered_map<Uint32, GameObject*> m_mapGameObject;
+	std::unique_ptr<GameObjectManagerInside> m_spInside = nullptr;
 };

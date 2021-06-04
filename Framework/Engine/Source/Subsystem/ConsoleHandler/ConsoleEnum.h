@@ -42,10 +42,16 @@ enum class EConsoleRenderingType : Int32
 	COUNT,
 };
 
-enum class EConsoleOutputBufferType : Int32
+namespace EnumIdx
 {
-	UNKNOWN = -1,
-	FRONT,
-	BACK,
-	COUNT,
-};
+	namespace ConsoleOutputBuffer
+	{
+		enum Data
+		{
+			UNKNOWN = -1,
+			FRONT,
+			BACK,
+			COUNT,
+		};
+	}
+}

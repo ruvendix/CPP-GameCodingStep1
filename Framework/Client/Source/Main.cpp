@@ -21,9 +21,9 @@ Int32 main()
 	FrameworkPathfinder::SetUp();
 	SubsystemLocator::I().SetUp();
 
-	GameObject obj;
-	obj.SetUp();
-	FIND_SUBSYSTEM(IGameObjectManager)->AddGameObject(&obj);
+	GameObject* pGameObject = new GameObject;
+	pGameObject->SetUp();
+	FIND_SUBSYSTEM(IGameObjectManager)->AddGameObject(pGameObject);
 
 	Int32 callCount = 60 * 5; // 5ÃÊ
 	while (callCount != 0)
@@ -32,7 +32,7 @@ Int32 main()
 
 		FIND_SUBSYSTEM(IConsoleHandler)->ClearScreen();
 		FIND_SUBSYSTEM(IGameObjectManager)->RenderAllGameObject();
-		FIND_SUBSYSTEM(IFrameTimeManager)->UpdateFrameTime();
+		FIND_SUBSYSTEM(IFrameManager)->UpdateFrameTime();
 
 		FIND_SUBSYSTEM(IConsoleHandler)->FlipOutputBuffer();
 

@@ -35,5 +35,5 @@ public:
 	void CleanUp();
 
 private:
-	std::unordered_map<ESubsystemID, ISubsystem*> m_mapSubsystem;
+	std::unordered_map<ESubsystemType, ISubsystem*> m_mapSubsystem;
 };

@@ -8,11 +8,11 @@
 // =====================================================================================
 #pragma once
 
-#define GENERATE_SUBSYSTEM_ID(eID)\
+#define GENERATE_SUBSYSTEM_TYPE(value)\
 public:\
-	static constexpr ESubsystemID Type()\
+	static constexpr ESubsystemType Type()\
 	{\
-		return eID;\
+		return value;\
 	}
 
 #define GENERATE_SUBSYSTEM_DATA(ChildSubsystemData)\

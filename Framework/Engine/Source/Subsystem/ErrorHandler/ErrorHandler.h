@@ -11,27 +11,19 @@
 
 #include "IErrorHandler.h"
 
+// 전방 선언
+class ErrorHandlerInside;
+
 class ErrorHandler final : public IErrorHandler
 {
-	ONLY_SUBSYSTEM(ErrorHandler);
+	ONLY_SUBSYSTEM_CTOR(ErrorHandler);
 
 public:
 	virtual void SetUp() override;
 	virtual void CleanUp() override;
 
-	virtual const Char* FindErrorContent(EErrorCode errorCode) const override;
-
-	virtual EErrorCode ObtainLastError() const override
-	{
-		return m_lastError;
-	}
-
-	virtual void ModifyLastError(EErrorCode errorCode) override
-	{
-		m_lastError = errorCode;
-	}
+	virtual const Char* LastErrorString() override;
 
 private:
-	EErrorCode m_lastError = EErrorCode::UNKNOWN;
-	std::unordered_map<EErrorCode, std::string> m_mapError;
+	std::unique_ptr<ErrorHandlerInside> m_spInside = nullptr;
 };

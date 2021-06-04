@@ -4,19 +4,18 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 프레임 타임 관리자입니다.
-// FPS, 델타타임 등을 관리합니다.
+// 고정 프레임 타임 매니저입니다.
 // =====================================================================================
 #pragma once
 
-#include "IFrameTimeManager.h"
+#include "IFrameManager.h"
 #include "Utility/Time/Stopwatch.h"
 #include "Utility/Time/Timer.h"
 
 // 전방 선언
 class ConstantFrameManagerInside;
 
-class ConstantFrameManager final : public IFrameTimeManager
+class ConstantFrameManager final : public IFrameManager
 {
 	ONLY_SUBSYSTEM_CTOR(ConstantFrameManager);
 
@@ -27,5 +26,5 @@ public:
 	virtual void UpdateFrameTime() override;
 
 private:
-	std::unique_ptr<ConstantFrameManagerInside> m_spFrameTimeManagerInside = nullptr;
+	std::unique_ptr<ConstantFrameManagerInside> m_spInside = nullptr;
 };

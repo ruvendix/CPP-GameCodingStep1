@@ -13,25 +13,38 @@
 #include "Subsystem/SubsystemInclusion.h"
 #include "Scene/GameObject/GameObject.h"
 
-/*
-	매니저에 게임 오브젝트를 등록합니다.
-*/
-void GameObjectManager::AddGameObject(GameObject* pGameObj)
+class GameObjectManagerInside final
 {
-	CHECK_NULLPTR(pGameObj);
-	m_mapGameObject.insert(std::make_pair(m_ID, pGameObj));
-	++m_ID;
+public:
+	GameObjectManagerInside() = default;
+	~GameObjectManagerInside() = default;
 
-	if (m_ID == std::numeric_limits<Uint32>::max())
+	void AddGameObject(GameObject* pGameObj);
+	void UpdateAllGameObject();
+	void RenderAllGameObject();
+	void CleanUp();
+
+private:
+	Uint32 m_objectIdx = 0;
+	std::unordered_map<Uint32, GameObject*> m_mapGameObject;
+};
+
+void GameObjectManagerInside::AddGameObject(GameObject* pGameObject)
+{
+	CHECK_NULLPTR(pGameObject);
+	m_mapGameObject.insert(std::make_pair(m_objectIdx, pGameObject));
+	++m_objectIdx;
+
+	if (m_objectIdx == std::numeric_limits<Uint32>::max())
 	{
 		RX_ERROR(LogGameObjectManager, EErrorCode::OUT_OF_GAMEOBJECT);
 	}
 }
 
 /*
-	매니저에 등록된 모든 게임 오브젝트의 내용을 갱신합니다.
+	매니저에 게임 오브젝트를 등록합니다.
 */
-void GameObjectManager::UpdateAllGameObject()
+void GameObjectManagerInside::UpdateAllGameObject()
 {
 	for (auto& iter : m_mapGameObject)
 	{
@@ -45,9 +58,9 @@ void GameObjectManager::UpdateAllGameObject()
 }
 
 /*
-	매니저에 등록된 모든 게임 오브젝트를 그립니다.
+	매니저에 등록된 모든 게임 오브젝트의 내용을 갱신합니다.
 */
-void GameObjectManager::RenderAllGameObject()
+void GameObjectManagerInside::RenderAllGameObject()
 {
 	for (auto& iter : m_mapGameObject)
 	{
@@ -58,4 +71,40 @@ void GameObjectManager::RenderAllGameObject()
 
 		iter.second->Render();
 	}
+}
+
+/*
+	매니저에 등록된 모든 게임 오브젝트를 그립니다.
+*/
+void GameObjectManagerInside::CleanUp()
+{
+	for (auto& iter : m_mapGameObject)
+	{
+		SAFE_DELETE(iter.second);
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+GameObjectManager::GameObjectManager()
+{
+	m_spInside = std::make_unique<GameObjectManagerInside>();
+}
+
+void GameObjectManager::CleanUp()
+{
+	m_spInside->CleanUp();
+}
+
+void GameObjectManager::AddGameObject(GameObject* pGameObj)
+{
+	m_spInside->AddGameObject(pGameObj);
+}
+
+void GameObjectManager::UpdateAllGameObject()
+{
+	m_spInside->UpdateAllGameObject();
+}
+
+void GameObjectManager::RenderAllGameObject()
+{
+	m_spInside->RenderAllGameObject();
 }

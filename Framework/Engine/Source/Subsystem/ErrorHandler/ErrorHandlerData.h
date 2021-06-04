@@ -4,19 +4,23 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 서브시스템에 사용되는 열거형입니다.
+// 에러 핸들러에 사용되는 외부 데이터입니다.
 // =====================================================================================
 #pragma once
 
 #include "Common/CommonType.h"
+#include "Subsystem/SubsystemData.h"
+#include "ErrorEnum.h"
 
-enum class ESubsystemType : Int32
+class ErrorHandlerData : public SubsystemData
 {
-	UNKNOWN = -1,
-	LOGGER,
-	ERROR_HANLDER,
-	CONSOLE_HANDLER,
-	GAME_OBJECT_MANAGER,
-	FRAME_TIME_MANAGER,
-	COUNT,
+public:
+	ErrorHandlerData() = default;
+	~ErrorHandlerData() = default;
+
+	EErrorCode GetLastErrorCode() const { return m_errorCode; }
+	void SetLastErrorCode(EErrorCode errorCode) { m_errorCode = errorCode; }
+
+private:
+	EErrorCode m_errorCode = EErrorCode::UNKNOWN;
 };

@@ -12,14 +12,17 @@
 #include "Common/CommonType.h"
 #include "IConsoleHandler.h"
 
+// 전방 선언
+class DoubleBufferingConsoleHandlerInside;
+
 class DoubleBufferingConsoleHandler final : public IConsoleHandler
 {
-	ONLY_SUBSYSTEM(DoubleBufferingConsoleHandler);
+	ONLY_SUBSYSTEM_CTOR(DoubleBufferingConsoleHandler);
 
 public:
 	virtual void SetUp() override;
 	virtual void CleanUp() override;
-	virtual void ChangeRenderingColor(EConsoleRenderingColor eRenderingColor, EConsoleRenderingType eRenderingType) override;
+	virtual void ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) override;
 	virtual void ClearScreen() override;
 
 	virtual void MovePosition(Int32 x, Int32 y) override;
@@ -34,14 +37,10 @@ public:
 
 	virtual Int32 InputInteger() override;
 	virtual Float InputFloat() override;
-	virtual const Char* InputString() override;
+	virtual void InputString(OUT std::string& str) override;
 
 	virtual COORD QueryCurrentPosition() override;
 
 private:
-	HWND m_hConsole = nullptr; // 콘솔창의 핸들입니다.
-
-	CONSOLE_SCREEN_BUFFER_INFO m_outputScreenBufferInfo; // 출력 버퍼 정보입니다.
-	EConsoleOutputBufferType m_currentOutputBuffer = EConsoleOutputBufferType::FRONT; // 현재 화면에 보이는 출력 버퍼입니다.
-	std::array<HANDLE, ToUnderlyingType(EConsoleOutputBufferType::COUNT)> m_arrOutputBuffer; // 출력 버퍼 배열입니다.
+	std::unique_ptr<DoubleBufferingConsoleHandlerInside> m_spInside = nullptr;
 };

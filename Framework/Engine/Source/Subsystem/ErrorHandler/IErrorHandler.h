@@ -5,15 +5,17 @@
 // http://creativecommons.org/licenses/by/4.0/
 //
 // 에러 핸들러의 인터페이스입니다.
+// 외부 데이터와 함수를 갖고 있으니 추상 클래스이기도 합니다.
 // =====================================================================================
 #pragma once
 
 #include "Subsystem/ISubsytem.h"
-#include "ErrorEnum.h"
+#include "ErrorHandlerData.h"
 
 class IErrorHandler : public ISubsystem
 {
-	GENERATE_SUBSYSTEM_ID(ESubsystemID::ERROR_HANLDER);
+	GENERATE_SUBSYSTEM_TYPE(ESubsystemType::ERROR_HANLDER);
+	GENERATE_SUBSYSTEM_DATA(ErrorHandlerData);
 
 public:
 	IErrorHandler() = default;
@@ -22,8 +24,5 @@ public:
 	virtual void SetUp() EMPTY_FUNC;
 	virtual void CleanUp() EMPTY_FUNC;
 
-	virtual const Char* FindErrorContent(EErrorCode errorCode) const PURE_FUNC;
-
-	virtual EErrorCode ObtainLastError() const PURE_FUNC;
-	virtual void ModifyLastError(EErrorCode errorCode) PURE_FUNC;
+	virtual const Char* LastErrorString() PURE_FUNC;
 };

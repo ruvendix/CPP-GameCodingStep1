@@ -41,5 +41,5 @@ public:
 		const Char* szTime, const Char* szFilePath, Int32 line) const override;
 
 private:
-	std::unique_ptr<LoggerInside> m_spLoggerInside = nullptr;
+	std::unique_ptr<LoggerInside> m_spInside = nullptr;
 };

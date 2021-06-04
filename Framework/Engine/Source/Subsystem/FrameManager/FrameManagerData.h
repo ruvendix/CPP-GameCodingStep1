@@ -4,18 +4,18 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 //
-// 프레임 타임 관리자에 사용되는 데이터입니다.
+// 프레임 타임 매니저에 사용되는 외부 데이터입니다.
 // =====================================================================================
 #pragma once
 
 #include "Common/CommonType.h"
 #include "Subsystem/SubsystemData.h"
 
-class FrameTimeManagerData : public SubsystemData
+class FrameManagerData : public SubsystemData
 {
 public:
-	FrameTimeManagerData() = default;
-	~FrameTimeManagerData() = default;
+	FrameManagerData() = default;
+	~FrameManagerData() = default;
 
 	Int32 GetFrameRate() const { return m_frameRate; }
 	void SetFrameRate(Int32 frameCount) { m_frameRate = frameCount; }

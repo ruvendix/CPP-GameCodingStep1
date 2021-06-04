@@ -9,18 +9,33 @@
 #include "EnginePCH.h"
 #include "ConsoleHandler.h"
 
-namespace
+class ConsoleHandlerInside final
 {
-	Uint32 defaultAttr = 0;
-	Char charBuffer[DEFAULT_CHAR_BUFFER_SIZE];
-}
+public:
+	ConsoleHandlerInside() = default;
+	~ConsoleHandlerInside() = default;
 
-/*
-	콘솔창을 초기화합니다.
-	콘솔창 이름과 사이즈 설정이 가능해요.
-	핸들도 여기에서 저장합니다.
-*/
-void ConsoleHandler::SetUp()
+	void SetUp();
+	void MovePosition(Int32 x, Int32 y);
+	void AdjustSize(Uint32 width, Uint32 height);
+	void ChangeTitle(const Char* szTitle);
+	void ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType);
+	void ShowCursor(bool bShow);
+	void ClearScreen();
+	void FlushInputBuffer();
+	void ResetRenderingColor();
+
+	COORD QueryCurrentPosition();
+
+private:
+	Uint32 m_defaultOutputAttr = 0; // 기본 출력 속성입니다.
+	HWND m_hConsole = nullptr; // 콘솔창의 핸들입니다.
+	HANDLE m_hStdInput = nullptr; // 표준 입력 버퍼의 핸들입니다.
+	HANDLE m_hStdOutput = nullptr; // 표준 출력 버퍼의 핸들입니다.
+	CONSOLE_SCREEN_BUFFER_INFO m_outputScreenBufferInfo; // 출력 버퍼 정보입니다.
+};
+
+void ConsoleHandlerInside::SetUp()
 {
 	m_hConsole = ::GetConsoleWindow();
 	RX_ASSERT(LogConsoleHandler, m_hConsole != nullptr);
@@ -32,10 +47,134 @@ void ConsoleHandler::SetUp()
 	RX_ASSERT(LogConsoleHandler, m_hStdOutput != nullptr);
 
 	::GetConsoleScreenBufferInfo(m_hStdOutput, &m_outputScreenBufferInfo);
-	defaultAttr = m_outputScreenBufferInfo.wAttributes;
+	m_defaultOutputAttr = m_outputScreenBufferInfo.wAttributes;
 
 	ChangeTitle("Default");
 	AdjustSize(60, 30);
+}
+
+void ConsoleHandlerInside::MovePosition(Int32 x, Int32 y)
+{
+	COORD pos;
+	pos.X = static_cast<Int16>(x);
+	pos.Y = static_cast<Int16>(y);
+
+	::SetConsoleCursorPosition(m_hStdOutput, pos);
+}
+
+void ConsoleHandlerInside::AdjustSize(Uint32 width, Uint32 height)
+{
+	Char buffer[DEFAULT_CHAR_BUFFER_SIZE];
+	::ZeroMemory(buffer, DEFAULT_CHAR_BUFFER_SIZE);
+
+	sprintf_s(buffer, DEFAULT_CHAR_BUFFER_SIZE, "mode con cols=%d lines=%d", width, height);
+	std::system(buffer);
+
+	m_outputScreenBufferInfo.dwSize.X = static_cast<Uint16>(width);
+	m_outputScreenBufferInfo.dwSize.Y = static_cast<Uint16>(height);
+}
+
+void ConsoleHandlerInside::ChangeTitle(const Char* szTitle)
+{
+	::SetWindowText(m_hConsole, szTitle);
+}
+
+void ConsoleHandlerInside::ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType)
+{
+	if ((renderingColor < EConsoleRenderingColor::BLACK) ||
+		(renderingColor > EConsoleRenderingColor::BRIGHT_WHITE))
+	{
+		RX_ERROR(LogConsoleHandler, EErrorCode::INVALID_SCREEN_COLOR);
+	}
+
+	// CONSOLE_SCREEN_BUFFER_INFO의 wAttributes에 색상 정보가 있어요!
+	// wAttributes는 2바이트로서, 하위 바이트에 색상 정보가 있습니다.
+	// 거기에서도 상위 4비트는 배경색, 하위 4비트는 글자색을 의미해요.
+	// 이 정보와 비트 연산을 이용하면 배경색과 글자색을 따로 알아낼 수 있습니다!	
+	Uint16 attr = m_outputScreenBufferInfo.wAttributes;
+	if (renderingType == EConsoleRenderingType::TEXT)
+	{
+		attr &= 0xFFF0; // 하위 4비트값만 가져옵니다.
+		attr |= static_cast<Uint16>(renderingColor);
+	}
+	else if (renderingType == EConsoleRenderingType::BACKGROUND)
+	{
+		attr &= 0xFF0F; // 상위 4비트값만 가져옵니다.
+		attr |= (static_cast<Uint16>(renderingColor) << 4); // 상위 4비트만큼 이동해야 해요!
+	}
+	else
+	{
+		RX_ERROR(LogConsoleHandler, EErrorCode::UNKNOWN);
+	}
+
+	m_outputScreenBufferInfo.wAttributes = attr;
+	if (::SetConsoleTextAttribute(m_hStdOutput, m_outputScreenBufferInfo.wAttributes) == FALSE)
+	{
+		RX_ERROR(LogConsoleHandler, EErrorCode::UNKNOWN);
+	}
+}
+
+void ConsoleHandlerInside::ShowCursor(bool bShow)
+{
+	CONSOLE_CURSOR_INFO consoleCursorInfo; // 커서 정보는 CONSOLE_CURSOR_INFO에 있습니다.
+	::GetConsoleCursorInfo(m_hStdOutput, &consoleCursorInfo);
+
+	consoleCursorInfo.bVisible = bShow;
+	::SetConsoleCursorInfo(m_hStdOutput, &consoleCursorInfo);
+}
+
+void ConsoleHandlerInside::ClearScreen()
+{
+	// 가로 X 세로 = 사각형 넓이
+	Uint32 size = m_outputScreenBufferInfo.dwSize.X * m_outputScreenBufferInfo.dwSize.Y;
+
+	// 콘솔창의 버퍼를 공백으로 채웁니다.
+	DWORD dwWrittenCnt = 0;
+	COORD beginPos = { 0, 0 };
+	if (::FillConsoleOutputCharacter(m_hStdOutput, ' ', size, beginPos, &dwWrittenCnt) == FALSE)
+	{
+		RX_ERROR(LogConsoleHandler, EErrorCode::FAILED_CLEAR_SCREEN);
+	}
+
+	// 콘솔창 출력 버퍼 속성이 적용된 부분을 지웁니다.
+	if (::FillConsoleOutputAttribute(m_hStdOutput, m_defaultOutputAttr, size, beginPos, &dwWrittenCnt) == FALSE)
+	{
+		RX_ERROR(LogConsoleHandler, EErrorCode::FAILED_CLEAR_SCREEN);
+	}
+
+	MovePosition(beginPos.X, beginPos.Y); // 커서 위치를 처음으로 이동시킵니다.	
+}
+
+void ConsoleHandlerInside::FlushInputBuffer()
+{
+	::FlushConsoleInputBuffer(m_hStdInput);
+}
+
+void ConsoleHandlerInside::ResetRenderingColor()
+{
+	m_outputScreenBufferInfo.wAttributes = m_defaultOutputAttr;
+	::SetConsoleTextAttribute(m_hStdOutput, m_defaultOutputAttr);
+}
+
+COORD ConsoleHandlerInside::QueryCurrentPosition()
+{
+	::GetConsoleScreenBufferInfo(m_hStdOutput, &m_outputScreenBufferInfo);
+	return m_outputScreenBufferInfo.dwCursorPosition;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+ConsoleHandler::ConsoleHandler()
+{
+	m_spInside = std::make_unique<ConsoleHandlerInside>();
+}
+
+/*
+	콘솔창을 초기화합니다.
+	콘솔창 이름과 사이즈 설정이 가능해요.
+	핸들도 여기에서 저장합니다.
+*/
+void ConsoleHandler::SetUp()
+{
+	m_spInside->SetUp();
 }
 
 /*
@@ -52,11 +191,7 @@ void ConsoleHandler::CleanUp()
 */
 void ConsoleHandler::MovePosition(Int32 x, Int32 y)
 {
-	COORD pos;
-	pos.X = static_cast<Int16>(x);
-	pos.Y = static_cast<Int16>(y);
-
-	::SetConsoleCursorPosition(m_hStdOutput, pos);
+	m_spInside->MovePosition(x, y);
 }
 
 /*
@@ -64,14 +199,7 @@ void ConsoleHandler::MovePosition(Int32 x, Int32 y)
 */
 void ConsoleHandler::AdjustSize(Uint32 width, Uint32 height)
 {
-	Char buffer[DEFAULT_CHAR_BUFFER_SIZE];
-	::ZeroMemory(buffer, DEFAULT_CHAR_BUFFER_SIZE);
-
-	sprintf_s(buffer, DEFAULT_CHAR_BUFFER_SIZE, "mode con cols=%d lines=%d", width, height);
-	std::system(buffer);
-
-	m_outputScreenBufferInfo.dwSize.X = static_cast<Uint16>(width);
-	m_outputScreenBufferInfo.dwSize.Y = static_cast<Uint16>(height);
+	m_spInside->AdjustSize(width, height);
 }
 
 /*
@@ -79,46 +207,16 @@ void ConsoleHandler::AdjustSize(Uint32 width, Uint32 height)
 */
 void ConsoleHandler::ChangeTitle(const Char* szTitle)
 {
-	::SetWindowText(m_hConsole, szTitle);
+	m_spInside->ChangeTitle(szTitle);
 }
 
 /*
 	콘솔창 렌더링 색깔을 변경합니다.
 	글자색과 배경색 중에서 선택할 수 있어요.
 */
-void ConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor eRenderingColor, EConsoleRenderingType eRenderingType)
+void ConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType)
 {
-	if ((eRenderingColor < EConsoleRenderingColor::BLACK) ||
-		(eRenderingColor > EConsoleRenderingColor::BRIGHT_WHITE))
-	{
-		RX_ERROR(LogConsoleHandler, EErrorCode::INVALID_SCREEN_COLOR);
-	}
-
-	// CONSOLE_SCREEN_BUFFER_INFO의 wAttributes에 색상 정보가 있어요!
-	// wAttributes는 2바이트로서, 하위 바이트에 색상 정보가 있습니다.
-	// 거기에서도 상위 4비트는 배경색, 하위 4비트는 글자색을 의미해요.
-	// 이 정보와 비트 연산을 이용하면 배경색과 글자색을 따로 알아낼 수 있습니다!	
-	Uint16 attr = m_outputScreenBufferInfo.wAttributes;
-	if (eRenderingType == EConsoleRenderingType::TEXT)
-	{
-		attr &= 0xFFF0; // 하위 4비트값만 가져옵니다.
-		attr |= static_cast<Uint16>(eRenderingColor);
-	}
-	else if (eRenderingType == EConsoleRenderingType::BACKGROUND)
-	{
-		attr &= 0xFF0F; // 상위 4비트값만 가져옵니다.
-		attr |= (static_cast<Uint16>(eRenderingColor) << 4); // 상위 4비트만큼 이동해야 해요!
-	}
-	else
-	{
-		RX_ERROR(LogConsoleHandler, EErrorCode::UNKNOWN);
-	}
-
-	m_outputScreenBufferInfo.wAttributes = attr;
-	if (::SetConsoleTextAttribute(m_hStdOutput, m_outputScreenBufferInfo.wAttributes) == FALSE)
-	{
-		RX_ERROR(LogConsoleHandler, EErrorCode::UNKNOWN);
-	}
+	m_spInside->ChangeRenderingColor(renderingColor, renderingType);
 }
 
 /*
@@ -127,11 +225,7 @@ void ConsoleHandler::ChangeRenderingColor(EConsoleRenderingColor eRenderingColor
 */
 void ConsoleHandler::ShowCursor(bool bShow)
 {
-	CONSOLE_CURSOR_INFO consoleCursorInfo; // 커서 정보는 CONSOLE_CURSOR_INFO에 있습니다.
-	::GetConsoleCursorInfo(m_hStdOutput, &consoleCursorInfo);
-
-	consoleCursorInfo.bVisible = bShow;
-	::SetConsoleCursorInfo(m_hStdOutput, &consoleCursorInfo);
+	m_spInside->ShowCursor(bShow);
 }
 
 /*
@@ -149,24 +243,7 @@ void ConsoleHandler::RenderString(Int32 x, Int32 y, const Char* szText)
 */
 void ConsoleHandler::ClearScreen()
 {
-	// 가로 X 세로 = 사각형 넓이
-	Uint32 size = m_outputScreenBufferInfo.dwSize.X * m_outputScreenBufferInfo.dwSize.Y;
-
-	// 콘솔창의 버퍼를 공백으로 채웁니다.
-	DWORD dwWrittenCnt = 0;
-	COORD beginPos = { 0, 0 };
-	if (::FillConsoleOutputCharacter(m_hStdOutput, ' ', size, beginPos, &dwWrittenCnt) == FALSE)
-	{
-		RX_ERROR(LogConsoleHandler, EErrorCode::FAILED_CLEAR_SCREEN);
-	}
-
-	// 콘솔창 출력 버퍼 속성이 적용된 부분을 지웁니다.
-	if (::FillConsoleOutputAttribute(m_hStdOutput, defaultAttr, size, beginPos, &dwWrittenCnt) == FALSE)
-	{
-		RX_ERROR(LogConsoleHandler, EErrorCode::FAILED_CLEAR_SCREEN);
-	}
-
-	MovePosition(beginPos.X, beginPos.Y); // 커서 위치를 처음으로 이동시킵니다.	
+	m_spInside->ClearScreen();
 }
 
 /*
@@ -175,7 +252,7 @@ void ConsoleHandler::ClearScreen()
 */
 void ConsoleHandler::FlushInputBuffer()
 {
-	::FlushConsoleInputBuffer(m_hStdInput);
+	m_spInside->FlushInputBuffer();
 }
 
 /*
@@ -183,8 +260,7 @@ void ConsoleHandler::FlushInputBuffer()
 */
 void ConsoleHandler::ResetRenderingColor()
 {
-	m_outputScreenBufferInfo.wAttributes = defaultAttr;
-	::SetConsoleTextAttribute(m_hStdOutput, defaultAttr);
+	m_spInside->ResetRenderingColor();
 }
 
 void ConsoleHandler::Pause() const
@@ -217,12 +293,13 @@ Float ConsoleHandler::InputFloat()
 /*
 	문자열을 입력받습니다.
 */
-const Char* ConsoleHandler::InputString()
+void ConsoleHandler::InputString(OUT std::string& str)
 {
-	::ZeroMemory(charBuffer, DEFAULT_CHAR_BUFFER_SIZE);
-	scanf_s("%[^\n]s", charBuffer, DEFAULT_CHAR_BUFFER_SIZE);
+	Char buffer[DEFAULT_CHAR_BUFFER_SIZE];
+	::ZeroMemory(buffer, DEFAULT_CHAR_BUFFER_SIZE);
+	scanf_s("%[^\n]s", buffer, DEFAULT_CHAR_BUFFER_SIZE);
 	FlushInputBuffer();
-	return charBuffer;
+	str.assign(buffer);
 }
 
 /*
@@ -230,6 +307,5 @@ const Char* ConsoleHandler::InputString()
 */
 COORD ConsoleHandler::QueryCurrentPosition()
 {
-	::GetConsoleScreenBufferInfo(m_hStdOutput, &m_outputScreenBufferInfo);
-	return m_outputScreenBufferInfo.dwCursorPosition;
+	return m_spInside->QueryCurrentPosition();
 }

@@ -13,7 +13,7 @@
 
 class IConsoleHandler : public ISubsystem
 {
-	GENERATE_SUBSYSTEM_ID(ESubsystemID::CONSOLE_HANDLER);
+	GENERATE_SUBSYSTEM_TYPE(ESubsystemType::CONSOLE_HANDLER);
 
 public:
 	IConsoleHandler() = default;
@@ -22,8 +22,8 @@ public:
 	virtual void SetUp() override EMPTY_FUNC;
 	virtual void CleanUp() override EMPTY_FUNC;
 
-	virtual void ChangeRenderingColor(EConsoleRenderingColor eRenderingColor, EConsoleRenderingType eRenderingType) = 0;
-	virtual void ClearScreen() = 0;
+	virtual void ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) PURE_FUNC;
+	virtual void ClearScreen() PURE_FUNC;
 
 	virtual void MovePosition(Int32 x, Int32 y) PURE_FUNC;
 	virtual void AdjustSize(Uint32 width, Uint32 height) PURE_FUNC;
@@ -37,7 +37,7 @@ public:
 
 	virtual Int32 InputInteger() PURE_FUNC;
 	virtual Float InputFloat() PURE_FUNC;
-	virtual const Char* InputString() PURE_FUNC;
+	virtual void InputString(OUT std::string& str) PURE_FUNC;
 
 	virtual COORD QueryCurrentPosition() PURE_FUNC;
 };
