@@ -17,9 +17,9 @@ public:
 	IGameObject() = default;
 	virtual ~IGameObject() = default;
 
-	virtual void SetUp() = 0;
-	virtual void CleanUp() = 0;
+	virtual void SetUp() PURE_FUNC;
+	virtual void CleanUp() PURE_FUNC;
 
-	virtual void Update() = 0;
-	virtual void Render() = 0;
+	virtual void Update() PURE_FUNC;
+	virtual void Render() PURE_FUNC;
 };

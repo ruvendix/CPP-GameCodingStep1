@@ -191,7 +191,7 @@
     <ClInclude Include="Source\Utility\Time\Stopwatch.h">
       <Filter>Source\3_Utility\Time</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\CommonFunction\CommonFunction.h">
+    <ClInclude Include="Source\Common\CommonFunction\CommonFunction.hpp">
       <Filter>Source\0_Common\CommonFunction</Filter>
     </ClInclude>
     <ClInclude Include="Source\Subsystem\SubsystemData.h">

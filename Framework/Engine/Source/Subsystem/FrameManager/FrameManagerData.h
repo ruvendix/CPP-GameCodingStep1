@@ -11,7 +11,7 @@
 #include "Common/CommonType.h"
 #include "Subsystem/SubsystemData.h"
 
-class FrameManagerData : public SubsystemData
+class FrameManagerData final : public SubsystemData
 {
 public:
 	FrameManagerData() = default;

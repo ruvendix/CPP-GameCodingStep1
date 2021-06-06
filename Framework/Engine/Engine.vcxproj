@@ -35,7 +35,7 @@
     <ClInclude Include="Source\Common\CommonBase.h" />
     <ClInclude Include="Source\Common\CommonConstant.h" />
     <ClInclude Include="Source\Common\CommonEnum.h" />
-    <ClInclude Include="Source\Common\CommonFunction\CommonFunction.h" />
+    <ClInclude Include="Source\Common\CommonFunction\CommonFunction.hpp" />
     <ClInclude Include="Source\Common\CommonFunction\MakeFormatString.hpp" />
     <ClInclude Include="Source\Common\CommonInclusion.h" />
     <ClInclude Include="Source\Common\CommonInterface.h" />

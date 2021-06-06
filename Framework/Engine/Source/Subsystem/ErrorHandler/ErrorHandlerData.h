@@ -12,7 +12,7 @@
 #include "Subsystem/SubsystemData.h"
 #include "ErrorEnum.h"
 
-class ErrorHandlerData : public SubsystemData
+class ErrorHandlerData final : public SubsystemData
 {
 public:
 	ErrorHandlerData() = default;
