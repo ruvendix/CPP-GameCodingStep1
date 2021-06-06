@@ -13,8 +13,6 @@ class ParentSubsystemData;
 
 class ISubsystem
 {
-	FRIEND_CLASS(SubsystemLocator);
-
 public:
 	ISubsystem() = default;
 	virtual ~ISubsystem() = default;

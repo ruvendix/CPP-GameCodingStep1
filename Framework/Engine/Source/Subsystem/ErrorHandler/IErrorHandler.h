@@ -21,8 +21,5 @@ public:
 	IErrorHandler() = default;
 	virtual ~IErrorHandler() = default;
 
-	virtual void SetUp() EMPTY_FUNC;
-	virtual void CleanUp() EMPTY_FUNC;
-
 	virtual const Char* LastErrorString() PURE_FUNC;
 };

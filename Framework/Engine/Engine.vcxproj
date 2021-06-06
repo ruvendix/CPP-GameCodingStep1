@@ -31,7 +31,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\FrameworkPathfinder.h" />
-    <ClInclude Include="ErrorHandlerData.h" />
     <ClInclude Include="Source\Common\CommonBase.h" />
     <ClInclude Include="Source\Common\CommonConstant.h" />
     <ClInclude Include="Source\Common\CommonEnum.h" />

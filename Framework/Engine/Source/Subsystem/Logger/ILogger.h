@@ -21,9 +21,6 @@ public:
 	ILogger() = default;
 	virtual ~ILogger() = default;
 
-	virtual void SetUp() override EMPTY_FUNC;
-	virtual void CleanUp() override EMPTY_FUNC;
-
 	virtual void Trace(const LogCategoryBase* pCategory, const std::string_view& strContent,
 		const Char* szTime, const Char* szFilePath, Int32 line) const PURE_FUNC;
 

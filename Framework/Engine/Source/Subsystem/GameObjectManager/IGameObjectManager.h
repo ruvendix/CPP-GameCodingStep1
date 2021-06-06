@@ -21,9 +21,6 @@ public:
 	IGameObjectManager() = default;
 	virtual ~IGameObjectManager() = default;
 
-	virtual void SetUp() override EMPTY_FUNC;
-	virtual void CleanUp() override EMPTY_FUNC;
-
 	virtual void AddGameObject(GameObject* pGameObj) PURE_FUNC;
 
 	virtual void UpdateAllGameObject() PURE_FUNC;

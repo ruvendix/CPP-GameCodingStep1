@@ -200,9 +200,6 @@
     <ClInclude Include="Source\Subsystem\FrameManager\FrameManagerData.h">
       <Filter>Source\1_Subsystem\FrameManager</Filter>
     </ClInclude>
-    <ClInclude Include="ErrorHandlerData.h">
-      <Filter>Source\1_Subsystem\ErrorHandler</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Subsystem\ErrorHandler\ErrorHandlerData.h">
       <Filter>Source\1_Subsystem\ErrorHandler</Filter>
     </ClInclude>

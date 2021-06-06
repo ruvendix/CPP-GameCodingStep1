@@ -26,8 +26,5 @@ public:
 	IFrameManager() = default;
 	virtual ~IFrameManager() = default;
 
-	virtual void SetUp() override EMPTY_FUNC;
-	virtual void CleanUp() override EMPTY_FUNC;
-
 	virtual void UpdateFrameTime() PURE_FUNC;
 };

@@ -19,9 +19,6 @@ public:
 	IConsoleHandler() = default;
 	virtual ~IConsoleHandler() = default;
 
-	virtual void SetUp() override EMPTY_FUNC;
-	virtual void CleanUp() override EMPTY_FUNC;
-
 	virtual void ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) PURE_FUNC;
 	virtual void ClearScreen() PURE_FUNC;
 
