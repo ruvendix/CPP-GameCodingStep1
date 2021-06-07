@@ -39,7 +39,7 @@
       <UniqueIdentifier>{885022f2-2e95-43e5-b442-4577b06298ff}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\1_Subsystem\FrameManager">
-      <UniqueIdentifier>{6ad64215-104a-4813-bca6-a81033e73222}</UniqueIdentifier>
+      <UniqueIdentifier>{0b0bcbda-e88c-42cd-a18b-2dce321179de}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -64,9 +64,6 @@
     <ClCompile Include="Source\Subsystem\ErrorHandler\ErrorHandler.cpp">
       <Filter>Source\1_Subsystem\ErrorHandler</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Subsystem\FrameManager\ConstantFrameManager.cpp">
-      <Filter>Source\1_Subsystem\FrameManager</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Subsystem\GameObjectManager\GameObjectManager.cpp">
       <Filter>Source\1_Subsystem\GameObjectManager</Filter>
     </ClCompile>
@@ -82,6 +79,9 @@
     </ClCompile>
     <ClCompile Include="Source\Utility\Time\Stopwatch.cpp">
       <Filter>Source\3_Utility\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Subsystem\FrameManager\ConstantFrameManager.cpp">
+      <Filter>Source\1_Subsystem\FrameManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -157,12 +157,6 @@
     <ClInclude Include="Source\Subsystem\ErrorHandler\IErrorHandler.h">
       <Filter>Source\1_Subsystem\ErrorHandler</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Subsystem\FrameManager\IFrameManager.h">
-      <Filter>Source\1_Subsystem\FrameManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Subsystem\FrameManager\ConstantFrameManager.h">
-      <Filter>Source\1_Subsystem\FrameManager</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Subsystem\GameObjectManager\GameObjectManager.h">
       <Filter>Source\1_Subsystem\GameObjectManager</Filter>
     </ClInclude>
@@ -197,11 +191,20 @@
     <ClInclude Include="Source\Subsystem\SubsystemData.h">
       <Filter>Source\1_Subsystem</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Subsystem\FrameManager\FrameManagerData.h">
-      <Filter>Source\1_Subsystem\FrameManager</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Subsystem\ErrorHandler\ErrorHandlerData.h">
       <Filter>Source\1_Subsystem\ErrorHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\FrameManager\ConstantFrameManager.h">
+      <Filter>Source\1_Subsystem\FrameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\FrameManager\FrameData.h">
+      <Filter>Source\1_Subsystem\FrameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\FrameManager\IFrameManager.h">
+      <Filter>Source\1_Subsystem\FrameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\FrameManager\FrameMacro.h">
+      <Filter>Source\1_Subsystem\FrameManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

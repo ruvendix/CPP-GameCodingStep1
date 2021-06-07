@@ -20,3 +20,4 @@
 #include "FrameManager/IFrameManager.h"
 
 #include "ErrorHandler/ErrorMacro.h"
+#include "FrameManager/FrameMacro.h"

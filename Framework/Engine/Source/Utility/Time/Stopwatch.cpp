@@ -10,13 +10,40 @@
 #include "EnginePCH.h"
 #include "Stopwatch.h"
 
-/*
-	시작 시간과 종료 시간을 초기화합니다.
-*/
+class StopwatchInside final
+{
+public:
+	StopwatchInside() = default;
+	~StopwatchInside() = default;
+
+	void StartTime();
+	Float EndTime();
+
+private:
+	std::chrono::system_clock::time_point m_startTimePoint;
+};
+
+void StopwatchInside::StartTime()
+{
+	m_startTimePoint = std::chrono::system_clock::now();
+}
+
+Float StopwatchInside::EndTime()
+{
+	std::chrono::system_clock::time_point endTimePoint = std::chrono::system_clock::now();
+	std::chrono::duration<Float> duration = endTimePoint - m_startTimePoint;
+	m_startTimePoint = endTimePoint;
+	return duration.count();
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 Stopwatch::Stopwatch()
 {
-	StartTime();
-	m_endTimePoint = m_startTimePoint;
+	m_spInside = std::make_unique<StopwatchInside>();
+}
+
+Stopwatch::~Stopwatch()
+{
+
 }
 
 /*
@@ -24,24 +51,13 @@ Stopwatch::Stopwatch()
 */
 void Stopwatch::StartTime()
 {
-	m_startTimePoint = std::chrono::system_clock::now();
+	m_spInside->StartTime();
 }
 
 /*
 	종료 시간을 측정하고 경과 시간을 계산합니다.
 */
-void Stopwatch::EndTime()
+Float Stopwatch::EndTime()
 {
-	m_endTimePoint = std::chrono::system_clock::now();
-	std::chrono::duration<Float> duration = m_endTimePoint - m_startTimePoint;
-	m_elapsedTime = duration.count();
-}
-
-/*
-	시작 시간에 종료 시간을 대입하고 경과 시간을 초기화합니다.
-*/
-void Stopwatch::RestartTime()
-{
-	m_elapsedTime = 0.0f;
-	m_startTimePoint = m_endTimePoint;
+	return m_spInside->EndTime();
 }

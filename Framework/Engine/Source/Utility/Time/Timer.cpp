@@ -13,6 +13,40 @@
 
 #include "Subsystem/FrameManager/IFrameManager.h"
 
+class TimerInside final
+{
+public:
+	TimerInside() = default;
+	~TimerInside() = default;
+	
+	Float UpdateTime();
+	void ResetTime();
+
+private:
+	Float m_localTime = 0.0f;
+};
+
+Float TimerInside::UpdateTime()
+{
+	m_localTime += DELTA_TIME;
+	return m_localTime;
+}
+
+void TimerInside::ResetTime()
+{
+	m_localTime = 0.0f;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+Timer::Timer()
+{
+	m_spInside = std::make_unique<TimerInside>();
+}
+
+Timer::~Timer()
+{
+
+}
+
 /*
 	델타타임을 누적하면서 목표 시간까지 달성했는지 확인합니다.
 	목표 시간까지 달성했으면 true를, 아니라면 false를 반환합니다.
@@ -24,16 +58,14 @@ Bool Timer::UpdateTime()
 		return false;
 	}
 
-	IFrameManager::DataPtr spData = FIND_SUBSYSTEM(IFrameManager)->Data();
-	m_localTime += spData->GetDeltaTime();
-	FIND_SUBSYSTEM(IConsoleHandler)->RenderString(0, 1, MakeFormatString("localTime: %f", m_localTime).c_str());
-
-	if (m_targetTime > m_localTime)
+	Float remainTime = m_targetTime - m_spInside->UpdateTime();
+	if (remainTime > 0.0f)
 	{
+		RX_SIMPLE_TRACE("remainTime: %f", remainTime);
 		return false;
 	}
 
-	m_localTime = 0.0f;
+	m_spInside->ResetTime();
 
 	if (m_bLoop == false)
 	{

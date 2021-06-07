@@ -10,12 +10,12 @@
 #pragma once
 
 #include "Subsystem/ISubsytem.h"
-#include "FrameManagerData.h"
+#include "FrameData.h"
 
 class IFrameManager : public ISubsystem
 {
 	GENERATE_SUBSYSTEM_TYPE(ESubsystemType::FRAME_TIME_MANAGER);
-	GENERATE_SUBSYSTEM_DATA(FrameManagerData);
+	GENERATE_SUBSYSTEM_DATA(FrameData);
 
 public:
 	static Float ConvertFPS_ToFixedDeltaTime(Int32 FPS)

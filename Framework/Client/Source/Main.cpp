@@ -16,6 +16,8 @@
 #include <EnginePCH.h>
 #include <Scene/GameObject/GameObject.h>
 
+#include <Utility/Time/Stopwatch.h>
+
 Int32 main()
 {
 	FrameworkPathfinder::SetUp();

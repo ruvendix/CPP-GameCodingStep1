@@ -51,7 +51,8 @@
     <ClInclude Include="Source\Subsystem\ErrorHandler\ErrorHandlerData.h" />
     <ClInclude Include="Source\Subsystem\ErrorHandler\ErrorMacro.h" />
     <ClInclude Include="Source\Subsystem\ErrorHandler\IErrorHandler.h" />
-    <ClInclude Include="Source\Subsystem\FrameManager\FrameManagerData.h" />
+    <ClInclude Include="Source\Subsystem\FrameManager\FrameMacro.h" />
+    <ClInclude Include="Source\Subsystem\FrameManager\FrameData.h" />
     <ClInclude Include="Source\Subsystem\GameObjectManager\GameObjectManager.h" />
     <ClInclude Include="Source\Subsystem\GameObjectManager\IGameObjectManager.h" />
     <ClInclude Include="Source\Subsystem\ISubsytem.h" />

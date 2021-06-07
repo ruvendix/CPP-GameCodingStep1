@@ -3,7 +3,7 @@
 // 
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
-//
+// 
 // 고정 프레임 타임 매니저입니다.
 // =====================================================================================
 #include "EnginePCH.h"
@@ -26,8 +26,8 @@ private:
 
 void ConstantFrameManagerInside::SetUp()
 {
-	m_FPSTimer.setLoop(true);
-	m_FPSTimer.setTargetTime(1.0f);
+	m_FPSTimer.SetLoop(true);
+	m_FPSTimer.SetTargetTime(1.0f);
 
 	m_deltaTimeStopwatch.StartTime();
 	m_fixedDeltaTime = ConstantFrameManager::ConvertFPS_ToFixedDeltaTime(60);
@@ -35,8 +35,7 @@ void ConstantFrameManagerInside::SetUp()
 
 void ConstantFrameManagerInside::UpdateFrameTime(ConstantFrameManager& constantFrameManager)
 {
-	m_deltaTimeStopwatch.EndTime();
-	Float elapsedTime = m_deltaTimeStopwatch.GetElapsedTime();
+	Float elapsedTime = m_deltaTimeStopwatch.EndTime();
 	Float sleepTime = m_fixedDeltaTime - elapsedTime;
 	if (sleepTime >= 0.0f)
 	{
@@ -50,8 +49,6 @@ void ConstantFrameManagerInside::UpdateFrameTime(ConstantFrameManager& constantF
 	// 처리 경과 시간과 휴식 시간을 더한 값이에요!
 	spData->SetDeltaTime(elapsedTime + sleepTime);
 	//RX_SIMPLE_TRACE("%f", m_deltaTime);
-
-	m_deltaTimeStopwatch.RestartTime();
 
 	Int32 frameRate = spData->GetFrameRate();
 	spData->SetFrameRate(frameRate + 1); // 업데이트 ~ 렌더링을 거칠 때마다 1씩 증가합니다.
