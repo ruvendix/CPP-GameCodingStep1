@@ -20,7 +20,7 @@ public:
 	~TimerInside() = default;
 	
 	Float UpdateTime();
-	void ResetTime();
+	void ResetTime(Float targetTime);
 
 private:
 	Float m_localTime = 0.0f;
@@ -32,9 +32,10 @@ Float TimerInside::UpdateTime()
 	return m_localTime;
 }
 
-void TimerInside::ResetTime()
+void TimerInside::ResetTime(Float targetTime)
 {
-	m_localTime = 0.0f;
+	RX_SIMPLE_ASSERT(m_localTime >= targetTime);
+	m_localTime -= targetTime;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 Timer::Timer()
@@ -65,7 +66,7 @@ Bool Timer::UpdateTime()
 		return false;
 	}
 
-	m_spInside->ResetTime();
+	m_spInside->ResetTime(m_targetTime);
 
 	if (m_bLoop == false)
 	{

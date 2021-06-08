@@ -30,7 +30,7 @@ void ConstantFrameManagerInside::SetUp()
 	m_FPSTimer.SetTargetTime(1.0f);
 
 	m_deltaTimeStopwatch.StartTime();
-	m_fixedDeltaTime = ConstantFrameManager::ConvertFPS_ToFixedDeltaTime(60);
+	m_fixedDeltaTime = IFrameManager::ConvertFPS_ToFixedDeltaTime(60);
 }
 
 void ConstantFrameManagerInside::UpdateFrameTime(ConstantFrameManager& constantFrameManager)

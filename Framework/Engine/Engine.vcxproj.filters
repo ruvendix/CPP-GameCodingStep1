@@ -41,6 +41,9 @@
     <Filter Include="Source\1_Subsystem\FrameManager">
       <UniqueIdentifier>{0b0bcbda-e88c-42cd-a18b-2dce321179de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\1_Subsystem\TimeHandler">
+      <UniqueIdentifier>{4a819fd7-083d-438a-a6ac-600ba723ac30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\EnginePCH.cpp">
@@ -82,6 +85,9 @@
     </ClCompile>
     <ClCompile Include="Source\Subsystem\FrameManager\ConstantFrameManager.cpp">
       <Filter>Source\1_Subsystem\FrameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Subsystem\TimeHandler\TimeHandler.cpp">
+      <Filter>Source\1_Subsystem\TimeHandler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +211,15 @@
     </ClInclude>
     <ClInclude Include="Source\Subsystem\FrameManager\FrameMacro.h">
       <Filter>Source\1_Subsystem\FrameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\TimeHandler\ITimeHandler.h">
+      <Filter>Source\1_Subsystem\TimeHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\TimeHandler\TimeData.h">
+      <Filter>Source\1_Subsystem\TimeHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\TimeHandler\TimeHandler.h">
+      <Filter>Source\1_Subsystem\TimeHandler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

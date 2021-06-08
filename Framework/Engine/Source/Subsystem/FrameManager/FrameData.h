@@ -23,12 +23,7 @@ public:
 	Float GetDeltaTime() const { return m_deltaTime; }
 	void SetDeltaTime(Float deltaTime) { m_deltaTime = deltaTime; }
 
-	// 아직 사용하는 곳이 없습니다.
-	DECLSPEC_DEPRECATED Float GetTimeScale() const { return m_timeScale; }
-	DECLSPEC_DEPRECATED void SetTimeScale(Float timeScale) { m_timeScale = timeScale; }
-
 private:
 	Int32 m_frameRate = 0; // Frame Count와 같습니다.
 	Float m_deltaTime = 0.0f;
-	Float m_timeScale = 1.0f;
 };

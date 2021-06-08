@@ -10,12 +10,13 @@
 #include "EnginePCH.h"
 #include "SubsystemLocator.h"
 
-#include "Subsystem/Logger/Logger.h"
-#include "Subsystem/ErrorHandler/ErrorHandler.h"
-#include "Subsystem/GameObjectManager/GameObjectManager.h"
-#include "Subsystem/FrameManager/ConstantFrameManager.h"
-#include "Subsystem/ConsoleHandler/ConsoleHandler.h"
-#include "Subsystem/ConsoleHandler/DoubleBufferingConsoleHandler.h"
+#include "Logger/Logger.h"
+#include "ErrorHandler/ErrorHandler.h"
+#include "GameObjectManager/GameObjectManager.h"
+#include "FrameManager/ConstantFrameManager.h"
+#include "ConsoleHandler/ConsoleHandler.h"
+#include "ConsoleHandler/DoubleBufferingConsoleHandler.h"
+#include "TimeHandler/TimeHandler.h"
 
 /*
 	기본 서브시스템만 등록합니다.
@@ -27,6 +28,7 @@ void SubsystemLocator::SetUp()
 	RegisterSubsystem<ErrorHandler>();
 	RegisterSubsystem<GameObjectManager>();
 	RegisterSubsystem<ConstantFrameManager>();
+	RegisterSubsystem<TimeHandler>();
 	RegisterSubsystem<DoubleBufferingConsoleHandler>();
 }
 

@@ -26,6 +26,7 @@
     <ClCompile Include="Source\Subsystem\Logger\Logger.cpp" />
     <ClCompile Include="Source\Subsystem\SubsystemLocator.cpp" />
     <ClCompile Include="Source\Subsystem\FrameManager\ConstantFrameManager.cpp" />
+    <ClCompile Include="Source\Subsystem\TimeHandler\TimeHandler.cpp" />
     <ClCompile Include="Source\Utility\Time\Stopwatch.cpp" />
     <ClCompile Include="Source\Utility\Time\Timer.cpp" />
   </ItemGroup>
@@ -69,6 +70,9 @@
     <ClInclude Include="Source\Subsystem\SubsystemMacro.h" />
     <ClInclude Include="Source\Subsystem\FrameManager\IFrameManager.h" />
     <ClInclude Include="Source\Subsystem\FrameManager\ConstantFrameManager.h" />
+    <ClInclude Include="Source\Subsystem\TimeHandler\ITimeHandler.h" />
+    <ClInclude Include="Source\Subsystem\TimeHandler\TimeData.h" />
+    <ClInclude Include="Source\Subsystem\TimeHandler\TimeHandler.h" />
     <ClInclude Include="Source\Utility\Time\Stopwatch.h" />
     <ClInclude Include="Source\Utility\Time\Timer.h" />
   </ItemGroup>
