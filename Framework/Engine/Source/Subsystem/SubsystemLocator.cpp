@@ -29,6 +29,7 @@ void SubsystemLocator::SetUp()
 	RegisterSubsystem<GameObjectManager>();
 	RegisterSubsystem<ConstantFrameManager>();
 	RegisterSubsystem<TimeHandler>();
+	//RegisterSubsystem<ConsoleHandler>();
 	RegisterSubsystem<DoubleBufferingConsoleHandler>();
 }
 

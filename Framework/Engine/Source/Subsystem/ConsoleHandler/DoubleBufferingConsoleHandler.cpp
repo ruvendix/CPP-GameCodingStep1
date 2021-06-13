@@ -26,24 +26,28 @@ public:
 	void ClearScreen();
 	void FlushInputBuffer();
 	void ResetRenderingColor();
+	void FlipOutputBuffer();
 
 	COORD QueryCurrentPosition();
 
 private:
 	Uint32 m_defaultOutputAttr = 0; // 기본 출력 속성입니다.
 	HWND m_hConsole = nullptr; // 콘솔창의 핸들입니다.
+	HANDLE m_hStdInput = nullptr; // 표준 입력 버퍼의 핸들입니다.(입력 버퍼는 하나!)
 	CONSOLE_SCREEN_BUFFER_INFO m_outputScreenBufferInfo; // 출력 버퍼 정보입니다.
 	EnumIdx::ConsoleOutputBuffer::Data m_currentOutputBufferIdx = EnumIdx::ConsoleOutputBuffer::FRONT; // 현재 화면에 보이는 출력 버퍼입니다.
-	std::array<HANDLE, EnumIdx::ConsoleOutputBuffer::COUNT> m_OutputBuffers; // 출력 버퍼 배열입니다.
+	std::array<HANDLE, EnumIdx::ConsoleOutputBuffer::COUNT> m_outputBufferHandles; // 출력 버퍼 핸들 배열입니다.
 };
 
 void DoubleBufferingConsoleHandlerInside::SetUp()
 {
 	ChangeTitle("Default");
-	AdjustSize(120, 30);
 
 	m_hConsole = ::GetConsoleWindow();
 	RX_ASSERT(LogConsoleHandler, m_hConsole != nullptr);
+
+	m_hStdInput = ::GetStdHandle(STD_INPUT_HANDLE);
+	RX_ASSERT(LogConsoleHandler, m_hStdInput != nullptr);
 
 	HANDLE hStdOutput = ::GetStdHandle(STD_OUTPUT_HANDLE);
 	RX_ASSERT(LogConsoleHandler, hStdOutput != nullptr);
@@ -56,8 +60,7 @@ void DoubleBufferingConsoleHandlerInside::SetUp()
 	{
 		// 읽기와 쓰기가 가능한 콘솔창의 버퍼를 생성하는 부분이에요!
 		// 더블 버퍼링에서는 콘솔창의 버퍼가 2개 필요합니다!
-		HANDLE hOutputBuffer = ::CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE,
-			0, nullptr, CONSOLE_TEXTMODE_BUFFER, nullptr);
+		HANDLE hOutputBuffer = ::CreateConsoleScreenBuffer(GENERIC_WRITE | GENERIC_READ, 0, nullptr, CONSOLE_TEXTMODE_BUFFER, nullptr);
 
 		// 표준 출력 콘솔창의 정보를 복사하는 부분이에요!
 		::SetConsoleScreenBufferSize(hOutputBuffer, m_outputScreenBufferInfo.dwSize);
@@ -65,18 +68,20 @@ void DoubleBufferingConsoleHandlerInside::SetUp()
 		::SetConsoleTextAttribute(hOutputBuffer, m_outputScreenBufferInfo.wAttributes);
 
 		// 정보 설정이 완료되었으니 저장할게요!
-		m_OutputBuffers[i] = hOutputBuffer;
-
-		m_currentOutputBufferIdx = static_cast<EnumIdx::ConsoleOutputBuffer::Data>(i);
+		m_outputBufferHandles[i] = hOutputBuffer;
 		ShowCursor(false);
 	}
+
+	m_currentOutputBufferIdx = EnumIdx::ConsoleOutputBuffer::FRONT;
+
+	AdjustSize(120, 30);
 }
 
 void DoubleBufferingConsoleHandlerInside::CleanUp()
 {
 	for (Int32 i = 0; i < EnumIdx::ConsoleOutputBuffer::COUNT; ++i)
 	{
-		::CloseHandle(m_OutputBuffers[i]);
+		::CloseHandle(m_outputBufferHandles[i]);
 	}
 }
 
@@ -86,8 +91,12 @@ void DoubleBufferingConsoleHandlerInside::MovePosition(Int32 x, Int32 y)
 	pos.X = static_cast<Int16>(x);
 	pos.Y = static_cast<Int16>(y);
 
-	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
-	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
+	HANDLE hCurrentOutputBuffer = m_outputBufferHandles[m_currentOutputBufferIdx];
+	if (hCurrentOutputBuffer == nullptr)
+	{
+		return;
+	}
+
 	::SetConsoleCursorPosition(hCurrentOutputBuffer, pos);
 }
 
@@ -95,12 +104,28 @@ void DoubleBufferingConsoleHandlerInside::AdjustSize(Uint32 width, Uint32 height
 {
 	Char buffer[DEFAULT_CHAR_BUFFER_SIZE];
 	::ZeroMemory(buffer, DEFAULT_CHAR_BUFFER_SIZE);
-
 	sprintf_s(buffer, DEFAULT_CHAR_BUFFER_SIZE, "mode con cols=%d lines=%d", width, height);
 	std::system(buffer);
 
 	m_outputScreenBufferInfo.dwSize.X = static_cast<Uint16>(width);
 	m_outputScreenBufferInfo.dwSize.Y = static_cast<Uint16>(height);
+
+	// 버퍼 사이즈와 다르게 실제 창 사이즈는 1씩 적어야 합니다.
+	// 화면 좌표는 0부터 시작하므로 길이가 40이라면 0 ~ 39까지니까요.
+	m_outputScreenBufferInfo.srWindow.Right = m_outputScreenBufferInfo.dwSize.X - 1;
+	m_outputScreenBufferInfo.srWindow.Bottom = m_outputScreenBufferInfo.dwSize.Y - 1;
+	
+	for (Int32 i = 0; i < EnumIdx::ConsoleOutputBuffer::COUNT; ++i)
+	{
+		HANDLE hOutputBuffer = m_outputBufferHandles[i];
+		if (hOutputBuffer == nullptr)
+		{
+			return;
+		}
+
+		::SetConsoleScreenBufferSize(hOutputBuffer, m_outputScreenBufferInfo.dwSize);
+		::SetConsoleWindowInfo(hOutputBuffer, TRUE, &m_outputScreenBufferInfo.srWindow);
+	}
 }
 
 void DoubleBufferingConsoleHandlerInside::ChangeTitle(const Char* szTitle)
@@ -138,8 +163,11 @@ void DoubleBufferingConsoleHandlerInside::ChangeRenderingColor(EConsoleRendering
 
 	m_outputScreenBufferInfo.wAttributes = attr;
 
-	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
-	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
+	HANDLE hCurrentOutputBuffer = m_outputBufferHandles[m_currentOutputBufferIdx];
+	if (hCurrentOutputBuffer == nullptr)
+	{
+		return;
+	}
 
 	if (::SetConsoleTextAttribute(hCurrentOutputBuffer, m_outputScreenBufferInfo.wAttributes) == FALSE)
 	{
@@ -149,8 +177,11 @@ void DoubleBufferingConsoleHandlerInside::ChangeRenderingColor(EConsoleRendering
 
 void DoubleBufferingConsoleHandlerInside::ShowCursor(bool bShow)
 {
-	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
-	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
+	HANDLE hCurrentOutputBuffer = m_outputBufferHandles[m_currentOutputBufferIdx];
+	if (hCurrentOutputBuffer == nullptr)
+	{
+		return;
+	}
 
 	CONSOLE_CURSOR_INFO consoleCursorInfo; // 커서 정보는 CONSOLE_CURSOR_INFO에 있습니다.
 	::GetConsoleCursorInfo(hCurrentOutputBuffer, &consoleCursorInfo);
@@ -164,8 +195,11 @@ void DoubleBufferingConsoleHandlerInside::RenderString(Int32 x, Int32 y, const C
 	DWORD dwWrittenCount = 0;
 	COORD pos = { static_cast<SHORT>(x), static_cast<SHORT>(y) };
 
-	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
-	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
+	HANDLE hCurrentOutputBuffer = m_outputBufferHandles[m_currentOutputBufferIdx];
+	if (hCurrentOutputBuffer == nullptr)
+	{
+		return;
+	}
 
 	Int32 length = strlen(szText);
 	::FillConsoleOutputAttribute(hCurrentOutputBuffer, m_outputScreenBufferInfo.wAttributes, length, pos, &dwWrittenCount);
@@ -181,8 +215,11 @@ void DoubleBufferingConsoleHandlerInside::ClearScreen()
 	DWORD dwWrittenCount = 0;
 	COORD beginPos = { 0, 0 };
 
-	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
-	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
+	HANDLE hCurrentOutputBuffer = m_outputBufferHandles[m_currentOutputBufferIdx];
+	if (hCurrentOutputBuffer == nullptr)
+	{
+		return;
+	}
 
 	if (::FillConsoleOutputCharacter(hCurrentOutputBuffer, ' ', size, beginPos, &dwWrittenCount) == FALSE)
 	{
@@ -200,8 +237,28 @@ void DoubleBufferingConsoleHandlerInside::ClearScreen()
 
 void DoubleBufferingConsoleHandlerInside::FlushInputBuffer()
 {
-	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
-	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
+	::FlushConsoleInputBuffer(m_hStdInput);
+}
+
+void DoubleBufferingConsoleHandlerInside::ResetRenderingColor()
+{
+	HANDLE hCurrentOutputBuffer = m_outputBufferHandles[m_currentOutputBufferIdx];
+	if (hCurrentOutputBuffer == nullptr)
+	{
+		return;
+	}
+
+	m_outputScreenBufferInfo.wAttributes = m_defaultOutputAttr;
+	::SetConsoleTextAttribute(hCurrentOutputBuffer, m_defaultOutputAttr);
+}
+
+void DoubleBufferingConsoleHandlerInside::FlipOutputBuffer()
+{
+	HANDLE hCurrentOutputBuffer = m_outputBufferHandles[m_currentOutputBufferIdx];
+	if (hCurrentOutputBuffer == nullptr)
+	{
+		return;
+	}
 
 	// 백버퍼에 렌더링한 내용을 활성화시키는 부분!
 	::SetConsoleActiveScreenBuffer(hCurrentOutputBuffer);
@@ -216,19 +273,13 @@ void DoubleBufferingConsoleHandlerInside::FlushInputBuffer()
 	}
 }
 
-void DoubleBufferingConsoleHandlerInside::ResetRenderingColor()
-{
-	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
-	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
-
-	m_outputScreenBufferInfo.wAttributes = m_defaultOutputAttr;
-	::SetConsoleTextAttribute(hCurrentOutputBuffer, m_defaultOutputAttr);
-}
-
 COORD DoubleBufferingConsoleHandlerInside::QueryCurrentPosition()
 {
-	HANDLE hCurrentOutputBuffer = m_OutputBuffers[m_currentOutputBufferIdx];
-	RX_ASSERT(LogConsoleHandler, hCurrentOutputBuffer != nullptr);
+	HANDLE hCurrentOutputBuffer = m_outputBufferHandles[m_currentOutputBufferIdx];
+	if (hCurrentOutputBuffer == nullptr)
+	{
+		return COORD{ 0, 0 };
+	}
 
 	::GetConsoleScreenBufferInfo(hCurrentOutputBuffer, &m_outputScreenBufferInfo);
 	return m_outputScreenBufferInfo.dwCursorPosition;
@@ -340,7 +391,7 @@ void DoubleBufferingConsoleHandler::ResetRenderingColor()
 */
 void DoubleBufferingConsoleHandler::FlipOutputBuffer()
 {
-	m_spInside->FlushInputBuffer();
+	m_spInside->FlipOutputBuffer();
 }
 
 void DoubleBufferingConsoleHandler::Pause() const
