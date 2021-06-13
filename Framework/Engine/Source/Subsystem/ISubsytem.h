@@ -8,6 +8,8 @@
 // =====================================================================================
 #pragma once
 
+#include "Common/CommonMacro.h"
+
 // 전방 선언
 class ParentSubsystemData;
 

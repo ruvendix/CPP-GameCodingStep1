@@ -29,6 +29,7 @@ public:
 	void FlipOutputBuffer();
 
 	COORD QueryCurrentPosition();
+	Bool CheckValidCurrentOutputBuffer();
 
 private:
 	Uint32 m_defaultOutputAttr = 0; // 기본 출력 속성입니다.
@@ -44,13 +45,22 @@ void DoubleBufferingConsoleHandlerInside::SetUp()
 	ChangeTitle("Default");
 
 	m_hConsole = ::GetConsoleWindow();
-	RX_ASSERT(LogConsoleHandler, m_hConsole != nullptr);
+	if (m_hConsole == nullptr)
+	{
+		return;
+	}
 
 	m_hStdInput = ::GetStdHandle(STD_INPUT_HANDLE);
-	RX_ASSERT(LogConsoleHandler, m_hStdInput != nullptr);
+	if (m_hStdInput == nullptr)
+	{
+		return;
+	}
 
 	HANDLE hStdOutput = ::GetStdHandle(STD_OUTPUT_HANDLE);
-	RX_ASSERT(LogConsoleHandler, hStdOutput != nullptr);
+	if (hStdOutput == nullptr)
+	{
+		return;
+	}
 
 	::ZeroMemory(&m_outputScreenBufferInfo, sizeof(m_outputScreenBufferInfo));
 	::GetConsoleScreenBufferInfo(hStdOutput, &m_outputScreenBufferInfo);
@@ -284,6 +294,11 @@ COORD DoubleBufferingConsoleHandlerInside::QueryCurrentPosition()
 	::GetConsoleScreenBufferInfo(hCurrentOutputBuffer, &m_outputScreenBufferInfo);
 	return m_outputScreenBufferInfo.dwCursorPosition;
 }
+
+Bool DoubleBufferingConsoleHandlerInside::CheckValidCurrentOutputBuffer()
+{
+	return (m_outputBufferHandles[m_currentOutputBufferIdx] != nullptr);
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 DoubleBufferingConsoleHandler::DoubleBufferingConsoleHandler()
 {
@@ -451,4 +466,12 @@ void DoubleBufferingConsoleHandler::InputString(OUT std::string& str)
 COORD DoubleBufferingConsoleHandler::QueryCurrentPosition()
 {
 	return m_spInside->QueryCurrentPosition();
+}
+
+/*
+	현재 출력 버퍼가 유효한지 확인합니다.
+*/
+Bool DoubleBufferingConsoleHandler::CheckValidCurrentOutputBuffer()
+{
+	return (m_spInside->CheckValidCurrentOutputBuffer());
 }

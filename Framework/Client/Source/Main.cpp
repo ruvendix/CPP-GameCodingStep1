@@ -16,23 +16,20 @@
 #include <EnginePCH.h>
 #include <Scene/GameObject/GameObject.h>
 
-#include <Utility/Time/Stopwatch.h>
-
 Int32 main()
 {
-	FrameworkPathfinder::SetUp();
 	SubsystemLocator::I().SetUp();
 
 	GameObject* pGameObject = new GameObject;
 	pGameObject->SetUp();
 	FIND_SUBSYSTEM(IGameObjectManager)->AddGameObject(pGameObject);
 
-	Int32 callCount = 60 * 50000; // 5ÃÊ
+	Int32 callCount = 60 * 5; // 5ÃÊ
 	while (callCount != 0)
 	{
-		FIND_SUBSYSTEM(IGameObjectManager)->UpdateAllGameObject();
-		FIND_SUBSYSTEM(IConsoleHandler)->ClearScreen();
-		FIND_SUBSYSTEM(IGameObjectManager)->RenderAllGameObject();
+		//FIND_SUBSYSTEM(IGameObjectManager)->UpdateAllGameObject();
+		//FIND_SUBSYSTEM(IConsoleHandler)->ClearScreen();
+		//FIND_SUBSYSTEM(IGameObjectManager)->RenderAllGameObject();
 		FIND_SUBSYSTEM(IFrameManager)->UpdateFrameTime();
 		FIND_SUBSYSTEM(IConsoleHandler)->FlipOutputBuffer();
 

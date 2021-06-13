@@ -40,6 +40,7 @@ public:
 	virtual void InputString(OUT std::string& str) override;
 
 	virtual COORD QueryCurrentPosition() override;
+	virtual Bool CheckValidCurrentOutputBuffer() override;
 
 private:
 	std::unique_ptr<DoubleBufferingConsoleHandlerInside> m_spInside = nullptr;

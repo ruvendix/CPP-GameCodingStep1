@@ -24,6 +24,7 @@
     <ClCompile Include="Source\Subsystem\Logger\LogCategory.cpp" />
     <ClCompile Include="Source\Subsystem\Logger\LogCategoryBase.cpp" />
     <ClCompile Include="Source\Subsystem\Logger\Logger.cpp" />
+    <ClCompile Include="Source\Subsystem\PathManager\PathManager.cpp" />
     <ClCompile Include="Source\Subsystem\SubsystemLocator.cpp" />
     <ClCompile Include="Source\Subsystem\FrameManager\ConstantFrameManager.cpp" />
     <ClCompile Include="Source\Subsystem\TimeHandler\TimeHandler.cpp" />
@@ -63,6 +64,8 @@
     <ClInclude Include="Source\Subsystem\Logger\LogEnum.h" />
     <ClInclude Include="Source\Subsystem\Logger\Logger.h" />
     <ClInclude Include="Source\Subsystem\Logger\LogMacro.h" />
+    <ClInclude Include="Source\Subsystem\PathManager\IPathManager.h" />
+    <ClInclude Include="Source\Subsystem\PathManager\PathManager.h" />
     <ClInclude Include="Source\Subsystem\SubsystemData.h" />
     <ClInclude Include="Source\Subsystem\SubsystemEnum.h" />
     <ClInclude Include="Source\Subsystem\SubsystemInclusion.h" />

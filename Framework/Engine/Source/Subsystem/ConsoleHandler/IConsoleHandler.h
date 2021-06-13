@@ -37,4 +37,5 @@ public:
 	virtual void InputString(OUT std::string& str) PURE_FUNC;
 
 	virtual COORD QueryCurrentPosition() PURE_FUNC;
+	virtual Bool CheckValidCurrentOutputBuffer() PURE_FUNC;
 };

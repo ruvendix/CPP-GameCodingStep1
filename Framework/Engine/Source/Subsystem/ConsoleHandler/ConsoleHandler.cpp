@@ -26,6 +26,7 @@ public:
 	void ResetRenderingColor();
 
 	COORD QueryCurrentPosition();
+	Bool CheckValidCurrentOutputBuffer();
 
 private:
 	Uint32 m_defaultOutputAttr = 0; // 기본 출력 속성입니다.
@@ -38,13 +39,22 @@ private:
 void ConsoleHandlerInside::SetUp()
 {
 	m_hConsole = ::GetConsoleWindow();
-	RX_ASSERT(LogConsoleHandler, m_hConsole != nullptr);
+	if (m_hConsole == nullptr)
+	{
+		return;
+	}
 
 	m_hStdInput = ::GetStdHandle(STD_INPUT_HANDLE);
-	RX_ASSERT(LogConsoleHandler, m_hStdInput != nullptr);
+	if (m_hStdInput == nullptr)
+	{
+		return;
+	}
 
 	m_hStdOutput = ::GetStdHandle(STD_OUTPUT_HANDLE);
-	RX_ASSERT(LogConsoleHandler, m_hStdOutput != nullptr);
+	if (m_hStdOutput == nullptr)
+	{
+		return;
+	}
 
 	::GetConsoleScreenBufferInfo(m_hStdOutput, &m_outputScreenBufferInfo);
 	m_defaultOutputAttr = m_outputScreenBufferInfo.wAttributes;
@@ -160,6 +170,11 @@ COORD ConsoleHandlerInside::QueryCurrentPosition()
 {
 	::GetConsoleScreenBufferInfo(m_hStdOutput, &m_outputScreenBufferInfo);
 	return m_outputScreenBufferInfo.dwCursorPosition;
+}
+
+Bool ConsoleHandlerInside::CheckValidCurrentOutputBuffer()
+{
+	return (m_hStdOutput != nullptr);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 ConsoleHandler::ConsoleHandler()
@@ -308,4 +323,12 @@ void ConsoleHandler::InputString(OUT std::string& str)
 COORD ConsoleHandler::QueryCurrentPosition()
 {
 	return m_spInside->QueryCurrentPosition();
+}
+
+/*
+	현재 출력 버퍼가 유효한지 확인합니다.
+*/
+Bool ConsoleHandler::CheckValidCurrentOutputBuffer()
+{
+	return (m_spInside->CheckValidCurrentOutputBuffer());
 }

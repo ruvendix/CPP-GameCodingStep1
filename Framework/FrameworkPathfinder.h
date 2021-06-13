@@ -15,15 +15,17 @@
 class FrameworkPathfinder final
 {
 public:
-	static void SetUp();
+	void SetUp();
 
-	static const std::string& GetPath() { return m_strPath; }
-	static Uint32 GetFolderPathLength() { return m_folderPathLength; }
+	const std::string& GetAbsolutePath() const { return m_strAbsolutePath; }
+	Uint32 GetRelativePathStartPos() const { return m_relativePathStartPos; }
 
 private:
+	friend class PathManager;
+
 	FrameworkPathfinder() = default;
 	~FrameworkPathfinder() = default;
 
-	static std::string m_strPath;
-	static Uint32 m_folderPathLength;
+	std::string m_strAbsolutePath;
+	Uint32 m_relativePathStartPos;
 };

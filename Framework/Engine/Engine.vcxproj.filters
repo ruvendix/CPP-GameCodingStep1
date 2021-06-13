@@ -89,6 +89,9 @@
     <ClCompile Include="Source\Subsystem\TimeHandler\TimeHandler.cpp">
       <Filter>Source\1_Subsystem\TimeHandler</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Subsystem\PathManager\PathManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnginePCH.h">
@@ -221,6 +224,8 @@
     <ClInclude Include="Source\Subsystem\TimeHandler\TimeHandler.h">
       <Filter>Source\1_Subsystem\TimeHandler</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Subsystem\PathManager\IPathManager.h" />
+    <ClInclude Include="Source\Subsystem\PathManager\PathManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Subsystem\SubsystemLocator.inl">

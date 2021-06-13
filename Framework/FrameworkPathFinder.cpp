@@ -10,12 +10,12 @@
 #include "EnginePCH.h"
 #include "FrameworkPathfinder.h"
 
-std::string FrameworkPathfinder::m_strPath;
-Uint32 FrameworkPathfinder::m_folderPathLength;
-
 void FrameworkPathfinder::SetUp()
 {
-	m_strPath = __FILE__;
-	m_folderPathLength = m_strPath.rfind('\\');
-	m_folderPathLength += 1; // '\\' 포함!
+	m_strAbsolutePath = __FILE__;
+
+	m_relativePathStartPos = m_strAbsolutePath.rfind('\\');
+	m_relativePathStartPos += 1; // '\\' 포함!
+
+	m_strAbsolutePath = m_strAbsolutePath.substr(0, m_relativePathStartPos);
 }

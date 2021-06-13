@@ -19,6 +19,7 @@
 #include "GameObjectManager/IGameObjectManager.h"
 #include "FrameManager/IFrameManager.h"
 #include "TimeHandler/ITimeHandler.h"
+#include "PathManager/IPathManager.h"
 
 #include "ErrorHandler/ErrorMacro.h"
 #include "FrameManager/FrameMacro.h"

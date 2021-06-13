@@ -17,6 +17,7 @@
 #include "ConsoleHandler/ConsoleHandler.h"
 #include "ConsoleHandler/DoubleBufferingConsoleHandler.h"
 #include "TimeHandler/TimeHandler.h"
+#include "PathManager/PathManager.h"
 
 /*
 	기본 서브시스템만 등록합니다.
@@ -29,8 +30,9 @@ void SubsystemLocator::SetUp()
 	RegisterSubsystem<GameObjectManager>();
 	RegisterSubsystem<ConstantFrameManager>();
 	RegisterSubsystem<TimeHandler>();
-	//RegisterSubsystem<ConsoleHandler>();
-	RegisterSubsystem<DoubleBufferingConsoleHandler>();
+	RegisterSubsystem<ConsoleHandler>();
+	//RegisterSubsystem<DoubleBufferingConsoleHandler>();
+	RegisterSubsystem<PathManager>();
 }
 
 /*

@@ -21,7 +21,7 @@ public:
 	Bool LogImpl(const LogCategoryBase* pCategory, const std::string_view& strContent,
 		const Char* szTime, const Char* szFilePath, Int32 line, OUT std::string& strLog);
 
-	void BeginLog(EConsoleRenderingColor eRenderingColor) const;
+	Bool BeginLog(EConsoleRenderingColor eRenderingColor) const;
 	void EndLog() const;
 	void PrintDebugOutputLog(OUT std::string& strLog) const;
 
@@ -59,9 +59,15 @@ Bool LoggerInside::LogImpl(const LogCategoryBase* pCategory, const std::string_v
 /*
 	로그를 출력하기 전에 호출됩니다.
 */
-void LoggerInside::BeginLog(EConsoleRenderingColor eRenderingColor) const
+Bool LoggerInside::BeginLog(EConsoleRenderingColor eRenderingColor) const
 {
+	if (FIND_SUBSYSTEM(IConsoleHandler)->CheckValidCurrentOutputBuffer() == false)
+	{
+		return false;
+	}
+
 	FIND_SUBSYSTEM(IConsoleHandler)->ChangeRenderingColor(eRenderingColor, EConsoleRenderingType::TEXT);
+	return true;
 }
 
 /*
@@ -113,7 +119,7 @@ Bool LoggerInside::MakeLog(const LogCategoryBase* pCategory, const std::string_v
 		}
 		else if (bRelativeFilePath == true)
 		{
-			strLog += (szFilePath + FrameworkPathfinder::GetFolderPathLength());
+			strLog += (strLog.c_str() + FIND_SUBSYSTEM(IPathManager)->FrameworkRelativePathStartPos());
 		}
 
 		// 라인은 파일 경로 옵션이 활성화될 때만 적용됩니다.
@@ -185,7 +191,10 @@ void Logger::Trace(const LogCategoryBase* pCategory, const std::string_view& str
 	return;
 #endif
 
-	m_spInside->BeginLog(EConsoleRenderingColor::GREEN);
+	if (m_spInside->BeginLog(EConsoleRenderingColor::GREEN) == false)
+	{
+		return;
+	}
 
 	std::string strLog;
 	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
@@ -207,7 +216,10 @@ void Logger::Assert(const LogCategoryBase* pCategory, const std::string_view& st
 	return;
 #endif
 
-	m_spInside->BeginLog(EConsoleRenderingColor::AQUA);
+	if (m_spInside->BeginLog(EConsoleRenderingColor::AQUA) == false)
+	{
+		return;
+	}
 
 	std::string strLog;
 	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
@@ -225,7 +237,10 @@ void Logger::Assert(const LogCategoryBase* pCategory, const std::string_view& st
 void Logger::Info(const LogCategoryBase* pCategory, const std::string_view& strContent,
 	const Char* szTime, const Char* szFilePath, Int32 line) const
 {
-	m_spInside->BeginLog(EConsoleRenderingColor::LIGHT_GREEN);
+	if (m_spInside->BeginLog(EConsoleRenderingColor::LIGHT_GREEN) == false)
+	{
+		return;
+	}
 
 	std::string strLog;
 	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
@@ -243,7 +258,10 @@ void Logger::Info(const LogCategoryBase* pCategory, const std::string_view& strC
 void Logger::Warning(const LogCategoryBase* pCategory, const std::string_view& strContent,
 	const Char* szTime, const Char* szFilePath, Int32 line) const
 {
-	m_spInside->BeginLog(EConsoleRenderingColor::YELLOW);
+	if (m_spInside->BeginLog(EConsoleRenderingColor::YELLOW) == false)
+	{
+		return;
+	}
 
 	std::string strLog;
 	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
@@ -262,7 +280,10 @@ void Logger::Warning(const LogCategoryBase* pCategory, const std::string_view& s
 void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& strContent,
 	const Char* szTime, const Char* szFilePath, Int32 line) const
 {
-	m_spInside->BeginLog(EConsoleRenderingColor::LIGHT_YELLOW);
+	if (m_spInside->BeginLog(EConsoleRenderingColor::LIGHT_YELLOW) == false)
+	{
+		return;
+	}
 
 	std::string strLog;
 	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
@@ -281,7 +302,10 @@ void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& str
 void Logger::Fatal(const LogCategoryBase* pCategory, const std::string_view& strContent,
 	const Char* szTime, const Char* szFilePath, Int32 line) const
 {
-	m_spInside->BeginLog(EConsoleRenderingColor::RED);
+	if (m_spInside->BeginLog(EConsoleRenderingColor::RED) == false)
+	{
+		return;
+	}
 
 	std::string strLog;
 	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)

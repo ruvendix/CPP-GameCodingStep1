@@ -35,5 +35,6 @@ public:
 	void CleanUp();
 
 private:
+	// 내부 클래스에 넣어야 하지만 템플릿과 연관된 데이터이므로 그냥 둘게요.(내부 클래스에 넣으면 복잡해짐)
 	std::unordered_map<ESubsystemType, ISubsystem*> m_mapSubsystem;
 };
