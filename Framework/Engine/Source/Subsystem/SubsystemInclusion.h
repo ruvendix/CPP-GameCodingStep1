@@ -20,6 +20,7 @@
 #include "FrameManager/IFrameManager.h"
 #include "TimeHandler/ITimeHandler.h"
 #include "PathManager/IPathManager.h"
+#include "FileHandler/IFileHandler.h"
 
 #include "ErrorHandler/ErrorMacro.h"
 #include "FrameManager/FrameMacro.h"

@@ -20,5 +20,6 @@ enum class ESubsystemType : Int32
 	FRAME_TIME_MANAGER,
 	TIME_HANDLER,
 	PATH_MANAGER,
+	FILE_HANDLER,
 	COUNT,
 };

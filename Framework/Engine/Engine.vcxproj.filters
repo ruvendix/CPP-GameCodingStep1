@@ -44,6 +44,12 @@
     <Filter Include="Source\1_Subsystem\TimeHandler">
       <UniqueIdentifier>{4a819fd7-083d-438a-a6ac-600ba723ac30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\1_Subsystem\PathManager">
+      <UniqueIdentifier>{15584caa-d9a0-4e55-a8c3-32858f458435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\1_Subsystem\FileHandler">
+      <UniqueIdentifier>{5892db4d-ab1c-43c0-bf52-40e7df2669ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\EnginePCH.cpp">
@@ -70,7 +76,6 @@
     <ClCompile Include="Source\Subsystem\GameObjectManager\GameObjectManager.cpp">
       <Filter>Source\1_Subsystem\GameObjectManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\FrameworkPathFinder.cpp" />
     <ClCompile Include="Source\Subsystem\ConsoleHandler\DoubleBufferingConsoleHandler.cpp">
       <Filter>Source\1_Subsystem\ConsoleHandler</Filter>
     </ClCompile>
@@ -90,6 +95,10 @@
       <Filter>Source\1_Subsystem\TimeHandler</Filter>
     </ClCompile>
     <ClCompile Include="Source\Subsystem\PathManager\PathManager.cpp">
+      <Filter>Source\1_Subsystem\PathManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\FrameworkPathFinder.cpp" />
+    <ClCompile Include="Source\Subsystem\FileHandler\FileHandler.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -184,7 +193,6 @@
     <ClInclude Include="Source\Subsystem\ISubsytem.h">
       <Filter>Source\1_Subsystem</Filter>
     </ClInclude>
-    <ClInclude Include="..\FrameworkPathfinder.h" />
     <ClInclude Include="Source\Scene\GameObject\GameObject.h">
       <Filter>Source\2_Scene\GameObject</Filter>
     </ClInclude>
@@ -224,8 +232,25 @@
     <ClInclude Include="Source\Subsystem\TimeHandler\TimeHandler.h">
       <Filter>Source\1_Subsystem\TimeHandler</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Subsystem\PathManager\IPathManager.h" />
-    <ClInclude Include="Source\Subsystem\PathManager\PathManager.h" />
+    <ClInclude Include="Source\Subsystem\PathManager\IPathManager.h">
+      <Filter>Source\1_Subsystem\PathManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\PathManager\PathManager.h">
+      <Filter>Source\1_Subsystem\PathManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\FrameworkPathfinder.h" />
+    <ClInclude Include="Source\Subsystem\FileHandler\FileEnum.h">
+      <Filter>Source\1_Subsystem\FileHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\FileHandler\FileHandler.h">
+      <Filter>Source\1_Subsystem\FileHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\FileHandler\IFileHandler.h">
+      <Filter>Source\1_Subsystem\FileHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Subsystem\TimeHandler\TimeEnum.h">
+      <Filter>Source\1_Subsystem\TimeHandler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Subsystem\SubsystemLocator.inl">

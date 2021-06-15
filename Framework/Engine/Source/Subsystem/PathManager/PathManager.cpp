@@ -45,3 +45,10 @@ const std::string& PathManager::ClientAbsolutePath() const
 {
 	return m_strClientAbsolutePath;
 }
+
+const Char* PathManager::ExtractExtension(const std::string_view& strFilePath) const
+{
+	Uint32 extensionPos = strFilePath.rfind('.');
+	extensionPos += 1; // '.' Æ÷ÇÔ!
+	return (strFilePath.data() + extensionPos);
+}

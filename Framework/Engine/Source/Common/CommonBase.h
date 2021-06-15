@@ -9,6 +9,8 @@
 #pragma once
 
 #pragma region วฅมุ
+#include <direct.h>
+
 #include <cstdio>
 #include <cstdlib>
 #include <cassert>

@@ -23,22 +23,22 @@ public:
 	virtual void CleanUp() override;
 
 	virtual void Trace(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) const override;
+		const Char* szFilePath, Int32 line) const override;
 
 	virtual void Assert(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) const override;
+		const Char* szFilePath, Int32 line) const override;
 
 	virtual void Info(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) const override;
+		const Char* szFilePath, Int32 line) const override;
 
 	virtual void Warning(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) const override;
+		const Char* szFilePath, Int32 line) const override;
 
 	virtual void Error(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) const override;
+		const Char* szFilePath, Int32 line) const override;
 
 	virtual void Fatal(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line) const override;
+		const Char* szFilePath, Int32 line) const override;
 
 private:
 	std::unique_ptr<LoggerInside> m_spInside = nullptr;

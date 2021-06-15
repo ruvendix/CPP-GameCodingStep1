@@ -55,6 +55,7 @@ void ConstantFrameManagerInside::UpdateFrameTime(ConstantFrameManager& constantF
 
 	if (m_FPSTimer.UpdateTime() == true)
 	{
+		RX_SIMPLE_INFO("Å×½ºÆ®!");
 		//RX_SIMPLE_TRACE("%d", m_frameRate);
 		spData->SetFrameRate(0);
 	}

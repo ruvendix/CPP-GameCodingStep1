@@ -19,31 +19,38 @@ public:
 	~LoggerInside() = default;
 
 	Bool LogImpl(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line, OUT std::string& strLog);
+		const Char* szFilePath, Int32 line, OUT std::string& strLog);
 
 	Bool BeginLog(EConsoleRenderingColor eRenderingColor) const;
 	void EndLog() const;
 	void PrintDebugOutputLog(OUT std::string& strLog) const;
 
 	Bool MakeLog(const LogCategoryBase* pCategory, const std::string_view& strContent,
-		const Char* szTime, const Char* szFilePath, Int32 line, OUT std::string& strLog) const;
+		const Char* szFilePath, Int32 line, OUT std::string& strLog) const;
 
-	bool IsActivateOption(EnumIdx::LogOption::Data value) const { return m_bitsetDetail.test(value); }
+	bool IsActivateOption(EnumIdx::LogOption::Data value) const { return m_logOption.test(value); }
 
-	void ActivateOption(EnumIdx::LogOption::Data value) { m_bitsetDetail.set(value, true); }
-	void DeactivateOption(EnumIdx::LogOption::Data value) { m_bitsetDetail.set(value, false); }
+	void ActivateOption(EnumIdx::LogOption::Data value) { m_logOption.set(value, true); }
+	void DeactivateOption(EnumIdx::LogOption::Data value) { m_logOption.set(value, false); }
+
+	Bool WriteFile(const std::string_view& strLog);
+
+	Bool OpenLogFileStream();
+	void CloseLogFileStream();
 
 private:
-	std::bitset<EnumIdx::LogOption::COUNT> m_bitsetDetail;
+	FILE* m_pLogFile = nullptr;
+	std::string m_strLogFileName;
+	std::bitset<EnumIdx::LogOption::COUNT> m_logOption;
 };
 
 /*
 	공통 구현부입니다.
 */
 Bool LoggerInside::LogImpl(const LogCategoryBase* pCategory, const std::string_view& strContent,
-	const Char* szTime, const Char* szFilePath, Int32 line, OUT std::string& strLog)
+	const Char* szFilePath, Int32 line, OUT std::string& strLog)
 {
-	if (MakeLog(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (MakeLog(pCategory, strContent, szFilePath, line, strLog) == false)
 	{
 		EndLog();
 		return false;
@@ -82,7 +89,7 @@ void LoggerInside::EndLog() const
 	전달받은 인자들을 이용해서 로그 문자열을 만듭니다.
 */
 Bool LoggerInside::MakeLog(const LogCategoryBase* pCategory, const std::string_view& strContent,
-	const Char* szTime, const Char* szFilePath, Int32 line, OUT std::string& strLog) const
+	const Char* szFilePath, Int32 line, OUT std::string& strLog) const
 {
 	std::string strCategory;
 	if (pCategory != nullptr)
@@ -95,11 +102,13 @@ Bool LoggerInside::MakeLog(const LogCategoryBase* pCategory, const std::string_v
 		strCategory = pCategory->GetName() + ": ";
 	}
 
-	if ((IsActivateOption(EnumIdx::LogOption::TIME)) &&
-		(szTime != 0))
+	if (IsActivateOption(EnumIdx::LogOption::TIME))
 	{
+		std::string strTime;
+		FIND_SUBSYSTEM(ITimeHandler)->MakeLocalTimeString(strTime, ':');
+
 		strLog += " [";
-		strLog += szTime;
+		strLog += strTime;
 		strLog += "]";
 	}
 
@@ -119,7 +128,7 @@ Bool LoggerInside::MakeLog(const LogCategoryBase* pCategory, const std::string_v
 		}
 		else if (bRelativeFilePath == true)
 		{
-			strLog += (strLog.c_str() + FIND_SUBSYSTEM(IPathManager)->FrameworkRelativePathStartPos());
+			strLog += (szFilePath + FIND_SUBSYSTEM(IPathManager)->FrameworkRelativePathStartPos());
 		}
 
 		// 라인은 파일 경로 옵션이 활성화될 때만 적용됩니다.
@@ -144,6 +153,44 @@ Bool LoggerInside::MakeLog(const LogCategoryBase* pCategory, const std::string_v
 
 	strLog.insert(0, strCategory);
 	return true;
+}
+
+Bool LoggerInside::WriteFile(const std::string_view& strLog)
+{
+	if (OpenLogFileStream() == false)
+	{
+		return false;
+	}
+
+	std::fprintf(m_pLogFile, strLog.data());
+
+	CloseLogFileStream();
+	return true;
+}
+
+Bool LoggerInside::OpenLogFileStream()
+{
+	EAccessMode accessMode = EAccessMode::UNKNOWN;
+
+	if (m_pLogFile == nullptr)
+	{
+		m_strLogFileName = FIND_SUBSYSTEM(IPathManager)->ClientAbsolutePath() + "Log\\";
+		_mkdir(m_strLogFileName.c_str());
+		
+		std::string strLocalTime;
+		FIND_SUBSYSTEM(ITimeHandler)->MakeLocalTimeString(strLocalTime, '_');
+		m_strLogFileName += "[" + strLocalTime + "].log";
+		
+		accessMode = EAccessMode::WRITE;
+	}
+
+	accessMode = EAccessMode::APPEND;
+	return FIND_SUBSYSTEM(IFileHandler)->OpenFileStream(m_strLogFileName, EFileMode::TEXT, accessMode, &m_pLogFile);
+}
+
+void LoggerInside::CloseLogFileStream()
+{
+	FIND_SUBSYSTEM(IFileHandler)->CloseFileStream(m_pLogFile);
 }
 
 /*
@@ -185,7 +232,7 @@ void Logger::CleanUp()
 	디버그 모드에서만 출력하는 로그입니다.
 */
 void Logger::Trace(const LogCategoryBase* pCategory, const std::string_view& strContent,
-	const Char* szTime, const Char* szFilePath, Int32 line) const
+	const Char* szFilePath, Int32 line) const
 {
 #ifndef _DEBUG
 	return;
@@ -197,7 +244,7 @@ void Logger::Trace(const LogCategoryBase* pCategory, const std::string_view& str
 	}
 
 	std::string strLog;
-	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_spInside->LogImpl(pCategory, strContent, szFilePath, line, strLog) == false)
 	{
 		return;
 	}
@@ -210,7 +257,7 @@ void Logger::Trace(const LogCategoryBase* pCategory, const std::string_view& str
 	해당 로그가 출력되면 프로그램을 일시정지합니다.
 */
 void Logger::Assert(const LogCategoryBase* pCategory, const std::string_view& strContent,
-	const Char* szTime, const Char* szFilePath, Int32 line) const
+	const Char* szFilePath, Int32 line) const
 {
 #ifndef _DEBUG
 	return;
@@ -222,7 +269,7 @@ void Logger::Assert(const LogCategoryBase* pCategory, const std::string_view& st
 	}
 
 	std::string strLog;
-	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_spInside->LogImpl(pCategory, strContent, szFilePath, line, strLog) == false)
 	{
 		return;
 	}
@@ -235,7 +282,7 @@ void Logger::Assert(const LogCategoryBase* pCategory, const std::string_view& st
 	프로그램 화면과 파일에 출력하는 로그입니다.
 */
 void Logger::Info(const LogCategoryBase* pCategory, const std::string_view& strContent,
-	const Char* szTime, const Char* szFilePath, Int32 line) const
+	const Char* szFilePath, Int32 line) const
 {
 	if (m_spInside->BeginLog(EConsoleRenderingColor::LIGHT_GREEN) == false)
 	{
@@ -243,12 +290,13 @@ void Logger::Info(const LogCategoryBase* pCategory, const std::string_view& strC
 	}
 
 	std::string strLog;
-	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_spInside->LogImpl(pCategory, strContent, szFilePath, line, strLog) == false)
 	{
 		return;
 	}
 
 	m_spInside->EndLog();
+	m_spInside->WriteFile(strLog);
 }
 
 /*
@@ -256,7 +304,7 @@ void Logger::Info(const LogCategoryBase* pCategory, const std::string_view& strC
 	사용자에게 경고하고 싶을 때 사용합니다.
 */
 void Logger::Warning(const LogCategoryBase* pCategory, const std::string_view& strContent,
-	const Char* szTime, const Char* szFilePath, Int32 line) const
+	const Char* szFilePath, Int32 line) const
 {
 	if (m_spInside->BeginLog(EConsoleRenderingColor::YELLOW) == false)
 	{
@@ -264,13 +312,14 @@ void Logger::Warning(const LogCategoryBase* pCategory, const std::string_view& s
 	}
 
 	std::string strLog;
-	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_spInside->LogImpl(pCategory, strContent, szFilePath, line, strLog) == false)
 	{
 		return;
 	}
 
 	FIND_SUBSYSTEM(IConsoleHandler)->Pause();
 	m_spInside->EndLog();
+	m_spInside->WriteFile(strLog);
 }
 
 /*
@@ -278,7 +327,7 @@ void Logger::Warning(const LogCategoryBase* pCategory, const std::string_view& s
 	에러는 에러코드에 해당되는 내용만 사용할 수 있습니다.
 */
 void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& strContent,
-	const Char* szTime, const Char* szFilePath, Int32 line) const
+	const Char* szFilePath, Int32 line) const
 {
 	if (m_spInside->BeginLog(EConsoleRenderingColor::LIGHT_YELLOW) == false)
 	{
@@ -286,13 +335,14 @@ void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& str
 	}
 
 	std::string strLog;
-	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_spInside->LogImpl(pCategory, strContent, szFilePath, line, strLog) == false)
 	{
 		return;
 	}
 
 	DebugBreak();
 	m_spInside->EndLog();
+	m_spInside->WriteFile(strLog);
 }
 
 /*
@@ -300,7 +350,7 @@ void Logger::Error(const LogCategoryBase* pCategory, const std::string_view& str
 	사용자가 확인하면 프로그램을 즉시 종료합니다.
 */
 void Logger::Fatal(const LogCategoryBase* pCategory, const std::string_view& strContent,
-	const Char* szTime, const Char* szFilePath, Int32 line) const
+	const Char* szFilePath, Int32 line) const
 {
 	if (m_spInside->BeginLog(EConsoleRenderingColor::RED) == false)
 	{
@@ -308,11 +358,13 @@ void Logger::Fatal(const LogCategoryBase* pCategory, const std::string_view& str
 	}
 
 	std::string strLog;
-	if (m_spInside->LogImpl(pCategory, strContent, szTime, szFilePath, line, strLog) == false)
+	if (m_spInside->LogImpl(pCategory, strContent, szFilePath, line, strLog) == false)
 	{
 		return;
 	}
 
 	m_spInside->EndLog();
+	m_spInside->WriteFile(strLog);
+
 	std::abort();
 }

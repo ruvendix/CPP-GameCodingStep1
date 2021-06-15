@@ -58,3 +58,5 @@
 # Intermediate
 /Example/Binaries/Intermediate
 /Framework/Binaries/Intermediate
+/Framework/Binaries/Client/Log/*.log
+/Framework/Client/*.log

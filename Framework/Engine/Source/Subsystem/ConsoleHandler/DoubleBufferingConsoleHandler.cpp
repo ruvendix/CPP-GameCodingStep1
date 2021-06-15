@@ -233,13 +233,13 @@ void DoubleBufferingConsoleHandlerInside::ClearScreen()
 
 	if (::FillConsoleOutputCharacter(hCurrentOutputBuffer, ' ', size, beginPos, &dwWrittenCount) == FALSE)
 	{
-		RX_ERROR(LogConsoleHandler, EErrorCode::FAILED_CLEAR_SCREEN);
+		RX_ERROR(LogConsoleHandler, EErrorCode::CLEAR_SCREEN_FAIL);
 	}
 
 	// 콘솔창 출력 버퍼 속성이 적용된 부분을 지웁니다.
 	if (::FillConsoleOutputAttribute(hCurrentOutputBuffer, m_defaultOutputAttr, size, beginPos, &dwWrittenCount) == FALSE)
 	{
-		RX_ERROR(LogConsoleHandler, EErrorCode::FAILED_CLEAR_SCREEN);
+		RX_ERROR(LogConsoleHandler, EErrorCode::CLEAR_SCREEN_FAIL);
 	}
 
 	MovePosition(beginPos.X, beginPos.Y); // 커서 위치를 처음으로 이동시킵니다.

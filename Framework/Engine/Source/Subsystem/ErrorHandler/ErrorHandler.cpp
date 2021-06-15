@@ -27,8 +27,11 @@ void ErrorHandlerInside::SetUp()
 {
 	m_mapErrorString.emplace(EErrorCode::UNKNOWN, "알 수 없는 에러!");
 	m_mapErrorString.emplace(EErrorCode::INDIRECT_NULLPTR, "nullptr을 역참조할 수 없음!!");
-	m_mapErrorString.emplace(EErrorCode::FAILED_CLEAR_SCREEN, "화면 지우기 실패!");
+	m_mapErrorString.emplace(EErrorCode::CLEAR_SCREEN_FAIL, "화면 지우기 실패!");
 	m_mapErrorString.emplace(EErrorCode::INVALID_SCREEN_COLOR, "유효하지 않은 화면 색상!");
+	m_mapErrorString.emplace(EErrorCode::OUT_OF_GAMEOBJECT, "더 이상 게임 오브젝트를 생성할 수 없음!");
+	m_mapErrorString.emplace(EErrorCode::OPEN_FILE_STREAM_FAIL, "파일 스트림 열기 실패!");
+	m_mapErrorString.emplace(EErrorCode::CLOSE_FILE_STREAM_FAIL, "파일 스트림 닫기 실패!");
 }
 
 const Char* ErrorHandlerInside::FindErrorString(EErrorCode errorCode)

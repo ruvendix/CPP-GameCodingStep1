@@ -22,4 +22,6 @@ public:
 	virtual const Uint32 FrameworkRelativePathStartPos() const PURE_FUNC;
 
 	virtual const std::string& ClientAbsolutePath() const PURE_FUNC;
+
+	virtual const Char* ExtractExtension(const std::string_view& strFilePath) const PURE_FUNC;
 };

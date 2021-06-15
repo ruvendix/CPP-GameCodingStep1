@@ -28,12 +28,12 @@
 #pragma region 로그 카테고리가 없는 버전입니다.
 #ifdef _DEBUG
 #define RX_SIMPLE_TRACE(szFormat, ...)\
-    FIND_SUBSYSTEM(ILogger)->Trace(nullptr, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+    FIND_SUBSYSTEM(ILogger)->Trace(nullptr, MakeFormatString(szFormat, __VA_ARGS__), __FILE__, __LINE__)
 
 #define RX_SIMPLE_ASSERT(expression)\
     if (!(expression))\
     {\
-        FIND_SUBSYSTEM(ILogger)->Assert(nullptr, #expression, __TIME__, __FILE__, __LINE__);\
+        FIND_SUBSYSTEM(ILogger)->Assert(nullptr, #expression, __FILE__, __LINE__);\
     }
 #else
 #define RX_SIMPLE_TRACE(szFormat, ...) __noop
@@ -41,29 +41,29 @@
 #endif
 
 #define RX_SIMPLE_INFO(szFormat, ...)\
-    FIND_SUBSYSTEM(ILogger)->Info(nullptr, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+    FIND_SUBSYSTEM(ILogger)->Info(nullptr, MakeFormatString(szFormat, __VA_ARGS__), __FILE__, __LINE__)
 
 #define RX_SIMPLE_WARNING(szFormat, ...)\
-    FIND_SUBSYSTEM(ILogger)->Warning(nullptr, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+    FIND_SUBSYSTEM(ILogger)->Warning(nullptr, MakeFormatString(szFormat, __VA_ARGS__), __FILE__, __LINE__)
 
 #define RX_SIMPLE_ERROR(errorCode, ...)\
     FIND_SUBSYSTEM(IErrorHandler)->Data()->SetLastErrorCode(errorCode);\
     FIND_SUBSYSTEM(ILogger)->Error(nullptr,\
-        MakeFormatString(FIND_SUBSYSTEM(IErrorHandler)->LastErrorString(), __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+        MakeFormatString(FIND_SUBSYSTEM(IErrorHandler)->LastErrorString(), __VA_ARGS__), __FILE__, __LINE__)
 
 #define RX_SIMPLE_FATAL(szFormat, ...)\
-    FIND_SUBSYSTEM(ILogger)->Fatal(nullptr, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+    FIND_SUBSYSTEM(ILogger)->Fatal(nullptr, MakeFormatString(szFormat, __VA_ARGS__), __FILE__, __LINE__)
 #pragma endregion
 
 #pragma region 로그 카테고리가 있는 버전입니다.
 #ifdef _DEBUG
 #define RX_TRACE(logCategory, szFormat, ...)\
-    FIND_SUBSYSTEM(ILogger)->Trace(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+    FIND_SUBSYSTEM(ILogger)->Trace(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __FILE__, __LINE__)
 
 #define RX_ASSERT(logCategory, expression)\
     if (!(expression))\
     {\
-        FIND_SUBSYSTEM(ILogger)->Assert(&g_##logCategory, #expression, __TIME__, __FILE__, __LINE__);\
+        FIND_SUBSYSTEM(ILogger)->Assert(&g_##logCategory, #expression, __FILE__, __LINE__);\
     }
 #else
 #define RX_TRACE(logCategory, szFormat, ...) __noop
@@ -71,16 +71,16 @@
 #endif
 
 #define RX_INFO(logCategory, szFormat, ...)\
-    FIND_SUBSYSTEM(ILogger)->Info(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+    FIND_SUBSYSTEM(ILogger)->Info(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __FILE__, __LINE__)
 
 #define RX_WARNING(logCategory, szFormat, ...)\
-    FIND_SUBSYSTEM(ILogger)->Warning(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+    FIND_SUBSYSTEM(ILogger)->Warning(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __FILE__, __LINE__)
 
 #define RX_ERROR(logCategory, errorCode, ...)\
     FIND_SUBSYSTEM(IErrorHandler)->Data()->SetLastErrorCode(errorCode);\
     FIND_SUBSYSTEM(ILogger)->Error(&g_##logCategory,\
-        MakeFormatString(FIND_SUBSYSTEM(IErrorHandler)->LastErrorString(), __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+        MakeFormatString(FIND_SUBSYSTEM(IErrorHandler)->LastErrorString(), __VA_ARGS__), __FILE__, __LINE__)
 
 #define RX_FATAL(logCategory, szFormat, ...)\
-    FIND_SUBSYSTEM(ILogger)->Fatal(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __TIME__, __FILE__, __LINE__)
+    FIND_SUBSYSTEM(ILogger)->Fatal(&g_##logCategory, MakeFormatString(szFormat, __VA_ARGS__), __FILE__, __LINE__)
 #pragma endregion

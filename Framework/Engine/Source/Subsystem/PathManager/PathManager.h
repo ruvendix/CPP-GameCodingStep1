@@ -26,6 +26,8 @@ public:
 
 	virtual const std::string& ClientAbsolutePath() const override;
 
+	virtual const Char* ExtractExtension(const std::string_view& strFilePath) const override;
+
 private:
 	// 내부에서만 사용하는 데이터는 내부 클래스를 이용하지만 FrameworkPathfinder는 예외입니다.
 	// FrameworkPathfinder는 외부에서 생성 및 소멸을 막으려고 friend를 이용하는데

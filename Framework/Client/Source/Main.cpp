@@ -27,9 +27,9 @@ Int32 main()
 	Int32 callCount = 60 * 5; // 5ÃÊ
 	while (callCount != 0)
 	{
-		//FIND_SUBSYSTEM(IGameObjectManager)->UpdateAllGameObject();
-		//FIND_SUBSYSTEM(IConsoleHandler)->ClearScreen();
-		//FIND_SUBSYSTEM(IGameObjectManager)->RenderAllGameObject();
+		FIND_SUBSYSTEM(IGameObjectManager)->UpdateAllGameObject();
+		FIND_SUBSYSTEM(IConsoleHandler)->ClearScreen();
+		FIND_SUBSYSTEM(IGameObjectManager)->RenderAllGameObject();
 		FIND_SUBSYSTEM(IFrameManager)->UpdateFrameTime();
 		FIND_SUBSYSTEM(IConsoleHandler)->FlipOutputBuffer();
 

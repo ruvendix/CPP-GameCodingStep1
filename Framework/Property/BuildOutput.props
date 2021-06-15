@@ -6,6 +6,11 @@
     <OutDir>$(SolutionDir)Binaries\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)Binaries\Intermediate\$(ProjectName)\</IntDir>
   </PropertyGroup>
-  <ItemDefinitionGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

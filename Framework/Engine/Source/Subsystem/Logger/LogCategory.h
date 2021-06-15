@@ -13,4 +13,5 @@
 
 DECLARE_LOG_CATEGORY(LogDefault);
 DECLARE_LOG_CATEGORY(LogConsoleHandler);
+DECLARE_LOG_CATEGORY(LogFileHandler);
 DECLARE_LOG_CATEGORY(LogGameObjectManager);
