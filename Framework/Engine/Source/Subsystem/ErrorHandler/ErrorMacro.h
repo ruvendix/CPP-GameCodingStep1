@@ -11,5 +11,5 @@
 #define CHECK_NULLPTR(ptr)\
 	if (ptr == nullptr)\
 	{\
-		RX_SIMPLE_ERROR(EErrorCode::INDIRECT_NULLPTR);\
+		RX_ERROR(EErrorCode::INDIRECT_NULLPTR);\
 	}

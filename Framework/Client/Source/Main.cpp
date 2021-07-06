@@ -20,21 +20,21 @@ Int32 main()
 {
 	SubsystemLocator::I().SetUp();
 
-	GameObject* pGameObject = new GameObject;
-	pGameObject->SetUp();
-	FIND_SUBSYSTEM(IGameObjectManager)->AddGameObject(pGameObject);
+	FIND_SUBSYSTEM(IConsoleHandler)->AdjustSize(120, 20);
+	FIND_SUBSYSTEM(ILogger)->Data()->DeactivateOption(EnumIdx::LogOption::TIME);
+	FIND_SUBSYSTEM(ILogger)->Data()->DeactivateOption(EnumIdx::LogOption::LINE);
+	FIND_SUBSYSTEM(ILogger)->Data()->DeactivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);
+	FIND_SUBSYSTEM(ILogger)->Data()->DeactivateOption(EnumIdx::LogOption::RELATIVE_FILEPATH);
 
-	Int32 callCount = 60 * 5; // 5초
-	while (callCount != 0)
-	{
-		FIND_SUBSYSTEM(IGameObjectManager)->UpdateAllGameObject();
-		FIND_SUBSYSTEM(IConsoleHandler)->ClearScreen();
-		FIND_SUBSYSTEM(IGameObjectManager)->RenderAllGameObject();
-		FIND_SUBSYSTEM(IFrameManager)->UpdateFrameTime();
-		FIND_SUBSYSTEM(IConsoleHandler)->FlipOutputBuffer();
+	std::string frameworkAbsolutePath = FIND_SUBSYSTEM(IPathManager)->FrameworkAbsolutePath();
+	std::string frameworkRelativePath = FIND_SUBSYSTEM(IPathManager)->FrameworkRelativePath();
+	std::string clientAbsolutePath = FIND_SUBSYSTEM(IPathManager)->ClientAbsolutePath();
+	std::string clientRelativePath = FIND_SUBSYSTEM(IPathManager)->ClientRelativePath();
 
-		--callCount;
-	}
+	RX_INFO("프레임워크 절대경로: %s", frameworkAbsolutePath.c_str());
+	RX_INFO("프레임워크 상대경로: %s", frameworkRelativePath.c_str());
+	RX_INFO("클라이언트 절대경로: %s", clientAbsolutePath.c_str());
+	RX_INFO("클라이언트 상대경로: %s", clientRelativePath.c_str());
 
 	SubsystemLocator::I().CleanUp();
 	return 0;

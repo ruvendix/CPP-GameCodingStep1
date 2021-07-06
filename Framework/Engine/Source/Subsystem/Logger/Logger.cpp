@@ -15,7 +15,11 @@
 class LoggerInside final
 {
 public:
-	LoggerInside() = default;
+	LoggerInside(Logger* pOutside)
+	{
+		m_pOutside = pOutside;
+	}
+
 	~LoggerInside() = default;
 
 	Bool LogImpl(const LogCategoryBase* pCategory, const std::string_view& strContent,
@@ -28,20 +32,16 @@ public:
 	Bool MakeLog(const LogCategoryBase* pCategory, const std::string_view& strContent,
 		const Char* szFilePath, Int32 line, OUT std::string& strLog) const;
 
-	bool IsActivateOption(EnumIdx::LogOption::Data value) const { return m_logOption.test(value); }
-
-	void ActivateOption(EnumIdx::LogOption::Data value) { m_logOption.set(value, true); }
-	void DeactivateOption(EnumIdx::LogOption::Data value) { m_logOption.set(value, false); }
-
 	Bool WriteFile(const std::string_view& strLog);
 
 	Bool OpenLogFileStream();
 	void CloseLogFileStream();
 
 private:
+	Logger* m_pOutside = nullptr;
+
 	FILE* m_pLogFile = nullptr;
-	std::string m_strLogFileName;
-	std::bitset<EnumIdx::LogOption::COUNT> m_logOption;
+	std::string m_strLogFileName;	
 };
 
 /*
@@ -102,7 +102,8 @@ Bool LoggerInside::MakeLog(const LogCategoryBase* pCategory, const std::string_v
 		strCategory = pCategory->GetName() + ": ";
 	}
 
-	if (IsActivateOption(EnumIdx::LogOption::TIME))
+	Logger::DataPtr spData = m_pOutside->Data();
+	if (spData->IsActivateOption(EnumIdx::LogOption::TIME))
 	{
 		std::string strTime;
 		FIND_SUBSYSTEM(ITimeHandler)->MakeLocalTimeString(strTime, ':');
@@ -112,8 +113,8 @@ Bool LoggerInside::MakeLog(const LogCategoryBase* pCategory, const std::string_v
 		strLog += "]";
 	}
 
-	bool bAbsoluteFilePath = IsActivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);
-	bool bRelativeFilePath = IsActivateOption(EnumIdx::LogOption::RELATIVE_FILEPATH);
+	bool bAbsoluteFilePath = spData->IsActivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);
+	bool bRelativeFilePath = spData->IsActivateOption(EnumIdx::LogOption::RELATIVE_FILEPATH);
 	bool bAnyFilePath = (bAbsoluteFilePath || bRelativeFilePath);
 
 	if ((bAnyFilePath == true) &&
@@ -132,7 +133,7 @@ Bool LoggerInside::MakeLog(const LogCategoryBase* pCategory, const std::string_v
 		}
 
 		// 라인은 파일 경로 옵션이 활성화될 때만 적용됩니다.
-		if (IsActivateOption(EnumIdx::LogOption::LINE))
+		if (spData->IsActivateOption(EnumIdx::LogOption::LINE))
 		{
 			strLog += "(";
 			strLog += std::to_string(line);
@@ -174,7 +175,7 @@ Bool LoggerInside::OpenLogFileStream()
 
 	if (m_pLogFile == nullptr)
 	{
-		m_strLogFileName = FIND_SUBSYSTEM(IPathManager)->ClientAbsolutePath() + "Log\\";
+		m_strLogFileName = FIND_SUBSYSTEM(IPathManager)->ClientRelativePath() + "Log\\";
 		_mkdir(m_strLogFileName.c_str());
 		
 		std::string strLocalTime;
@@ -204,7 +205,7 @@ void LoggerInside::PrintDebugOutputLog(OUT std::string& strLog) const
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 Logger::Logger()
 {
-	m_spInside = std::make_unique<LoggerInside>();
+	m_spInside = std::make_unique<LoggerInside>(this);
 }
 
 /*
@@ -213,10 +214,11 @@ Logger::Logger()
 */
 void Logger::SetUp()
 {
-	m_spInside->ActivateOption(EnumIdx::LogOption::TIME);
-	//m_spInside->ActivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);
-	m_spInside->ActivateOption(EnumIdx::LogOption::RELATIVE_FILEPATH);
-	m_spInside->ActivateOption(EnumIdx::LogOption::LINE);
+	DataPtr spData = Data();
+	spData->ActivateOption(EnumIdx::LogOption::TIME);
+	spData->ActivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);
+	spData->ActivateOption(EnumIdx::LogOption::RELATIVE_FILEPATH);
+	spData->ActivateOption(EnumIdx::LogOption::LINE);
 }
 
 /*

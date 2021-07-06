@@ -86,7 +86,7 @@ Bool FileHandler::OpenFileStream(const std::string_view& strFilePath,
 	}
 
 	*ppFile = std::fopen(strFilePath.data(), strMode.c_str());
-	RX_ASSERT(LogFileHandler, *ppFile != nullptr);
+	RX_ASSERT2(LogFileHandler, *ppFile != nullptr);
 
 	return true;
 }
@@ -95,6 +95,6 @@ void FileHandler::CloseFileStream(FILE* pFile) const
 {
 	if (std::fclose(pFile) != 0)
 	{
-		RX_ERROR(LogFileHandler, EErrorCode::CLOSE_FILE_STREAM_FAIL);
+		RX_ERROR2(LogFileHandler, EErrorCode::CLOSE_FILE_STREAM_FAIL);
 	}
 }

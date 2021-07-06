@@ -34,7 +34,7 @@ Float TimerInside::UpdateTime()
 
 void TimerInside::ResetTime(Float targetTime)
 {
-	RX_SIMPLE_ASSERT(m_localTime >= targetTime);
+	RX_ASSERT(m_localTime >= targetTime);
 	m_localTime -= targetTime;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +62,7 @@ Bool Timer::UpdateTime()
 	Float remainTime = m_targetTime - m_spInside->UpdateTime();
 	if (remainTime > 0.0f)
 	{
-		RX_SIMPLE_TRACE("remainTime: %f", remainTime);
+		RX_TRACE("remainTime: %f", remainTime);
 		return false;
 	}
 

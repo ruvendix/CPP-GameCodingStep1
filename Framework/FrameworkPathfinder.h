@@ -18,7 +18,9 @@ public:
 	void SetUp();
 
 	const std::string& GetAbsolutePath() const { return m_strAbsolutePath; }
-	Uint32 GetRelativePathStartPos() const { return m_relativePathStartPos; }
+	const std::string& GetRelativePath() const { return m_strRelativePath; }
+
+	UINT32 GetRelativePathStartPos() const { return m_strRelativePath.length(); }
 
 private:
 	friend class PathManager;
@@ -27,5 +29,5 @@ private:
 	~FrameworkPathfinder() = default;
 
 	std::string m_strAbsolutePath;
-	Uint32 m_relativePathStartPos;
+	std::string m_strRelativePath;
 };

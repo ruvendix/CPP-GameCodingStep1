@@ -52,7 +52,7 @@ void TimeHandler::MakeLocalTimeString(OUT std::string& strLocalTime, Char delimi
 	std::time_t currentTime;
 	std::time(&currentTime);
 	std::tm* pCurrentTime = std::localtime(&currentTime);
-	RX_SIMPLE_ASSERT(pCurrentTime != nullptr);
+	RX_ASSERT(pCurrentTime != nullptr);
 
 	TimeData::TimeOption& timeOption = Data()->GetTimeOption();
 	std::array<std::string, EnumIdx::TimeOption::COUNT> strElems;

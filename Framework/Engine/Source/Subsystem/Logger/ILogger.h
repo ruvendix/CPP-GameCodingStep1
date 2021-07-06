@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Subsystem/ISubsytem.h"
+#include "LoggerData.h"
 
 // 전방 선언
 class LogCategoryBase;
@@ -16,6 +17,7 @@ class LogCategoryBase;
 class ILogger : public ISubsystem
 {
 	GENERATE_SUBSYSTEM_TYPE(ESubsystemType::LOGGER);
+	GENERATE_SUBSYSTEM_DATA(LoggerData);
 
 public:
 	ILogger() = default;

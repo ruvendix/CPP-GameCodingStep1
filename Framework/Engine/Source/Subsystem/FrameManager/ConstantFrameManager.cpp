@@ -4,7 +4,7 @@
 // 이 저작물은 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스에 따라 이용할 수 있습니다.
 // http://creativecommons.org/licenses/by/4.0/
 // 
-// 고정 프레임 타임 매니저입니다.
+// 고정 프레임 타임 관리자입니다.
 // =====================================================================================
 #include "EnginePCH.h"
 #include "ConstantFrameManager.h"
@@ -55,7 +55,7 @@ void ConstantFrameManagerInside::UpdateFrameTime(ConstantFrameManager& constantF
 
 	if (m_FPSTimer.UpdateTime() == true)
 	{
-		RX_SIMPLE_INFO("테스트!");
+		RX_INFO("테스트!");
 		//RX_SIMPLE_TRACE("%d", m_frameRate);
 		spData->SetFrameRate(0);
 	}

@@ -5,7 +5,7 @@
 // http://creativecommons.org/licenses/by/4.0/
 //
 // 게임 오브젝트를 관리합니다.
-// 매니저에 등록된 게임 오브젝트만 다룰 수 있습니다.
+// 관리자에 등록된 게임 오브젝트만 다룰 수 있습니다.
 // =====================================================================================
 #include "EnginePCH.h"
 #include "GameObjectManager.h"
@@ -37,12 +37,12 @@ void GameObjectManagerInside::AddGameObject(GameObject* pGameObject)
 
 	if (m_objectIdx == std::numeric_limits<Uint32>::max())
 	{
-		RX_ERROR(LogGameObjectManager, EErrorCode::OUT_OF_GAMEOBJECT);
+		RX_ERROR2(LogGameObjectManager, EErrorCode::OUT_OF_GAMEOBJECT);
 	}
 }
 
 /*
-	매니저에 게임 오브젝트를 등록합니다.
+	관리자에 게임 오브젝트를 등록합니다.
 */
 void GameObjectManagerInside::UpdateAllGameObject()
 {
@@ -58,7 +58,7 @@ void GameObjectManagerInside::UpdateAllGameObject()
 }
 
 /*
-	매니저에 등록된 모든 게임 오브젝트의 내용을 갱신합니다.
+	관리자에 등록된 모든 게임 오브젝트의 내용을 갱신합니다.
 */
 void GameObjectManagerInside::RenderAllGameObject()
 {
@@ -74,7 +74,7 @@ void GameObjectManagerInside::RenderAllGameObject()
 }
 
 /*
-	매니저에 등록된 모든 게임 오브젝트를 그립니다.
+	관리자에 등록된 모든 게임 오브젝트를 그립니다.
 */
 void GameObjectManagerInside::CleanUp()
 {

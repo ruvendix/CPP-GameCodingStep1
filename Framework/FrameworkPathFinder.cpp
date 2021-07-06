@@ -14,8 +14,8 @@ void FrameworkPathfinder::SetUp()
 {
 	m_strAbsolutePath = __FILE__;
 
-	m_relativePathStartPos = m_strAbsolutePath.rfind('\\');
-	m_relativePathStartPos += 1; // '\\' 포함!
+	UINT32 relativePathStartPos = m_strAbsolutePath.rfind('\\');
+	relativePathStartPos += 1; // '\\' 포함!
 
-	m_strAbsolutePath = m_strAbsolutePath.substr(0, m_relativePathStartPos);
+	m_strRelativePath = m_strAbsolutePath.substr(0, relativePathStartPos);
 }

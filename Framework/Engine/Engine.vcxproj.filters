@@ -251,6 +251,7 @@
     <ClInclude Include="Source\Subsystem\TimeHandler\TimeEnum.h">
       <Filter>Source\1_Subsystem\TimeHandler</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Subsystem\Logger\LoggerData.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Subsystem\SubsystemLocator.inl">

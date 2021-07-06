@@ -67,6 +67,7 @@
     <ClInclude Include="Source\Subsystem\Logger\LogCategoryBase.h" />
     <ClInclude Include="Source\Subsystem\Logger\LogEnum.h" />
     <ClInclude Include="Source\Subsystem\Logger\Logger.h" />
+    <ClInclude Include="Source\Subsystem\Logger\LoggerData.h" />
     <ClInclude Include="Source\Subsystem\Logger\LogMacro.h" />
     <ClInclude Include="Source\Subsystem\PathManager\IPathManager.h" />
     <ClInclude Include="Source\Subsystem\PathManager\PathManager.h" />
