@@ -9,6 +9,8 @@
 #pragma once
 
 #include "Common/CommonMacro.h"
+#include "Subsystem/SubsystemEnum.h"
+#include "Subsystem/SubsystemMacro.h"
 
 // 전방 선언
 class ParentSubsystemData;

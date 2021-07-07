@@ -28,10 +28,15 @@ void ErrorHandlerInside::SetUp()
 	m_mapErrorString.emplace(EErrorCode::UNKNOWN, "알 수 없는 에러!");
 	m_mapErrorString.emplace(EErrorCode::INDIRECT_NULLPTR, "nullptr을 역참조할 수 없음!!");
 	m_mapErrorString.emplace(EErrorCode::CLEAR_SCREEN_FAIL, "화면 지우기 실패!");
-	m_mapErrorString.emplace(EErrorCode::INVALID_SCREEN_COLOR, "유효하지 않은 화면 색상!");
+	m_mapErrorString.emplace(EErrorCode::INVALID_SCREEN_COLOR, "유효하지 않은 화면 색상!");	
 	m_mapErrorString.emplace(EErrorCode::OUT_OF_GAMEOBJECT, "더 이상 게임 오브젝트를 생성할 수 없음!");
+	m_mapErrorString.emplace(EErrorCode::OUT_OF_HEAP_MEMORY, "힙 메모리 부족!");
 	m_mapErrorString.emplace(EErrorCode::OPEN_FILE_STREAM_FAIL, "파일 스트림 열기 실패!");
 	m_mapErrorString.emplace(EErrorCode::CLOSE_FILE_STREAM_FAIL, "파일 스트림 닫기 실패!");
+	m_mapErrorString.emplace(EErrorCode::DUPLICATED_COMPONENT, "중복된 컴포넌트: %s!");
+	m_mapErrorString.emplace(EErrorCode::ADD_COMPONENT_FAIL, "컴포넌트 추가 실패: %s!");
+	m_mapErrorString.emplace(EErrorCode::NOT_EXIST_COMPONENT, "존재하지 않는 컴포넌트: %s!");
+	m_mapErrorString.emplace(EErrorCode::CASTING_FAIL, "캐스팅 실패!");
 }
 
 const Char* ErrorHandlerInside::FindErrorString(EErrorCode errorCode)

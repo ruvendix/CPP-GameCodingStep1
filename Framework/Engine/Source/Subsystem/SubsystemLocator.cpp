@@ -19,6 +19,7 @@
 #include "TimeHandler/TimeHandler.h"
 #include "PathManager/PathManager.h"
 #include "FileHandler/FileHandler.h"
+#include "ActorManager/ActorManager.h"
 
 /*
 	기본 서브시스템만 등록합니다.
@@ -35,6 +36,7 @@ void SubsystemLocator::SetUp()
 	//RegisterSubsystem<DoubleBufferingConsoleHandler>();
 	RegisterSubsystem<PathManager>();
 	RegisterSubsystem<FileHandler>();
+	RegisterSubsystem<ActorManager>();
 }
 
 /*

@@ -21,6 +21,7 @@
 #include "TimeHandler/ITimeHandler.h"
 #include "PathManager/IPathManager.h"
 #include "FileHandler/IFileHandler.h"
+#include "ActorManager/ActorManagerInclusion.h"
 
 #include "ErrorHandler/ErrorMacro.h"
 #include "FrameManager/FrameMacro.h"

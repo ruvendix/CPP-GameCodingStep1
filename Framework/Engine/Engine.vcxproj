@@ -12,6 +12,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\FrameworkPathFinder.cpp" />
+    <ClCompile Include="Source\Scene\Actor\Actor.cpp" />
+    <ClCompile Include="Source\Scene\Component\IComponent.cpp" />
+    <ClCompile Include="Source\Scene\Component\Transform.cpp" />
+    <ClCompile Include="Source\Subsystem\ActorManager\ActorManager.cpp" />
+    <ClCompile Include="Source\Subsystem\ActorManager\IActorManager.cpp" />
     <ClCompile Include="Source\Subsystem\ConsoleHandler\DoubleBufferingConsoleHandler.cpp" />
     <ClCompile Include="Source\Scene\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\Subsystem\ConsoleHandler\ConsoleHandler.cpp" />
@@ -43,6 +48,16 @@
     <ClInclude Include="Source\Common\CommonInterface.h" />
     <ClInclude Include="Source\Common\CommonMacro.h" />
     <ClInclude Include="Source\Common\CommonType.h" />
+    <ClInclude Include="Source\Scene\Actor\Actor.h" />
+    <ClInclude Include="Source\Scene\Actor\ActorInclusion.h" />
+    <ClInclude Include="Source\Scene\Actor\ActorMacro.h" />
+    <ClInclude Include="Source\Scene\Component\ComponentMacro.h" />
+    <ClInclude Include="Source\Scene\Component\IComponent.h" />
+    <ClInclude Include="Source\Scene\Component\ComponentEnum.h" />
+    <ClInclude Include="Source\Scene\Component\Transform.h" />
+    <ClInclude Include="Source\Subsystem\ActorManager\ActorManager.h" />
+    <ClInclude Include="Source\Subsystem\ActorManager\ActorManagerInclusion.h" />
+    <ClInclude Include="Source\Subsystem\ActorManager\IActorManager.h" />
     <ClInclude Include="Source\Subsystem\ConsoleHandler\DoubleBufferingConsoleHandler.h" />
     <ClInclude Include="Source\Scene\GameObject\GameObject.h" />
     <ClInclude Include="Source\Subsystem\ConsoleHandler\ConsoleEnum.h" />
@@ -86,6 +101,8 @@
     <ClInclude Include="Source\Utility\Time\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Source\Scene\Actor\Actor.inl" />
+    <None Include="Source\Subsystem\ActorManager\IActorManager.inl" />
     <None Include="Source\Subsystem\SubsystemLocator.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

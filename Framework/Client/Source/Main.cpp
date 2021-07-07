@@ -16,25 +16,20 @@
 #include <EnginePCH.h>
 #include <Scene/GameObject/GameObject.h>
 
+#include <Scene/Actor/ActorInclusion.h>
+#include <Scene/Component/Transform.h>
+
+#include <iostream>
+
 Int32 main()
 {
 	SubsystemLocator::I().SetUp();
 
-	FIND_SUBSYSTEM(IConsoleHandler)->AdjustSize(120, 20);
-	FIND_SUBSYSTEM(ILogger)->Data()->DeactivateOption(EnumIdx::LogOption::TIME);
-	FIND_SUBSYSTEM(ILogger)->Data()->DeactivateOption(EnumIdx::LogOption::LINE);
-	FIND_SUBSYSTEM(ILogger)->Data()->DeactivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);
-	FIND_SUBSYSTEM(ILogger)->Data()->DeactivateOption(EnumIdx::LogOption::RELATIVE_FILEPATH);
+	Actor* pActor = FIND_SUBSYSTEM(IActorManager)->CreateActor<Actor>();
+	pActor->AddComponent<Component::Transfrom>();
 
-	std::string frameworkAbsolutePath = FIND_SUBSYSTEM(IPathManager)->FrameworkAbsolutePath();
-	std::string frameworkRelativePath = FIND_SUBSYSTEM(IPathManager)->FrameworkRelativePath();
-	std::string clientAbsolutePath = FIND_SUBSYSTEM(IPathManager)->ClientAbsolutePath();
-	std::string clientRelativePath = FIND_SUBSYSTEM(IPathManager)->ClientRelativePath();
-
-	RX_INFO("프레임워크 절대경로: %s", frameworkAbsolutePath.c_str());
-	RX_INFO("프레임워크 상대경로: %s", frameworkRelativePath.c_str());
-	RX_INFO("클라이언트 절대경로: %s", clientAbsolutePath.c_str());
-	RX_INFO("클라이언트 상대경로: %s", clientRelativePath.c_str());
+	FIND_SUBSYSTEM(IActorManager)->AddActor(pActor);
+	FIND_SUBSYSTEM(IActorManager)->Update();
 
 	SubsystemLocator::I().CleanUp();
 	return 0;
