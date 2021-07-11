@@ -26,7 +26,10 @@ public:
 	void RegisterSubsystem();
 
 	template <typename TSubsystem>
-	TSubsystem* FindSubsystem();
+	bool CheckDuplicatedSubsystem() const;
+
+	template <typename TSubsystem, typename TNullSubsystem>
+	TSubsystem* FindSubsystem() const;
 
 	template <typename TSubsystem>
 	void ExchangeSubsystem();

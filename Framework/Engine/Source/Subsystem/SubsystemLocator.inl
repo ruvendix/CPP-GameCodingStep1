@@ -12,23 +12,23 @@ inline void SubsystemLocator::RegisterSubsystem()
 {
 	static_assert(std::is_base_of_v<ISubsystem, TSubsystem>, "It't not subsystem!");
 
-	if (FindSubsystem<TSubsystem>() != nullptr)
+	if (CheckDuplicatedSubsystem<TSubsystem>() == true)
 	{
-		::OutputDebugString("이미 같은 계열의 서브시스템이 존재합니다!\n");
+		RX_ERROR2(LogSubsystemLocator, EErrorCode::DUPLICATED_SUBSYSTEM);
 		return;
 	}
 
 	ISubsystem* pSubsystem = new TSubsystem;
 	if (pSubsystem == nullptr)
 	{
-		::OutputDebugString("힙메모리 부족으로 서브시스템을 생성할 수 없습니다!\n");
+		RX_ERROR2(LogSubsystemLocator, EErrorCode::OUT_OF_HEAP_MEMORY);
 		return;
 	}
 
 	const auto& ret = m_mapSubsystem.emplace(TSubsystem::Type(), pSubsystem);
 	if (ret.second == false) // 삽입 실패인 경우
 	{
-		::OutputDebugString("서브시스템을 추가하지 못했습니다!\n");
+		RX_ERROR2(LogSubsystemLocator, EErrorCode::REGISTER_SUBSYSTEM_FAIL);
 		SAFE_DELETE(pSubsystem);
 		return;
 	}
@@ -36,8 +36,8 @@ inline void SubsystemLocator::RegisterSubsystem()
 	pSubsystem->SetUp();
 }
 
-template <typename TSubsystem>
-inline TSubsystem* SubsystemLocator::FindSubsystem()
+template<typename TSubsystem>
+inline bool SubsystemLocator::CheckDuplicatedSubsystem() const
 {
 	static_assert(std::is_base_of_v<ISubsystem, TSubsystem>, "It't not subsystem!");
 
@@ -45,8 +45,24 @@ inline TSubsystem* SubsystemLocator::FindSubsystem()
 	if ((iter == m_mapSubsystem.cend()) ||
 		(iter->second == nullptr))
 	{
-		//::OutputDebugString("서브시스템을 찾을 수 없습니다!\n"); // 필요할 때만 사용
-		return nullptr;
+		return false;
+	}
+
+	return true;
+}
+
+template <typename TSubsystem, typename TNullSubsystem>
+inline TSubsystem* SubsystemLocator::FindSubsystem() const
+{
+	static_assert(std::is_base_of_v<ISubsystem, TSubsystem>, "It't not subsystem!");
+	
+	const auto& iter = m_mapSubsystem.find(TSubsystem::Type());
+	if ((iter == m_mapSubsystem.cend()) ||
+		(iter->second == nullptr))
+	{
+		RX_TRACE2(LogSubsystemLocator, "목록에 없으므로 널서브시스템을 사용합니다.");
+		static TNullSubsystem null;
+		return &null;
 	}
 
 	// 템플릿은 타입을 정확하게 알고 있으므로 static_cast로 성능을 향상시킵니다.
@@ -54,8 +70,9 @@ inline TSubsystem* SubsystemLocator::FindSubsystem()
 	TSubsystem* pSubsystem = DownCast<ISubsystem, TSubsystem>(iter->second);
 	if (pSubsystem == nullptr)
 	{
-		::OutputDebugString("서브시스템을 캐스팅할 수 없습니다!\n");
-		return nullptr;
+		RX_TRACE2(LogSubsystemLocator, "목록에 없으므로 널서브시스템을 사용합니다.");
+		static TNullSubsystem null;
+		return &null;
 	}
 
 	return pSubsystem;
@@ -70,7 +87,7 @@ inline void SubsystemLocator::ExchangeSubsystem()
 	const auto& iter = m_mapSubsystem.find(TSubsystem::Type());
 	if (iter->second == nullptr)
 	{
-		::OutputDebugString("교체할 서브시스템이 없습니다!\n");
+		RX_ERROR2(LogSubsystemLocator, EErrorCode::NOT_EXIST_SUBSYSTEM);
 		return;
 	}
 
@@ -80,7 +97,7 @@ inline void SubsystemLocator::ExchangeSubsystem()
 	TSubsystem* pSubsystem = new TSubsystem;
 	if (pSubsystem == nullptr)
 	{
-		::OutputDebugString("힙메모리 부족으로 서브시스템을 생성할 수 없습니다!\n");
+		RX_ERROR2(LogSubsystemLocator, EErrorCode::OUT_OF_HEAP_MEMORY);
 		return;
 	}
 

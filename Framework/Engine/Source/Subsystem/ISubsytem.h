@@ -12,15 +12,9 @@
 #include "Subsystem/SubsystemEnum.h"
 #include "Subsystem/SubsystemMacro.h"
 
-// 전방 선언
-class ParentSubsystemData;
-
-class ISubsystem
+class ISubsystem : public ICommon
 {
 public:
 	ISubsystem() = default;
 	virtual ~ISubsystem() = default;
-
-	virtual void SetUp() PURE_FUNC;
-	virtual void CleanUp() PURE_FUNC;
 };

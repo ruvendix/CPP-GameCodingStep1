@@ -8,7 +8,7 @@
 // =====================================================================================
 #pragma once
 
-#define GENERATE_SUBSYSTEM_TYPE(value)\
+#define GENERATE_SUBSYSTEM(value)\
 public:\
 	static constexpr ESubsystemType Type()\
 	{\
@@ -26,6 +26,14 @@ public:\
 		}\
 		return DownCastSmartPointer<SubsystemData, ChildSubsystemData>(m_spData);\
 	}\
+	const DataPtr Data() const\
+	{\
+		if (m_spData == nullptr)\
+		{\
+			return nullptr;\
+		}\
+		return ConstDownCastSmartPointer<SubsystemData, ChildSubsystemData>(m_spData);\
+	}\
 private:\
 	DataPtr m_spData = nullptr;
 
@@ -41,4 +49,4 @@ private:\
 	SubsystemType();\
 	virtual ~SubsystemType() = default;
 
-#define FIND_SUBSYSTEM(SubsystemType) SubsystemLocator::I().FindSubsystem<SubsystemType>()
+#define FIND_SUBSYSTEM(SubsystemType) SubsystemLocator::I().FindSubsystem<SubsystemType, SubsystemType##Null>()

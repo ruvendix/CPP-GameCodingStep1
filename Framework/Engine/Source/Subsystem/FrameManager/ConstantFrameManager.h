@@ -8,9 +8,7 @@
 // =====================================================================================
 #pragma once
 
-#include "IFrameManager.h"
-#include "Utility/Time/Stopwatch.h"
-#include "Utility/Time/Timer.h"
+#include "Base/IFrameManager.h"
 
 // 전방 선언
 class ConstantFrameManagerInside;

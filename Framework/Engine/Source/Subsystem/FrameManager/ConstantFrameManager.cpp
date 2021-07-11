@@ -9,6 +9,9 @@
 #include "EnginePCH.h"
 #include "ConstantFrameManager.h"
 
+#include "Utility/Time/Timer.h"
+#include "Utility/Time/Stopwatch.h"
+
 class ConstantFrameManagerInside final
 {
 public:

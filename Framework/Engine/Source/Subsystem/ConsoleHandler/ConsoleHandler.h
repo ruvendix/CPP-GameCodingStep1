@@ -9,8 +9,7 @@
 #pragma once
 
 #include "Common/CommonBase.h"
-#include "Common/CommonType.h"
-#include "IConsoleHandler.h"
+#include "Base/IConsoleHandler.h"
 
 // 전방 선언
 class ConsoleHandlerInside;
@@ -32,7 +31,7 @@ public:
 	virtual void RenderString(Int32 x, Int32 y, const Char* szText) override;
 	virtual void FlushInputBuffer() override;
 	virtual void ResetRenderingColor() override;
-	virtual void FlipOutputBuffer() override EMPTY_FUNC;
+	virtual void FlipOutputBuffer() OVERRIDE_EMPTY_FUNC;
 	virtual void Pause() const override;
 
 	virtual Int32 InputInteger() override;

@@ -9,7 +9,7 @@
 // =====================================================================================
 #pragma once
 
-#include "IComponent.h"
+#include "Base/IComponent.h"
 
 namespace Component
 {

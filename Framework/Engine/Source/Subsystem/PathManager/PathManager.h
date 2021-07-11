@@ -8,7 +8,7 @@
 // =====================================================================================
 #pragma once
 
-#include "IPathManager.h"
+#include "Base/IPathManager.h"
 
 // 전방 선언
 class FrameworkPathfinder;

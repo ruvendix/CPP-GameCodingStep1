@@ -12,11 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\FrameworkPathFinder.cpp" />
-    <ClCompile Include="Source\Scene\Actor\Actor.cpp" />
-    <ClCompile Include="Source\Scene\Component\IComponent.cpp" />
+    <ClCompile Include="Source\Scene\Actor\Base\Actor.cpp" />
+    <ClCompile Include="Source\Scene\Component\Base\IComponent.cpp" />
     <ClCompile Include="Source\Scene\Component\Transform.cpp" />
     <ClCompile Include="Source\Subsystem\ActorManager\ActorManager.cpp" />
-    <ClCompile Include="Source\Subsystem\ActorManager\IActorManager.cpp" />
     <ClCompile Include="Source\Subsystem\ConsoleHandler\DoubleBufferingConsoleHandler.cpp" />
     <ClCompile Include="Source\Scene\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\Subsystem\ConsoleHandler\ConsoleHandler.cpp" />
@@ -24,15 +23,16 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugEngine|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseEngine|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Source\Subsystem\ErrorHandler\ErrorHandler.cpp" />
+    <ClCompile Include="Source\Common\System\ErrorTracer\ErrorTracer.cpp" />
     <ClCompile Include="Source\Subsystem\FileHandler\FileHandler.cpp" />
     <ClCompile Include="Source\Subsystem\GameObjectManager\GameObjectManager.cpp" />
-    <ClCompile Include="Source\Subsystem\Logger\LogCategory.cpp" />
-    <ClCompile Include="Source\Subsystem\Logger\LogCategoryBase.cpp" />
-    <ClCompile Include="Source\Subsystem\Logger\Logger.cpp" />
+    <ClCompile Include="Source\Common\System\Logger\LogCategories.cpp" />
+    <ClCompile Include="Source\Common\System\Logger\BaseLogCategory.cpp" />
+    <ClCompile Include="Source\Common\System\Logger\Logger.cpp" />
     <ClCompile Include="Source\Subsystem\PathManager\PathManager.cpp" />
     <ClCompile Include="Source\Subsystem\SubsystemLocator.cpp" />
     <ClCompile Include="Source\Subsystem\FrameManager\ConstantFrameManager.cpp" />
+    <ClCompile Include="Source\Subsystem\TimeHandler\Base\TimeData.cpp" />
     <ClCompile Include="Source\Subsystem\TimeHandler\TimeHandler.cpp" />
     <ClCompile Include="Source\Utility\Time\Stopwatch.cpp" />
     <ClCompile Include="Source\Utility\Time\Timer.cpp" />
@@ -48,61 +48,69 @@
     <ClInclude Include="Source\Common\CommonInterface.h" />
     <ClInclude Include="Source\Common\CommonMacro.h" />
     <ClInclude Include="Source\Common\CommonType.h" />
-    <ClInclude Include="Source\Scene\Actor\Actor.h" />
-    <ClInclude Include="Source\Scene\Actor\ActorInclusion.h" />
-    <ClInclude Include="Source\Scene\Actor\ActorMacro.h" />
-    <ClInclude Include="Source\Scene\Component\ComponentMacro.h" />
-    <ClInclude Include="Source\Scene\Component\IComponent.h" />
-    <ClInclude Include="Source\Scene\Component\ComponentEnum.h" />
+    <ClInclude Include="Source\Core\Graph\Graph.h" />
+    <ClInclude Include="Source\Core\Graph\GraphEdge.h" />
+    <ClInclude Include="Source\Core\Graph\GraphInclusion.h" />
+    <ClInclude Include="Source\Core\Graph\GraphNode.h" />
+    <ClInclude Include="Source\DisableWarning.h" />
+    <ClInclude Include="Source\Scene\Actor\Base\Actor.h" />
+    <ClInclude Include="Source\Scene\Actor\Base\ActorInclusion.h" />
+    <ClInclude Include="Source\Scene\Actor\Base\ActorMacro.h" />
+    <ClInclude Include="Source\Scene\Component\Base\ComponentMacro.h" />
+    <ClInclude Include="Source\Scene\Component\Base\IComponent.h" />
+    <ClInclude Include="Source\Scene\Component\Base\ComponentEnum.h" />
     <ClInclude Include="Source\Scene\Component\Transform.h" />
     <ClInclude Include="Source\Subsystem\ActorManager\ActorManager.h" />
-    <ClInclude Include="Source\Subsystem\ActorManager\ActorManagerInclusion.h" />
-    <ClInclude Include="Source\Subsystem\ActorManager\IActorManager.h" />
+    <ClInclude Include="Source\Subsystem\ActorManager\Base\ActorManagerInclusion.h" />
+    <ClInclude Include="Source\Subsystem\ActorManager\Base\IActorManager.h" />
+    <ClInclude Include="Source\Subsystem\ActorManager\Base\IActorManagerNull.h" />
+    <ClInclude Include="Source\Subsystem\ConsoleHandler\Base\IConsoleHandlerNull.h" />
     <ClInclude Include="Source\Subsystem\ConsoleHandler\DoubleBufferingConsoleHandler.h" />
     <ClInclude Include="Source\Scene\GameObject\GameObject.h" />
-    <ClInclude Include="Source\Subsystem\ConsoleHandler\ConsoleEnum.h" />
+    <ClInclude Include="Source\Subsystem\ConsoleHandler\Base\ConsoleEnum.h" />
     <ClInclude Include="Source\Subsystem\ConsoleHandler\ConsoleHandler.h" />
     <ClInclude Include="Source\EnginePCH.h" />
-    <ClInclude Include="Source\Subsystem\ConsoleHandler\IConsoleHandler.h" />
-    <ClInclude Include="Source\Subsystem\ErrorHandler\ErrorEnum.h" />
-    <ClInclude Include="Source\Subsystem\ErrorHandler\ErrorHandler.h" />
-    <ClInclude Include="Source\Subsystem\ErrorHandler\ErrorHandlerData.h" />
-    <ClInclude Include="Source\Subsystem\ErrorHandler\ErrorMacro.h" />
-    <ClInclude Include="Source\Subsystem\ErrorHandler\IErrorHandler.h" />
-    <ClInclude Include="Source\Subsystem\FileHandler\FileEnum.h" />
+    <ClInclude Include="Source\Subsystem\ConsoleHandler\Base\IConsoleHandler.h" />
+    <ClInclude Include="Source\Common\System\ErrorTracer\ErrorEnum.h" />
+    <ClInclude Include="Source\Common\System\ErrorTracer\ErrorTracer.h" />
+    <ClInclude Include="Source\Common\System\ErrorTracer\ErrorMacro.h" />
+    <ClInclude Include="Source\Subsystem\FileHandler\Base\FileEnum.h" />
+    <ClInclude Include="Source\Subsystem\FileHandler\Base\IFileHandler.h" />
+    <ClInclude Include="Source\Subsystem\FileHandler\Base\IFileHandlerNull.h" />
     <ClInclude Include="Source\Subsystem\FileHandler\FileHandler.h" />
-    <ClInclude Include="Source\Subsystem\FileHandler\IFileHandler.h" />
-    <ClInclude Include="Source\Subsystem\FrameManager\FrameMacro.h" />
-    <ClInclude Include="Source\Subsystem\FrameManager\FrameData.h" />
+    <ClInclude Include="Source\Subsystem\FrameManager\Base\FrameMacro.h" />
+    <ClInclude Include="Source\Subsystem\FrameManager\Base\FrameData.h" />
+    <ClInclude Include="Source\Subsystem\FrameManager\Base\IFrameManagerNull.h" />
+    <ClInclude Include="Source\Subsystem\GameObjectManager\Base\IGameObjectManagerNull.h" />
     <ClInclude Include="Source\Subsystem\GameObjectManager\GameObjectManager.h" />
-    <ClInclude Include="Source\Subsystem\GameObjectManager\IGameObjectManager.h" />
+    <ClInclude Include="Source\Subsystem\GameObjectManager\Base\IGameObjectManager.h" />
     <ClInclude Include="Source\Subsystem\ISubsytem.h" />
-    <ClInclude Include="Source\Subsystem\Logger\ILogger.h" />
-    <ClInclude Include="Source\Subsystem\Logger\LogCategory.h" />
-    <ClInclude Include="Source\Subsystem\Logger\LogCategoryBase.h" />
-    <ClInclude Include="Source\Subsystem\Logger\LogEnum.h" />
-    <ClInclude Include="Source\Subsystem\Logger\Logger.h" />
-    <ClInclude Include="Source\Subsystem\Logger\LoggerData.h" />
-    <ClInclude Include="Source\Subsystem\Logger\LogMacro.h" />
-    <ClInclude Include="Source\Subsystem\PathManager\IPathManager.h" />
+    <ClInclude Include="Source\Common\System\Logger\LogCategories.h" />
+    <ClInclude Include="Source\Common\System\Logger\BaseLogCategory.h" />
+    <ClInclude Include="Source\Common\System\Logger\LogEnum.h" />
+    <ClInclude Include="Source\Common\System\Logger\Logger.h" />
+    <ClInclude Include="Source\Common\System\Logger\LogMacro.h" />
+    <ClInclude Include="Source\Subsystem\PathManager\Base\IPathManager.h" />
+    <ClInclude Include="Source\Subsystem\PathManager\Base\IPathManagerNull.h" />
     <ClInclude Include="Source\Subsystem\PathManager\PathManager.h" />
     <ClInclude Include="Source\Subsystem\SubsystemData.h" />
     <ClInclude Include="Source\Subsystem\SubsystemEnum.h" />
     <ClInclude Include="Source\Subsystem\SubsystemInclusion.h" />
     <ClInclude Include="Source\Subsystem\SubsystemLocator.h" />
     <ClInclude Include="Source\Subsystem\SubsystemMacro.h" />
-    <ClInclude Include="Source\Subsystem\FrameManager\IFrameManager.h" />
+    <ClInclude Include="Source\Subsystem\FrameManager\Base\IFrameManager.h" />
     <ClInclude Include="Source\Subsystem\FrameManager\ConstantFrameManager.h" />
-    <ClInclude Include="Source\Subsystem\TimeHandler\ITimeHandler.h" />
-    <ClInclude Include="Source\Subsystem\TimeHandler\TimeData.h" />
-    <ClInclude Include="Source\Subsystem\TimeHandler\TimeEnum.h" />
+    <ClInclude Include="Source\Subsystem\TimeHandler\Base\ITimeHandler.h" />
+    <ClInclude Include="Source\Subsystem\TimeHandler\Base\ITimeHandlerNull.h" />
+    <ClInclude Include="Source\Subsystem\TimeHandler\Base\TimeData.h" />
+    <ClInclude Include="Source\Subsystem\TimeHandler\Base\TimeEnum.h" />
     <ClInclude Include="Source\Subsystem\TimeHandler\TimeHandler.h" />
     <ClInclude Include="Source\Utility\Time\Stopwatch.h" />
     <ClInclude Include="Source\Utility\Time\Timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source\Scene\Actor\Actor.inl" />
-    <None Include="Source\Subsystem\ActorManager\IActorManager.inl" />
+    <None Include="Source\Scene\Actor\Base\Actor.inl" />
+    <None Include="Source\Subsystem\ActorManager\Base\IActorManager.inl" />
     <None Include="Source\Subsystem\SubsystemLocator.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -149,14 +157,15 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugEngine|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>EnginePCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(ProjectDir)Source</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <UseFullPaths>true</UseFullPaths>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -173,7 +182,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>EnginePCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(ProjectDir)Source</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>

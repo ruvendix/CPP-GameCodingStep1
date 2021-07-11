@@ -14,23 +14,65 @@
 #endif
 
 #include <EnginePCH.h>
+
 #include <Scene/GameObject/GameObject.h>
-
-#include <Scene/Actor/ActorInclusion.h>
+#include <Scene/Actor/Base/ActorInclusion.h>
 #include <Scene/Component/Transform.h>
-
-#include <iostream>
 
 Int32 main()
 {
+	Logger::I().SetUp();
+	ErrorTracer::I().SetUp();
+
+	FIND_SUBSYSTEM(IActorManager);
+
 	SubsystemLocator::I().SetUp();
 
-	Actor* pActor = FIND_SUBSYSTEM(IActorManager)->CreateActor<Actor>();
-	pActor->AddComponent<Component::Transfrom>();
+	//FIND_SUBSYSTEM(ILogger)->Data()->DeactivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);
 
-	FIND_SUBSYSTEM(IActorManager)->AddActor(pActor);
-	FIND_SUBSYSTEM(IActorManager)->Update();
+	//Actor* pActor = FIND_SUBSYSTEM(IActorManager)->CreateActor<Actor>();
+	//pActor->AddComponent<Component::Transfrom>();
+
+	//FIND_SUBSYSTEM(IActorManager)->AddActor(pActor);
+	//FIND_SUBSYSTEM(IActorManager)->Update();
+
+	Float time = 1.0f;
+
+	const Char* times[EConvertionTimeUnit::COUNT] =
+	{
+		"밀리초", "초", "분", "시", "일", "년"
+	};
+
+	for (Uint32 i = 0; i < EConvertionTimeUnit::COUNT; ++i)
+	{
+		RX_TRACE("-----------------------------------------------------------------------------------------");
+		for (Uint32 j = 0; j < EConvertionTimeUnit::COUNT; ++j)
+		{
+			Float ret = FIND_SUBSYSTEM(ITimeHandler)->ConvertTime(
+				time, static_cast<EConvertionTimeUnit>(i), static_cast<EConvertionTimeUnit>(j));
+			RX_TRACE("%s -> %s: %f", times[i], times[j], ret);
+		}
+
+		RX_TRACE("");
+		for (Uint32 j = 0; j < EConvertionTimeUnit::COUNT; ++j)
+		{
+			Float ret = FIND_SUBSYSTEM(ITimeHandler)->ConvertTime(
+				time, static_cast<EConvertionTimeUnit>(j), static_cast<EConvertionTimeUnit>(i));
+			RX_TRACE("%s -> %s: %f", times[j], times[i], ret);
+		}
+
+		//Int32 a = 100;
+	}
+	RX_TRACE("-----------------------------------------------------------------------------------------");
+
+	// 일단 시간을 찍어보자
+	//std::string strLocalTime;
+	//FIND_SUBSYSTEM(ITimeHandler)->MakeLocalTimeString(strLocalTime, '_');
 
 	SubsystemLocator::I().CleanUp();
+	
+	ErrorTracer::I().CleanUp();
+	Logger::I().CleanUp();
+
 	return 0;
 }

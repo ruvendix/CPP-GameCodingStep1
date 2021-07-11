@@ -32,4 +32,14 @@ private:\
 
 #define FRIEND_CLASS(Type) friend class Type
 #define PURE_FUNC = 0
+#define CONST_PURE_FUNC const PURE_FUNC
+
 #define EMPTY_FUNC { }
+#define CONST_EMPTY_FUNC const { }
+#define OVERRIDE_EMPTY_FUNC override EMPTY_FUNC
+#define CONST_OVERRIDE_EMPTY_FUNC const OVERRIDE_EMPTY_FUNC
+
+#define RETURN_FUNC(value) { return value; }
+#define CONST_RETURN_FUNC(value) const RETURN_FUNC(value)
+#define OVERRIDE_RETURN_FUNC(value) override RETURN_FUNC(value)
+#define CONST_OVERRIDE_RETURN_FUNC(value) const OVERRIDE_RETURN_FUNC(value)

@@ -9,7 +9,7 @@
 // =====================================================================================
 #pragma once
 
-#include "IGameObjectManager.h"
+#include "Base/IGameObjectManager.h"
 
 // 전방 선언
 class GameObject;
@@ -20,7 +20,7 @@ class GameObjectManager final : public IGameObjectManager
 	ONLY_SUBSYSTEM_CTOR(GameObjectManager);
 
 public:
-	virtual void SetUp() override EMPTY_FUNC;
+	virtual void SetUp() OVERRIDE_EMPTY_FUNC;
 	virtual void CleanUp() override;
 
 	virtual void AddGameObject(GameObject* pGameObj) override;

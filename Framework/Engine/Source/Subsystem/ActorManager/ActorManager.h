@@ -8,12 +8,19 @@
 // =====================================================================================
 #pragma once
 
-#include "IActorManager.h"
+#include "Base/IActorManager.h"
 
 class ActorManager final : public IActorManager
 {
 	ONLY_SUBSYSTEM(ActorManager);
 
+public:
 	virtual void SetUp() override;
 	virtual void CleanUp() override;
+
+	virtual void AddActor(Actor* pActor) override; // 이걸로 추가된 액터만 관리!
+	virtual void Update() override;
+
+private:
+	std::vector<Actor*> m_vecActor;
 };

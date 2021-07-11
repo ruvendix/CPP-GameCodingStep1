@@ -9,8 +9,7 @@
 #pragma once
 
 #include "Common/CommonBase.h"
-#include "Common/CommonType.h"
-#include "IConsoleHandler.h"
+#include "Base/IConsoleHandler.h"
 
 // 전방 선언
 class DoubleBufferingConsoleHandlerInside;

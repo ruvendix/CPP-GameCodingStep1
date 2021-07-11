@@ -52,3 +52,13 @@ std::shared_ptr<TChild> DownCastSmartPointer(std::shared_ptr<TParent> spChild)
 	static_assert(std::is_base_of_v<TParent, TChild>, "It's not parent!");
 	return std::static_pointer_cast<TChild>(spChild);
 }
+
+/*
+	자식 클래스를 부모 클래스로 다운캐스팅합니다. (const 스마트 포인터)
+*/
+template <typename TParent, typename TChild>
+const std::shared_ptr<TChild> ConstDownCastSmartPointer(const std::shared_ptr<TParent> spChild)
+{
+	static_assert(std::is_base_of_v<TParent, TChild>, "It's not parent!");
+	return std::static_pointer_cast<TChild>(spChild);
+}

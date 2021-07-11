@@ -237,7 +237,8 @@ void DoubleBufferingConsoleHandlerInside::ClearScreen()
 	}
 
 	// 콘솔창 출력 버퍼 속성이 적용된 부분을 지웁니다.
-	if (::FillConsoleOutputAttribute(hCurrentOutputBuffer, m_defaultOutputAttr, size, beginPos, &dwWrittenCount) == FALSE)
+	if (::FillConsoleOutputAttribute(hCurrentOutputBuffer,
+		static_cast<WORD>(m_defaultOutputAttr), size, beginPos, &dwWrittenCount) == FALSE)
 	{
 		RX_ERROR2(LogConsoleHandler, EErrorCode::CLEAR_SCREEN_FAIL);
 	}
@@ -258,8 +259,8 @@ void DoubleBufferingConsoleHandlerInside::ResetRenderingColor()
 		return;
 	}
 
-	m_outputScreenBufferInfo.wAttributes = m_defaultOutputAttr;
-	::SetConsoleTextAttribute(hCurrentOutputBuffer, m_defaultOutputAttr);
+	m_outputScreenBufferInfo.wAttributes = static_cast<WORD>(m_defaultOutputAttr);
+	::SetConsoleTextAttribute(hCurrentOutputBuffer, m_outputScreenBufferInfo.wAttributes);
 }
 
 void DoubleBufferingConsoleHandlerInside::FlipOutputBuffer()

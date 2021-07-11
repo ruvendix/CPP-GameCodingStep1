@@ -15,3 +15,10 @@
 #include "CommonMacro.h"
 #include "CommonInterface.h"
 #include "CommonFunction/CommonFunction.hpp"
+
+#include "System/Logger/Logger.h"
+#include "System/Logger/LogMacro.h"
+#include "System/Logger/LogCategories.h"
+
+#include "System/ErrorTracer/ErrorTracer.h"
+#include "System/ErrorTracer/ErrorMacro.h"

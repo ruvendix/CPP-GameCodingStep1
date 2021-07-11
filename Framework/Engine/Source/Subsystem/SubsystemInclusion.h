@@ -8,20 +8,29 @@
 // =====================================================================================
 #pragma once
 
-#include "SubsystemLocator.h"
-#include "SubsystemLocator.inl"
+#include "ConsoleHandler/Base/IConsoleHandlerNull.h"
+#include "ConsoleHandler/ConsoleHandler.h"
+#include "ConsoleHandler/DoubleBufferingConsoleHandler.h"
+
+#include "TimeHandler/Base/ITimeHandlerNull.h"
+#include "TimeHandler/TimeHandler.h"
+
+#include "FileHandler/Base/IFileHandlerNull.h"
+#include "FileHandler/FileHandler.h"
+
+#include "GameObjectManager/Base/IGameObjectManagerNull.h"
+#include "GameObjectManager/GameObjectManager.h"
+
+#include "FrameManager/Base/FrameMacro.h"
+#include "FrameManager/Base/IFrameManagerNull.h"
+#include "FrameManager/ConstantFrameManager.h"
+
+#include "PathManager/Base/IPathManagerNull.h"
+#include "PathManager/PathManager.h"
+
+#include "ActorManager/Base/IActorManagerNull.h"
+#include "ActorManager/ActorManager.h"
 
 #include "SubsystemMacro.h"
-
-#include "ConsoleHandler/IConsoleHandler.h"
-#include "Logger/ILogger.h"
-#include "ErrorHandler/IErrorHandler.h"
-#include "GameObjectManager/IGameObjectManager.h"
-#include "FrameManager/IFrameManager.h"
-#include "TimeHandler/ITimeHandler.h"
-#include "PathManager/IPathManager.h"
-#include "FileHandler/IFileHandler.h"
-#include "ActorManager/ActorManagerInclusion.h"
-
-#include "ErrorHandler/ErrorMacro.h"
-#include "FrameManager/FrameMacro.h"
+#include "SubsystemLocator.h"
+#include "SubsystemLocator.inl"

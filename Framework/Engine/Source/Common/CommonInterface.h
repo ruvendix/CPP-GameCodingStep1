@@ -11,14 +11,21 @@
 #include "CommonMacro.h"
 #include "CommonEnum.h"
 
-class IGameObject
+class ICommon
+{
+public:
+	ICommon() = default;
+	virtual ~ICommon() = default;
+
+	virtual void SetUp() PURE_FUNC;
+	virtual void CleanUp() PURE_FUNC;
+};
+
+class IGameObject : public ICommon
 {
 public:
 	IGameObject() = default;
 	virtual ~IGameObject() = default;
-
-	virtual void SetUp() PURE_FUNC;
-	virtual void CleanUp() PURE_FUNC;
 
 	virtual void Update() PURE_FUNC;
 	virtual void Render() PURE_FUNC;

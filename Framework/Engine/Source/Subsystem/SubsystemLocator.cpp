@@ -10,32 +10,31 @@
 #include "EnginePCH.h"
 #include "SubsystemLocator.h"
 
-#include "Logger/Logger.h"
-#include "ErrorHandler/ErrorHandler.h"
-#include "GameObjectManager/GameObjectManager.h"
-#include "FrameManager/ConstantFrameManager.h"
-#include "ConsoleHandler/ConsoleHandler.h"
-#include "ConsoleHandler/DoubleBufferingConsoleHandler.h"
-#include "TimeHandler/TimeHandler.h"
-#include "PathManager/PathManager.h"
-#include "FileHandler/FileHandler.h"
-#include "ActorManager/ActorManager.h"
+#include "SubsystemInclusion.h"
 
 /*
 	기본 서브시스템만 등록합니다.
 	여기에 없는 서브시스템은 클라이언트에서 추가해주세요!
+	몇몇 서브시스템은 복잡하게 꼬여있지만 초기화되지 않은 서브시스템이라면
+	널서브시스템을 이용하므로 문제는 없습니다.
 */
 void SubsystemLocator::SetUp()
 {
-	RegisterSubsystem<Logger>();
-	RegisterSubsystem<ErrorHandler>();
-	RegisterSubsystem<GameObjectManager>();
-	RegisterSubsystem<ConstantFrameManager>();
 	RegisterSubsystem<TimeHandler>();
+	Logger::I().SetTimeHandler(FIND_SUBSYSTEM(ITimeHandler));
+
+	RegisterSubsystem<PathManager>();
+	Logger::I().SetPathManager(FIND_SUBSYSTEM(IPathManager));
+
 	RegisterSubsystem<ConsoleHandler>();
 	//RegisterSubsystem<DoubleBufferingConsoleHandler>();
-	RegisterSubsystem<PathManager>();
+	Logger::I().SetConsoleHandler(FIND_SUBSYSTEM(IConsoleHandler));
+
 	RegisterSubsystem<FileHandler>();
+	Logger::I().SetFileHandler(FIND_SUBSYSTEM(IFileHandler));
+
+	RegisterSubsystem<GameObjectManager>();
+	RegisterSubsystem<ConstantFrameManager>();
 	RegisterSubsystem<ActorManager>();
 }
 
