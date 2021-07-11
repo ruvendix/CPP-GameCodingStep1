@@ -250,7 +250,7 @@ void ConsoleHandler::ShowCursor(bool bShow)
 void ConsoleHandler::RenderString(Int32 x, Int32 y, const Char* szText)
 {
 	MovePosition(x, y);
-	printf("%s\n", szText);
+	printf("%s", szText);
 }
 
 /*

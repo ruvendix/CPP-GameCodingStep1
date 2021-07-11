@@ -196,30 +196,30 @@ Float TimeHandler::ConvertTime(Float time, EConvertionTimeUnit src, EConvertionT
 
 void TimeHandler::MakeLocalTimeString(OUT std::string& strLocalTime, Char delimiter)
 {
-	SYSTEMTIME localTime;
-	::GetLocalTime(&localTime);
+	SYSTEMTIME systemTime;
+	::GetLocalTime(&systemTime);
 
 	constexpr Uint32 timeUnitCount = EnumIdx::TimeUnit::COUNT;
-	std::array<WORD, timeUnitCount> sortedLocalTime =
+	std::array<WORD, timeUnitCount> localTime =
 	{
-		localTime.wMilliseconds,
-		localTime.wSecond,
-		localTime.wMinute,
-		localTime.wHour,
-		localTime.wDay,
-		localTime.wDayOfWeek,
-		localTime.wMonth,
-		localTime.wYear
+		systemTime.wYear,
+		systemTime.wMonth,
+		systemTime.wDayOfWeek,
+		systemTime.wDay,
+		systemTime.wHour,
+		systemTime.wMinute,
+		systemTime.wSecond,
+		systemTime.wMilliseconds
 	};
 
 	std::array<std::string, 7> strDayOfWeek =
 	{
 		"일", "월", "화", "수", "목", "금", "토"
 	};
-
+	
 	std::array<std::string, timeUnitCount> strTimeUnits;
 
-	// 각 시간 요소 넣기
+	// 각 시간 단위 넣기
 	for (Uint32 i = 0; i < timeUnitCount; ++i)
 	{
 		EnumIdx::TimeUnit::Data timeUnit = static_cast<EnumIdx::TimeUnit::Data>(i);
@@ -230,32 +230,34 @@ void TimeHandler::MakeLocalTimeString(OUT std::string& strLocalTime, Char delimi
 
 		if (timeUnit == EnumIdx::TimeUnit::DAY_OF_WEEK)
 		{
-			strTimeUnits[timeUnit] = strDayOfWeek[sortedLocalTime[timeUnit]];
+			strTimeUnits[timeUnit] = strDayOfWeek[localTime[timeUnit]];
 		}
 		else
 		{
-			strTimeUnits[i] = std::to_string(sortedLocalTime[i]);
+			strTimeUnits[i] = std::to_string(localTime[i]);
 		}
 	}
 
-	// 각 시간 요소 순서 정하기
+	strLocalTime.clear();
+
+	// 각 시간 단위의 표시 순서 정하기
 	TimeData::TimeOrders& timeOrders = Data()->GetTimeOrders();
 	for (Uint32 i = 0; i < timeUnitCount; ++i)
 	{
 		EnumIdx::TimeUnit::Data orderIdx = timeOrders[i];
 
 		const std::string& strTimeUnit = strTimeUnits[orderIdx];
-		if (strTimeUnit.empty() == true) // 해당 시간 요소가 없음
+		if (strTimeUnit.empty() == true) // 해당 시간 단위를 사용하지 않겠다는 의미
 		{
 			continue;
 		}
 
 		strLocalTime += strTimeUnit;
-		if (i != timeUnitCount - 1)
-		{
-			strLocalTime += delimiter;
-		}
+		strLocalTime += delimiter;
 	}
+
+	// delimiter 제거
+	strLocalTime.pop_back();
 }
 
 void TimeHandler::ActivateTimeUnit(EnumIdx::TimeUnit::Data timeUnit)
@@ -275,17 +277,26 @@ bool TimeHandler::CheckTimeUnit(EnumIdx::TimeUnit::Data timeUnit) const
 
 void TimeHandler::ChangeTimeOrder(EnumIdx::TimeUnit::Data timeUnit, Uint32 orderIdx)
 {
-	Int32 duplicatedCount = -1; // 하나만 있을 때는 0이 되므로 중복이 아닙니다.
-
 	TimeData::TimeOrders& timeOrders = Data()->GetTimeOrders();
+
+	Int32 prevIdx = -1;
 	for (Uint32 i = 0; i < EnumIdx::TimeUnit::COUNT; ++i)
 	{
 		if (timeOrders[i] == timeUnit)
 		{
-			++duplicatedCount;
+			prevIdx = i;
+			break;
 		}
 	}
 
-	RX_ASSERT(duplicatedCount == 0);
+	// 이전 시간 단위와 현재 시간 단위가 같다면 변경하는 의미가 없습니다.
+	EnumIdx::TimeUnit::Data prevTimeUnit = timeOrders[orderIdx];
+	if (prevTimeUnit == timeUnit)
+	{
+		return;
+	}
+
+	// 현재 넣을 인덱스와 값 교체
 	timeOrders[orderIdx] = timeUnit;
+	timeOrders[prevIdx] = prevTimeUnit;
 }

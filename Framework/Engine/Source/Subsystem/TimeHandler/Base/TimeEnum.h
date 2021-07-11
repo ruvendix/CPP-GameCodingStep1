@@ -11,7 +11,7 @@
 #include "Common/CommonType.h"
 
 // 변환용으로만 사용됩니다.
-enum EConvertionTimeUnit : Int32
+enum class EConvertionTimeUnit : Int32
 {
 	UNKNOWN = -1,
 	MILLISECOND,
@@ -27,17 +27,18 @@ namespace EnumIdx
 {
 	namespace TimeUnit
 	{
+		// SYSTEMTIME과 순서 동일합니다.
 		enum Data
 		{
 			UNKNOWN = -1,
-			MILLISECOND,
-			SECOND,
-			MINUTE,
-			HOUR,
-			DAY,
-			DAY_OF_WEEK, // 일요일(0)부터 토요일(6)까지
-			MONTH, // 1월(1)부터 12월(12)까지
 			YEAR,
+			MONTH, // 1월(1)부터 12월(12)까지
+			DAY_OF_WEEK, // 일요일(0)부터 토요일(6)까지
+			DAY,
+			HOUR,
+			MINUTE,
+			SECOND,
+			MILLISECOND,
 			COUNT,
 		};
 	}

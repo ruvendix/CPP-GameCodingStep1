@@ -153,8 +153,11 @@ Bool LoggerInside::RenderConsole(EConsoleRenderingColor eRenderingColor, const s
 	}
 
 	pConsoleHandler->ChangeRenderingColor(eRenderingColor, EConsoleRenderingType::TEXT);
-	pConsoleHandler->ResetRenderingColor();
 
+	Int32 y = pConsoleHandler->QueryCurrentPosition().Y;
+	pConsoleHandler->RenderString(0, y, strLog.c_str());
+
+	pConsoleHandler->ResetRenderingColor();
 	return true;
 }
 
