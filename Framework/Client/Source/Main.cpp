@@ -21,6 +21,10 @@
 
 Int32 main()
 {
+#ifdef _DEBUG
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
 	Logger::I().SetUp();
 	ErrorTracer::I().SetUp();
 
@@ -73,5 +77,6 @@ Int32 main()
 	ErrorTracer::I().CleanUp();
 	Logger::I().CleanUp();
 
+	::OutputDebugString("--------------------------------------------------------------------------\n");
 	return 0;
 }

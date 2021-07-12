@@ -43,3 +43,8 @@ private:\
 #define CONST_RETURN_FUNC(value) const RETURN_FUNC(value)
 #define OVERRIDE_RETURN_FUNC(value) override RETURN_FUNC(value)
 #define CONST_OVERRIDE_RETURN_FUNC(value) const OVERRIDE_RETURN_FUNC(value)
+
+#ifdef _DEBUG
+	#undef new
+	#define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#endif

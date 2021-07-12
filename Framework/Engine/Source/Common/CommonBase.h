@@ -9,6 +9,7 @@
 #pragma once
 
 #pragma region วฅมุ
+#include <crtdbg.h>
 #include <direct.h>
 
 #include <cstdio>
