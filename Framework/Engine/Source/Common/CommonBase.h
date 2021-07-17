@@ -15,6 +15,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cassert>
+#include <cmath>
 
 #include <array>
 #include <vector>

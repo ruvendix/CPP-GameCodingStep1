@@ -11,9 +11,6 @@
 
 #include "Base/ITimeHandler.h"
 
-// 전방 선언
-class TimeHandlerInside;
-
 class TimeHandler : public ITimeHandler
 {
 	ONLY_SUBSYSTEM_CTOR(TimeHandler);
@@ -32,5 +29,8 @@ public:
 	virtual void ChangeTimeOrder(EnumIdx::TimeUnit::Data timeUnit, Uint32 orderIdx) override;
 
 private:
-	std::unique_ptr<TimeHandlerInside> m_spInside = nullptr;
+	using ConvertionTimeTable = std::array<Float, ToUnderlyingType(EConvertionTimeUnit::COUNT) - 1>;
+
+	static const ConvertionTimeTable UPPER_CONVERTION_TIME_TABLE;
+	static const ConvertionTimeTable LOWER_CONVERTION_TIME_TABLE;
 };

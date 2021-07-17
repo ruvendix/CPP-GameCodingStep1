@@ -38,35 +38,33 @@ Int32 main()
 	//FIND_SUBSYSTEM(IActorManager)->AddActor(pActor);
 	//FIND_SUBSYSTEM(IActorManager)->Update();
 
-	//Float time = 1.0f;
+	Float time = 1.0f;
 
-	//constexpr Uint32 timeUnitCount = ToUnderlyingType(EConvertionTimeUnit::COUNT);
-	//const Char* times[timeUnitCount] =
-	//{
-	//	"밀리초", "초", "분", "시", "일", "년"
-	//};
+	constexpr Uint32 timeUnitCount = ToUnderlyingType(EConvertionTimeUnit::COUNT);
+	const Char* times[timeUnitCount] =
+	{
+		"밀리초", "초", "분", "시", "일", "년"
+	};
 
-	//for (Uint32 i = 0; i < timeUnitCount; ++i)
-	//{
-	//	RX_TRACE("-----------------------------------------------------------------------------------------");
-	//	for (Uint32 j = 0; j < timeUnitCount; ++j)
-	//	{
-	//		Float ret = FIND_SUBSYSTEM(ITimeHandler)->ConvertTime(
-	//			time, static_cast<EConvertionTimeUnit>(i), static_cast<EConvertionTimeUnit>(j));
-	//		RX_TRACE("%s -> %s: %f", times[i], times[j], ret);
-	//	}
+	for (Uint32 i = 0; i < timeUnitCount; ++i)
+	{
+		RX_INFO("-----------------------------------------------------------------------------------------");
+		for (Uint32 j = 0; j < timeUnitCount; ++j)
+		{
+			Float ret = FIND_SUBSYSTEM(ITimeHandler)->ConvertTime(
+				time, static_cast<EConvertionTimeUnit>(i), static_cast<EConvertionTimeUnit>(j));
+			RX_INFO("%f%s\t->\t%f%s", time, times[i], ret, times[j]);
+		}
 
-	//	RX_TRACE("");
-	//	for (Uint32 j = 0; j < timeUnitCount; ++j)
-	//	{
-	//		Float ret = FIND_SUBSYSTEM(ITimeHandler)->ConvertTime(
-	//			time, static_cast<EConvertionTimeUnit>(j), static_cast<EConvertionTimeUnit>(i));
-	//		RX_TRACE("%s -> %s: %f", times[j], times[i], ret);
-	//	}
-
-	//	//Int32 a = 100;
-	//}
-	//RX_TRACE("-----------------------------------------------------------------------------------------");
+		RX_INFO("");
+		for (Uint32 j = 0; j < timeUnitCount; ++j)
+		{
+			Float ret = FIND_SUBSYSTEM(ITimeHandler)->ConvertTime(
+				time, static_cast<EConvertionTimeUnit>(j), static_cast<EConvertionTimeUnit>(i));
+			RX_INFO("%f%s\t->\t%f%s", time, times[j], ret, times[i]);
+		}
+	}
+	RX_INFO("-----------------------------------------------------------------------------------------");
 
 	// 일단 시간을 찍어보자
 	//std::string strLocalTime;
