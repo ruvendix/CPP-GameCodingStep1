@@ -30,6 +30,8 @@ Int32 main()
 
 	SubsystemLocator::I().SetUp();
 
+	Int32* pInt = new Int32;
+
 	//FIND_SUBSYSTEM(ILogger)->Data()->DeactivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);
 
 	//Actor* pActor = FIND_SUBSYSTEM(IActorManager)->CreateActor<Actor>();
@@ -37,38 +39,6 @@ Int32 main()
 
 	//FIND_SUBSYSTEM(IActorManager)->AddActor(pActor);
 	//FIND_SUBSYSTEM(IActorManager)->Update();
-
-	Float time = 1.0f;
-
-	constexpr Uint32 timeUnitCount = ToUnderlyingType(EConvertionTimeUnit::COUNT);
-	const Char* times[timeUnitCount] =
-	{
-		"밀리초", "초", "분", "시", "일", "년"
-	};
-
-	for (Uint32 i = 0; i < timeUnitCount; ++i)
-	{
-		RX_INFO("-----------------------------------------------------------------------------------------");
-		for (Uint32 j = 0; j < timeUnitCount; ++j)
-		{
-			Float ret = FIND_SUBSYSTEM(ITimeHandler)->ConvertTime(
-				time, static_cast<EConvertionTimeUnit>(i), static_cast<EConvertionTimeUnit>(j));
-			RX_INFO("%f%s\t->\t%f%s", time, times[i], ret, times[j]);
-		}
-
-		RX_INFO("");
-		for (Uint32 j = 0; j < timeUnitCount; ++j)
-		{
-			Float ret = FIND_SUBSYSTEM(ITimeHandler)->ConvertTime(
-				time, static_cast<EConvertionTimeUnit>(j), static_cast<EConvertionTimeUnit>(i));
-			RX_INFO("%f%s\t->\t%f%s", time, times[j], ret, times[i]);
-		}
-	}
-	RX_INFO("-----------------------------------------------------------------------------------------");
-
-	// 일단 시간을 찍어보자
-	//std::string strLocalTime;
-	//FIND_SUBSYSTEM(ITimeHandler)->MakeLocalTimeString(strLocalTime, '_');
 
 	SubsystemLocator::I().CleanUp();
 
