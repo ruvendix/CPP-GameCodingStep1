@@ -15,36 +15,154 @@
 
 #include <EnginePCH.h>
 
-#include <Scene/GameObject/GameObject.h>
+//#include <Scene/GameObject/GameObject.h>
 #include <Scene/Actor/Base/ActorInclusion.h>
 #include <Scene/Component/Transform.h>
 
+class GameObject
+{
+public:
+	GameObject() = default;
+	virtual ~GameObject() = default;
+
+	virtual void Action() = 0;
+};
+
+class GroundMonster : public GameObject
+{
+public:
+	using GameObject::GameObject;
+	virtual ~GroundMonster() = default;
+
+	virtual void Action() override
+	{
+		printf("지상 이동중!\n");
+	}
+};
+
+class FlyMonster : public GameObject
+{
+public:
+	using GameObject::GameObject;
+	virtual ~FlyMonster() = default;
+
+	virtual void Action() override
+	{
+		printf("공중 이동중!\n");
+	}
+};
+
+// 망한 거임
+class GroundAndFlyMonster : public GroundMonster, public FlyMonster
+{
+public:
+	using GroundMonster::GroundMonster;
+	using FlyMonster::FlyMonster;
+	virtual ~GroundAndFlyMonster() = default;
+
+	virtual void Action() override
+	{
+		GroundMonster::Action();
+		FlyMonster::Action();
+	}
+};
+
+////////////////////////////////////////////////////
+class IMonster
+{
+public:
+	IMonster() = default;
+	virtual ~IMonster() = default;
+
+	virtual void Action() = 0;
+};
+
+class Monster : public IMonster
+{
+public:
+	using IMonster::IMonster;
+	virtual ~Monster() = default;
+
+	virtual void Action() override
+	{
+		printf("몬스터의 행동!\n");
+	}
+};
+
+class MonsterDecorator : public IMonster
+{
+public:
+	MonsterDecorator(IMonster* pBase) { m_pBase = pBase; }
+	virtual ~MonsterDecorator() { SAFE_DELETE(m_pBase); }
+
+	virtual void Action() override
+	{
+		m_pBase->Action();
+	}
+
+private:
+	IMonster* m_pBase = nullptr;
+};
+
+class GroundAbility : public MonsterDecorator
+{
+public:
+	using MonsterDecorator::MonsterDecorator;
+	virtual ~GroundAbility() = default;
+
+	virtual void Action() override
+	{
+		MonsterDecorator::Action();
+		printf("지상 이동중!\n");
+	}
+};
+
+class FlyAbility : public MonsterDecorator
+{
+public:
+	using MonsterDecorator::MonsterDecorator;
+	virtual ~FlyAbility() = default;
+
+	virtual void Action() override
+	{
+		MonsterDecorator::Action();
+		printf("공중 이동중!\n");
+	}
+};
+
 Int32 main()
 {
-#ifdef _DEBUG
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-#endif
+	GroundMonster groundMonster;
+	groundMonster.Action();
+	printf("\n");
 
-	Logger::I().SetUp();
-	ErrorTracer::I().SetUp();
+	FlyMonster flyMonster;
+	flyMonster.Action();
+	printf("\n");
 
-	SubsystemLocator::I().SetUp();
+	GroundAndFlyMonster groundAndFlyMonster;
+	groundAndFlyMonster.Action();
+	printf("\n");
 
-	Int32* pInt = new Int32;
+	////////////////////////////////////////////////////
+	printf("\n");
+	printf("\n");
+	printf("<데코레이터 패턴 적용>\n");
 
-	//FIND_SUBSYSTEM(ILogger)->Data()->DeactivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);
+	IMonster* pGroundMonster = new GroundAbility(new Monster);
+	pGroundMonster->Action();
+	SAFE_DELETE(pGroundMonster);
 
-	//Actor* pActor = FIND_SUBSYSTEM(IActorManager)->CreateActor<Actor>();
-	//pActor->AddComponent<Component::Transfrom>();
+	printf("\n");
+	IMonster* pFlyMonster = new FlyAbility(new Monster);
+	pFlyMonster->Action();
+	SAFE_DELETE(pFlyMonster);
 
-	//FIND_SUBSYSTEM(IActorManager)->AddActor(pActor);
-	//FIND_SUBSYSTEM(IActorManager)->Update();
+	printf("\n");
+	IMonster* pGroundAndFlyMonster = new GroundAbility(new FlyAbility(new Monster));
+	pGroundAndFlyMonster->Action();
+	SAFE_DELETE(pGroundAndFlyMonster);
+	printf("\n");
 
-	SubsystemLocator::I().CleanUp();
-
-	ErrorTracer::I().CleanUp();
-	Logger::I().CleanUp();
-
-	::OutputDebugString("--------------------------------------------------------------------------\n");
 	return 0;
 }
