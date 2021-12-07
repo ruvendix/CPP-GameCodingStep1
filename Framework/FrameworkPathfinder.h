@@ -15,7 +15,7 @@
 class FrameworkPathfinder final
 {
 public:
-	void SetUp();
+	void StartUp();
 
 	const std::string& GetAbsolutePath() const { return m_strAbsolutePath; }
 	const std::string& GetRelativePath() const { return m_strRelativePath; }

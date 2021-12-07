@@ -240,7 +240,7 @@ void LoggerInside::CloseLogFileStream()
 	로거를 초기화합니다.
 	콘솔 핸들러 저장과 로그 옵션을 설정합니다.
 */
-void Logger::SetUp()
+void Logger::StartUp()
 {
 	//ActivateOption(EnumIdx::LogOption::TIME);
 	//ActivateOption(EnumIdx::LogOption::ABSOLUTE_FILEPATH);

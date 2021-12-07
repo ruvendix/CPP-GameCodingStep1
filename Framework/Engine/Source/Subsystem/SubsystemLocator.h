@@ -34,7 +34,7 @@ public:
 	template <typename TSubsystem>
 	void ExchangeSubsystem();
 
-	void SetUp();
+	void StartUp();
 	void CleanUp();
 
 private:

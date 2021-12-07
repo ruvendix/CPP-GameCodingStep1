@@ -15,7 +15,7 @@ public:
 	ConsoleHandlerInside() = default;
 	~ConsoleHandlerInside() = default;
 
-	void SetUp();
+	void StartUp();
 	void MovePosition(Int32 x, Int32 y);
 	void AdjustSize(Uint32 width, Uint32 height);
 	void ChangeTitle(const Char* szTitle);
@@ -36,7 +36,7 @@ private:
 	CONSOLE_SCREEN_BUFFER_INFO m_outputScreenBufferInfo; // 출력 버퍼 정보입니다.
 };
 
-void ConsoleHandlerInside::SetUp()
+void ConsoleHandlerInside::StartUp()
 {
 	m_hConsole = ::GetConsoleWindow();
 	if (m_hConsole == nullptr)
@@ -188,9 +188,9 @@ ConsoleHandler::ConsoleHandler()
 	콘솔창 이름과 사이즈 설정이 가능해요.
 	핸들도 여기에서 저장합니다.
 */
-void ConsoleHandler::SetUp()
+void ConsoleHandler::StartUp()
 {
-	m_spInside->SetUp();
+	m_spInside->StartUp();
 }
 
 /*

@@ -112,14 +112,8 @@
     <ClCompile Include="Source\Common\System\ErrorTracer\ErrorTracer.cpp">
       <Filter>Source\0_Common\System\ErrorHandler</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Subsystem\GameObjectManager\GameObjectManager.cpp">
-      <Filter>Source\2_Subsystem\GameObjectManager</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Subsystem\ConsoleHandler\DoubleBufferingConsoleHandler.cpp">
       <Filter>Source\2_Subsystem\ConsoleHandler</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\GameObject\GameObject.cpp">
-      <Filter>Source\3_Scene\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Source\Utility\Time\Timer.cpp">
       <Filter>Source\4_Utility\Time</Filter>
@@ -163,6 +157,9 @@
     <ClCompile Include="Source\Common\System\Logger\LogCategories.cpp">
       <Filter>Source\0_Common\System\Logger</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Core\RClass\RClass.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnginePCH.h">
@@ -204,9 +201,6 @@
     <ClInclude Include="Source\Common\System\ErrorTracer\ErrorTracer.h">
       <Filter>Source\0_Common\System\ErrorHandler</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Subsystem\GameObjectManager\GameObjectManager.h">
-      <Filter>Source\2_Subsystem\GameObjectManager</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Subsystem\SubsystemEnum.h">
       <Filter>Source\2_Subsystem</Filter>
     </ClInclude>
@@ -218,9 +212,6 @@
     </ClInclude>
     <ClInclude Include="Source\Subsystem\ISubsytem.h">
       <Filter>Source\2_Subsystem</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\GameObject\GameObject.h">
-      <Filter>Source\3_Scene\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Source\Utility\Time\Timer.h">
       <Filter>Source\4_Utility\Time</Filter>
@@ -300,12 +291,6 @@
     <ClInclude Include="Source\Subsystem\FileHandler\Base\IFileHandlerNull.h">
       <Filter>Source\2_Subsystem\FileHandler\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Subsystem\GameObjectManager\Base\IGameObjectManagerNull.h">
-      <Filter>Source\2_Subsystem\GameObjectManager\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Subsystem\GameObjectManager\Base\IGameObjectManager.h">
-      <Filter>Source\2_Subsystem\GameObjectManager\Base</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Subsystem\ConsoleHandler\Base\IConsoleHandlerNull.h">
       <Filter>Source\2_Subsystem\ConsoleHandler\Base</Filter>
     </ClInclude>
@@ -333,12 +318,6 @@
     <ClInclude Include="Source\Scene\Component\Transform.h">
       <Filter>Source\3_Scene\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene\Component\Base\ComponentEnum.h">
-      <Filter>Source\3_Scene\Component\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\Component\Base\ComponentMacro.h">
-      <Filter>Source\3_Scene\Component\Base</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scene\Component\Base\IComponent.h">
       <Filter>Source\3_Scene\Component\Base</Filter>
     </ClInclude>
@@ -346,9 +325,6 @@
       <Filter>Source\3_Scene\Actor\Base</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\Actor\Base\ActorInclusion.h">
-      <Filter>Source\3_Scene\Actor\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\Actor\Base\ActorMacro.h">
       <Filter>Source\3_Scene\Actor\Base</Filter>
     </ClInclude>
     <ClInclude Include="Source\DisableWarning.h" />
@@ -370,6 +346,7 @@
     <ClInclude Include="Source\Common\System\ErrorTracer\ErrorEnum.h">
       <Filter>Source\0_Common\System\ErrorHandler</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\RClass\RClass.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Subsystem\SubsystemLocator.inl">

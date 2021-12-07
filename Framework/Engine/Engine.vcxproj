@@ -12,12 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\FrameworkPathFinder.cpp" />
+    <ClCompile Include="Source\Core\RClass\RClass.cpp" />
     <ClCompile Include="Source\Scene\Actor\Base\Actor.cpp" />
     <ClCompile Include="Source\Scene\Component\Base\IComponent.cpp" />
     <ClCompile Include="Source\Scene\Component\Transform.cpp" />
     <ClCompile Include="Source\Subsystem\ActorManager\ActorManager.cpp" />
     <ClCompile Include="Source\Subsystem\ConsoleHandler\DoubleBufferingConsoleHandler.cpp" />
-    <ClCompile Include="Source\Scene\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\Subsystem\ConsoleHandler\ConsoleHandler.cpp" />
     <ClCompile Include="Source\EnginePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugEngine|Win32'">Create</PrecompiledHeader>
@@ -25,7 +25,6 @@
     </ClCompile>
     <ClCompile Include="Source\Common\System\ErrorTracer\ErrorTracer.cpp" />
     <ClCompile Include="Source\Subsystem\FileHandler\FileHandler.cpp" />
-    <ClCompile Include="Source\Subsystem\GameObjectManager\GameObjectManager.cpp" />
     <ClCompile Include="Source\Common\System\Logger\LogCategories.cpp" />
     <ClCompile Include="Source\Common\System\Logger\BaseLogCategory.cpp" />
     <ClCompile Include="Source\Common\System\Logger\Logger.cpp" />
@@ -52,13 +51,11 @@
     <ClInclude Include="Source\Core\Graph\GraphEdge.h" />
     <ClInclude Include="Source\Core\Graph\GraphInclusion.h" />
     <ClInclude Include="Source\Core\Graph\GraphNode.h" />
+    <ClInclude Include="Source\Core\RClass\RClass.h" />
     <ClInclude Include="Source\DisableWarning.h" />
     <ClInclude Include="Source\Scene\Actor\Base\Actor.h" />
     <ClInclude Include="Source\Scene\Actor\Base\ActorInclusion.h" />
-    <ClInclude Include="Source\Scene\Actor\Base\ActorMacro.h" />
-    <ClInclude Include="Source\Scene\Component\Base\ComponentMacro.h" />
     <ClInclude Include="Source\Scene\Component\Base\IComponent.h" />
-    <ClInclude Include="Source\Scene\Component\Base\ComponentEnum.h" />
     <ClInclude Include="Source\Scene\Component\Transform.h" />
     <ClInclude Include="Source\Subsystem\ActorManager\ActorManager.h" />
     <ClInclude Include="Source\Subsystem\ActorManager\Base\ActorManagerInclusion.h" />
@@ -66,7 +63,6 @@
     <ClInclude Include="Source\Subsystem\ActorManager\Base\IActorManagerNull.h" />
     <ClInclude Include="Source\Subsystem\ConsoleHandler\Base\IConsoleHandlerNull.h" />
     <ClInclude Include="Source\Subsystem\ConsoleHandler\DoubleBufferingConsoleHandler.h" />
-    <ClInclude Include="Source\Scene\GameObject\GameObject.h" />
     <ClInclude Include="Source\Subsystem\ConsoleHandler\Base\ConsoleEnum.h" />
     <ClInclude Include="Source\Subsystem\ConsoleHandler\ConsoleHandler.h" />
     <ClInclude Include="Source\EnginePCH.h" />
@@ -81,9 +77,6 @@
     <ClInclude Include="Source\Subsystem\FrameManager\Base\FrameMacro.h" />
     <ClInclude Include="Source\Subsystem\FrameManager\Base\FrameData.h" />
     <ClInclude Include="Source\Subsystem\FrameManager\Base\IFrameManagerNull.h" />
-    <ClInclude Include="Source\Subsystem\GameObjectManager\Base\IGameObjectManagerNull.h" />
-    <ClInclude Include="Source\Subsystem\GameObjectManager\GameObjectManager.h" />
-    <ClInclude Include="Source\Subsystem\GameObjectManager\Base\IGameObjectManager.h" />
     <ClInclude Include="Source\Subsystem\ISubsytem.h" />
     <ClInclude Include="Source\Common\System\Logger\LogCategories.h" />
     <ClInclude Include="Source\Common\System\Logger\BaseLogCategory.h" />

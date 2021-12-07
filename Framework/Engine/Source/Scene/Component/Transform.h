@@ -11,26 +11,20 @@
 
 #include "Base/IComponent.h"
 
-namespace Component
+class Transform : public IComponent
 {
-	class Transfrom final : public IComponent
+	GENERATE_HIERARCHY(Transform, IComponent);
+
+public:
+	using IComponent::IComponent;
+	virtual ~Transform() = default;
+
+	void Print() const
 	{
-		GENERATE_COMPONENT(EComponentType::TRANSFORM, Transform);
+		RX_INFO("x: %f\ty: %f", m_x, m_y);
+	}
 
-	public:
-		Transfrom(Actor* pActor);
-		virtual ~Transfrom() = default;
-
-		virtual void SetUp() override;
-		virtual void Update() override;
-
-		void Print() const
-		{
-			RX_INFO("x: %f\ty: %f", m_x, m_y);
-		}
-
-	private:
-		float m_x = 0.0f;
-		float m_y = 0.0f;
-	};
-}
+private:
+	float m_x = 0.0f;
+	float m_y = 0.0f;
+};

@@ -16,7 +16,7 @@ class FileHandler : public IFileHandler
 	ONLY_SUBSYSTEM(FileHandler);
 
 public:
-	virtual void SetUp();
+	virtual void StartUp();
 	virtual void CleanUp();
 
 	virtual Bool OpenFileStream(const std::string_view& strFilePath,

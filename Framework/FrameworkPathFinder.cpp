@@ -10,7 +10,7 @@
 #include "EnginePCH.h"
 #include "FrameworkPathfinder.h"
 
-void FrameworkPathfinder::SetUp()
+void FrameworkPathfinder::StartUp()
 {
 	m_strAbsolutePath = __FILE__;
 

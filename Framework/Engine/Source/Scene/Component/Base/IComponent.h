@@ -10,25 +10,23 @@
 // =====================================================================================
 #pragma once
 
-#include "Common/CommonBase.h"
-#include "Common/CommonMacro.h"
+#include "Core/RClass/RClass.h"
 
-#include "ComponentMacro.h"
-#include "ComponentEnum.h"
-
+// 상호 참조 관계!
 class Actor;
 
-class IComponent
+class IComponent : public RClass
 {
+    GENERATE_HIERARCHY(IComponent, RClass);
+
 public:
-	IComponent(Actor* pActor);
-	virtual ~IComponent() = default;
+    IComponent() = default;
+    IComponent(Actor* pOwner);
+    virtual ~IComponent() = default;
 
-	virtual void SetUp() PURE_FUNC;
-	virtual void Update() PURE_FUNC;
-
-	Actor* GetActor() const { return m_pActor; }
+    Actor* GetOwner() { return m_pOwner; }
+    const Actor* GetOwner() const { return m_pOwner; }
 
 private:
-	Actor* m_pActor = nullptr;
+    Actor* m_pOwner = nullptr;
 };

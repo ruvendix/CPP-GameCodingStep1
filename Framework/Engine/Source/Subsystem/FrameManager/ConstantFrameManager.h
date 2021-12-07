@@ -18,7 +18,7 @@ class ConstantFrameManager final : public IFrameManager
 	ONLY_SUBSYSTEM_CTOR(ConstantFrameManager);
 
 public:
-	virtual void SetUp() override;
+	virtual void StartUp() override;
 	virtual void CleanUp() override;
 
 	virtual void UpdateFrameTime() override;

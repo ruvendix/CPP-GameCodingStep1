@@ -11,7 +11,10 @@
 #include "EnginePCH.h"
 #include "IComponent.h"
 
-IComponent::IComponent(Actor* pActor)
+/*
+생성할 때 소유자를 고정합니다!
+*/
+IComponent::IComponent(Actor* pOwner)
 {
-	m_pActor = pActor;
+	m_pOwner = pOwner;
 }

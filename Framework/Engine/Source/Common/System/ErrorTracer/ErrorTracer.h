@@ -22,7 +22,7 @@ class ErrorTracer final : public ICommon
 	GENERATE_LOCAL_SINGLETON(ErrorTracer);
 
 public:
-	virtual void SetUp() override;
+	virtual void StartUp() override;
 	virtual void CleanUp() override;
 
 	const Char* LastErrorString() const;

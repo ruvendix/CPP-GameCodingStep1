@@ -28,7 +28,7 @@ class Logger final : public ICommon
 	FRIEND_CLASS(LoggerInside);
 
 public:
-	virtual void SetUp() override;
+	virtual void StartUp() override;
 	virtual void CleanUp() override;
 
 	virtual void Trace(const BaseLogCategory* pCategory, const std::string_view& strContent,

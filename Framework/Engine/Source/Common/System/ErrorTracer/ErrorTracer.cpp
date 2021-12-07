@@ -16,14 +16,14 @@ public:
 	ErrorTracerInside() = default;
 	~ErrorTracerInside() = default;
 
-	void SetUp();
+	void StartUp();
 	const Char* FindErrorString(EErrorCode errorCode) const;
 
 private:
 	std::unordered_map<EErrorCode, std::string> m_mapErrorString;
 };
 
-void ErrorTracerInside::SetUp()
+void ErrorTracerInside::StartUp()
 {
 	m_mapErrorString.emplace(EErrorCode::UNKNOWN, "알 수 없는 에러!");
 	m_mapErrorString.emplace(EErrorCode::INDIRECT_NULLPTR, "nullptr을 역참조할 수 없음!!");
@@ -63,10 +63,10 @@ const Char* ErrorTracerInside::FindErrorString(EErrorCode errorCode) const
 	에러 핸들러를 초기화합니다.
 	에러 타입에 해당되는 에러 내용을 설정해요.
 */
-void ErrorTracer::SetUp()
+void ErrorTracer::StartUp()
 {
 	m_pInside = new ErrorTracerInside;
-	m_pInside->SetUp();
+	m_pInside->StartUp();
 }
 
 /*

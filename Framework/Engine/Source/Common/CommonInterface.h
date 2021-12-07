@@ -17,7 +17,7 @@ public:
 	ICommon() = default;
 	virtual ~ICommon() = default;
 
-	virtual void SetUp() PURE_FUNC;
+	virtual void StartUp() PURE_FUNC;
 	virtual void CleanUp() PURE_FUNC;
 };
 

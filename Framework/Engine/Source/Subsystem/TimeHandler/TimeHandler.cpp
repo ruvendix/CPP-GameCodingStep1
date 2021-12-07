@@ -37,7 +37,7 @@ TimeHandler::TimeHandler()
 	
 }
 
-void TimeHandler::SetUp()
+void TimeHandler::StartUp()
 {
 	TimeData::TimeOrders& timeOrders = Data()->GetTimeOrders();
 	for (Uint32 i = 0; i < EnumIdx::TimeUnit::COUNT; ++i)

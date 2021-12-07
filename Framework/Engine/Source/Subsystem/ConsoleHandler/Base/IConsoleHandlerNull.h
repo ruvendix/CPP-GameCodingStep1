@@ -16,7 +16,7 @@
 class IConsoleHandlerNull : public IConsoleHandler
 {
 public:
-	virtual void SetUp() OVERRIDE_EMPTY_FUNC;
+	virtual void StartUp() OVERRIDE_EMPTY_FUNC;
 	virtual void CleanUp() OVERRIDE_EMPTY_FUNC;
 
 	virtual void ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) OVERRIDE_EMPTY_FUNC;

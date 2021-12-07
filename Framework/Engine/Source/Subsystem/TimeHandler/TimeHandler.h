@@ -16,7 +16,7 @@ class TimeHandler : public ITimeHandler
 	ONLY_SUBSYSTEM_CTOR(TimeHandler);
 
 public:
-	virtual void SetUp() override;
+	virtual void StartUp() override;
 	virtual void CleanUp() override;
 
 	virtual Float ConvertTime(Float time, EConvertionTimeUnit src, EConvertionTimeUnit dest) const override;

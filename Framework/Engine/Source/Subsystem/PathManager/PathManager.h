@@ -18,7 +18,7 @@ class PathManager final : public IPathManager
 	ONLY_SUBSYSTEM(PathManager);
 
 public:
-	virtual void SetUp();
+	virtual void StartUp();
 	virtual void CleanUp();
 
 	virtual const std::string& FrameworkAbsolutePath() const override;

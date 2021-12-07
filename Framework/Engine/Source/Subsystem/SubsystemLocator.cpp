@@ -18,7 +18,7 @@
 	몇몇 서브시스템은 복잡하게 꼬여있지만 초기화되지 않은 서브시스템이라면
 	널서브시스템을 이용하므로 문제는 없습니다.
 */
-void SubsystemLocator::SetUp()
+void SubsystemLocator::StartUp()
 {
 	RegisterSubsystem<TimeHandler>();
 	Logger::I().SetTimeHandler(FIND_SUBSYSTEM(ITimeHandler));
@@ -33,7 +33,6 @@ void SubsystemLocator::SetUp()
 	RegisterSubsystem<FileHandler>();
 	Logger::I().SetFileHandler(FIND_SUBSYSTEM(IFileHandler));
 
-	RegisterSubsystem<GameObjectManager>();
 	RegisterSubsystem<ConstantFrameManager>();
 	RegisterSubsystem<ActorManager>();
 }

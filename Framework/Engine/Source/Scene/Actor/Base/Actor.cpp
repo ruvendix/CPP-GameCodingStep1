@@ -10,18 +10,17 @@
 #include "EnginePCH.h"
 #include "Actor.h"
 
+Actor::Actor()
+{
+	m_vecComponent.reserve(DEFAULT_COMPONENT_COUNT);
+}
+
+Actor::Actor(const std::string& strName) : Actor()
+{
+	m_strName = strName;
+}
+
 void Actor::Update()
 {
-	UpdateComponent();
-	UpdateActor();
-}
 
-void Actor::UpdateComponent()
-{
-	RX_INFO("UpdateComponent!");
-}
-
-void Actor::UpdateActor()
-{
-	RX_INFO("UpdateActor!");
 }

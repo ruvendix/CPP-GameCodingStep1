@@ -7,8 +7,8 @@
 // 액터 관리자의 템플릿 함수들이 구현되어있습니다.
 // =====================================================================================
 
-#include "Subsystem/Logger/LogMacro.h"
-#include "Scene/Actor/Actor.h"
+#include "Common/System/Logger/LogMacro.h"
+#include "Scene/Actor/Base/ActorInclusion.h"
 
 /*
 	액터를 생성합니다.

@@ -11,7 +11,7 @@
 
 #include "Scene/Actor/Base/Actor.h"
 
-void ActorManager::SetUp()
+void ActorManager::StartUp()
 {
 
 }

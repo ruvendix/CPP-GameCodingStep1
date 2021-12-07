@@ -16,7 +16,7 @@
 class IPathManagerNull : public IPathManager
 {
 public:
-	virtual void SetUp() OVERRIDE_EMPTY_FUNC;
+	virtual void StartUp() OVERRIDE_EMPTY_FUNC;
 	virtual void CleanUp() OVERRIDE_EMPTY_FUNC;
 
 	virtual const std::string& FrameworkAbsolutePath() CONST_OVERRIDE_RETURN_FUNC(m_str);

@@ -16,7 +16,7 @@
 class IActorManagerNull : public IActorManager
 {
 public:
-	virtual void SetUp() OVERRIDE_EMPTY_FUNC;
+	virtual void StartUp() OVERRIDE_EMPTY_FUNC;
 	virtual void CleanUp() OVERRIDE_EMPTY_FUNC;
 
 	virtual void AddActor(Actor* pActor) OVERRIDE_EMPTY_FUNC;

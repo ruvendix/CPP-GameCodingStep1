@@ -18,9 +18,6 @@
 #include "FileHandler/Base/IFileHandlerNull.h"
 #include "FileHandler/FileHandler.h"
 
-#include "GameObjectManager/Base/IGameObjectManagerNull.h"
-#include "GameObjectManager/GameObjectManager.h"
-
 #include "FrameManager/Base/FrameMacro.h"
 #include "FrameManager/Base/IFrameManagerNull.h"
 #include "FrameManager/ConstantFrameManager.h"
@@ -28,6 +25,8 @@
 #include "PathManager/Base/IPathManagerNull.h"
 #include "PathManager/PathManager.h"
 
+#include "ActorManager/Base/IActorManager.h"
+#include "ActorManager/Base/IActorManager.inl"
 #include "ActorManager/Base/IActorManagerNull.h"
 #include "ActorManager/ActorManager.h"
 

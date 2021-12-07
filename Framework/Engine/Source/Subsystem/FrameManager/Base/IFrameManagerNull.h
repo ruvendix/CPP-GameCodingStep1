@@ -16,7 +16,7 @@
 class IFrameManagerNull : public IFrameManager
 {
 public:
-	virtual void SetUp() OVERRIDE_EMPTY_FUNC;
+	virtual void StartUp() OVERRIDE_EMPTY_FUNC;
 	virtual void CleanUp() OVERRIDE_EMPTY_FUNC;
 
 	virtual void UpdateFrameTime() OVERRIDE_EMPTY_FUNC;

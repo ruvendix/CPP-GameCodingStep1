@@ -18,7 +18,7 @@ public:
 	ConstantFrameManagerInside() = default;
 	~ConstantFrameManagerInside() = default;
 
-	void SetUp();
+	void StartUp();
 	void UpdateFrameTime(ConstantFrameManager& constantFrameManager);
 
 private:
@@ -27,7 +27,7 @@ private:
 	Stopwatch m_deltaTimeStopwatch;
 };
 
-void ConstantFrameManagerInside::SetUp()
+void ConstantFrameManagerInside::StartUp()
 {
 	m_FPSTimer.SetLoop(true);
 	m_FPSTimer.SetTargetTime(1.0f);
@@ -72,9 +72,9 @@ ConstantFrameManager::ConstantFrameManager()
 /*
 	프레임 관련 정보를 초기화합니다.
 */
-void ConstantFrameManager::SetUp()
+void ConstantFrameManager::StartUp()
 {
-	m_spInside->SetUp();
+	m_spInside->StartUp();
 }
 
 /*

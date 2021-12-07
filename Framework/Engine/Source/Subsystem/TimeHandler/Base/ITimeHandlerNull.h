@@ -16,7 +16,7 @@
 class ITimeHandlerNull : public ITimeHandler
 {
 public:
-	virtual void SetUp() OVERRIDE_EMPTY_FUNC;
+	virtual void StartUp() OVERRIDE_EMPTY_FUNC;
 	virtual void CleanUp() OVERRIDE_EMPTY_FUNC;
 
 	virtual Float ConvertTime(Float time, EConvertionTimeUnit src, EConvertionTimeUnit dest) CONST_OVERRIDE_RETURN_FUNC(0.0f);

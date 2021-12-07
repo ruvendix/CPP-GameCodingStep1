@@ -15,7 +15,7 @@ class ActorManager final : public IActorManager
 	ONLY_SUBSYSTEM(ActorManager);
 
 public:
-	virtual void SetUp() override;
+	virtual void StartUp() override;
 	virtual void CleanUp() override;
 
 	virtual void AddActor(Actor* pActor) override; // 이걸로 추가된 액터만 관리!

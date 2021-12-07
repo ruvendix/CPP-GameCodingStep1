@@ -10,7 +10,7 @@
 #include "EnginePCH.h"
 #include "FileHandler.h"
 
-void FileHandler::SetUp()
+void FileHandler::StartUp()
 {
 	
 }

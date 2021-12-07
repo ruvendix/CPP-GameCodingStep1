@@ -33,7 +33,7 @@ inline void SubsystemLocator::RegisterSubsystem()
 		return;
 	}
 
-	pSubsystem->SetUp();
+	pSubsystem->StartUp();
 }
 
 template<typename TSubsystem>
@@ -101,6 +101,6 @@ inline void SubsystemLocator::ExchangeSubsystem()
 		return;
 	}
 
-	pSubsystem->SetUp();
+	pSubsystem->StartUp();
 	iter->second = pSubsystem;
 }

@@ -11,32 +11,37 @@
 
 #include "Common/CommonBase.h"
 #include "../../Component/Base/IComponent.h"
-#include "ActorMacro.h"
+
+// 상호 참조 관계!
+class IComponent;
 
 // 컴포넌트는 액터를 통해서만 사용되므로 전역타입을 선언합니다.
-using ComponentPtr = std::shared_ptr<class IComponent>;
+using ComponentPtr = std::shared_ptr<IComponent>;
 
 class Actor
 {
-	ONLY_ACTOR_MANAGER(Actor);
-
 public:
-	template <typename TComponent>
-	void AddComponent();
+    static const UINT32 DEFAULT_COMPONENT_COUNT = 4;
 
-	template <typename TComponent>
-	void RemoveComponent();
+    Actor();
+    Actor(const std::string& strName);
+    virtual ~Actor() = default;
 
-	template <typename TComponent>
-	std::shared_ptr<TComponent> FindComponent();
+    virtual void Update();
 
-	void Update();
+    template <typename TComponent>
+    bool AddComponent();
 
-protected:
-	virtual void UpdateActor();
+    template <typename TComponent>
+    bool RemoveComponent();
+
+    template <typename TComponent>
+    TComponent* FindComponent(bool bCheckHiearachy = false);
+
+    const std::string& GetName() const { return m_strName; }
+    void SetName(const std::string& strName) { m_strName = strName; }
 
 private:
-	void UpdateComponent();
-
-	std::unordered_map<EComponentType, ComponentPtr> m_mapComponent;
+    std::string m_strName; // 정식으로 작업할 때는 호환성 있는 스트링을 사용하는 걸 추천! (언리얼에서는 TEXT())
+    std::vector<ComponentPtr> m_vecComponent; // 여기에 Component들을 모음!
 };

@@ -19,7 +19,7 @@ class DoubleBufferingConsoleHandler final : public IConsoleHandler
 	ONLY_SUBSYSTEM_CTOR(DoubleBufferingConsoleHandler);
 
 public:
-	virtual void SetUp() override;
+	virtual void StartUp() override;
 	virtual void CleanUp() override;
 	virtual void ChangeRenderingColor(EConsoleRenderingColor renderingColor, EConsoleRenderingType renderingType) override;
 	virtual void ClearScreen() override;

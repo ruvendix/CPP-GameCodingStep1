@@ -16,7 +16,7 @@
 class IFileHandlerNull : public IFileHandler
 {
 public:
-	virtual void SetUp() OVERRIDE_EMPTY_FUNC;
+	virtual void StartUp() OVERRIDE_EMPTY_FUNC;
 	virtual void CleanUp() OVERRIDE_EMPTY_FUNC;
 
 	virtual Bool OpenFileStream(const std::string_view& strFilePath, EFileMode fileMode, EAccessMode accessMode, FILE** ppFile) CONST_RETURN_FUNC(true);

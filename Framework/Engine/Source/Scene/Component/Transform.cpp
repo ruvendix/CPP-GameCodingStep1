@@ -9,22 +9,3 @@
 // =====================================================================================
 #include "EnginePCH.h"
 #include "Transform.h"
-
-namespace Component
-{
-	Transfrom::Transfrom(Actor* pActor) :
-		IComponent(pActor)
-	{
-
-	}
-
-	void Transfrom::SetUp()
-	{
-
-	}
-
-	void Transfrom::Update()
-	{
-		
-	}
-}

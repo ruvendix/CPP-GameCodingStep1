@@ -15,7 +15,7 @@ public:
 	DoubleBufferingConsoleHandlerInside() = default;
 	~DoubleBufferingConsoleHandlerInside() = default;
 
-	void SetUp();
+	void StartUp();
 	void CleanUp();
 	void MovePosition(Int32 x, Int32 y);
 	void AdjustSize(Uint32 width, Uint32 height);
@@ -40,7 +40,7 @@ private:
 	std::array<HANDLE, EnumIdx::ConsoleOutputBuffer::COUNT> m_outputBufferHandles; // 출력 버퍼 핸들 배열입니다.
 };
 
-void DoubleBufferingConsoleHandlerInside::SetUp()
+void DoubleBufferingConsoleHandlerInside::StartUp()
 {
 	ChangeTitle("Default");
 
@@ -312,9 +312,9 @@ DoubleBufferingConsoleHandler::DoubleBufferingConsoleHandler()
 	핸들도 여기에서 저장합니다.
 	더블 버퍼링을 위한 출력 버퍼를 생성하고 설정합니다.
 */
-void DoubleBufferingConsoleHandler::SetUp()
+void DoubleBufferingConsoleHandler::StartUp()
 {
-	m_spInside->SetUp();
+	m_spInside->StartUp();
 }
 
 /*

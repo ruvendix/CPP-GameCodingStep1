@@ -14,10 +14,10 @@
 /*
 	프레임워크와 클라이언트의 절대경로 및 상대경로를 설정합니다.
 */
-void PathManager::SetUp()
+void PathManager::StartUp()
 {
 	m_pFrameworkPathFinder = new FrameworkPathfinder;
-	m_pFrameworkPathFinder->SetUp();
+	m_pFrameworkPathFinder->StartUp();
 
 	Char buffer[MAX_PATH];
 	::GetModuleFileName(nullptr, buffer, MAX_PATH);
